@@ -84,7 +84,7 @@ def attributed_resources(shared, own):
         'request_latencies': a['request_latencies'] + b['request_latencies']}
 
 
-def pair(task, price, prompt, seed, out, policy_factory=PairedPolicy):
+def pair(task, price, prompt, seed, out, policy_factory=PairedPolicy, continue_budget=False):
     key = f'{task}_{price}_{prompt}_{seed}'
     sessions, rows, records = {}, [], []
     branches = {'shared': [], 'P1': [], 'P2': []}
@@ -144,12 +144,14 @@ def pair(task, price, prompt, seed, out, policy_factory=PairedPolicy):
                     if not view['done']:
                         raise ProtocolFailure('decision_budget_exhausted')
                 except Exception as exc:
-                    if not is_context_limit(exc):
+                    budget = continue_budget and isinstance(exc, ProtocolFailure) and str(exc) == 'decision_budget_exhausted'
+                    if not is_context_limit(exc) and not budget:
                         raise
                     error = {'error': repr(exc), 'traceback': traceback.format_exc()}
-                    recorder(mode)({'event': 'context_limit', 'sample_id': f'{key}_{mode}', **error})
-                    save_row(mode, 'context_limit', error, public_views, errors, branch_start)
-                    status = 'completed_with_context_limits'
+                    state = 'decision_budget_exhausted' if budget else 'context_limit'
+                    recorder(mode)({'event': state, 'sample_id': f'{key}_{mode}', **error})
+                    save_row(mode, state, error, public_views, errors, branch_start)
+                    status = 'completed_with_sample_failures' if budget or status == 'completed_with_sample_failures' else 'completed_with_context_limits'
                     continue
                 save_row(mode, 'completed', None, public_views, errors, branch_start)
         except Exception as exc:

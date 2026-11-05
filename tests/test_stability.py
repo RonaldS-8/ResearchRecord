@@ -18,6 +18,7 @@ class ScriptedPolicy(PairedPolicy):
     clients = []
     bad = False
     error_mode = None
+    force_retry = False
 
     def __init__(self, prompt, seed, temperature=1):
         client = FakeClient(response())
@@ -37,6 +38,8 @@ class ScriptedPolicy(PairedPolicy):
                 raise BadRequestError(text, response=httpx.Response(400, request=httpx.Request('POST', 'http://test')),
                                       body={'message': text})
             payload = response(action)
+            if self.force_retry:
+                payload = response('retry')
             if self.bad:
                 payload['choices'][0]['message']['tool_calls'] = []
             from types import SimpleNamespace
@@ -57,6 +60,7 @@ class StabilityTests(unittest.TestCase):
         ScriptedPolicy.clients = []
         ScriptedPolicy.bad = False
         ScriptedPolicy.error_mode = None
+        ScriptedPolicy.force_retry = False
 
     def test_single_sample_independent_feedback_and_physical_accounting(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -118,6 +122,29 @@ class StabilityTests(unittest.TestCase):
         ledger = resource_totals([{'event': 'request'}, {'event': 'request_error', 'latency_seconds': 1}])
         self.assertEqual(ledger['model_requests'], 1)
         self.assertEqual(ledger['unknown_usage_requests'], 1)
+
+    def test_budget_failure_is_preserved_and_next_pair_can_run(self):
+        ScriptedPolicy.force_retry = True
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory)
+            result = pair('018', 'high', 'cost', 0, out, ScriptedPolicy, continue_budget=True)
+            self.assertEqual(result['status'], 'completed_with_sample_failures')
+            self.assertEqual([r['status'] for r in result['rows']], ['completed', 'decision_budget_exhausted'])
+            self.assertEqual(len(result['rows'][1]['decisions']), 8)
+            self.assertEqual(group_summary([result])['groups']['high']['legal_completion_rate'], .5)
+            ScriptedPolicy.force_retry = False
+            self.assertEqual(pair('018', 'low', 'cost', 0, out, ScriptedPolicy, continue_budget=True)['status'], 'completed')
+
+    def test_continuation_requires_unique_prefix_and_skips_all_old_samples(self):
+        from extensions.toolmaze_diagnostic_mvp.continue_stability import remaining
+        from extensions.toolmaze_diagnostic_mvp.model_adapter import ProtocolFailure
+        cases = list(specs())
+        prior = [{'key': '_'.join(map(str, c))} for c in cases[:79]]
+        old, todo = remaining(list(reversed(prior)))
+        self.assertEqual(len(old), 79)
+        self.assertEqual(todo, cases[79:])
+        with self.assertRaises(ProtocolFailure): remaining(prior + prior[:1])
+        with self.assertRaises(ProtocolFailure): remaining(prior[1:])
 
     def test_context_limit_in_first_branch_continues_other_state_and_counts_failure(self):
         ScriptedPolicy.error_mode = 'context_recoverable'
