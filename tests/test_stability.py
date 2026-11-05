@@ -3,17 +3,21 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import httpx
+from openai import BadRequestError
 
 from extensions.toolmaze_diagnostic_mvp.environment import RecoverySession
 from extensions.toolmaze_diagnostic_mvp.model_adapter import SYSTEM
 from extensions.toolmaze_diagnostic_mvp.run_stability import (
-    COST_SENTENCE, PROMPTS, PairedPolicy, pair, resource_totals, specs, group_summary)
+    COST_SENTENCE, PROMPTS, PairedPolicy, pair, resource_totals, specs, group_summary,
+    is_context_limit, traversed)
 from test_model_adapter import FakeClient, response
 
 
 class ScriptedPolicy(PairedPolicy):
     clients = []
     bad = False
+    error_mode = None
 
     def __init__(self, prompt, seed, temperature=1):
         client = FakeClient(response())
@@ -24,6 +28,14 @@ class ScriptedPolicy(PairedPolicy):
             if last['role'] == 'tool':
                 view = json.loads(last['content'])
                 action = 'retry' if view['decisions'][-1]['result']['retry_will_recover'] else 'switch'
+            if (self.error_mode == 'context_initial' and last['role'] == 'user') or (
+                self.error_mode in ('context_recoverable', 'other400_recoverable')
+                and last['role'] == 'tool' and action == 'retry'):
+                text = 'maximum context length is 40960 tokens; input_tokens exceeds capacity'
+                if self.error_mode == 'other400_recoverable':
+                    text = 'invalid tool schema'
+                raise BadRequestError(text, response=httpx.Response(400, request=httpx.Request('POST', 'http://test')),
+                                      body={'message': text})
             payload = response(action)
             if self.bad:
                 payload['choices'][0]['message']['tool_calls'] = []
@@ -44,6 +56,7 @@ class StabilityTests(unittest.TestCase):
     def setUp(self):
         ScriptedPolicy.clients = []
         ScriptedPolicy.bad = False
+        ScriptedPolicy.error_mode = None
 
     def test_single_sample_independent_feedback_and_physical_accounting(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -105,6 +118,45 @@ class StabilityTests(unittest.TestCase):
         ledger = resource_totals([{'event': 'request'}, {'event': 'request_error', 'latency_seconds': 1}])
         self.assertEqual(ledger['model_requests'], 1)
         self.assertEqual(ledger['unknown_usage_requests'], 1)
+
+    def test_context_limit_in_first_branch_continues_other_state_and_counts_failure(self):
+        ScriptedPolicy.error_mode = 'context_recoverable'
+        with tempfile.TemporaryDirectory() as directory:
+            out = Path(directory)
+            result = pair('018', 'low', 'original', 0, out, ScriptedPolicy)
+            self.assertEqual(result['status'], 'completed_with_context_limits')
+            self.assertTrue(traversed(result['status']))
+            self.assertEqual([r['status'] for r in result['rows']], ['context_limit', 'completed'])
+            self.assertEqual(result['physical_resources']['model_requests'], 3)
+            self.assertEqual(result['physical_resources']['unknown_usage_requests'], 1)
+            group = group_summary([result])['groups']['low']
+            self.assertEqual(group['attempted'], 2)
+            self.assertEqual(group['legal_completion_rate'], .5)
+            self.assertFalse(group['cost_comparison_complete'])
+            self.assertEqual(group['context_limit_samples'], ['018_low_original_0_P1'])
+            ScriptedPolicy.error_mode = None
+            later = pair('018', 'high', 'original', 0, out, ScriptedPolicy)
+            self.assertEqual(later['status'], 'completed')
+
+    def test_shared_context_limit_is_not_resampled_and_marks_both_states(self):
+        ScriptedPolicy.error_mode = 'context_initial'
+        with tempfile.TemporaryDirectory() as directory:
+            result = pair('018', 'low', 'original', 0, Path(directory), ScriptedPolicy)
+            self.assertEqual(result['status'], 'completed_with_context_limits')
+            self.assertEqual(result['physical_resources']['model_requests'], 1)
+            self.assertEqual(len(result['rows']), 2)
+            self.assertTrue(all(r['status'] == 'context_limit' for r in result['rows']))
+            self.assertEqual(group_summary([result])['groups']['low']['legal_completion_rate'], 0)
+
+    def test_other_badrequest_still_stops_and_text_alone_is_not_a_capacity_error(self):
+        ScriptedPolicy.error_mode = 'other400_recoverable'
+        with tempfile.TemporaryDirectory() as directory:
+            result = pair('018', 'low', 'original', 0, Path(directory), ScriptedPolicy)
+            self.assertEqual(result['status'], 'stopped')
+            self.assertFalse(traversed(result['status']))
+            # No attempt to request a continuation in the second state.
+            self.assertEqual(result['physical_resources']['model_requests'], 2)
+        self.assertFalse(is_context_limit(RuntimeError('maximum context length tokens input_tokens')))
 
 
 if __name__ == '__main__':
