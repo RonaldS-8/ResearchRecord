@@ -76,6 +76,7 @@ class CompletionTests(unittest.TestCase):
         self.assertFalse(evaluate('018','P1',events)['legal_success'])
 
     def test_original_error_control_and_failed_stop(self):
+        self.assertNotIn('diagnose',RecoverySession('018','P1',controlled=False).view()['actions'])
         audit=complete(controlled=False)
         self.assertTrue(evaluate('018','P1',audit['events'],controlled=False)['legal_success'])
         env=RecoverySession('018','P2'); env.act('retry'); env.act('stop')

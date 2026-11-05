@@ -136,7 +136,7 @@ class RecoverySession:
     def view(self):
         R, S = CONFIG['tasks'][self._task]
         specs = [d['paradigms']['function_call']['spec'] for d in self._case['base'].tool_definitions]
-        return json_copy({'task':self._case['base'].task_description,
+        view = json_copy({'task':self._case['base'].task_description,
              'tools':sorted(specs,key=lambda d:d['name']),
              'actions':{'retry':'Retry the failed operation once; finish original workflow if it succeeds.',
                         'switch':'Complete an alternative workflow.',
@@ -146,6 +146,10 @@ class RecoverySession:
              'prior_transient':CONFIG['prior_transient'],
              'history':[{'call_id':e['call_id'],'tool':e['tool'],'arguments':e['arguments'],'output':e['output']} for e in self._events],
              'decisions':self._decisions,'done':self._done})
+        if not self._controlled:
+            del view['actions']['diagnose']
+            del view['costs']['diagnosis']
+        return view
 
     def act(self, action):
         if self._done or len(self._decisions) >= CONFIG['max_decisions']:
