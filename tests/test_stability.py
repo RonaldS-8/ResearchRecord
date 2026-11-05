@@ -28,7 +28,7 @@ class ScriptedPolicy(PairedPolicy):
             action = 'diagnose'
             if last['role'] == 'tool':
                 view = json.loads(last['content'])
-                action = 'retry' if view['decisions'][-1]['result']['retry_will_recover'] else 'switch'
+                action = 'retry' if view['decisions'][-1]['result'].get('retry_will_recover') else 'switch'
             if (self.error_mode == 'context_initial' and last['role'] == 'user') or (
                 self.error_mode in ('context_recoverable', 'other400_recoverable')
                 and last['role'] == 'tool' and action == 'retry'):
