@@ -1,6 +1,8 @@
 import copy
+import json
+import re
 import unittest
-from extensions.toolmaze_diagnostic_mvp.environment import CONFIG, RecoverySession
+from extensions.toolmaze_diagnostic_mvp.environment import CONFIG, RecoverySession, load_case
 from extensions.toolmaze_diagnostic_mvp.verification import evaluate
 
 
@@ -53,9 +55,21 @@ class CompletionTests(unittest.TestCase):
         self.assertFalse(evaluate('018','P1',events)['legal_success'])
 
     def test_consumer_before_producer_is_rejected(self):
+        audit=complete('020'); events=copy.deepcopy(audit['events'])
+        bindings=load_case('020','P1')['template']['parameter_bindings']
+        moved=False
+        for i in range(audit['sunk_calls'],len(events)):
+            refs=re.findall(r'\{\{\s*(s\w+)',json.dumps(bindings[events[i]['tool']]))
+            producers=[j for j in range(audit['sunk_calls'],i) if events[j]['node'] in refs]
+            if producers:
+                event=events.pop(i); events.insert(producers[0],event); moved=True; break
+        self.assertTrue(moved,'Negative fixture must have an explicit data dependency')
+        self.assertFalse(evaluate('020','P1',events)['legal_success'])
+
+    def test_independent_call_reordering_is_accepted(self):
         audit=complete(); events=copy.deepcopy(audit['events']); i=audit['sunk_calls']
         events[i],events[i+1]=events[i+1],events[i]
-        self.assertFalse(evaluate('018','P1',events)['legal_success'])
+        self.assertTrue(evaluate('018','P1',events)['legal_success'])
 
     def test_duplicate_call_ids_are_rejected(self):
         audit=complete(); events=copy.deepcopy(audit['events']); events[-1]['call_id']=events[0]['call_id']
