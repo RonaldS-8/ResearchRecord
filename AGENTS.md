@@ -31,10 +31,11 @@
 - 开始前说明目标、原因、涉及文件；完成后说明验证结果、未解决事项、下一步。
 - 新文件遵循 docs/directory-layout.md；重要技术决策写入 docs/adr/。
 - 文档和项目都不要膨胀，写必要内容
+- 面向用户的文件使用清楚、自然的语言；必要术语首次出现时解释含义，避免使用“探针”“门”等含义不清的黑话，直接说明具体操作或判断条件。
 
 ## 5. 环境
 - 运行、推理、实验仅在云端：ssh LabServer，目录 /home/ubuntu/Song/Agent，环境.venv。本机目录是给用户讲解和同步变更用的，权重和数据等不要到本地，其他目录在本地同名建，脚本在本地写然后上传
 - GPU：RTX4090 24GB
-- 修改前检查两端 git status，任一端有未提交改动则停下报告。每次修改同步到git@github.com:RonaldS-8/ResearchRecord.git，方便端云同步。
+- 修改前检查两端 git status，任一端有未提交改动则停下报告。每次修改允许你审核正确后同步到git@github.com:RonaldS-8/ResearchRecord.git，方便端云同步。
 - 单一 Git 仓库；模型、数据、环境、结果、日志不入 Git、不下载到本地。
 - 当前进度见 <docs/HANDOFF.md>，不在本文件重复计划。
