@@ -1,0 +1,35 @@
+# Weights and datasets stay on LabServer (match directories at any depth).
+models/
+data/
+git-data/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+data.zip
+
+# Environments and caches. CostBench/env is SOURCE CODE; do not ignore it.
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Runtime artifacts
+results/
+logs/
+*.log
+toolmaze_audit_report.json
+.tmp_api_eval_config_*.yaml
+
+# Local credentials and editor files
+.env
+.env.*
+!.env.example
+*.pem
+.DS_Store
+.idea/
+.vscode/

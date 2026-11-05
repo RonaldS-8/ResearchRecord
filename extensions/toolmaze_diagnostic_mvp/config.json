@@ -1,0 +1,11 @@
+{
+  "tasks": {"018": [2, 3], "019": [1, 2], "020": [2, 4], "021": [3, 5], "023": [4, 6], "024": [2, 3], "025": [2, 4], "027": [5, 7], "028": [2, 4], "032": [4, 6]},
+  "source_path": "path_0",
+  "tool_attempt_cost": 1,
+  "diagnostic_costs": {"low": 0.25, "high": 0.75},
+  "prior_transient": 0.5,
+  "seed": 0,
+  "max_tool_calls": 32,
+  "max_decisions": 8,
+  "error": {"error": "Operation could not be completed. Retry or use an alternative workflow."}
+}
