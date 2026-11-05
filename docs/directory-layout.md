@@ -19,6 +19,9 @@ Agent/                         # 本地对应 Master_thesis/
 │       └── env/               # 源码，纳入 Git
 │           └── data/          # 仅云端，忽略
 ├── scripts/                   # 跨 benchmark 或项目级维护脚本
+├── extensions/                # 独立实验扩展，不修改 benchmark 原实现
+│   └── toolmaze_diagnostic_mvp/ # Gate 3 受控恢复决策环境
+├── tests/                     # 项目扩展的必要验证与隔离测试
 ├── docs/
 │   ├── adr/                   # 架构决策记录
 │   ├── version-control.md     # 同步步骤
