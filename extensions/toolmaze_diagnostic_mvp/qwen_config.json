@@ -1,0 +1,12 @@
+{
+  "model": "Qwen3-4B-Thinking-2507",
+  "model_revision": "768f209d9ea81521153ed38c47d515654e938aea",
+  "base_url": "http://127.0.0.1:8000/v1",
+  "temperature": 1,
+  "max_tokens": 16000,
+  "timeout_seconds": 300,
+  "seed": 0,
+  "max_retries": 0,
+  "tool_choice": "auto",
+  "parallel_tool_calls": false
+}
