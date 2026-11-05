@@ -60,6 +60,11 @@ def visible_prefix(steps):
              'output': s.get('output', {})} for s in steps]
 
 
+def path_key(path):
+    steps, fault = prefix_steps(path['execution_trace'])
+    return tuple(s['tool_name'] for s in steps) + (fault['tool_name'],)
+
+
 def error_masked(obs):
     result = copy.deepcopy(obs)
     output = json.loads(result['messages'][-1]['content'])
@@ -90,6 +95,9 @@ def self_test():
     fake = {'faults': [{'observations': {m: {'messages': [{'content': '{"error":"same"}'}]}
                                         for m in ('P1', 'P2')}}]}
     assert build_rules([fake]) == {'same': None}
+    base = [{'tool_name': 'a'}, {'tool_name': 'b', 'is_perturbed': True}]
+    assert path_key({'execution_trace': base + [{'tool_name': 'b'}]}) == path_key(
+        {'execution_trace': base + [{'tool_name': 'alternative'}]})
 
 
 def audit_task(spec):
@@ -115,15 +123,15 @@ def audit_task(spec):
         for mode in docs:
             paths[mode] = {}
             for path in docs[mode]['valid_paths']:
-                key = tuple(s['tool_name'] for s in path['execution_trace'])
+                key = path_key(path)
                 if key in paths[mode]:
-                    raise ValueError('Duplicate tool-sequence path key')
+                    raise ValueError('Duplicate pre-fault tool-sequence path key')
                 paths[mode][key] = path
         record['path_count'] = {m: len(p) for m, p in paths.items()}
         if set(paths['P1']) != set(paths['P2']):
-            raise ValueError('Unmatched reference path tool sequences')
+            raise ValueError('Unmatched pre-fault reference path tool sequences')
         for key in sorted(paths['P1']):
-            row = {'tool_sequence': key, 'observations': {}, 'errors': {}, 'predictions': {},
+            row = {'tool_sequence_through_first_fault': key, 'observations': {}, 'errors': {}, 'predictions': {},
                    'reference_prefixes': {}, 'reference_fault_arguments': {}}
             prefixes, faults = {}, {}
             for mode in docs:
@@ -206,15 +214,16 @@ def evaluate(records):
         task_correct += all_correct
     n, total, covered = counts['pairs'], counts['observations'], counts['covered']
     interval = wilson(task_correct, n)
-    return {'counts': dict(counts), 'error_categories': {m: dict(c) for m, c in categories.items()},
+    valid = not any('error' in record for record in records)
+    return {'classification_valid': valid, 'counts': dict(counts), 'error_categories': {m: dict(c) for m, c in categories.items()},
             'shared_error_categories': sorted(set(categories['P1']) & set(categories['P2'])),
             'confusion': dict(confusion), 'accuracy_including_abstention': counts['correct']/total if total else None,
             'coverage': covered/total if total else None,
             'accuracy_when_covered': counts['correct']/covered if covered else None,
             'recall': {m: confusion[f'{m}->{m}']/sum(categories[m].values()) if categories[m] else None for m in categories},
-            'tasks_all_correct': task_correct, 'task_accuracy': task_correct/n if n else None,
-            'task_wilson95': interval,
-            'reliability_criterion_met': bool(n and total and task_correct/n >= .95 and interval[0] >= .90 and covered/total >= .95)}
+            'tasks_all_correct': task_correct, 'task_accuracy': task_correct/n if n and valid else None,
+            'task_wilson95': interval if valid else None,
+            'reliability_criterion_met': bool(valid and n and total and task_correct/n >= .95 and interval[0] >= .90 and covered/total >= .95)}
 
 
 def main():
@@ -226,7 +235,7 @@ def main():
     args = parser.parse_args()
     self_test()
     if args.self_test:
-        print('5 classifier/isolation checks passed')
+        print('Classifier, metadata isolation, and pre-fault path matching checks passed')
         return
     if args.out is None:
         parser.error('--out required for audit')
