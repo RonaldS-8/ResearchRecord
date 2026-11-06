@@ -1,6 +1,6 @@
 # Agent 项目
 
-当前研究问题（Q2）是，工具故障的真实状态不完全可观测时，Agent 如何结合历史恢复经验、当前任务的新反馈与成本信息，选择重试、切换、诊断或停止，在保证任务质量的同时降低恢复开销？研究假设与范围见 [AGENTS.md](AGENTS.md#1-研究目标q2)，阶段进展见 [HANDOFF](docs/HANDOFF.md)。
+当前研究问题（Q2）是，工具故障已被发现但状态不完全可观测时，Agent 如何权衡信息获取价值、恢复收益与执行成本，选择显式诊断、重试、切换或停止？研究定义见 [AGENTS.md](AGENTS.md)，阶段进展见 [HANDOFF](docs/HANDOFF.md)。
 
 本地目录：`/Users/ronald/Research/Learning/Agent/Master_thesis`
 
