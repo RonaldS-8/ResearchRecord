@@ -3,7 +3,7 @@ import copy
 from fractions import Fraction as F
 
 from extensions.toolmaze_diagnostic_mvp.environment import (
-    ExecutionEngine, fresh_engine, json_copy, load_case, resolve,
+    ExecutionEngine, json_copy, load_case, resolve,
 )
 from evaluation.core.judge import JudgeSystem
 from evaluation.utils import TraceLogger
@@ -17,8 +17,7 @@ TOOL_LIMIT = 32
 class Replay:
     def __init__(self, state, hazard, accuracy, diagnostic_cost, prices, transition_draw, diagnostic_draw):
         self.case = load_case("018", "P1")
-        self.engine = fresh_engine(self.case["base"])
-        self.engine.mode = "P0"
+        self.engine = ExecutionEngine(self.case["docs"]["P0"], None)
         self.state = state
         self.hazard, self.accuracy = hazard, accuracy
         self.diagnostic_cost, self.prices = diagnostic_cost, prices
