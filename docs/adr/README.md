@@ -7,6 +7,8 @@ ADR（Architecture Decision Record）记录影响后续工作的重要决策：�
 | [0001](0001-single-repository-and-one-side-workflow.md) | 单仓库、云端保留数据、单端修改后同步 | 已接受 |
 | [0002](0002-toolmaze-local-vllm.md) | ToolMaze 使用云端本机 vLLM 服务与可配置超时 | 已接受 |
 
+| [0007](0007-gate6-native-recovery-audit.md) | Gate 6 原生恢复回放及分阶段验收 | 范围已批准，设计待审核 |
+
 新增时复制 [模板](template.md)，使用递增四位编号与描述性英文文件名，并更新此索引。已接受的决策若被替代，保留旧记录，将其状态改为“被 ADR-xxxx 替代”，再新增记录。只纠正事实和补充验证证据，不重写历史理由。
 
 涉及研究方法或实验设计时，还应说明最近邻工作、可证伪假设、关键不确定性及 Go/No-Go 标准；纯工程配置不必扩展成科研实验。
