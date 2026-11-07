@@ -7,7 +7,6 @@ import unittest
 
 from extensions.action_conditioned_recovery.mvp import Session
 from extensions.action_conditioned_recovery.run import run
-from extensions.toolmaze_belief_ssp.replay import verify
 
 
 class Gate9Tests(unittest.TestCase):
@@ -50,7 +49,7 @@ class Gate9Tests(unittest.TestCase):
     def test_invalid_completion_is_rejected(self):
         session = Session("A", "P")
         session.act("switch")
-        replay = session._replay
+        replay = session._backend
         self.assertTrue(session.audit()["score"]["legal_success"])
         for corruption in ("wrong_argument", "forged_output", "skipped_call", "reused_call"):
             events = copy.deepcopy(replay.events)
@@ -65,4 +64,14 @@ class Gate9Tests(unittest.TestCase):
             else:
                 events.append(copy.deepcopy(events[-1]))
             with self.subTest(corruption=corruption):
-                self.assertFalse(verify(replay, events)["legal_success"])
+                self.assertFalse(replay.verify(events, replay.target, False)["legal_success"])
+
+    def test_recovery_ledger_detects_tampering(self):
+        session = Session("A", "P", task="020", per_call=True)
+        session.act("retry")
+        session.act("switch")
+        row = session.audit()
+        self.assertTrue(row["score"]["legal_success"])
+        self.assertEqual(row["tool_fee"], row["recovery_calls"])
+        session._ledger[0]["tool_fee"] += 1
+        self.assertIn("recovery ledger mismatch", session.audit()["score"]["issues"])

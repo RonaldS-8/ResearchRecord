@@ -1,8 +1,9 @@
 """Exact values and a restricted C2-018 recovery session for Gate 9."""
 from fractions import Fraction as F
 
-from extensions.toolmaze_belief_ssp.enumeration import diagnostic_probability, rank, weighted
-from extensions.toolmaze_belief_ssp.replay import Replay, verify
+from extensions.toolmaze_diagnostic_mvp.environment import json_copy
+
+from .backend import Backend, TOOL_LIMIT
 
 PRIORS = {"A": F(3, 4), "B": F(1, 4), "feedback": F(1, 2)}
 STATES = ("H", "P")
@@ -13,6 +14,19 @@ POLICIES = {
     "retry_only": ("retry", "stop"),
     "stop": ("stop",),
 }
+
+
+def rank(value):
+    return value[0], -value[1]
+
+
+def weighted(branches, charge):
+    return (sum(p * value[0] for p, value in branches),
+            charge + sum(p * value[1] for p, value in branches))
+
+
+def diagnostic_probability(state, report, accuracy):
+    return accuracy if report == (state == "H") else 1 - accuracy
 
 
 def values(p):
@@ -46,55 +60,100 @@ def diagnostic_value(p, accuracy):
 
 
 class Session:
-    def __init__(self, context, state, accuracy=None, draw=F(1, 2)):
-        if context not in PRIORS or state not in STATES:
+    def __init__(self, context, state, accuracy=None, draw=F(1, 2), *,
+                 task="018", per_call=False):
+        if context not in (*PRIORS, "control") or state not in STATES:
             raise ValueError("Unknown context or fault state")
         if (context == "feedback") != (accuracy is not None):
             raise ValueError("Diagnostic calibration is limited to the feedback cell")
-        self._context = context
-        self._accuracy = accuracy
-        self._replay = Replay(state, F(0), accuracy, DIAGNOSIS, {},
-                              transition_draw=lambda: F(0), diagnostic_draw=lambda: draw)
-        self._tools = F(0)
-        self._diagnosis = F(0)
+        self._context, self._state = context, state
+        self._accuracy, self._draw = accuracy, draw
+        self._backend = Backend(task)
+        self._per_call = per_call
+        self._decisions, self._ledger = [], []
+        self._done = False
 
     def view(self):
-        replay = self._replay
-        view = replay.view()
+        backend = self._backend
         actions = []
-        used = {d["action"] for d in replay.decisions}
-        if not replay.done:
+        retried = any(d["action"] == "retry" for d in self._decisions)
+        if not self._done:
             actions = ["switch", "stop"]
-            if "retry" not in used:
+            if not retried:
                 actions.append("retry")
-            if self._accuracy is not None and not used:
+            if self._accuracy is not None and not self._decisions:
                 actions.append("diagnose")
-        public = {k: view[k] for k in ("task", "tools", "history", "decisions", "remaining_tools")}
-        public.update(context=self._context, actions=actions, done=replay.done,
-                      remaining_decisions=0 if replay.done else (
-                          1 if "retry" in used else 2 + int("diagnose" in actions)
-                      ), prices={"retry": str(RETRY), "switch": str(SWITCH)})
+        prices = {"retry": str(RETRY), "switch": str(SWITCH)}
+        if self._per_call:
+            prices = {
+                "retry_success": len(backend.source) - backend.sunk + 1,
+                "retry_failure": 1,
+                "switch": len(set(backend.target) - set(backend.prefix[:-1])),
+            }
+        public = {
+            "task": backend.case["base"].task_description,
+            "tools": [d["paradigms"]["function_call"]["spec"]
+                      for d in backend.case["base"].tool_definitions],
+            "history": [{k: e[k] for k in ("call_id", "tool", "arguments", "output")}
+                        for e in backend.events],
+            "context": self._context, "actions": actions, "done": self._done,
+            "remaining_tools": TOOL_LIMIT - len(backend.events),
+            "remaining_decisions": 0 if self._done else 1 if retried else 2 + int("diagnose" in actions),
+            "prices": prices, "decisions": self._decisions,
+        }
         if self._accuracy is not None:
-            public["prices"]["diagnose"] = str(DIAGNOSIS)
+            prices["diagnose"] = str(DIAGNOSIS)
             public["diagnostic_accuracy"] = str(self._accuracy)
-        return public
+        return json_copy(public)
 
     def act(self, action):
         if action not in self.view()["actions"]:
             raise ValueError("Action unavailable")
-        self._replay.act(action)
-        self._tools += {"retry": RETRY, "switch": SWITCH}.get(action, F(0))
-        if action == "diagnose":
-            self._diagnosis += DIAGNOSIS
+        backend = self._backend
+        start = len(backend.events)
+        decision = {"action": action}
+        if action == "retry":
+            recovered = self._state == "H"
+            decision["recovered"] = recovered
+            backend.call(backend.victim, blocked=not recovered)
+            if recovered:
+                backend.finish(backend.source)
+                self._done = True
+        elif action == "switch":
+            backend.finish(backend.target)
+            self._done = True
+        elif action == "diagnose":
+            decision["report"] = self._draw < diagnostic_probability(self._state, True, self._accuracy)
+        else:
+            self._done = True
+        self._decisions.append(decision)
+        self._ledger.append({
+            "action": action, "calls": list(range(start, len(backend.events))),
+            "tool_fee": len(backend.events) - start if self._per_call else
+                        {"retry": RETRY, "switch": SWITCH}.get(action, F(0)),
+            "diagnostic_fee": DIAGNOSIS if action == "diagnose" else F(0),
+        })
         return self.view()
 
     def audit(self):
-        replay = self._replay
-        return {
-            "events": replay.events,
-            "decisions": replay.decisions,
-            "score": verify(replay, replay.events),
-            "recovery_calls": len(replay.events) - replay.sunk,
-            "tool_fee": self._tools,
-            "diagnostic_fee": self._diagnosis,
-        }
+        backend = self._backend
+        actions = [d["action"] for d in self._decisions]
+        retry = "retry" in actions
+        switched = "switch" in actions
+        failed = retry and self._state != "H"
+        path = backend.target if switched else backend.source if retry and not failed else None
+        score = backend.verify(backend.events, path, failed)
+        recovery_calls = len(backend.events) - backend.sunk
+        tool_fee = sum(row["tool_fee"] for row in self._ledger)
+        diagnostic_fee = sum(row["diagnostic_fee"] for row in self._ledger)
+        calls = [call for row in self._ledger for call in row["calls"]]
+        expected_tool = recovery_calls if self._per_call else int(retry) + 2 * int(switched)
+        if (calls != list(range(backend.sunk, len(backend.events)))
+                or [row["action"] for row in self._ledger] != actions
+                or tool_fee != expected_tool
+                or diagnostic_fee != actions.count("diagnose") * DIAGNOSIS):
+            score["issues"].append("recovery ledger mismatch")
+            score["legal_success"] = False
+        return {"events": backend.events, "decisions": self._decisions,
+                "ledger": self._ledger, "score": score, "recovery_calls": recovery_calls,
+                "tool_fee": tool_fee, "diagnostic_fee": diagnostic_fee}

@@ -1,23 +1,39 @@
 """Run the preregistered exact comparisons and paired cloud replay."""
 import argparse
+import json
 from fractions import Fraction as F
 import platform
 from pathlib import Path
 import subprocess
 
-from extensions.toolmaze_belief_ssp.enumeration import diagnostic_probability, rank, weighted
-from extensions.toolmaze_belief_ssp.run import write
-
-from .mvp import DIAGNOSIS, POLICIES, PRIORS, STATES, Session, best_policy, diagnostic_value, signal_outcomes, values
+from .mvp import DIAGNOSIS, POLICIES, PRIORS, STATES, Session, best_policy, diagnostic_value, signal_outcomes, values, diagnostic_probability, rank, weighted
 
 
-def execute(session, initial, policy):
-    views = [initial]
-    for action in POLICIES[policy]:
-        if views[-1]["done"]:
-            break
-        views.append(session.act(action))
+def write(path, data):
+    with path.open("x") as stream:
+        json.dump(data, stream, indent=2, ensure_ascii=False, default=str)
+
+
+def execute(session, choose):
+    views = [session.view()]
+    while not views[-1]["done"]:
+        views.append(session.act(choose(session.view())))
     return {"views": views, **session.audit()}
+
+
+def fixed(policy):
+    return lambda view: POLICIES[policy][len(view["decisions"])]
+
+
+def feedback_policy(view):
+    decisions = view["decisions"]
+    if not decisions:
+        return "diagnose"
+    if len(decisions) > 1:
+        return "switch"
+    report = decisions[0]["report"]
+    accuracy = F(view["diagnostic_accuracy"])
+    return POLICIES[best_policy(accuracy if report else 1 - accuracy)][0]
 
 
 def score(row):
@@ -40,7 +56,7 @@ def run(out):
             for state, mass in zip(STATES, (prior, 1 - prior)):
                 session = Session(context, state)
                 initial = session.view()
-                row = execute(session, initial, policy)
+                row = execute(session, fixed(policy))
                 write(out / f"{context}-{state}-{policy}.json", row)
                 initial_views.append(initial)
                 require(not row["score"]["issues"], f"Invalid trace: {context}/{state}/{policy}")
@@ -55,17 +71,14 @@ def run(out):
         branches = []
         initial_views = []
         for state in STATES:
-            for report, _, posterior in signal_outcomes(prior, accuracy):
+            for report, _, _ in signal_outcomes(prior, accuracy):
                 probability = diagnostic_probability(state, report, accuracy)
                 # With these registered accuracies, 0 and 9/10 produce either report.
                 session = Session("feedback", state, accuracy, F(0) if report else F(9, 10))
                 initial_views.append(session.view())
-                after_signal = session.act("diagnose")
-                policy = best_policy(posterior)
-                row = execute(session, after_signal, policy)
-                row["initial"] = initial_views[-1]
+                row = execute(session, feedback_policy)
                 write(out / f"feedback-{accuracy.numerator}-{state}-{report}.json", row)
-                require(after_signal["decisions"][-1]["report"] == report
+                require(row["views"][1]["decisions"][-1]["report"] == report
                         and not row["score"]["issues"], "Invalid feedback trace")
                 branches.append((F(1, 2) * probability, score(row)))
         require(all(view == initial_views[0] for view in initial_views), "Feedback view mismatch")

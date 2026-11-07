@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "development": ["018"],
+  "history": {"019": ["019"], "024": ["024"]},
+  "test": {"invoice": ["020", "027"], "032": ["032"]},
+  "probabilities": {"A": "3/4", "B": "1/4", "control": "1/2"},
+  "history_per_action": 16,
+  "test_per_context": 16,
+  "history_seed": 101,
+  "test_seed": 102,
+  "tool_fee_per_call": 1,
+  "diagnosis": false
+}
