@@ -1,0 +1,12 @@
+{
+  "family": "invoice",
+  "cells": {
+    "neutral": {"cue": false, "accuracy": "1/2", "fee": "1/10", "execution": false, "expected": "2"},
+    "existing": {"cue": true, "accuracy": "1/2", "fee": "1/10", "execution": false, "expected": "37/20"},
+    "diagnose": {"cue": false, "accuracy": "4/5", "fee": "1/10", "execution": false, "expected": "9/5"},
+    "expensive": {"cue": false, "accuracy": "4/5", "fee": "2/5", "execution": false, "expected": "2"},
+    "execution": {"cue": false, "accuracy": "1/2", "fee": "1/10", "execution": true, "expected": "37/20"},
+    "combined": {"cue": false, "accuracy": "4/5", "fee": "1/10", "execution": true, "expected": "177/100"},
+    "posterior_only": {"cue": true, "accuracy": "3/5", "fee": "1/10", "execution": false, "expected": "37/20"}
+  }
+}
