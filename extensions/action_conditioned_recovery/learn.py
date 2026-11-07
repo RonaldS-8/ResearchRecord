@@ -16,18 +16,24 @@ from .run import execute, fixed, require, score, write
 CONFIG = Path(__file__).with_name("gate10.json")
 ARMS = ("switch", "retry_then_switch")
 BASELINES = ("retry_only", *ARMS, "task_rate", "cost_only", "pooled", "context",
-             "context_one_bit", "action_values")
+             "context_one_bit", "action_values", "repriced_action_values")
 
 
 def fit(rows):
     retry = [r for r in rows if r["arm"] == "retry_then_switch"]
     by_context = defaultdict(list)
     by_action = defaultdict(list)
+    continuations = defaultdict(lambda: defaultdict(list))
     task_outcomes = defaultdict(list)
     switches = defaultdict(list)
     for row in rows:
         context = row["views"][0]["context"]
-        by_action[context, row["arm"]].append(score(row))
+        outcome = score(row)
+        by_action[context, row["arm"]].append(outcome)
+        branch = "direct_switch"
+        if row["arm"] == "retry_then_switch":
+            branch = "retry_success" if row["decisions"][0]["recovered"] else "retry_switch"
+        continuations[context][branch].append(outcome[0])
         fault = row["views"][0]["history"][-1]
         key = fault["tool"], fault["output"]["error"]
         task_outcomes[key].append(score(row)[0])
@@ -51,14 +57,37 @@ def fit(rows):
                                zip(*records))
                        for (ctx, a), records in by_action.items() if ctx == x}
                    for x in by_context},
+        "continuations": {
+            x: {branch: {"n": len(results), "mean": sum(results) / len(results)}
+                for branch, results in branches.items()}
+            for x, branches in continuations.items()
+        },
         "task": {key: beta(records) for key, records in task_outcomes.items()},
         "switch": {key: beta(records) for key, records in switches.items()},
     }
 
 
-def threshold(view, p):
+def action_costs(view, p):
     r, f, s = (F(view["prices"][k]) for k in ("retry_success", "retry_failure", "switch"))
-    return "retry_then_switch" if p * r + (1 - p) * (f + s) < s else "switch"
+    return {"switch": s, "retry_then_switch": p * r + (1 - p) * (f + s)}
+
+
+def threshold(view, p):
+    return min(ARMS, key=action_costs(view, p).__getitem__)
+
+
+def repriced_values(view, p, branches):
+    if not all(branches.get(branch, {}).get("n") for branch in
+               ("direct_switch", "retry_success", "retry_switch")):
+        return None
+    costs = action_costs(view, p)
+    return {
+        "switch": (branches["direct_switch"]["mean"], costs["switch"]),
+        "retry_then_switch": (
+            p * branches["retry_success"]["mean"] + (1 - p) * branches["retry_switch"]["mean"],
+            costs["retry_then_switch"],
+        ),
+    }
 
 
 def select(name, view, fitted):
@@ -67,6 +96,12 @@ def select(name, view, fitted):
         return name
     if name == "action_values":
         estimates = fitted["action"][context]
+        return max(ARMS, key=lambda arm: rank(estimates[arm]))
+    if name == "repriced_action_values":
+        p = fitted["context"][context]
+        estimates = repriced_values(view, p, fitted["continuations"].get(context, {}))
+        if estimates is None:
+            return threshold(view, p)
         return max(ARMS, key=lambda arm: rank(estimates[arm]))
     # Task-rate statistics supply no retry-specific probability. Use the same
     # public-cost fallback as the no-history control.
@@ -106,6 +141,8 @@ def run(config, out):
     write(out / "estimates.json", {**fitted, **{
         k: [{"key": key, **stat} for key, stat in fitted[k].items()] for k in ("task", "switch")
     }})
+    disagreements = defaultdict(int)
+    unsupported = defaultdict(int)
     result = defaultdict(lambda: defaultdict(lambda: {"n": 0, "completed": 0, "tool_fee": 0,
                                                        "diagnostic_fee": 0, "calls": 0}))
     rng = Random(config["test_seed"])
@@ -118,6 +155,11 @@ def run(config, out):
                             for arm in (*ARMS, "retry_only")}
                 initial = sessions["switch"].view()
                 selected = {name: select(name, initial, fitted) for name in BASELINES}
+                if repriced_values(initial, fitted["context"][context],
+                                   fitted["continuations"].get(context, {})) is None:
+                    unsupported[family] += 1
+                if selected["context"] != selected["repriced_action_values"]:
+                    disagreements[family] += 1
                 rows = {}
                 for arm, session in sessions.items():
                     row = execute(session, fixed(arm))
@@ -138,6 +180,8 @@ def run(config, out):
                         metrics["calls"] += row["recovery_calls"]
                 pair += 1
     return {"history": len(history), "test_pairs": pair, "groups": result,
+            "repriced_threshold_disagreements": dict(disagreements),
+            "repriced_unsupported": dict(unsupported),
             "complete_btm": "not run"}
 
 
