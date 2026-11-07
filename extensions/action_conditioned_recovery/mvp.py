@@ -91,9 +91,9 @@ class Session:
                 "switch": len(set(backend.target) - set(backend.prefix[:-1])),
             }
         public = {
-            "task": backend.case["base"].task_description,
+            "task": backend.engine.task_description,
             "tools": [d["paradigms"]["function_call"]["spec"]
-                      for d in backend.case["base"].tool_definitions],
+                      for d in sorted(backend.engine.tool_definitions, key=lambda tool: tool["paradigms"]["function_call"]["spec"]["name"])],
             "history": [{k: e[k] for k in ("call_id", "tool", "arguments", "output")}
                         for e in backend.events],
             "context": self._context, "actions": actions, "done": self._done,

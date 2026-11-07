@@ -1,7 +1,8 @@
 """Thin adapter for C2 task loading, argument bindings and clean tool execution."""
 import copy
+from functools import lru_cache
 
-from extensions.toolmaze_diagnostic_mvp.environment import fresh_engine, load_case, resolve
+from extensions.toolmaze_diagnostic_mvp.environment import ExecutionEngine, fresh_engine, load_case, resolve
 from evaluation.core.judge import JudgeSystem
 from evaluation.utils import TraceLogger
 
@@ -9,10 +10,16 @@ ERROR = {"error": "Operation unavailable"}
 TOOL_LIMIT = 32
 
 
+@lru_cache(maxsize=10)
+def clean_base(task):
+    return ExecutionEngine(load_case(task, "P1")["docs"]["P0"], None)
+
+
 class Backend:
     def __init__(self, task):
         self.case = load_case(task, "P1")
-        self.engine = fresh_engine(self.case["base"])
+        self.task = task
+        self.engine = fresh_engine(clean_base(task))
         self.nodes = {n["id"]: n["tool_name"] for n in self.case["template"]["dag"]["nodes"]}
         self.outputs = {}
         self.events = []
@@ -57,7 +64,7 @@ class Backend:
             expected.extend((node, False) for node in path if node not in self.prefix[:-1])
         if [(e["node"], e["blocked"]) for e in events] != expected:
             return {"legal_success": False, "issues": ["workflow or fault mismatch"]}
-        engine = fresh_engine(self.case["base"])
+        engine = fresh_engine(clean_base(self.task))
         logger = TraceLogger(engine.task_id, "P0")
         outputs = {}
         for index, event in enumerate(events):
