@@ -174,7 +174,8 @@ def train(config, path):
 def run_cell(name, cell, estimate, out):
     truth = F(cell["w"])
     fitted = estimate if name == "unknown_mix" else truth
-    known, learned, independent = (Planner(cell, w) for w in (truth, fitted, F(0)))
+    calibration = {key: value for key, value in cell.items() if key != "w"}
+    known, learned, independent = (Planner(calibration, w) for w in (truth, fitted, F(0)))
     result = defaultdict(Counter)
     first_values, public_views = {}, {}
     for index, (world, weight) in enumerate(known.support):
