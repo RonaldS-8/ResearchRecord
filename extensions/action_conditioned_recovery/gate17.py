@@ -5,7 +5,7 @@ from fractions import Fraction as F
 import gzip
 from itertools import product
 import json
-from math import log
+from math import log, prod
 from pathlib import Path
 import platform
 from statistics import mean, stdev
@@ -32,17 +32,16 @@ def model(cell, stay, backup):
     return Planner(cell["q"], stay, backup, cell["accuracy"], cell["fee"])
 
 
-def likelihood(sequence, stay):
+def likelihood(sequence, stay, accuracy=F(9, 10)):
     p, total = HALF, F(1)
     for report in sequence:
-        accuracy = F(9, 10)
         prob = rate(p, accuracy)
         total *= prob if report else 1 - prob
         p = rate(update(p, report, accuracy), stay)
     return total
 
 
-def calibrate(config, out):
+def calibrate(config, out, *, emissions=None):
     calibrated = {}
     for cohort, truth in config["cohorts"].items():
         samples = {}
@@ -68,19 +67,39 @@ def calibrate(config, out):
             samples[split] = (sequences, backups)
             write(out / f"{cohort}-{split}.json", histories)
         seq, b = samples["train"]
-        log_likelihoods = {str(s): sum(log(float(likelihood(row, s))) for row in seq) for s in GRID}
-        stay = max(GRID, key=lambda s: log_likelihoods[str(s)])
+        if emissions is None:
+            emission = F(9, 10)
+            log_likelihoods = {str(s): sum(log(float(likelihood(row, s))) for row in seq) for s in GRID}
+            stay = max(GRID, key=lambda s: log_likelihoods[str(s)])
+        else:
+            counts = Counter(map(tuple, seq))
+            candidates = {
+                (s, e): prod(likelihood(sequence, s, e) ** n for sequence, n in counts.items())
+                for s, e in product(GRID, emissions)
+            }
+            stay, emission = max(candidates, key=candidates.get)
+            log_likelihoods = {
+                f"{s},{e}": log(value.numerator) - log(value.denominator)
+                for (s, e), value in candidates.items()
+            }
         backup = F(sum(b), len(b))
         a_mean = F(sum(sum(row) for row in seq), 3 * len(seq))
-        marginal = max(F(0), min(F(1), (a_mean - F(1, 10)) / F(4, 5)))
+        marginal = (max(F(0), min(F(1), (a_mean - (1 - emission)) / (2 * emission - 1)))
+                    if emission > HALF else HALF)
         valid_a, valid_b = samples["validation"]
         calibrated[cohort] = {
             "stay": stay, "backup": backup, "marginal": marginal,
             "train_A_sequences": len(seq), "train_B_attempts": len(b), "train_log_likelihoods": log_likelihoods,
             "validation_A_sequences": len(valid_a), "validation_B_attempts": len(valid_b),
-            "validation_A_nll": -mean(log(float(likelihood(row, stay))) for row in valid_a),
+            "validation_A_nll": -mean(log(float(likelihood(row, stay, emission))) for row in valid_a),
             "validation_B_frequency": F(sum(valid_b), len(valid_b)),
         }
+        if emissions is not None:
+            calibrated[cohort].update(
+                emission=emission,
+                tied_candidates=[list(key) for key, value in candidates.items()
+                                 if value == candidates[stay, emission]],
+            )
     write(out / "calibration.json", calibrated)
     return calibrated
 

@@ -21,8 +21,9 @@ def update(p, report, accuracy):
 
 
 class Planner:
-    def __init__(self, q, stay, backup, accuracy, fee):
+    def __init__(self, q, stay, backup, accuracy, fee, *, emission=F(9, 10)):
         self.q, self.stay, self.backup, self.accuracy, self.fee = map(F, (q, stay, backup, accuracy, fee))
+        self.emission = F(emission)
         self.values = cache(self.values)
         self.solve = cache(self.solve)
 
@@ -32,7 +33,7 @@ class Planner:
         hints = [row["output"]["quality"] for row in view["history"] if "quality" in row["output"]]
         evidence = [("cue", report, accuracy) for report, accuracy in zip(hints, (F(4, 5), F(3, 5)))]
         evidence += [(d["action"], d["report"], self.accuracy if d["action"] == "diagnose"
-                      else F(9, 10)) for d in view["decisions"]]
+                      else self.emission) for d in view["decisions"]]
         p = HALF
         if memory == "last":
             evidence = evidence[-1:]
@@ -60,7 +61,7 @@ class Planner:
             if action == "stop":
                 values[action] = ZERO
                 continue
-            accuracy = self.accuracy if action == "diagnose" else F(9, 10)
+            accuracy = self.accuracy if action == "diagnose" else self.emission
             success = self.backup if action == "B" else rate(p, accuracy)
             result = [F(0), PRICES.get(action, F(0)), self.fee if action == "diagnose" else F(0)]
             for report, mass in binary(True, success):
@@ -84,16 +85,16 @@ class Planner:
             return self.values(state, p, 2, True)
 
         def route_cost(current, tail, probability):
-            good = rate(current, F(9, 10))
-            after_good = rate(update(current, True, F(9, 10)), self.stay)
-            after_bad = rate(update(current, False, F(9, 10)), self.stay)
+            good = rate(current, self.emission)
+            after_good = rate(update(current, True, self.emission), self.stay)
+            after_bad = rate(update(current, False, self.emission), self.stay)
             a, b = PRICES["A"], PRICES["B"]
             return {"B": b + probability * tail(rate(current, self.stay)),
                     "A": a + (1 - good) * b + probability * (
                         good * tail(after_good) + (1 - good) * tail(after_bad))}
 
         def last(current):
-            return min(PRICES["B"], PRICES["A"] + (1 - rate(current, F(9, 10))) * PRICES["B"])
+            return min(PRICES["B"], PRICES["A"] + (1 - rate(current, self.emission)) * PRICES["B"])
 
         def middle(current):
             return min(route_cost(current, last, self.q).values())
