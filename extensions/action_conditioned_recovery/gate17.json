@@ -1,0 +1,26 @@
+{
+  "train_seeds": [1701, 1702, 1703],
+  "validation_seeds": [1711, 1712, 1713],
+  "test_seeds": [1721, 1722, 1723, 1724, 1725],
+  "train_families": ["parcel", "invoice"],
+  "validation_family": "publish",
+  "test_families": ["appointment", "archive"],
+  "train_per_arm": 32,
+  "validation_per_arm": 16,
+  "test_per_family": 32,
+  "cohorts": {
+    "cohort_a": {"stay": "9/10", "backup": "1"},
+    "cohort_b": {"stay": "1/2", "backup": "1"},
+    "cohort_c": {"stay": "9/10", "backup": "3/4"}
+  },
+  "cells": {
+    "two_nodes": {"cohort": "cohort_a", "q": "0"},
+    "dynamic": {"cohort": "cohort_a"},
+    "extra_checks": {"cohort": "cohort_a", "checks": 2},
+    "independent": {"cohort": "cohort_b"},
+    "cheap_probe": {"cohort": "cohort_a", "fee": "1/20"},
+    "null_probe": {"cohort": "cohort_a", "fee": "1/20", "accuracy": "1/2"},
+    "unreliable_backup": {"cohort": "cohort_c"},
+    "tight_budget": {"cohort": "cohort_c", "budget": 5}
+  }
+}
