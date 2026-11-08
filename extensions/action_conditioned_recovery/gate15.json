@@ -1,0 +1,11 @@
+{
+  "cells": {
+    "independent_short": {"checks": 0, "backups": 1, "shared": false, "accuracy": "4/5", "fee": "2/5", "expected": "4"},
+    "independent_long": {"checks": 2, "backups": 1, "shared": false, "accuracy": "4/5", "fee": "2/5", "expected": "4"},
+    "shared_short": {"checks": 0, "backups": 1, "shared": true, "accuracy": "4/5", "fee": "2/5", "expected": "31/8"},
+    "shared_long": {"checks": 2, "backups": 1, "shared": true, "accuracy": "4/5", "fee": "2/5", "expected": "31/8"},
+    "shared_extra_branch": {"checks": 0, "backups": 2, "shared": true, "accuracy": "4/5", "fee": "2/5", "expected": "31/8"},
+    "shared_cheap_probe": {"checks": 0, "backups": 1, "shared": true, "accuracy": "4/5", "fee": "1/10", "expected": "29/8"},
+    "shared_null_probe": {"checks": 0, "backups": 1, "shared": true, "accuracy": "1/2", "fee": "1/10", "expected": "31/8"}
+  }
+}
