@@ -1,13 +1,16 @@
 """Permissions, bindings, and full recovery-loop regression checks."""
 from fractions import Fraction as F
 import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest import TestCase
 
 from .gate17 import DEFAULTS
 from .gate18 import BTM_RETRY, DecisionFailure, evaluate, planner_for, public_view
 from .gate19 import (
-    EXTRACT, SELECT, bind_and_execute, conditional_likelihood, expected_evidence, forecast_replays,
-    initial_session, replay, request_for, selected_action, verified_view,
+    EXTRACT, SELECT, bind_and_execute, checkpoint, conditional_likelihood, expected_evidence,
+    forecast_replays, initial_session, paired_run, read, replay, request_for, restore_episodes,
+    selected_action, verified_view,
 )
 from .workflow17 import Tape, Workflow
 
@@ -23,6 +26,23 @@ class EvidenceModel:
         public = json.loads(request["messages"][-1]["content"])["observation"]
         record["latency_seconds"] = 0
         return EXTRACT, expected_evidence(public)
+
+
+class ModelTranscript:
+    def __init__(self):
+        self.count = 0
+
+    def call(self, request, record):
+        self.count += 1
+        function = request["tools"][0]["function"]
+        name = function["name"]
+        public = json.loads(request["messages"][-1]["content"])["observation"]
+        arguments = (expected_evidence(public) if name == EXTRACT
+                     else {"action": function["parameters"]["properties"]["action"]["enum"][0]})
+        record.update(latency_seconds=0, response={"choices": [{"finish_reason": "tool_calls", "message": {
+            "tool_calls": [{"type": "function", "function": {"name": name, "arguments": json.dumps(arguments)}}],
+        }}]})
+        return name, arguments
 
 
 class Gate19Tests(TestCase):
@@ -103,3 +123,38 @@ class Gate19Tests(TestCase):
                           and row["action"] == "stop")
         self.assertEqual(later_stop["actual"], (0, 0, 0))
         self.assertEqual(conditional_likelihood([], F(1, 2), F(9, 10)), 1)
+
+    def test_resume_reuses_partial_pair_and_checks_archived_requests(self):
+        seed = 1821
+        cell = {**DEFAULTS, "fee": "1/20"}
+        planner = planner_for(cell, FIT)
+        cases = [("cheap_probe", cell, "cohort_a", "archive", seed, TAPE)]
+        gate18 = {"max_turns": 8}
+        fits, histories = {"cohort_a": FIT}, {"cohort_a": HISTORY}
+        original = replay(Workflow(cell, TAPE), "hybrid", planner, FIT, HISTORY, ModelTranscript(), MODEL, seed)
+        with TemporaryDirectory() as directory:
+            out = Path(directory)
+            episodes = out / "episodes"
+            episodes.mkdir()
+            path = episodes / "cheap_probe-archive-1821-hybrid.json"
+            checkpoint(path, original)
+            data = path.read_bytes()
+            saved = restore_episodes(cases, gate18, fits, histories, MODEL, out)
+            self.assertEqual(saved, {path: original})
+            model = ModelTranscript()
+            result = paired_run(cases, gate18, fits, histories, model, MODEL, out / "cases", saved)
+            pair = read(out / "cases" / "cheap_probe-archive-1821.json")
+            self.assertEqual(model.count, sum(len(row["requests"]) for arm, row in pair["rows"].items()
+                                              if arm != "hybrid"))
+            self.assertEqual(path.read_bytes(), data)
+
+            saved = restore_episodes(cases, gate18, fits, histories, MODEL, out)
+            second_model = ModelTranscript()
+            self.assertEqual(paired_run(cases, gate18, fits, histories, second_model, MODEL, out / "cases", saved),
+                             result)
+            self.assertEqual(second_model.count, 0)
+            tampered = read(path)
+            tampered["requests"][0]["request"]["seed"] += 1
+            path.write_text(json.dumps(tampered))
+            with self.assertRaisesRegex(ValueError, "Archived model request differs"):
+                restore_episodes(cases, gate18, fits, histories, MODEL, out)

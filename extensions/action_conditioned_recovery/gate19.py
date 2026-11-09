@@ -3,22 +3,25 @@
 import argparse
 from collections import Counter
 from copy import deepcopy
+from fcntl import LOCK_EX, LOCK_NB, flock
 from fractions import Fraction as F
 from hashlib import sha256
 from importlib.metadata import version
 from itertools import product
 import json
+from os import link
 from pathlib import Path
 import platform
 from statistics import mean
 import subprocess
+from tempfile import TemporaryDirectory
 import time
 
 from .gate16 import rank
 from .gate17 import CONFIG as GATE17_CONFIG, GRID
 from .gate18 import (
     BTM_RETRY, CONFIG as GATE18_CONFIG, DecisionFailure, Requests, condition, encode, evaluate,
-    history_summary, planner_for, public_facts, public_view, recovery_keys, spec, summarize,
+    history_summary, parse_call, planner_for, public_facts, public_view, recovery_keys, spec, summarize,
     test_cases, tool_name, values,
 )
 from .planning17 import HALF, choose, rate, update
@@ -54,6 +57,17 @@ Do not choose an action or supply any arguments for an environment tool."""
 
 def read(path):
     return json.loads(path.read_text())
+
+
+def checkpoint(path, data):
+    """Publish a complete JSON file, or verify an already published checkpoint."""
+    if path.exists():
+        require(encode(read(path)) == encode(data), f"Checkpoint differs: {path}")
+        return
+    with TemporaryDirectory(dir=path.parent, prefix=".checkpoint-") as directory:
+        staged = Path(directory) / path.name
+        write(staged, data)
+        link(staged, path)
 
 
 def expected_evidence(public):
@@ -414,23 +428,70 @@ def check_smoke(gate17, gate18, fits, histories, model, settings, seed, out):
     require(all(row["passed"] for row in outcomes), "Model acceptance failed; paired evaluation not started")
 
 
-def paired_run(cases, gate18, fits, histories, model, settings, out):
+def case_arms(name):
+    return (*CORE, *RULES) if name == "independent_stale" else (*ARMS, *RULES)
+
+
+class RecordedRequests:
+    def __init__(self, records):
+        self.records = records
+
+    def call(self, request, record):
+        turn = record["turn"]
+        require(turn < len(self.records), "Archived trajectory ends before the next model request")
+        saved = self.records[turn]
+        require(saved["turn"] == turn and saved["request"] == request, "Archived model request differs")
+        record.update(saved)
+        if "service_error" in saved:
+            raise DecisionFailure("service", "Model request failed")
+        return parse_call(saved["response"])
+
+
+def restore_episodes(cases, gate18, fits, histories, settings, out):
+    """Rebuild typed rows from recorded responses without calling a model."""
+    restored = {}
+    episodes = out / "episodes"
+    for name, cell, cohort, family, seed, tape in cases:
+        fit, history = fits[cohort], histories[cohort]
+        planner = planner_for(cell, fit)
+        identity = f"{name}-{family}-{seed}"
+        for arm in case_arms(name):
+            path = episodes / f"{identity}-{arm}.json"
+            if not path.exists():
+                require(not (out / "cases" / f"{identity}.json").exists(),
+                        f"Published pair lacks its episode: {path}")
+                continue
+            saved = read(path)
+            row = replay(initial_session(cell, tape, name == "blocked"), arm, planner, fit, history,
+                         RecordedRequests(saved["requests"]), settings, seed, gate18["max_turns"])
+            row["wall_seconds"] = saved["wall_seconds"]
+            require(encode(saved) == encode(row), f"Episode cannot be reproduced: {path}")
+            restored[path] = row
+    require(set(episodes.glob("*.json")) == set(restored), "Unexpected saved episode files")
+    return restored
+
+
+def paired_run(cases, gate18, fits, histories, model, settings, out, saved=None):
     recorded, matched, forecasts, btm_rows = [], {}, {}, []
-    out.mkdir()
+    out.mkdir(exist_ok=True)
     episodes = out.parent / "episodes"
-    episodes.mkdir()
+    episodes.mkdir(exist_ok=True)
+    saved = saved or {}
     for name, cell, cohort, family, seed, tape in cases:
         fit, history = fits[cohort], histories[cohort]
         planner = planner_for(cell, fit)
         rows = {}
         blocked, stale = name == "blocked", name == "independent_stale"
-        arms = (*CORE, *RULES) if stale else (*ARMS, *RULES)
         identity = f"{name}-{family}-{seed}"
         initial = initial_session(cell, tape, blocked).view()
-        for arm in arms:
-            rows[arm] = replay(initial_session(cell, tape, blocked), arm, planner, fit, history,
-                               model, settings, seed, gate18["max_turns"])
-            write(episodes / f"{identity}-{arm}.json", rows[arm])
+        for arm in case_arms(name):
+            path = episodes / f"{identity}-{arm}.json"
+            if path in saved:
+                rows[arm] = saved[path]
+            else:
+                rows[arm] = replay(initial_session(cell, tape, blocked), arm, planner, fit, history,
+                                   model, settings, seed, gate18["max_turns"])
+                checkpoint(path, rows[arm])
         if stale:
             rows["no_history"] = matched[family, seed]["no_history"]
         if name == "independent":
@@ -444,7 +505,7 @@ def paired_run(cases, gate18, fits, histories, model, settings, out):
         if not stale and not blocked:
             forecasts[identity] = forecast_replays(initial_session(cell, tape), planner, fit)
             btm_rows.extend(calibration)
-        write(out / f"{identity}.json", {
+        checkpoint(out / f"{identity}.json", {
             "history": cohort, "tape": tape._asdict(), "rows": rows, "metrics": metrics,
             "comparisons": comparisons, "btm_calibration": calibration,
             "retry_opportunities": {arm: retry_adherence(rows[arm])
@@ -456,43 +517,100 @@ def paired_run(cases, gate18, fits, histories, model, settings, out):
                                  "btm_calibration": calibration_report(btm_rows)}
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--out", type=Path, required=True)
-    args = parser.parse_args()
+def server_model(server, name):
+    matches = [model for model in server["data"] if model["id"] == name]
+    require(len(matches) == 1, "Expected model unavailable on vLLM")
+    model = matches[0]
+    return model["id"], model["root"], model["max_model_len"]
+
+
+def run(out, resume):
     from extensions.toolmaze_diagnostic_mvp.model_adapter import MODEL_CONFIG, VLLMAgent
 
     config, gate18, gate17 = map(read, (CONFIG, GATE18_CONFIG, GATE17_CONFIG))
-    root, out = Path(config["history_run"]), args.out
-    out.mkdir(parents=True, exist_ok=False)
+    root = Path(config["history_run"])
     model = None
+    failure_path = None if resume else out / "failure.json"
     try:
         archived = read(root / "config.json")
         require(archived["commit"] == config["history_commit"] and archived["gate18"] == gate18
                 and archived["gate17"] == gate17 and archived["model_config"] == MODEL_CONFIG,
                 "Frozen source configuration mismatch")
+        frozen = {"gate19": config, "gate18": gate18, "gate17": gate17,
+                  "model_config": MODEL_CONFIG, "inference_framework": "vLLM",
+                  "vllm": version("vllm"), "openai": version("openai"), "python": platform.python_version()}
+        fits, histories, sources = fit_history(root, gate18, gate17)
+        training = {"fits": fits, "btm": histories, "sha256": sources}
+        cases = list(test_cases(gate18, gate17))
+        saved, saved_requests, reserved_requests = {}, 0, 0
+        if resume:
+            previous = read(out / "config.json")
+            require(all(previous[key] == value for key, value in frozen.items()),
+                    "Frozen experiment configuration or runtime version differs")
+            require(encode(read(out / "shared_history.json")) == encode(training), "Training checkpoint differs")
+            require(read(out / "smoke.json") == [{"fixture": "multi_step", "passed": True},
+                                                 {"fixture": "blocked", "passed": True}],
+                    "Resume requires both recorded model acceptances")
+            smoke_rows = [read(out / f"smoke-{name}.json") for name in ("multi_step", "blocked")]
+            require(all(not row["failure"] and not row["score"]["issues"] for row in smoke_rows),
+                    "Invalid saved model acceptance")
+            saved = restore_episodes(cases, gate18, fits, histories, MODEL_CONFIG, out)
+            saved_requests = sum(len(row["requests"]) for row in (*smoke_rows, *saved.values()))
+            attempts = out / "resumes"
+            attempt = len(list(attempts.glob("[0-9][0-9][0-9].json"))) + 1
+            # At most one unfinished episode per interrupted serial segment.
+            reserved_requests = attempt * gate18["max_turns"]
+            require(saved_requests + reserved_requests <= config["request_limit"], "Resume request budget exceeded")
         client = VLLMAgent(model=MODEL_CONFIG["model"], base_url=MODEL_CONFIG["base_url"])
-        model = Requests(client.client.with_options(max_retries=0), config["request_limit"])
+        model = Requests(client.client.with_options(max_retries=0), config["request_limit"] - reserved_requests)
+        model.count = saved_requests
         server = model.client.models.list().model_dump(mode="json")
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
-        write(out / "config.json", {
-            "commit": commit, "gate19": config, "gate18": gate18, "gate17": gate17,
-            "model_config": MODEL_CONFIG, "model_server": server, "inference_framework": "vLLM",
-            "vllm": version("vllm"), "openai": version("openai"), "python": platform.python_version(),
-        })
-        fits, histories, sources = fit_history(root, gate18, gate17)
-        write(out / "shared_history.json", {"fits": fits, "btm": histories, "sha256": sources})
-        write(out / "validation.json", validation_predictions(root, fits))
-        cases = list(test_cases(gate18, gate17))
-        write(out / "binding_audit.json", binding_audit(root, cases))
-        check_smoke(gate17, gate18, fits, histories, model, MODEL_CONFIG, config["smoke_seed"], out)
-        evaluation, forecasts = paired_run(cases, gate18, fits, histories, model, MODEL_CONFIG, out / "cases")
-        write(out / "forecast_replays.json", forecasts)
-        write(out / "evaluation.json", evaluation)
+        if resume:
+            require(server_model(server, MODEL_CONFIG["model"]) ==
+                    server_model(previous["model_server"], MODEL_CONFIG["model"]), "vLLM model configuration differs")
+            attempts.mkdir(exist_ok=True)
+            checkpoint(attempts / f"{attempt:03}.json", {
+                "commit": commit, "frozen_commit": previous["commit"], "model_server": server,
+                "restored_episodes": len(saved), "saved_requests": saved_requests,
+                "reserved_requests": reserved_requests,
+            })
+            failure_path = attempts / f"{attempt:03}-failure.json"
+            print(f"Restored {len(saved)} episodes and {saved_requests} recorded model requests", flush=True)
+        else:
+            checkpoint(out / "config.json", {**frozen, "commit": commit, "model_server": server})
+            checkpoint(out / "shared_history.json", training)
+            checkpoint(out / "validation.json", validation_predictions(root, fits))
+            checkpoint(out / "binding_audit.json", binding_audit(root, cases))
+            check_smoke(gate17, gate18, fits, histories, model, MODEL_CONFIG, config["smoke_seed"], out)
+        evaluation, forecasts = paired_run(cases, gate18, fits, histories, model, MODEL_CONFIG, out / "cases", saved)
+        checkpoint(out / "forecast_replays.json", forecasts)
+        checkpoint(out / "evaluation.json", evaluation)
         print(f"Finished Gate 19 with {len(cases)} paired cases and {model.count} model requests", flush=True)
     except Exception as error:
-        write(out / "failure.json", {"error": repr(error), "model_requests": model.count if model else 0})
+        if failure_path is not None:
+            checkpoint(failure_path, {"error": repr(error), "model_requests": model.count if model else 0})
         raise
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--resume", action="store_true", help="Resume an interrupted run after model acceptance")
+    args = parser.parse_args()
+    out = args.out
+    if args.resume:
+        require((out / "config.json").is_file(), "Resume requires an existing run directory")
+    else:
+        out.mkdir(parents=True, exist_ok=False)
+    with (out / ".runner.lock").open("a") as lock:
+        flock(lock, LOCK_EX | LOCK_NB)
+        if args.resume and (out / "evaluation.json").exists():
+            read(out / "evaluation.json")
+            read(out / "forecast_replays.json")
+            print(f"Gate 19 already complete: {out}")
+            return
+        run(out, args.resume)
 
 
 if __name__ == "__main__":
