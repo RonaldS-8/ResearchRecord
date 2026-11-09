@@ -36,6 +36,12 @@ class World(NamedTuple):
     signal: bool
 
 
+class Preparation(NamedTuple):
+    scope: str
+    quality: bool
+    accuracy: F
+
+
 def tool_name(action):
     return action + "_acquire" if action in ACQUIRE else action
 
@@ -69,10 +75,14 @@ def advance(state, observation):
                           terminal="exhausted" if len(failed) < 3 and budget < 2 else "")
 
 
+def event_occurs(identity, event, probability):
+    key = json.dumps((*identity, event), separators=(",", ":")).encode()
+    return F(int.from_bytes(sha256(key).digest()[:8], "big"), 2**64) < probability
+
+
 def sample(law, identity):
     def flip(event, probability):
-        key = json.dumps((*identity, event), separators=(",", ":")).encode()
-        return F(int.from_bytes(sha256(key).digest()[:8], "big"), 2**64) < probability
+        return event_occurs(identity, event, probability)
 
     good = flip("gateway:A", F(1, 2))
     b_good = good if flip("gateway:shared", law.shared) else flip("gateway:B", F(1, 2))
@@ -98,17 +108,30 @@ def binding(view, action):
 
 
 class Workflow:
-    def __init__(self, family, world, accuracy, budget=5):
+    def __init__(self, family, world, accuracy, budget=5, *, preparation=None, probe=True):
         self.task = task(family, "request")
-        self.prefix = prefix(self.task, (), 0)
-        self.initial = self.state = Progress(budget)
+        self.preparation = preparation
+        if preparation is not None:
+            self.task["input"]["scope"] = preparation.scope
+        self.prefix = self._prefix()
+        self.initial = self.state = Progress(budget, probe=probe)
         self.accuracy, self._world = accuracy, world
         self.observations, self.events, self.ledger, self.diagnostics = [], [], [], []
         self.effect = None
 
+    def _prefix(self):
+        events = prefix(self.task, (), 0)
+        if self.preparation is not None:
+            events[0]["receipt_metadata"] = {"quality": self.preparation.quality,
+                                             "accuracy": str(self.preparation.accuracy)}
+        return events
+
     def view(self):
+        history = tuple(self.observations)
+        if self.preparation is not None:
+            history = (Observation("prepare", self.preparation.quality), *history)
         return {"task": json_copy(self.task), "history": json_copy(self.prefix + self.events),
-                "observations": tuple(self.observations), "progress": self.state,
+                "observations": history, "progress": self.state,
                 "diagnostic_accuracy": str(self.accuracy), "actions": actions(self.state),
                 "quotes": {action: str(PRICES.get(action, DIAGNOSTIC_FEE if action == "diagnose" else 0))
                            for action in actions(self.state)}}
@@ -132,6 +155,8 @@ class Workflow:
         elif action in PRICES:
             observed = Observation(action, True)
             self.effect = {"goal": self.task["goal"], **bound["arguments"]}
+            if self.preparation is not None:
+                self.effect["scope"] = self.preparation.scope
             output = {"effect": self.effect}
         if action in PRICES:
             self.ledger.append({"index": len(self.events), "tool": tool_name(action), "fee": PRICES[action]})
@@ -143,7 +168,7 @@ class Workflow:
     def audit(self):
         """Recheck the receipt chain, final effect and billing independently of advance."""
         issues = []
-        if self.prefix != prefix(self.task, (), 0):
+        if self.prefix != self._prefix():
             issues.append("incorrect preparation or fault checkpoint")
         source = 0
         arguments = self.prefix[0]["output"]
@@ -157,7 +182,8 @@ class Workflow:
                 issues.append("decision after termination")
                 break
             if action == "diagnose":
-                if diagnostics or required or len(seen) == 3 or success != self._world.signal or credential:
+                if (not self.initial.probe or diagnostics or required or len(seen) == 3
+                        or success != self._world.signal or credential):
                     issues.append("invalid diagnostic evidence")
                 diagnostics.append({"turn": turn, "signal": success, "fee": DIAGNOSTIC_FEE})
                 continue
@@ -181,6 +207,8 @@ class Workflow:
                 if not success or credential:
                     issues.append("invalid registration result")
                 effect = {"goal": self.task["goal"], **arguments}
+                if "scope" in self.task["input"]:
+                    effect["scope"] = self.task["input"]["scope"]
                 output = {"effect": effect}
                 ended = "complete"
             else:

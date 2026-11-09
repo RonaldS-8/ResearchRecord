@@ -48,7 +48,7 @@ class Law(NamedTuple):
 def likelihood(law, observations, good):
     weight = F(1)
     for action, positive, _ in observations:
-        if action in ("A", "B", "diagnose"):
+        if action in ("A", "B", "diagnose", "prepare"):
             rate = law.success(action, good)
             weight *= rate if positive else 1 - rate
     return weight
@@ -204,16 +204,17 @@ def training(law, config):
     return rows
 
 
-def historical(rows, order):
+def historical(rows, order, *, support_key=None):
     counts, successes = Counter(), Counter()
     attempts, initial, receipts = Counter(), Counter(), Counter()
     contexts = Counter()
+    support_key = context_key if support_key is None else support_key
     for row in rows:
         failed = {"A"}
         keys = {("recovery", "A")}
         for checkpoint, observation in zip(row["checkpoints"], row["observations"]):
             action, positive, kind = observation
-            contexts[(*context_key(checkpoint["view"]["progress"], checkpoint["view"]["observations"]), action)] += 1
+            contexts[(*support_key(checkpoint["view"]["progress"], checkpoint["view"]["observations"]), action)] += 1
             if action in ACQUIRE:
                 attempts[action] += 1
                 keys.update(("switch", source, action) for source in failed - {action})
@@ -249,8 +250,8 @@ def historical(rows, order):
     return select, stats, contexts
 
 
-def fit(rows, accuracy, grid):
-    patterns = Counter(tuple(o for o in row["observations"] if o.action in ("A", "B", "diagnose"))
+def fit(rows, accuracy, grid, *, wrap=None):
+    patterns = Counter(tuple(o for o in row["observations"] if o.action in ("A", "B", "diagnose", "prepare"))
                        for row in rows)
     c = [o.success for row in rows for o in row["observations"] if o.action == "C"]
     short = [o.credential == "short" for row in rows for o in row["observations"]
@@ -260,6 +261,8 @@ def fit(rows, accuracy, grid):
     candidates = (Law(ag, ab, bg, bb, F(shared), *marginals, accuracy)
                   for (ab, ag), (bb, bg), shared in product(pairs, pairs, grid["shared"]))
     candidates = sorted(candidates, key=lambda m: (m.shared, m.a_good - m.a_bad + m.b_good - m.b_bad, m))
+    if wrap is not None:
+        candidates = map(wrap, candidates)
     best, ties = F(-1), []
     for law in candidates:
         score = F(1)
@@ -435,7 +438,7 @@ def metrics(row):
             "exhausted": int(row["termination"] == "exhausted")}
 
 
-def forecasts(session, law, groups, best_order):
+def forecasts(session, law, groups, best_order, *, support_key=context_key):
     checkpoints = []
     expectations = {name: expected(law, group["continuation"]) for name, group in groups.items()}
     while not session.state.terminal:
@@ -455,7 +458,7 @@ def forecasts(session, law, groups, best_order):
                     complete, tools, diag, _ = outcomes(row)
                     actual = (complete, tools - sum(item["fee"] for item in session.ledger),
                               diag - sum(item["fee"] for item in session.diagnostics))
-                    support = group["contexts"][(*context_key(state, history), action)]
+                    support = group["contexts"][(*support_key(state, history), action)]
                     records[action] = {"predicted": predicted[:3], "exact": exact[action][:3],
                                        "actual": actual, "training_attempts": support}
                 report[name] = {"predicted_action": choice(values), "exact_action": choice(exact), "actions": records}
