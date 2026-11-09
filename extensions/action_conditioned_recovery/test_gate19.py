@@ -4,7 +4,7 @@ import json
 from unittest import TestCase
 
 from .gate17 import DEFAULTS
-from .gate18 import BTM_RETRY, DecisionFailure, planner_for, public_view
+from .gate18 import BTM_RETRY, DecisionFailure, evaluate, planner_for, public_view
 from .gate19 import (
     EXTRACT, SELECT, bind_and_execute, conditional_likelihood, expected_evidence, forecast_replays,
     initial_session, replay, request_for, selected_action, verified_view,
@@ -79,6 +79,11 @@ class Gate19Tests(TestCase):
         self.assertEqual(len(run["requests"]), len(run["decisions"]))
         self.assertTrue(all(step["decision_engine"] for step in run["checkpoints"]))
         self.assertTrue(any(step["evidence"]["route"] == "required" for step in run["checkpoints"]))
+        fixed = replay(Workflow(cell, TAPE), "fixed_switch", planner, FIT, HISTORY)
+        _, pairs = evaluate(TAPE, {"hybrid": run, "fixed_switch": fixed})
+        difference = pairs["hybrid/fixed_switch"]["first_disagreement"]
+        self.assertEqual(difference["left"], "diagnose")
+        self.assertIn("left_frozen_values", difference)
 
     def test_stale_evidence_and_certified_stop(self):
         session = initial_session(DEFAULTS, TAPE._replace(a=(False,) * 3, b=(False,) * 3), True)

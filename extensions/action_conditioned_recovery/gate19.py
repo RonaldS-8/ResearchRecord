@@ -195,6 +195,8 @@ def replay(session, arm, planner, fit, history, model=None, settings=None, seed=
                 action = choose(arm, planner, view)
             if arm == "memory":
                 checkpoint["values"] = values(planner, view)
+            if "values" in checkpoint:
+                checkpoint["frozen_values"] = values(planner, view, "fixed")
             next_view, binding = bind_and_execute(session, view, action)
             checkpoint.update(action=action, binding=binding)
             views.append(next_view)
@@ -415,16 +417,20 @@ def check_smoke(gate17, gate18, fits, histories, model, settings, seed, out):
 def paired_run(cases, gate18, fits, histories, model, settings, out):
     recorded, matched, forecasts, btm_rows = [], {}, {}, []
     out.mkdir()
+    episodes = out.parent / "episodes"
+    episodes.mkdir()
     for name, cell, cohort, family, seed, tape in cases:
         fit, history = fits[cohort], histories[cohort]
         planner = planner_for(cell, fit)
         rows = {}
         blocked, stale = name == "blocked", name == "independent_stale"
         arms = (*CORE, *RULES) if stale else (*ARMS, *RULES)
+        identity = f"{name}-{family}-{seed}"
         initial = initial_session(cell, tape, blocked).view()
         for arm in arms:
             rows[arm] = replay(initial_session(cell, tape, blocked), arm, planner, fit, history,
                                model, settings, seed, gate18["max_turns"])
+            write(episodes / f"{identity}-{arm}.json", rows[arm])
         if stale:
             rows["no_history"] = matched[family, seed]["no_history"]
         if name == "independent":
@@ -434,7 +440,6 @@ def paired_run(cases, gate18, fits, histories, model, settings, out):
         for arm in ("no_history", "btm_retry"):
             if arm in rows:
                 metrics[arm]["model_seconds"] = sum(r["latency_seconds"] for r in rows[arm]["requests"])
-        identity = f"{name}-{family}-{seed}"
         calibration = btm_calibration(rows["btm"], history)
         if not stale and not blocked:
             forecasts[identity] = forecast_replays(initial_session(cell, tape), planner, fit)
