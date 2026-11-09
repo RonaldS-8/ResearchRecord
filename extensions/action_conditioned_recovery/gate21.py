@@ -345,10 +345,11 @@ def witnesses(laws):
     informative = shared._replace(accuracy=F(4, 5))
     state = failures._replace(probe=False)
     select, values = planning(informative)
-    for signal, action in ((True, "B"), (False, "C")):
+    for signal, order in ((True, ("B", "C")), (False, ("C", "B"))):
+        action = order[0]
         history = (Observation("diagnose", signal), error)
         require(select(state, history) == action, "Early evidence did not reverse the action")
-        direct = exact_replay(informative, ordered((action,)), 5, ("diagnose", "A"), signal)
+        direct = exact_replay(informative, ordered(order), 5, ("diagnose", "A"), signal)
         require(values(state, history)[action] == direct, "Earlier-evidence witness differs from replay")
         result["earlier_signal_" + str(signal)] = values(state, history)
 
