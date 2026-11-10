@@ -19,8 +19,11 @@ BALANCE_RECOVERY = (
     "Pass the entire bank sheet to archive_bank_balance_sheet_native as balance_sheet, "
     "or the entire broker ledger to archive_broker_balance_ledger_native as balance_ledger. "
     "Keep the requested owner, account type, title, priority and channel. "
-    "The archive's status and title are usable as the follow-up email body and subject; "
-    "the email receipt reports its subject and recipients. "
+    "The requested ordinary account balance is a separate obligation: call "
+    "get_account_balance_bank_api for it before acquiring the full balance record. "
+    "For the requested archive-status email, use the actual archive status as the body "
+    "and the actual archive title as the subject, without rewriting either. "
+    "Use the returned email subject and recipients for the follow-up meeting title and participants. "
     "A timeout only describes that call. Check the equivalent interface before concluding "
     "the user's task is blocked. Never fabricate an acquisition or archive receipt."
 )

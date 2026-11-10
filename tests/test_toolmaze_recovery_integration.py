@@ -213,5 +213,7 @@ class Gate26Tests(unittest.TestCase):
         self.assertTrue(set(BALANCE) <= names)
         self.assertIn("is an accepted alternative", request["messages"][0]["content"])
         self.assertIn("archive_broker_balance_ledger_native", request["messages"][0]["content"])
+        self.assertIn("ordinary account balance is a separate obligation", request["messages"][0]["content"])
+        self.assertIn("actual archive title as the subject", request["messages"][0]["content"])
         self.assertNotIn("persistent", str(request))
         self.assertEqual(wrapped.interventions, [])
