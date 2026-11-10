@@ -176,6 +176,15 @@ def matched_group(fit):
     return dict(model=model, continuation=continuation, memory=memory, values=values, contexts=contexts)
 
 
+def archived_order_score(batches, order):
+    rows = []
+    for batch in batches:
+        for record in batch["".join(order)]:
+            row = record["row"]
+            rows.append({"row": {**row, "tool_fee": F(row["tool_fee"]), "diagnostic_fee": F(row["diagnostic_fee"])}})
+    return gate22.validation_score(rows)
+
+
 def frozen_inputs(config):
     root = Path(config["history_run"])
     archived = read(root / "config.json")
@@ -198,8 +207,7 @@ def frozen_inputs(config):
             filename = f"validation-orders-{cell}-{scope}.json"
             inputs.add(filename)
             validation.append(read(root / filename))
-        scores = {order: gate22.validation_score([row for rows in validation for row in rows["".join(order)]])
-                  for order in gate21.ORDERS}
+        scores = {order: archived_order_score(validation, order) for order in gate21.ORDERS}
         fixed = max(scores, key=scores.get)
         groups[cell] = {}
         rules[cell] = {}

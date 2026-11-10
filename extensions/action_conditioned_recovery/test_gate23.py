@@ -61,3 +61,8 @@ class AgentEfficiencyTests(TestCase):
         scenarios = gate23.paired_summary([(btm, memory)], self.config)["usd_scenarios"]
         self.assertEqual(scenarios["positive_break_even_usd_per_unit"], F("0.001"))
         self.assertEqual(scenarios["cheaper_side"], "above")
+
+    def test_frozen_validation_scores_use_exact_serialized_fees(self):
+        batch = {"ACB": [{"row": {"score": {"legal_success": True}, "termination": "complete",
+                                  "tool_fee": "4/5", "diagnostic_fee": 0}}]}
+        self.assertEqual(gate23.archived_order_score([batch], ("A", "C", "B")), (1, 0, -F(4, 5)))
