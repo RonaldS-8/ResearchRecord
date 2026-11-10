@@ -35,6 +35,12 @@ DELEGATES = {
     "archive_light_bridge_payload_native": {"cdaafd": "create_document_and_alert_from_data"},
     "publish_bank_balance_sheet_native": {"pa": "push_alert"},
     "publish_broker_balance_ledger_native": {"pa": "push_alert"},
+    "archive_visualcrossing_forecast_chip_native": {"cdaafd": "create_document_and_alert_from_data"},
+    "archive_weatherapi_alert_card_native": {"cdaafd": "create_document_and_alert_from_data"},
+    "archive_alpha_market_window_native": {"cdaafd": "create_document_and_alert_from_data"},
+    "archive_polygon_market_board_native": {"cdaafd": "create_document_and_alert_from_data"},
+    "archive_booking_stay_sheet_native": {"cdaafd": "create_document_and_alert_from_data"},
+    "archive_expedia_lodging_packet_native": {"cdaafd": "create_document_and_alert_from_data"},
 }
 
 

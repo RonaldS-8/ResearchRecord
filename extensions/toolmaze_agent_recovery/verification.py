@@ -16,6 +16,12 @@ ARCHIVES = {
     "archive_broker_balance_ledger_native": "balance_ledger",
     "archive_light_mesh_snapshot_native": "mesh_snapshot",
     "archive_light_bridge_payload_native": "bridge_payload",
+    "archive_visualcrossing_forecast_chip_native": "forecast_chip",
+    "archive_weatherapi_alert_card_native": "alert_card",
+    "archive_alpha_market_window_native": "market_window",
+    "archive_polygon_market_board_native": "market_board",
+    "archive_booking_stay_sheet_native": "stay_sheet",
+    "archive_expedia_lodging_packet_native": "lodging_packet",
 }
 BALANCE_NOTICES = {
     "publish_bank_balance_sheet_native": (
@@ -30,6 +36,9 @@ EXPECTED_WRITES = {
     "email_contact_by_name": ("send_email",),
     "schedule_meeting": ("schedule_meeting",),
     "snapshot_workspace": ("snapshot_workspace",),
+    "push_alert": ("push_alert",),
+    "send_email": ("send_email",),
+    "create_document_and_alert": ("create_document", "push_alert"),
     **dict.fromkeys(BALANCE_NOTICES, ("push_alert",)),
 }
 RECEIPT_REF = re.compile(r"__slot_ref:(s\w+)(\.[\w.]+)?|\{\{\s*(s\w+)(\.[\w.]+)?\s*\}\}")
@@ -141,6 +150,19 @@ def write_issues(matched, effects):
             if (writes[0]["arguments"] != arguments or result.get("status") != "completed"
                     or any(result.get(key) != arguments[key] for key in ("workspace_path", "backup_name"))):
                 issues.append("workspace backup effect mismatch")
+        elif tool in {"push_alert", "send_email"}:
+            if writes[0]["arguments"] != arguments:
+                issues.append("direct notification effect mismatch")
+        elif tool == "create_document_and_alert":
+            document, notice = (write["arguments"] for write in writes)
+            if (document["content"] != arguments["content"]
+                    or document["title"] != arguments.get("title", "Untitled")
+                    or document["tags"] != arguments.get("tags", [])
+                    or notice != {
+                        "message": document["title"], "user_id": arguments.get("user_id", "default_user"),
+                        "priority": arguments.get("priority", "medium"), "channel": arguments.get("channel", "app"),
+                    }):
+                issues.append("document or notification effect mismatch")
         elif tool == "publish_google_slot_ticket_native":
             notice = writes[0]["arguments"]
             if (result.get("slot_ref") != arguments["slot_ticket"].get("slot_id")
