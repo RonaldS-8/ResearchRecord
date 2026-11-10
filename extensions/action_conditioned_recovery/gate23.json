@@ -1,0 +1,15 @@
+{
+  "history_run": "results/024-gate22-contextual-01",
+  "history_commit": "3c370ca1e840f740387ac88b99ab8b906756be11",
+  "cells": ["full", "null_probe"],
+  "families": ["appointment", "archive"],
+  "test_seeds": [2321, 2322],
+  "draw_limit": 128,
+  "smoke_seed": 2311,
+  "max_turns": 6,
+  "request_limit": 648,
+  "vllm": "0.31.0",
+  "max_model_len": 40960,
+  "usd_per_million": {"input": "0.01", "output": "0.03"},
+  "tool_unit_usd": ["0", "0.0001", "0.001", "0.01", "0.10"]
+}
