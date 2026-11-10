@@ -10,6 +10,8 @@ ADR（Architecture Decision Record）记录影响后续工作的重要决策：�
 | [0007](0007-gate6-native-recovery-audit.md) | Gate 6 原生恢复回放及分阶段验收 | C3 小样本已获批准 |
 | [0008](0008-toolmaze-belief-ssp-pilot.md) | ToolMaze 独立恢复原型与两层放行 | 单任务有条件批准 |
 
+| [0025](0025-toolmaze-agent-recovery.md) | ToolMaze Agent 恢复的最小执行切片 | 获准最小实现与 CPU 验收 |
+
 新增时复制 [模板](template.md)，使用递增四位编号与描述性英文文件名，并更新此索引。已接受的决策若被替代，保留旧记录，将其状态改为“被 ADR-xxxx 替代”，再新增记录。只纠正事实和补充验证证据，不重写历史理由。
 
 涉及研究方法或实验设计时，还应说明最近邻工作、可证伪假设、关键不确定性及 Go/No-Go 标准；纯工程配置不必扩展成科研实验。
