@@ -159,6 +159,8 @@ class MethodAgent:
                 "Subsequent tool arguments must be based on the task and actual tool responses. "
                 "Only call a paid diagnostic when its current evidence can help decide the next action."
             )
+            if notes := self.contract.get("notes"):
+                self.system += "\n" + notes
 
     def step(self, user_message=None):
         self.agent.tools = self.tools[:]

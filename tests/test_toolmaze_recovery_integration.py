@@ -202,3 +202,16 @@ class Gate26Tests(unittest.TestCase):
         self.assertEqual(traces["transient"], traces["persistent"])
         self.assertIn('"support":', str(traces["transient"][-1]))
         save("method_isolation_pair", traces)
+
+    def test_shared_contract_explains_backup_without_selecting_tool(self):
+        session = RecoverySession("002", "persistent")
+        agent, requests = fake_agent([])
+        wrapped = MethodAgent(agent, "no_history", session.method_contract(), History())
+        run_episode(wrapped, session, max_turns=1)
+        request = requests[0]
+        names = {entry["function"]["name"] for entry in request["tools"]}
+        self.assertTrue(set(BALANCE) <= names)
+        self.assertIn("is an accepted alternative", request["messages"][0]["content"])
+        self.assertIn("archive_broker_balance_ledger_native", request["messages"][0]["content"])
+        self.assertNotIn("persistent", str(request))
+        self.assertEqual(wrapped.interventions, [])

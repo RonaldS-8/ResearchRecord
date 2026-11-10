@@ -13,6 +13,17 @@ TRAIN_TASK = "002"
 PARTITIONS = {"training_fixture": ("002",), "task_candidate": ("055",),
               "contract_candidate": ("005",), "fault_candidate": ()}
 FAULTS = {"clean", "transient", "persistent", "blocked", "delayed", "offline"}
+BALANCE_RECOVERY = (
+    "For the same requested account and account_type, a full broker-native balance ledger "
+    "is an accepted alternative to a bank-native balance sheet. "
+    "Pass the entire bank sheet to archive_bank_balance_sheet_native as balance_sheet, "
+    "or the entire broker ledger to archive_broker_balance_ledger_native as balance_ledger. "
+    "Keep the requested owner, account type, title, priority and channel. "
+    "The archive's status and title are usable as the follow-up email body and subject; "
+    "the email receipt reports its subject and recipients. "
+    "A timeout only describes that call. Check the equivalent interface before concluding "
+    "the user's task is blocked. Never fabricate an acquisition or archive receipt."
+)
 
 
 @lru_cache(maxsize=2)
@@ -112,4 +123,7 @@ class RecoverySession(Session):
         return super().fault_result(tool)
 
     def method_contract(self):
-        return {"reads": self.read_tools, "diagnostic": self.diagnostic}
+        contract = {"reads": self.read_tools, "diagnostic": self.diagnostic}
+        if self.task == "002":
+            contract["notes"] = BALANCE_RECOVERY
+        return contract
