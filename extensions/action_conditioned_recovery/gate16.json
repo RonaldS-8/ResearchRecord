@@ -1,0 +1,16 @@
+{
+  "history_seed": 1601,
+  "history_size": 64,
+  "cells": {
+    "rare_extra": {"q": "1/4", "w": "1"},
+    "frequent_extra": {"q": "3/4", "w": "1"},
+    "independent": {"q": "3/4", "w": "0"},
+    "extra_checks": {"q": "3/4", "w": "1", "checks": 2},
+    "history_cue": {"q": "1/4", "w": "1", "cue": true},
+    "unknown_mix": {"q": "3/4", "w": "3/4"},
+    "cheap_probe": {"q": "3/4", "w": "1", "fee": "1/20"},
+    "null_probe": {"q": "3/4", "w": "1", "fee": "1/20", "accuracy": "1/2"},
+    "unreliable_backup": {"q": "3/4", "w": "1", "backup": "3/4"},
+    "tight_budget": {"q": "3/4", "w": "1", "backup": "3/4", "budget": 3}
+  }
+}

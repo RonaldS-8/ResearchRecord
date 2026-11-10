@@ -1,0 +1,14 @@
+{
+  "history_cells": {
+    "cohort_a": "dynamic",
+    "cohort_b": "independent",
+    "cohort_c": "unreliable_backup"
+  },
+  "primary_cells": ["dynamic", "independent", "cheap_probe", "null_probe", "unreliable_backup"],
+  "history_seeds": [1801, 1802, 1803],
+  "history_per_family": 2,
+  "test_seeds": [1821, 1822],
+  "emissions": ["1/2", "3/5", "7/10", "4/5", "9/10", "19/20"],
+  "max_turns": 8,
+  "request_limit": 1568
+}

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "history_family": "parcel",
+  "test_family": "invoice",
+  "first_retry_probabilities": {"A": "3/4", "M": "1/2", "B": "1/4"},
+  "accuracy": {"informative": "4/5", "null": "1/2"},
+  "history_per_arm": 32,
+  "seed": 1201
+}

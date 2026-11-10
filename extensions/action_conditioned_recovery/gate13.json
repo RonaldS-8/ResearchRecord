@@ -1,0 +1,18 @@
+{
+  "history_families": ["parcel", "invoice"],
+  "seed": 1301,
+  "history_per_arm": 8,
+  "training": [
+    ["refresh", "hint", 1], ["refresh", "none", 5],
+    ["verify", "hint", 5], ["verify", "none", 1]
+  ],
+  "test": [
+    ["publish", "refresh", "hint", 1, "seen", true],
+    ["publish", "refresh", "hint", 5, "novel", true],
+    ["publish", "refresh", "none", 1, "null", false],
+    ["appointment", "verify", "hint", 5, "seen", true],
+    ["appointment", "verify", "hint", 1, "novel", true],
+    ["appointment", "verify", "none", 5, "null", false]
+  ],
+  "model": {"temperature": 0, "seed": 1302, "max_tokens": 4096, "timeout": 120, "request_limit": 18}
+}

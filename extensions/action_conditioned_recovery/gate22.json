@@ -1,0 +1,15 @@
+{
+  "splits": {
+    "train": [["parcel", "invoice"], [2201, 2202, 2203], 12],
+    "validation": [["publish"], [2211, 2212], 8],
+    "test": [["appointment", "archive"], [2221, 2222, 2223, 2224], 4]
+  },
+  "scopes": {"standard": "0", "portable": "1/2"},
+  "cells": {
+    "full": {"shared": "1", "prepare_accuracy": "4/5", "accuracy": "4/5"},
+    "no_dependency": {"shared": "1", "prepare_accuracy": "4/5", "accuracy": "4/5", "short": "0"},
+    "independent": {"shared": "0", "prepare_accuracy": "4/5", "accuracy": "4/5"},
+    "null_probe": {"shared": "1", "prepare_accuracy": "4/5", "accuracy": "1/2"},
+    "null_preparation": {"shared": "1", "prepare_accuracy": "1/2", "accuracy": "4/5"}
+  }
+}
