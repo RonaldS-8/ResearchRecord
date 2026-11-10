@@ -164,12 +164,24 @@ class RecoveryMVPTests(unittest.TestCase):
             finish(session, 1, receipt)
             self.assertFalse(self.result(session)["strict_success"])
 
+    def test_state_and_native_ledger_must_agree(self):
+        case = RecoverySession("case-handoff")
+        finish(case, 0, read(case, 0))
+        self.assertTrue(self.result(case)["strict_success"])
+        case.events[-1]["arguments"]["recipient"] = "wrong@company.test"
+        self.assertFalse(self.result(case)["strict_success"])
+        stock = RecoverySession("stock-reservation")
+        finish(stock, 1, read(stock, 1))
+        self.assertTrue(self.result(stock)["strict_success"])
+        stock.events[-1]["result"]["status"] = "inactive"
+        self.assertFalse(self.result(stock)["strict_success"])
+
     def test_sdk_receives_equal_prefix_and_no_private_state(self):
         streams = []
         for condition in ("transient", "persistent", "correlated", "blocked"):
             agent, requests = fake_agent([("get_case_record", {"case_id": "HD-417"})])
             session = RecoverySession("case-handoff", condition)
-            session.engine.context.metadata["secret"] = "PRIVATE_STATE_SENTINEL"
+            session.engine.private_fixture = "PRIVATE_STATE_SENTINEL"
             result = run_episode(agent, session)
             self.archive.append({"condition": condition, "requests": requests, **result})
             self.assertEqual(result["events"][0]["result"], TIMEOUT)

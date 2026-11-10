@@ -180,6 +180,7 @@ def has_source(session, effect):
         return False
     event = session.events[source["call"] - 1]
     return (event["tool"] == source["tool"] in session.read_tools and not event["illegal"]
+            and "error" not in event["result"]
             and ref in event["result"].values()
             and session.events[effect["call"] - 1]["arguments"].get("evidence_ref") == ref)
 
@@ -187,6 +188,13 @@ def has_source(session, effect):
 def completion_issues(session):
     goal = session.goal
     effects = session.effects
+    for effect in effects:
+        event = session.events[effect["call"] - 1]
+        state = effect["state"]
+        if (event["tool"] != effect["operation"] or event["illegal"] or "error" in event["result"]
+                or any(state.get(key) != value for key, value in event["arguments"].items())
+                or any(state[key] != value for key, value in event["result"].items() if key in state)):
+            return ["Write state does not match the actual call and receipt."]
     if goal.family == "case":
         expected = ["publish_case_note"] + (["send_note_notice"] if goal.recipient else [])
         if len(session.notes) != 1 or len(session.notices) != int(bool(goal.recipient)):
@@ -212,13 +220,15 @@ def completion_issues(session):
         return ["Reservation or remaining stock differs from the request."]
     if reservation != effects[0]["state"] or not has_source(session, effects[0]):
         return ["Reservation lacks a valid source receipt."]
-    if not any(
-        row["call"] > effects[0]["call"]
-        and all(row[key] == reservation[key] for key in ("reservation_id", "sku", "depot", "quantity", "status"))
-        for row in session.checks
-    ):
-        return ["Missing read-back of the active reservation."]
-    return []
+    expected = {key: reservation[key] for key in ("reservation_id", "sku", "depot", "quantity", "status")}
+    for check in session.checks:
+        call = check["call"]
+        event = session.events[call - 1]
+        if (call > effects[0]["call"] and event["tool"] == "get_reservation_status"
+                and not event["illegal"] and event["result"] == expected
+                and check == {"call": call, **expected}):
+            return []
+    return ["Missing read-back of the active reservation."]
 
 
 def evaluate(session, answer):
