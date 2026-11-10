@@ -1,6 +1,6 @@
 # ADR-0022 · 任务上下文与历史证据驱动的恢复
 
-日期为 2026-11-10。状态为待审核。Gate 21 的完整机制格仍可由固定 A→C→B 覆盖。本轮检验同一个 A 错误下，公开任务需求和较早的合法反馈是否改变恢复动作，以及强简单规则能否解释全部差距。范围为 LabServer 上的小规模 CPU 试验。见[实验 023](../experiments/023-multipath-recovery.md)及[实验 024](../experiments/024-contextual-recovery.md)。
+日期为 2026-11-10。状态为已批准。Gate 21 的完整机制格仍可由固定 A→C→B 覆盖。本轮检验同一个 A 错误下，公开任务需求和较早的合法反馈是否改变恢复动作，以及强简单规则能否解释全部差距。范围为 LabServer 上的小规模 CPU 试验。见[实验 023](../experiments/023-multipath-recovery.md)及[实验 024](../experiments/024-contextual-recovery.md)。
 
 ## 执行合同
 

@@ -1,6 +1,6 @@
 # 实验 024 · 同错误下的任务与历史动作反转
 
-状态为待审核。本轮登记并实现 CPU 试验入口。批准后冻结提交，在 LabServer 执行。Agent 配对只有通过预登记判据才提交设计审核。见[ADR-0022](../adr/0022-contextual-recovery.md)。
+状态为已批准的探索性预登记。代码、配置和判据在运行前提交冻结，CPU 试验在 LabServer 执行。Agent 配对只有通过预登记判据才提交设计审核。见[ADR-0022](../adr/0022-contextual-recovery.md)。
 
 ## 假设与最小反例
 
