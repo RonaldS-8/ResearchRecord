@@ -21,7 +21,7 @@ UNAVAILABLE = {"error": "This endpoint is unavailable for the remainder of this 
 
 # Follow the native calls to the simulated write boundary. Each binding is local
 # to this executor. Native modules and other concurrent sessions are untouched.
-WRITE_LEAVES = {"create_document", "push_alert", "send_email", "schedule_meeting"}
+WRITE_LEAVES = {"create_document", "push_alert", "send_email", "schedule_meeting", "snapshot_workspace"}
 DELEGATES = {
     "create_document_and_alert": {"cd": "create_document", "pa": "push_alert"},
     "create_document_and_alert_from_data": {"cdaa": "create_document_and_alert"},
@@ -31,6 +31,10 @@ DELEGATES = {
     "archive_broker_balance_ledger_native": {"cdaafd": "create_document_and_alert_from_data"},
     "publish_google_slot_ticket_native": {"pa": "push_alert"},
     "email_contact_by_name": {"se": "send_email"},
+    "archive_light_mesh_snapshot_native": {"cdaafd": "create_document_and_alert_from_data"},
+    "archive_light_bridge_payload_native": {"cdaafd": "create_document_and_alert_from_data"},
+    "publish_bank_balance_sheet_native": {"pa": "push_alert"},
+    "publish_broker_balance_ledger_native": {"pa": "push_alert"},
 }
 
 
@@ -72,19 +76,32 @@ def recorded_plugins(plugins, effects):
 
 
 class Session:
-    def __init__(self, task, fault="clean"):
-        if fault not in {"clean", "transient", "persistent", "blocked"}:
+    def __init__(self, task, fault="clean", *, case=None, read_tools=None):
+        if fault not in {"clean", "transient", "persistent", "blocked"} and case is None:
             raise ValueError("Unknown engineering fault fixture")
-        base, self.template = fixture(task)
+        base, self.template = case if case is not None else fixture(task)
         self.engine = fresh_engine(base)
         self.engine.tool_executor = copy(base.tool_executor)
         self.task = task
         self.fault = fault
+        self.read_tools = read_tools if read_tools is not None else READS[task]
         self.events = []
         self.effects = []
         self.attempts = Counter()
         self.engine.tool_executor.plugins = recorded_plugins(base.tool_executor.plugins, self.effects)
         self.tools = {definition["name"] for definition in self.engine.tool_definitions}
+
+    def fault_result(self, tool):
+        if self.fault == "blocked" and tool in self.read_tools:
+            return UNAVAILABLE
+        if tool == self.read_tools[0] and (
+            self.fault == "persistent" or (self.fault == "transient" and self.attempts[tool] == 1)
+        ):
+            return TIMEOUT
+        return None
+
+    def charge_kind(self, tool):
+        return "execution"
 
     def public(self):
         definitions = sorted(self.engine.tool_definitions, key=lambda definition: definition["name"])
@@ -100,6 +117,7 @@ class Session:
         executor = self.engine.tool_executor
         step = len(self.events) + 1
         advertised = isinstance(tool, str) and tool in self.tools and isinstance(arguments, dict)
+        kind = self.charge_kind(tool)
         if not advertised:
             result = {"error": "Invalid or unavailable tool call."}
             self.engine.context.record(step, tool, arguments, result, "error")
@@ -108,32 +126,26 @@ class Session:
             valid = not executor._validate(tool, coerced)
             if valid:
                 self.attempts[tool] += 1
-            primary = tool == READS[self.task][0]
-            if valid and self.fault == "blocked" and tool in READS[self.task]:
-                result = deepcopy(UNAVAILABLE)
-            elif valid and primary and (
-                self.fault == "persistent" or (self.fault == "transient" and self.attempts[tool] == 1)
-            ):
-                result = deepcopy(TIMEOUT)
-            else:
+            result = self.fault_result(tool) if valid else None
+            if result is None:
                 result = executor.execute(tool, deepcopy(arguments), self.engine.context, step)
                 coerced = self.engine.context.history[-1].arguments
                 valid = valid and tool in executor.plugins
                 self.events.append({
                     "call": step, "tool": tool, "arguments": deepcopy(coerced), "result": deepcopy(result),
-                    "fee": 1, "illegal": not valid,
+                    "fee": 1, "illegal": not valid, "kind": kind,
                 })
                 return deepcopy(result)
             self.engine.context.record(step, tool, coerced, result, "error")
             arguments = coerced
         self.events.append({
             "call": step, "tool": tool, "arguments": deepcopy(arguments), "result": deepcopy(result),
-            "fee": int(advertised), "illegal": not advertised,
+            "fee": int(advertised), "illegal": not advertised, "kind": kind,
         })
         return deepcopy(result)
 
 
-def run_episode(agent, session):
+def run_episode(agent, session, *, max_turns=BUDGET):
     """Run the native agent protocol. Only the selected call can advance state."""
     from .verification import evaluate
 
@@ -145,7 +157,9 @@ def run_episode(agent, session):
     prompt = f'{public["task"]}\n\nTool prices (engineering units): 1 per tool call.'
     answer = None
     model_seconds = 0.0
-    for turn in range(BUDGET):
+    if not 0 < max_turns <= BUDGET:
+        raise ValueError("Invalid Agent turn budget")
+    for turn in range(max_turns):
         model_started = perf_counter()
         action = agent.step(user_message=prompt if turn == 0 else None)
         model_seconds += perf_counter() - model_started

@@ -7,18 +7,30 @@ import json
 import re
 
 from extensions.toolmaze_diagnostic_mvp.environment import resolve
-from .session import READS, UNAVAILABLE
+from .session import UNAVAILABLE
 
 ARCHIVES = {
     "archive_aviationstack_gate_board_native": "gate_board",
     "archive_flightaware_trip_timeline_native": "trip_timeline",
     "archive_bank_balance_sheet_native": "balance_sheet",
     "archive_broker_balance_ledger_native": "balance_ledger",
+    "archive_light_mesh_snapshot_native": "mesh_snapshot",
+    "archive_light_bridge_payload_native": "bridge_payload",
+}
+BALANCE_NOTICES = {
+    "publish_bank_balance_sheet_native": (
+        "balance_sheet", "Bank", "bucket_name", "balance_amount", "denomination", "sheet_id",
+    ),
+    "publish_broker_balance_ledger_native": (
+        "balance_ledger", "Broker", "account_bucket", "equity_value", "currency_code", "ledger_ref",
+    ),
 }
 EXPECTED_WRITES = {
     "publish_google_slot_ticket_native": ("push_alert",),
     "email_contact_by_name": ("send_email",),
     "schedule_meeting": ("schedule_meeting",),
+    "snapshot_workspace": ("snapshot_workspace",),
+    **dict.fromkeys(BALANCE_NOTICES, ("push_alert",)),
 }
 RECEIPT_REF = re.compile(r"__slot_ref:(s\w+)(\.[\w.]+)?|\{\{\s*(s\w+)(\.[\w.]+)?\s*\}\}")
 
@@ -82,7 +94,7 @@ def match_path(session, path):
             continue
         if not matches_arguments(tool, event["arguments"], expected):
             continue
-        if event["result"] == UNAVAILABLE and tool in READS[session.task]:
+        if event["result"] == UNAVAILABLE and tool in session.read_tools:
             blocked.add(tool)
         if "error" not in event["result"]:
             prior[node] = event
@@ -113,6 +125,22 @@ def write_issues(matched, effects):
                         "priority": arguments["priority"], "channel": arguments["channel"],
                     } or result.get("status") != "archived"):
                 issues.append("archive content or destination mismatch")
+        elif tool in BALANCE_NOTICES:
+            payload, label, account, amount, currency, reference = BALANCE_NOTICES[tool]
+            data = arguments[payload]
+            notice = writes[0]["arguments"]
+            if (notice != {
+                    "message": f"{label} balance {data[account]}: {data[amount]} {data[currency]}",
+                    "user_id": arguments["user_id"], "priority": arguments["priority"],
+                    "channel": arguments["channel"],
+                } or result.get("status") != "published"
+                    or result.get("target_user") != arguments["user_id"]
+                    or result.get("account_ref") != data[reference]):
+                issues.append("balance publication effect mismatch")
+        elif tool == "snapshot_workspace":
+            if (writes[0]["arguments"] != arguments or result.get("status") != "completed"
+                    or any(result.get(key) != arguments[key] for key in ("workspace_path", "backup_name"))):
+                issues.append("workspace backup effect mismatch")
         elif tool == "publish_google_slot_ticket_native":
             notice = writes[0]["arguments"]
             if (result.get("slot_ref") != arguments["slot_ticket"].get("slot_id")
@@ -147,7 +175,7 @@ def evaluate(session, answer):
     responded = bool(answer and answer.strip() and not answer.startswith(("Error:", "Error during execution:")))
     completed = responded and not (best["remaining"] or best["issues"] or illegal)
     correct_stop = (
-        responded and blocked == set(READS[session.task]) and not session.effects and not illegal
+        responded and blocked == set(session.read_tools) and not session.effects and not illegal
     )
     if completed:
         termination = "complete"
@@ -161,17 +189,22 @@ def evaluate(session, answer):
     successful_reads = Counter(
         (event["tool"], json.dumps(event["arguments"], sort_keys=True))
         for event in session.events
-        if "error" not in event["result"] and event["tool"] not in ARCHIVES
+        if event.get("kind") != "diagnosis" and "error" not in event["result"] and event["tool"] not in ARCHIVES
         and event["tool"] not in EXPECTED_WRITES
     )
     return deepcopy({
         "strict_success": completed, "correct_stop": correct_stop, "termination": termination,
         "remaining": best["remaining"], "issues": best["issues"], "sources": best["sources"],
         "blocked_tools": sorted(blocked), "events": session.events, "effects": session.effects,
-        "tool_fee": sum(event["fee"] for event in session.events),
-        "diagnostic_fee": 0, "illegal_calls": illegal,
+        "tool_fee": sum(event["fee"] for event in session.events if event.get("kind") != "diagnosis"),
+        "diagnostic_fee": sum(event["fee"] for event in session.events if event.get("kind") == "diagnosis"),
+        "diagnostic_calls": sum(event.get("kind") == "diagnosis" for event in session.events),
+        "illegal_calls": illegal,
         "failed_calls": failed_calls,
         "repeated_successful_reads": sum(count - 1 for count in successful_reads.values()),
-        "extra_successful_calls": sum("error" not in event["result"] for event in session.events)
+        "extra_successful_calls": sum(
+            event.get("kind") != "diagnosis" and "error" not in event["result"]
+            for event in session.events
+        )
         - len(best["nodes"]),
     })
