@@ -13,6 +13,7 @@ class Task:
     recipient: str = ""
     stock: int = 0
     quantity: int = 0
+    request_ref: str = ""
 
 
 # These authored fixtures, including paraphrases and paired events, are development only.
@@ -40,6 +41,14 @@ DEVELOPMENT = {
         "or an authorized physical count for this depot can establish availability.",
         "P-140", stock=8, quantity=3,
     ),
+    # Same base-task lineage as stock-reservation, including both paired faults.
+    "stock-write-recovery": Task(
+        "stock",
+        "At depot D4, reserve exactly 3 units of SKU P-140 from available physical stock "
+        "under request reference HOLD-2702. Check that the reservation is active after creating it. "
+        "Either an inventory snapshot or an authorized physical count can establish availability.",
+        "P-140", stock=8, quantity=3, request_ref="HOLD-2702",
+    ),
 }
 
 READS = {
@@ -47,6 +56,7 @@ READS = {
     "stock": ("get_depot_inventory", "read_depot_count"),
 }
 DIAGNOSTIC = "read_service_status"
+RESERVATION_LOOKUP = "lookup_reservations_by_request"
 # Resource arguments are also used to enforce the read/write authorization scope.
 RESOURCE_FIELDS = {
     "get_case_record": "case_id", "read_case_archive": "ticket",
@@ -84,6 +94,22 @@ CASE_TOOLS = (
     definition("send_note_notice", "Send a notification containing the link to a published case note.",
                note_id="Identifier from the note service.", recipient="Destination email address."),
 )
+def reservation_tool(*, by_request=False):
+    description = (
+        "Reserve units at D4 against current availability. Accepts an inventory_ref or "
+        "count_ticket as evidence and returns a reservation_id."
+    )
+    fields = {"sku": "Inventory SKU.", "quantity": "Number of units to reserve.",
+              "evidence_ref": "Evidence reference from an actual inventory or count response."}
+    if by_request:
+        description += (
+            " This write is non-idempotent: repeating it can create another reservation even "
+            "with the same request reference. A timeout can occur before or after commit."
+        )
+        fields["request_ref"] = "Task-authorized business reference used to look up committed reservations."
+    return definition("reserve_stock", description, **fields)
+
+
 STOCK_TOOLS = (
     definition("get_depot_inventory", "Read available physical stock at D4. Returns available_units "
                "and inventory_ref, an evidence reference accepted by the reservation service.", "Source",
@@ -91,10 +117,7 @@ STOCK_TOOLS = (
     definition("read_depot_count", "Read an authorized physical count at D4. Returns count.free and "
                "count_ticket, an evidence reference accepted by the reservation service.", "Source",
                item_code="Inventory SKU as recorded by the count service."),
-    definition("reserve_stock", "Reserve units at D4 against current availability. Accepts an "
-               "inventory_ref or count_ticket as evidence and returns a reservation_id.",
-               sku="Inventory SKU.", quantity="Number of units to reserve.",
-               evidence_ref="Evidence reference from an actual inventory or count response."),
+    reservation_tool(),
     definition("get_reservation_status", "Read the current status of a reservation at D4.", "Source",
                reservation_id="Identifier issued by the reservation service."),
 )
@@ -104,3 +127,14 @@ STATUS_TOOL = definition(
     resource_id="Support case identifier or stock SKU from the task.",
 )
 TOOLS = {"case": (*CASE_TOOLS, STATUS_TOOL), "stock": (*STOCK_TOOLS, STATUS_TOOL)}
+STOCK_WRITE_TOOLS = (
+    *STOCK_TOOLS[:2], reservation_tool(by_request=True), STOCK_TOOLS[-1], STATUS_TOOL,
+    definition(
+        RESERVATION_LOOKUP,
+        "Paid read-only lookup of committed D4 reservations for the task-authorized request "
+        "reference. Returns matching reservation IDs, including duplicates if present. "
+        "A successful not_found means no reservation is committed or in flight for the reference. "
+        "A failed lookup does not establish absence.",
+        "Source", request_ref="Task-authorized business request reference.",
+    ),
+)

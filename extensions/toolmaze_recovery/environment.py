@@ -9,18 +9,21 @@ from types import SimpleNamespace
 from extensions.toolmaze_agent_recovery.session import Session, TIMEOUT, UNAVAILABLE
 from toolmaze.core.executor import ToolExecutor
 
-from .tasks import DEVELOPMENT, DIAGNOSTIC, READS, RESOURCE_FIELDS, TOOLS
+from .tasks import DEVELOPMENT, DIAGNOSTIC, READS, RESERVATION_LOOKUP, RESOURCE_FIELDS, STOCK_WRITE_TOOLS, TOOLS
 
-FAULTS = ("clean", "transient", "persistent", "correlated", "blocked")
+WRITE_FAULTS = ("write_not_committed", "write_response_lost")
+FAULTS = ("clean", "transient", "persistent", "correlated", "blocked", *WRITE_FAULTS)
+WRITE_TIMEOUT = {"error": "The reservation request timed out. Its outcome is unknown."}
 INVALID = "invalid_argument"
 
 
 class ContractExecutor(ToolExecutor):
-    def __init__(self, definitions, resource):
+    def __init__(self, definitions, resource, request_ref):
         # Fixtures register in memory. ToolMaze still validates, dispatches and records calls.
         directory = str(Path(__file__).with_name("plugins"))
         super().__init__(directory, directory, SimpleNamespace(get_tool_by_name=definitions.get))
         self.resource = resource
+        self.request_ref = request_ref
 
     def _coerce_types(self, tool_name, arguments):
         return arguments
@@ -34,6 +37,8 @@ class ContractExecutor(ToolExecutor):
         field = RESOURCE_FIELDS.get(tool_name)
         if field is not None and arguments.get(field) != self.resource:
             errors.append("The resource is outside this task's authorized scope.")
+        if "request_ref" in properties and arguments.get("request_ref") != self.request_ref:
+            errors.append("The request reference is outside this task's authorized scope.")
         if "quantity" in properties and type(arguments.get("quantity")) is not int:
             errors.append("Quantity must be an integer.")
         return errors
@@ -44,12 +49,16 @@ class RecoverySession(Session):
         if task not in DEVELOPMENT or fault not in FAULTS:
             raise ValueError("Unknown ToolMaze-Recovery development task or condition")
         self.goal = DEVELOPMENT[task]
-        definitions = {tool["name"]: tool for tool in deepcopy(TOOLS[self.goal.family])}
-        executor = ContractExecutor(definitions, self.goal.resource)
+        if fault in WRITE_FAULTS and not self.goal.request_ref:
+            raise ValueError("Write faults require the request-scoped reservation contract")
+        catalog = STOCK_WRITE_TOOLS if self.goal.request_ref else TOOLS[self.goal.family]
+        definitions = {tool["name"]: tool for tool in deepcopy(catalog)}
+        executor = ContractExecutor(definitions, self.goal.resource, self.goal.request_ref)
         engine = SimpleNamespace(tool_executor=executor, tool_definitions=list(definitions.values()),
                                  task_description=self.goal.query)
         super().__init__(task, fault, case=(engine, None), read_tools=READS[self.goal.family])
         self.diagnosis_available = diagnosis_available
+        self.write_timeout_used = False
         self.acquisitions = {}
         self.notes = {}
         self.notices = []
@@ -59,7 +68,7 @@ class RecoverySession(Session):
         operations = {
             "publish_case_note": self.publish_note, "send_note_notice": self.send_notice,
             "reserve_stock": self.reserve_stock, "get_reservation_status": self.reservation_status,
-            DIAGNOSTIC: self.service_status,
+            DIAGNOSTIC: self.service_status, RESERVATION_LOOKUP: self.lookup_reservations,
         }
         for tool in definitions:
             def execute(arguments, context, name=tool):
@@ -72,7 +81,7 @@ class RecoverySession(Session):
         return {"reads": self.read_tools, "diagnostic": DIAGNOSTIC}
 
     def charge_kind(self, tool):
-        return "diagnosis" if tool == DIAGNOSTIC else "execution"
+        return "diagnosis" if tool in (DIAGNOSTIC, RESERVATION_LOOKUP) else "execution"
 
     def fault_result(self, tool):
         if tool not in self.read_tools:
@@ -135,23 +144,37 @@ class RecoverySession(Session):
         self.record_effect("send_note_notice", notice)
         return {"status": "sent", **notice}
 
-    def reserve_stock(self, sku, quantity, evidence_ref):
+    def reserve_stock(self, sku, quantity, evidence_ref, request_ref=None):
         source = self.acquisitions.get(evidence_ref)
         if source is None or source["resource"] != sku or quantity <= 0:
             return invalid("A real stock evidence reference and a positive quantity are required.")
         if quantity > min(source["available"], self.available_units):
             return {"error": "Insufficient available stock for this reservation."}
+        loses_response = self.fault in WRITE_FAULTS and not self.write_timeout_used
+        if loses_response:
+            self.write_timeout_used = True
+            if self.fault == "write_not_committed":
+                return WRITE_TIMEOUT
         reservation_id = token_hex(12)
         self.available_units -= quantity
         reservation = {"reservation_id": reservation_id, "sku": sku, "depot": "D4",
                        "quantity": quantity, "status": "active", "evidence_ref": evidence_ref}
+        if request_ref is not None:
+            reservation["request_ref"] = request_ref
         self.reservations[reservation_id] = reservation
         self.record_effect("reserve_stock", reservation)
-        return {"reservation_id": reservation_id}
+        return WRITE_TIMEOUT if loses_response else {"reservation_id": reservation_id}
+
+    def lookup_reservations(self, request_ref):
+        if not self.diagnosis_available:
+            return {"error": "The reservation lookup did not respond."}
+        ids = [row["reservation_id"] for row in self.reservations.values()
+               if row.get("request_ref") == request_ref]
+        return {"request_ref": request_ref, "status": "found" if ids else "not_found", "reservation_ids": ids}
 
     def reservation_status(self, reservation_id):
-        if reservation_id not in self.reservations:
-            return invalid("No such reservation in this session.")
+        if reservation_id not in self.reservations or not reservation_id_visible(self.events, reservation_id):
+            return invalid("A reservation ID from an earlier write receipt or authorized lookup is required.")
         reservation = self.reservations[reservation_id]
         result = {key: reservation[key] for key in ("reservation_id", "depot", "sku", "quantity", "status")}
         self.checks.append({"call": len(self.events) + 1, **result})
@@ -169,6 +192,16 @@ class RecoverySession(Session):
 
 def invalid(message):
     return {"error": message, "code": INVALID}
+
+
+def reservation_id_visible(events, reservation_id):
+    return any(
+        not event["illegal"] and (
+            (event["tool"] == "reserve_stock" and event["result"].get("reservation_id") == reservation_id)
+            or (event["tool"] == RESERVATION_LOOKUP and reservation_id in event["result"].get("reservation_ids", []))
+        )
+        for event in events
+    )
 
 
 def has_source(session, effect):
@@ -191,7 +224,10 @@ def completion_issues(session):
     for effect in effects:
         event = session.events[effect["call"] - 1]
         state = effect["state"]
-        if (event["tool"] != effect["operation"] or event["illegal"] or "error" in event["result"]
+        # A valid commit can be journaled even when its public write response is lost.
+        ambiguous_write = event["tool"] == "reserve_stock" and event["result"] == WRITE_TIMEOUT
+        if (event["tool"] != effect["operation"] or event["illegal"]
+                or ("error" in event["result"] and not ambiguous_write)
                 or any(state.get(key) != value for key, value in event["arguments"].items())
                 or any(state[key] != value for key, value in event["result"].items() if key in state)):
             return ["Write state does not match the actual call and receipt."]
@@ -216,6 +252,7 @@ def completion_issues(session):
     reservation = next(iter(session.reservations.values()))
     if ((reservation["sku"], reservation["depot"], reservation["quantity"], reservation["status"])
             != (goal.resource, "D4", goal.quantity, "active")
+            or reservation.get("request_ref", "") != goal.request_ref
             or session.available_units != goal.stock - goal.quantity):
         return ["Reservation or remaining stock differs from the request."]
     if reservation != effects[0]["state"] or not has_source(session, effects[0]):
@@ -226,6 +263,7 @@ def completion_issues(session):
         event = session.events[call - 1]
         if (call > effects[0]["call"] and event["tool"] == "get_reservation_status"
                 and not event["illegal"] and event["result"] == expected
+                and reservation_id_visible(session.events[:call - 1], reservation["reservation_id"])
                 and check == {"call": call, **expected}):
             return []
     return ["Missing read-back of the active reservation."]
@@ -248,9 +286,12 @@ def evaluate(session, answer):
     failed = [event["call"] for event in session.events if event["tool"] in session.read_tools
               and not event["illegal"] and event["result"] == TIMEOUT]
     successful_reads = Counter(row["tool"] for row in session.acquisitions.values())
+    recovered_read = failed and any(row["call"] > failed[0] for row in session.acquisitions.values())
+    recovered_write = strict and any(e["tool"] == "reserve_stock" and e["result"] == WRITE_TIMEOUT
+                                     for e in session.events)
     return deepcopy({
         "strict_success": strict, "correct_stop": correct_stop, "issues": issues,
-        "recovery_witness": bool(failed and any(row["call"] > failed[0] for row in session.acquisitions.values())),
+        "recovery_witness": bool(recovered_read or recovered_write),
         "events": session.events, "effects": session.effects, "acquisitions": session.acquisitions,
         "notes": session.notes, "notices": session.notices, "reservations": session.reservations,
         "available_units": session.available_units, "checks": session.checks, "illegal_calls": illegal,

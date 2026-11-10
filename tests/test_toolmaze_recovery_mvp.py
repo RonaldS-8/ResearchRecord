@@ -6,10 +6,11 @@ import os
 from pathlib import Path
 from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
-from extensions.toolmaze_recovery.environment import RecoverySession, TIMEOUT, UNAVAILABLE, evaluate
+from extensions.toolmaze_recovery.environment import RecoverySession, TIMEOUT, UNAVAILABLE, WRITE_TIMEOUT, evaluate
 from extensions.toolmaze_recovery.run import ARMS, BUDGET, agent_for, run_episode
-from extensions.toolmaze_recovery.tasks import DEVELOPMENT, DIAGNOSTIC, RESOURCE_FIELDS
+from extensions.toolmaze_recovery.tasks import DEVELOPMENT, DIAGNOSTIC, RESERVATION_LOOKUP, RESOURCE_FIELDS
 from test_toolmaze_agent_recovery import fake_agent
 
 
@@ -37,6 +38,8 @@ def finish(session, branch, receipt, *, omit=False, **changes):
             session.call("send_note_notice", {"note_id": note["note_id"], "recipient": goal.recipient})
         return note
     args = {"sku": goal.resource, "quantity": goal.quantity, "evidence_ref": ref}
+    if goal.request_ref:
+        args["request_ref"] = goal.request_ref
     hold = session.call("reserve_stock", {**args, **changes})
     if not omit and "reservation_id" in hold:
         session.call("get_reservation_status", {"reservation_id": hold["reservation_id"]})
@@ -175,6 +178,84 @@ class RecoveryMVPTests(unittest.TestCase):
         self.assertTrue(self.result(stock)["strict_success"])
         stock.events[-1]["result"]["status"] = "inactive"
         self.assertFalse(self.result(stock)["strict_success"])
+
+    def test_paired_write_timeouts_and_legal_recovery(self):
+        for fault in ("write_not_committed", "write_response_lost"):
+            with self.subTest(fault=fault):
+                session = RecoverySession("stock-write-recovery", fault)
+                receipt = read(session, 1)
+                self.assertEqual(finish(session, 1, receipt), WRITE_TIMEOUT)
+                self.assertFalse(self.result(session, BLOCKED)["correct_stop"])
+                committed = fault == "write_response_lost"
+                self.assertEqual(session.available_units, 5 if committed else 8)
+                query = session.call(RESERVATION_LOOKUP, {"request_ref": session.goal.request_ref})
+                if committed:
+                    self.assertEqual(query["status"], "found")
+                    self.assertEqual(len(query["reservation_ids"]), 1)
+                    reservation = query["reservation_ids"][0]
+                else:
+                    self.assertEqual(query["status"], "not_found")
+                    self.assertEqual(query["reservation_ids"], [])
+                    reservation = finish(session, 1, receipt, omit=True)["reservation_id"]
+                self.assertEqual(session.call("get_reservation_status", {"reservation_id": reservation})["status"],
+                                 "active")
+                result = self.result(session)
+                self.assertTrue(result["strict_success"] and result["recovery_witness"], result["issues"])
+                self.assertEqual(len(result["effects"]), 1)
+                self.assertEqual((result["tool_fee"], result["diagnostic_fee"]), (3 if committed else 4, 1))
+
+    def test_blind_write_retry_can_duplicate_real_side_effects(self):
+        session = RecoverySession("stock-write-recovery", "write_response_lost")
+        receipt = read(session, 0)
+        self.assertEqual(finish(session, 0, receipt), WRITE_TIMEOUT)
+        finish(session, 0, receipt)
+        query = session.call(RESERVATION_LOOKUP, {"request_ref": session.goal.request_ref})
+        result = self.result(session)
+        self.assertEqual(len(query["reservation_ids"]), 2)
+        self.assertEqual(len(result["effects"]), 2)
+        self.assertEqual(result["available_units"], 2)
+        self.assertFalse(result["strict_success"] or result["correct_stop"])
+
+    def test_lookup_failure_wrong_scope_and_unobserved_id(self):
+        session = RecoverySession("stock-write-recovery", "write_response_lost", diagnosis_available=False)
+        self.assertEqual(finish(session, 0, read(session, 0)), WRITE_TIMEOUT)
+        failure = session.call(RESERVATION_LOOKUP, {"request_ref": session.goal.request_ref})
+        self.assertIn("error", failure)
+        self.assertNotIn("status", failure)
+        self.assertIn("error", session.call(RESERVATION_LOOKUP, {"request_ref": "NOT-AUTHORIZED"}))
+        self.assertIn("error", session.call("get_reservation_status", {
+            "reservation_id": next(iter(session.reservations)),
+        }))
+        result = self.result(session, BLOCKED)
+        self.assertEqual((result["diagnostic_fee"], result["illegal_calls"]), (2, 2))
+        self.assertEqual(result["available_units"], 5)
+        self.assertFalse(result["strict_success"] or result["correct_stop"] or result["checks"])
+        self.assertNotIn(RESERVATION_LOOKUP, RecoverySession("stock-reservation").tools)
+        with self.assertRaisesRegex(ValueError, "request-scoped"):
+            RecoverySession("stock-reservation", "write_response_lost")
+
+    def test_native_sdk_write_fault_pair_has_equal_pre_diagnosis_requests(self):
+        calls = [
+            ("get_depot_inventory", {"sku": "P-140"}),
+            ("reserve_stock", {"sku": "P-140", "quantity": 3,
+                               "evidence_ref": "receipt-for-pair", "request_ref": "HOLD-2702"}),
+            (RESERVATION_LOOKUP, {"request_ref": "HOLD-2702"}),
+        ]
+        streams = []
+        for fault in ("write_not_committed", "write_response_lost"):
+            agent, requests = fake_agent(calls)
+            session = RecoverySession("stock-write-recovery", fault)
+            with patch("extensions.toolmaze_recovery.environment.token_hex",
+                       side_effect=["receipt-for-pair", "unobserved-commit-id"]):
+                result = run_episode(agent, session)
+            self.archive.append({"condition": fault, "requests": requests, **result})
+            self.assertEqual(result["events"][1]["result"], WRITE_TIMEOUT)
+            streams.append(requests)
+        self.assertEqual(streams[0][:3], streams[1][:3])
+        prefix = json.dumps(streams[1][:3])
+        for private in ("write_not_committed", "write_response_lost", "unobserved-commit-id"):
+            self.assertNotIn(private, prefix)
+        self.assertNotEqual(streams[0][3], streams[1][3])
 
     def test_sdk_receives_equal_prefix_and_no_private_state(self):
         streams = []
