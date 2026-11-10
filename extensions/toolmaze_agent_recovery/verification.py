@@ -157,6 +157,11 @@ def write_issues(matched, effects):
             if (writes[0]["arguments"] != arguments or result.get("status") != "meeting scheduled"
                     or any(result.get(key) != arguments[key] for key in ("participants", "start_time", "title"))):
                 issues.append("meeting effect mismatch")
+        elif tool == "get_account_balance_bank_api":
+            if (any(result.get(key) != arguments.get(key) for key in ("user_id", "account_type"))
+                    or not isinstance(result.get("balance"), (int, float))
+                    or not result.get("currency")):
+                issues.append("bank verification returned the wrong account or incomplete balance")
     if by_call:
         issues.append("extra or duplicate effects outside the matched path")
     return issues

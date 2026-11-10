@@ -1,6 +1,7 @@
 """Gate 26 CPU acceptance. No model service is contacted."""
 
 import unittest
+from unittest.mock import patch
 
 from test_toolmaze_agent_recovery import fake_agent, save
 from extensions.toolmaze_agent_recovery.integration import (
@@ -104,6 +105,20 @@ class Gate26Tests(unittest.TestCase):
         self.assertFalse(results["offline"]["effects"])
         self.assertTrue(all(result["diagnostic_fee"] == 1 for result in results.values()))
         self.assertEqual(results["transient"]["tool_fee"], 7)
+        illegal = RecoverySession("005")
+        self.assertIn("error", illegal.call(DIAGNOSIS, {"area": "bedroom"}))
+        self.assertTrue(illegal.events[-1]["illegal"])
+
+    def test_final_bank_read_cannot_reuse_alternative_cache(self):
+        session = RecoverySession("055")
+        with patch.object(session.engine.context, "find_alternative_output") as cached:
+            cached.return_value = {"user_id": "wrong", "balance": 0, "currency": "USD"}
+            receipt = session.call("get_account_balance_bank_api", {
+                "user_id": "user_01", "account_type": "investment",
+            })
+        cached.assert_not_called()
+        self.assertEqual(receipt["user_id"], "user_01")
+        self.assertGreater(receipt["balance"], 0)
 
     def test_unseen_duration_keeps_same_public_prefix(self):
         transient, delayed = (RecoverySession("055", mode) for mode in ("transient", "delayed"))

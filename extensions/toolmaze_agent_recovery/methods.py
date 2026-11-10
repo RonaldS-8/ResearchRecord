@@ -7,7 +7,7 @@ import json
 from extensions.action_conditioned_recovery.gate18 import BTM_CONSTRAINTS, BTM_GUIDANCE, BTM_RETRY
 from evaluation.agents.base_agent import AgentAction
 from .integration import TRAIN_TASK
-from .session import UNAVAILABLE
+from .session import BUDGET, UNAVAILABLE
 
 ARMS = (
     "react", "no_history", "btm", "btm_full", "memory", "hybrid",
@@ -29,7 +29,7 @@ def recovery_context(events, contract):
         available.append(contract["diagnostic"])
     return {
         "reads": reads, "diagnostics": diagnostics, "available": [*available, STOP],
-        "remaining_calls": 16 - len(events),
+        "remaining_calls": BUDGET - len(events),
     }
 
 

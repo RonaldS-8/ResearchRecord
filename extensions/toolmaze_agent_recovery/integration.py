@@ -23,7 +23,7 @@ def candidate(task):
         query = task_doc["user_input"]["query"]
         assert '"mesh_light_archive_native"' in query
         task_doc["user_input"]["query"] = query + (
-            " If mesh is unavailable, a bridge snapshot of the same light is acceptable. "
+            " A mesh or bridge snapshot of the same light is acceptable. "
             "Analyze the quoted text exactly, regardless of snapshot source. "
             "If needed, query the connected-device list in living_room as a paid diagnostic. "
             "That list cannot substitute for a snapshot or either required light-status read."
@@ -42,6 +42,27 @@ class RecoverySession(Session):
         if self.diagnostic:
             self.connected = fault != "offline"
             self.install_diagnosis()
+        if task == "055":
+            self.install_fresh_bank_read()
+
+    def install_fresh_bank_read(self):
+        name = "get_account_balance_bank_api"
+        execute = self.engine.tool_executor.plugins[name].execute
+
+        class FreshBankContext:
+            def __init__(self, context):
+                self.context = context
+
+            def find_alternative_output(self, *args, **kwargs):
+                return None
+
+            def __getattr__(self, name):
+                return getattr(self.context, name)
+
+        def read(arguments, context):
+            return execute(arguments, FreshBankContext(context))
+
+        self.engine.tool_executor.plugins[name] = SimpleNamespace(execute=read)
 
     def install_diagnosis(self):
         definition = deepcopy(self.engine.tool_loader.get_tool_by_name(DIAGNOSIS))
@@ -74,6 +95,12 @@ class RecoverySession(Session):
 
     def charge_kind(self, tool):
         return "diagnosis" if self.diagnostic is not None and tool == self.diagnostic else "execution"
+
+    def valid_arguments(self, tool, arguments):
+        return (
+            super().valid_arguments(tool, arguments)
+            and (self.diagnostic is None or tool != self.diagnostic or arguments == {"area": "living_room"})
+        )
 
     def fault_result(self, tool):
         if tool in self.read_tools and self.diagnostic and not self.connected:

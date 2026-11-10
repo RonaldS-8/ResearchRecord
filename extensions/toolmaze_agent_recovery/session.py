@@ -103,6 +103,9 @@ class Session:
     def charge_kind(self, tool):
         return "execution"
 
+    def valid_arguments(self, tool, arguments):
+        return not self.engine.tool_executor._validate(tool, arguments)
+
     def public(self):
         definitions = sorted(self.engine.tool_definitions, key=lambda definition: definition["name"])
         return {
@@ -123,7 +126,7 @@ class Session:
             self.engine.context.record(step, tool, arguments, result, "error")
         else:
             coerced = executor._coerce_types(tool, deepcopy(arguments))
-            valid = not executor._validate(tool, coerced)
+            valid = self.valid_arguments(tool, coerced)
             if valid:
                 self.attempts[tool] += 1
             result = self.fault_result(tool) if valid else None
