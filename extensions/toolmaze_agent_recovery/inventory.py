@@ -16,32 +16,40 @@ def contract_components(families):
     # Shared first tools in registered alternative branches connect task families.
     # Semantic aliases and shared services still require a separate review.
     groups = []
-    for family in families:
-        overlapping = [group for group in groups if group[0] & family]
-        size = 1 + sum(group[1] for group in overlapping)
-        merged = family.union(*(group[0] for group in overlapping))
+    for task, tools in families:
+        overlapping = [group for group in groups if group[0] & tools]
+        tasks = {task}.union(*(group[1] for group in overlapping))
+        merged = tools.union(*(group[0] for group in overlapping))
         groups = [group for group in groups if group not in overlapping]
-        groups.append((merged, size))
-    return sorted((size for _, size in groups), reverse=True)
+        groups.append((merged, tasks))
+    return [tasks for _, tasks in groups]
 
 
 def inventory():
     rows = {}
+    all_families = []
+    diagnostic_candidates = []
     for complexity in ("c2", "c3", "c4"):
         files = sorted((DATA / "tasks" / complexity).glob("*.json"))
         stock = Counter()
         families = []
         for file in files:
-            if file.stem in DESIGN:
-                continue
-            stock["candidates_after_design_exclusion"] += 1
             task = load_json(file)
             template = load_json(DATA / "templates" / complexity / f"{task['template_id']}.json")
             nodes = {node["id"]: node["tool_name"] for node in template["dag"]["nodes"]}
             entries = {nodes[path["node_ids"][0]] for group in template["alternative_groups"]
                        for path in group["paths"]}
             if entries:
-                families.append(entries)
+                all_families.append((file.stem, entries))
+            if file.stem in DESIGN:
+                continue
+            stock["candidates_after_design_exclusion"] += 1
+            if entries:
+                families.append((file.stem, entries))
+            if "get_iot_device_status" in nodes.values() and any(
+                name.startswith(("set_", "adjust_")) for name in nodes.values()
+            ):
+                diagnostic_candidates.append(file.stem)
             pairs = []
             for mode in ("P1", "P2"):
                 path = DATA / "perturbed_tasks" / complexity / f"{file.stem}_{mode}.json"
@@ -60,10 +68,19 @@ def inventory():
                     stock["pair_has_matching_fault_tool_args_and_output"] += 1
         rows[complexity] = {
             "base_tasks": len(files), **stock,
-            "entry_tool_group_sizes": contract_components(families),
+            "pair_has_matching_fault_tool_args_and_output":
+                stock["pair_has_matching_fault_tool_args_and_output"],
+            "entry_tool_group_sizes": sorted(map(len, contract_components(families)), reverse=True),
             "verified_independent_holdout": 0,
         }
-    return rows
+    components = contract_components(all_families)
+    isolated = [group for group in components if group.isdisjoint(DESIGN)]
+    return {
+        "levels": rows,
+        "cross_level_entry_tool_group_sizes": sorted(map(len, components), reverse=True),
+        "candidate_groups_disjoint_from_design": sorted(map(len, isolated), reverse=True),
+        "device_status_and_control_candidates": diagnostic_candidates,
+    }
 
 
 if __name__ == "__main__":

@@ -99,7 +99,7 @@ class Session:
             raise ValueError("Call budget exhausted")
         executor = self.engine.tool_executor
         step = len(self.events) + 1
-        advertised = tool in self.tools and isinstance(arguments, dict)
+        advertised = isinstance(tool, str) and tool in self.tools and isinstance(arguments, dict)
         if not advertised:
             result = {"error": "Invalid or unavailable tool call."}
             self.engine.context.record(step, tool, arguments, result, "error")
