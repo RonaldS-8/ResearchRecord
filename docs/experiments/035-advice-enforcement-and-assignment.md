@@ -35,6 +35,8 @@
 | 7 | `react` | `write_not_committed` | `confirmed_absent` → `reserve_stock` |
 | 8 | `react` | `write_not_committed` | `confirmed_absent` → `lookup_reservations_by_request` |
 
+第 1、2 回合重跑 `react`，是为了让三种做法在同一提交、同一种子下对照；Gate 32 的回合不并入本轮。第 5、6 回合的 `simple_feedback` 自本轮起带 `tool_choice` 强制执行，与 Gate 32 中“删工具但不强制”的同名回合是不同条件，同样不合并。
+
 第 7、8 回合是同一检查点上逐一列举的两个分支，分配概率按设计为 1。第 8 回合检验“再诊断一次”是否改变后续动作；诊断费另计。分配为停止没有信息量，不安排。第 5 与第 7 回合在重新预留这一步相同，之后分别由规则强制和模型自主续程，用来对照同一动作在两种续程下的结果，各一次观察。
 
 不按结果补跑、改提示、改任务或换种子。任一回合异常退出时保留失败归档，后续回合照常进行。
@@ -55,7 +57,7 @@
 
 ## 运行入口
 
-仅云端。在含本轮提交的工作树根目录，先 CPU 后模型；输出目录已存在时脚本拒绝覆盖。
+用户 2026-11-11 确认上述回合方案。仅云端，PR 合入 main 后在 `/home/ubuntu/Song/Agent` 执行，先 CPU 后模型。模型步骤要求当前提交与 CPU 通过时的提交相同；vLLM 服务与 Gate 32 一样在脚本外启动和停止，服务日志另存。输出目录已存在时脚本拒绝覆盖。
 
 ```bash
 bash scripts/run_gate33.sh cpu
@@ -65,7 +67,15 @@ bash scripts/run_gate33.sh cpu
 bash scripts/run_gate33.sh agent
 ```
 
-预期：CPU 步骤的 ToolMaze 测试与防泄漏测试全部通过；模型步骤产生 8 个回合目录，每个含 `config.json`、`requests.jsonl`、`episode.json`。
+预期：CPU 步骤的 ToolMaze 测试与防泄漏测试全部通过，日志在 `results/035-gate33-cpu-01/`；模型步骤在 `results/035-gate33-agent-01/` 下产生 8 个回合目录，每个含 `config.json`、`requests.jsonl`、`episode.json`。异常退出的回合名记入该目录的 `failed.txt`，其目录保留 `failure.json`，其余回合照常运行。
+
+运行后需核对并写入“结果”一节：
+
+- `requests.jsonl` 中带 `tool_choice` 的请求只出现在三处：每回合的首次查询、`simple_feedback` 规则选中工具的各步、第 7 和第 8 回合进入 `confirmed_absent` 的那一步。
+- 每个检查点的规则选择、是否照做、分配、实际调用、调用是否被接受。
+- 各回合的严格完成、非法调用、执行费、诊断费、Token、模型秒、盲重试和重复预留。
+
+另有一项不依赖本轮代码、可先行完成：把 Gate 29 与 Gate 32 中三个“查询无记录后停止”回合的模型推理原文摘入对应实验记录，不改原归档。
 
 ## 本机验收
 
