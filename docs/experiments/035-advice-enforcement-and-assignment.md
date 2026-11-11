@@ -69,7 +69,32 @@ bash scripts/run_gate33.sh agent
 
 ## 本机验收
 
-待实现后填写。
+预登记提交 `19fea67`，实现提交 `c3a4726`，分支 `gate33-advice-assignment`（`Dependence` 含相同提交），基于 main `f832f84`。本机为 Windows、Python 3.14，无 vLLM、无云端数据，没有模型请求。以下全部是脚本化假客户端的接口见证，不是真实模型的行为或效果样本。
+
+改动：`methods.py` 的上下文重建与简单规则；`run.py` 的合同、`advice_only`、强制请求、首动作分配与归档字段；`tests/test_toolmaze_sequential_recovery.py`；新增 `scripts/run_gate33.sh`。没有改公开工具合同、执行器、计价、评分、原生 Agent 或任何归档。
+
+| 测试文件 | 结果 |
+| --- | --- |
+| `test_toolmaze_sequential_recovery.py` | 12 项通过（原 8 项，新增 4 项，改 2 项） |
+| `test_toolmaze_recovery_mvp.py` | 17 项通过 |
+| `test_toolmaze_write_agent.py` | 3 项通过 |
+| `test_toolmaze_family_expansion.py` | 12 项中 11 项通过；剩下 1 项是既有的入口测试，本机缺 vLLM 包而报错，改动前同样如此 |
+
+本机未运行、须由云端运行：`test_toolmaze_agent_recovery.py`、`test_toolmaze_recovery_integration.py`、`test_no_leakage.py`。
+
+逐项见证：
+
+- **三种做法的请求。** `react` 的每次请求保留 6 个工具、无 `tool_choice`、系统提示不变。`advice_only` 保留 6 个工具、无 `tool_choice`，系统提示多一句建议。`simple_feedback` 只留规则选中的工具，且请求带指向该工具的 `tool_choice`。三种做法的首次请求逐字段相同。
+- **建议未被采纳。** 模型在 `not_found` 后直接作答时，归档记录规则建议 `reserve_stock`、模型实际停止、未照做；没有代办调用，没有实际效果，回合未完成。
+- **分配。** `confirmed_absent` 分配 `reserve_stock`：只有该次请求带 `tool_choice`，工具列表和提示不变，之后的请求不带；归档含阶段、工具、`enumerated`、概率 1、已施加、已照做、调用被接受。分配再次查询：第二次进入同一阶段时不再施加，诊断费为 2。
+- **未执行的分配不算已执行。** 模型不调用分配的工具时记为未照做；调用了但证据引用是编造的，记为照做但被拒绝，非法调用 1 次、无实际效果；分配的工具不在证据允许集合内时不施加任何约束；阶段未出现时没有任何分配记录。分配与规则组叠加、分配为停止或未知阶段均报错。
+- **估值不变。** 所有检查点、所有动作的估值仍为未知、支持度 0、完成率为空，分配回合也是如此。
+- **规则。** 查询失败一次后规则选择再查，连续两次失败才停；中途查询恢复则计数清零并继续。
+- **发布家族。** 用真实执行器走完两种隐藏情形：超时后为 `commit_unknown`，空列表后为 `confirmed_absent` 并允许重新发布，查到或发布成功后为 `verify_existing` 且不再允许发布，回读吻合后义务解除并严格完成。写法不同的版本号被拒绝，不算无记录的证据。回读的摘要或状态不符时义务不解除。
+- **库存判定未变。** 用 4000 条随机调用序列共 20115 个公开历史，对比 main 的原实现与本轮实现，除新增的 `lookup_failures` 字段外输出逐项相同；其中 1252 个历史处于未解决义务，覆盖 7 种不同情形。
+- **反向验证。** 去掉 `tool_choice`、把规则改回失败一次就停、把发布回读改用库存字段，对应的断言分别失败。
+
+未验证：真实模型在强制请求下能否写出被接受的参数、之后能否完成复核与答复；`run.py` 的启动入口本机无法执行；`scripts/run_gate33.sh` 只做了语法检查。
 
 ## 结果
 
