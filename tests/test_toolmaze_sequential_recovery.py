@@ -2,8 +2,12 @@
 
 from copy import deepcopy
 import json
+from pathlib import Path
+from random import Random
+from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 from extensions.toolmaze_agent_recovery.methods import (
     recovery_context, sequential_write_context, simple_feedback_action, unknown_action_values,
@@ -11,9 +15,10 @@ from extensions.toolmaze_agent_recovery.methods import (
 from extensions.toolmaze_recovery.environment import RELEASE_TIMEOUT, RecoverySession, evaluate
 from extensions.toolmaze_recovery.run import (
     FeedbackRuleAgent, RELEASE_CONTRACT, WRITE_CONTRACT, enumerated_assignment, prepare_write_checkpoint,
-    run_episode, sequential_contract,
+    run_episode, sequential_contract, smoke,
 )
 from extensions.toolmaze_recovery.tasks import DEVELOPMENT
+from openai.types.chat import ChatCompletion
 from test_toolmaze_agent_recovery import fake_agent
 
 
@@ -143,7 +148,17 @@ class SequentialRecoveryTests(unittest.TestCase):
             session.call(LOOKUP, {"request_ref": "HOLD-2702"})
         self.assertEqual(context(session)["available"], ["stop"])
 
-    def protocol_agent(self):
+    def release_session(self, fault):
+        session = RecoverySession("artifact-release", fault)
+        goal = session.goal
+        build = session.call("get_build_manifest", {"build_id": goal.resource})
+        grant = session.call("get_project_publish_permission", {"project": goal.project})
+        arguments = {"project": goal.project, "version": goal.version, "sha256": goal.digest,
+                     "build_ref": build["build_ref"], "permission_ref": grant["permission_ref"]}
+        self.assertEqual(session.call("publish_release", arguments), RELEASE_TIMEOUT)
+        return session, arguments
+
+    def protocol_agent(self, contract=WRITE_CONTRACT):
         """A scripted client that binds only from the conversation and obeys a required tool."""
         agent, _ = fake_agent([])
         requests = []
@@ -152,26 +167,32 @@ class SequentialRecoveryTests(unittest.TestCase):
             requests.append(deepcopy(kwargs))
             previous = json.loads(kwargs["messages"][-1]["content"])
             required = kwargs.get("tool_choice", {}).get("function", {}).get("name")
-            if len(requests) == 1 or required == LOOKUP:
-                tool, args = LOOKUP, {"request_ref": "HOLD-2702"}
-            elif previous.get("status") == "not_found":
-                # Bind exclusively from actual conversation, never session private state.
-                original = kwargs["messages"][4]["tool_calls"][0]["function"]["arguments"]
-                tool, args = WRITE, json.loads(original)
+            # The interrupted write is read back from the conversation, never from the session.
+            written = next(json.loads(call["function"]["arguments"]) for message in kwargs["messages"]
+                           for call in message.get("tool_calls") or ()
+                           if call["function"]["name"] == contract["write"])
+            returned = previous.get(contract["ids"])
+            message = {"role": "assistant", "content": "Finished."}
+            tool = None
+            if len(requests) == 1 or required == contract["lookup"]:
+                tool, args = contract["lookup"], {field: written[field] for field in contract["scope"]}
+            elif returned == []:
+                tool, args = contract["write"], written
             elif previous.get("status") != "active":
-                identifier = previous.get("reservation_id") or previous["reservation_ids"][0]
-                tool, args = VERIFY, {"reservation_id": identifier}
-            else:
-                message = {"role": "assistant", "content": "Finished."}
-            if previous.get("status") != "active" or required:
+                tool, args = contract["verify"], {contract["id"]: previous.get(contract["id"]) or returned[0]}
+            if tool:
                 message = {"role": "assistant", "content": "", "tool_calls": [{
                     "id": f"cpu_{len(requests)}", "type": "function",
                     "function": {"name": tool, "arguments": json.dumps(args)},
                 }]}
-            return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(
-                model_dump=lambda **_: message))], usage=None)
+            return ChatCompletion(
+                id="cpu", object="chat.completion", created=0, model="cpu",
+                choices=[{"index": 0, "message": message, "finish_reason": "tool_calls" if tool else "stop"}],
+                usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0})
 
-        agent.client.chat.completions.create = create
+        # One scripted endpoint behind both the Agent's own client and the launcher's wrapper.
+        completions = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+        agent.client = SimpleNamespace(chat=completions.chat, with_options=lambda **_: completions)
         return agent, requests
 
     def witness(self, fault, rule):
@@ -393,3 +414,215 @@ class SequentialRecoveryTests(unittest.TestCase):
                                ("case-handoff", None), ("facility-access", None)):
             names = [tool["name"] for tool in RecoverySession(task).public()["tools"]]
             self.assertIs(sequential_contract(names), expected)
+            # The episode loop passes a generator; it must be read once for every candidate.
+            self.assertIs(sequential_contract(name for name in names), expected)
+        release_names = [tool["name"] for tool in RecoverySession("artifact-release").public()["tools"]]
+        self.assertIs(sequential_contract(name for name in release_names), RELEASE_CONTRACT)
+
+    def test_release_obligation_is_tracked_inside_the_agent_loop(self):
+        for fault in ("write_not_committed", "write_response_lost"):
+            for rule in (None, "enforced", "advice"):
+                session, _ = self.release_session(fault)
+                offered_all = len(session.public()["tools"])
+                agent, requests = self.protocol_agent(RELEASE_CONTRACT)
+                controlled = FeedbackRuleAgent(agent, enforce=rule == "enforced") if rule else agent
+                result = run_episode(controlled, session, resume=True)
+                self.assertTrue(result["strict_success"], result["issues"])
+                self.assertEqual((result["illegal_calls"], len(result["family_state"]["releases"])), (0, 1))
+                checkpoints = result["checkpoints"]
+                self.assertEqual([c["context"]["phase"] for c in checkpoints], [
+                    "commit_unknown", *(["confirmed_absent"] if fault == "write_not_committed" else []),
+                    "verify_existing"])
+                # Every decision before the read-back is a checkpoint; the final answer is not.
+                self.assertEqual(len(checkpoints), len(requests) - 1)
+                expected = ["inspect_project_release",
+                            *(["publish_release"] if fault == "write_not_committed" else []), "get_release_status"]
+                self.assertEqual([c["model_action"]["tool"] for c in checkpoints], expected)
+                for checkpoint, request, tool in zip(checkpoints, requests, expected):
+                    offered = [t["function"]["name"] for t in request["tools"]]
+                    self.assertTrue(checkpoint["model_action"]["accepted"])
+                    self.assertEqual(checkpoint["rule_selected"], tool if rule else None)
+                    if rule == "enforced":
+                        self.assertEqual(offered, [tool])
+                        self.assertEqual(request["tool_choice"]["function"]["name"], tool)
+                    else:
+                        self.assertEqual(len(offered), offered_all)
+                        self.assertNotIn("tool_choice", request)
+                    if rule:
+                        self.assertTrue(checkpoint["rule_followed"])
+                self.assertNotIn("tool_choice", requests[-1])
+                self.assertEqual(len(requests[-1]["tools"]), offered_all)
+
+    def test_known_identifier_is_verified_whatever_later_lookups_do(self):
+        def cases(fault):
+            stock = self.session(fault)
+            release, published = self.release_session(fault)
+            return ((stock, WRITE_CONTRACT, {"request_ref": "HOLD-2702"}, dict(stock.events[1]["arguments"])),
+                    (release, RELEASE_CONTRACT, {"project": published["project"], "version": published["version"]},
+                     published))
+
+        for fault in ("write_response_lost", "write_not_committed"):
+            for session, contract, scope, written in cases(fault):
+                rebuilt = lambda: sequential_write_context(public_events(session), contract)
+                # The identifier comes from the lookup, or from the receipt of the repeated write.
+                known = session.call(contract["lookup"], scope)[contract["ids"]]
+                if fault == "write_not_committed":
+                    known = [session.call(contract["write"], written)[contract["id"]]]
+                session.diagnosis_available = False
+                for failures in (1, 2, 3):
+                    self.assertIn("error", session.call(contract["lookup"], scope))
+                    checkpoint = rebuilt()
+                    self.assertEqual((checkpoint["phase"], checkpoint["lookup_failures"], checkpoint[contract["ids"]]),
+                                     ("verify_existing", failures, known))
+                    self.assertIn(contract["verify"], checkpoint["available"])
+                    self.assertEqual(simple_feedback_action(checkpoint, contract), contract["verify"])
+                session.call(contract["verify"], {contract["id"]: known[0]})
+                self.assertIsNone(rebuilt())
+                self.assertTrue(evaluate(session, "Done.")["strict_success"])
+
+        # The stop-loss still bounds a state that needs lookup evidence, in both families.
+        for session, contract, scope, _ in cases("write_not_committed"):
+            session.diagnosis_available = False
+            for expected in (contract["lookup"], "stop", "stop"):
+                session.call(contract["lookup"], scope)
+                checkpoint = sequential_write_context(public_events(session), contract)
+                self.assertEqual(checkpoint["phase"], "commit_unknown")
+                self.assertEqual(simple_feedback_action(checkpoint, contract), expected)
+
+        # An exhausted budget comes before everything, a known identifier included.
+        for session, contract, scope, _ in cases("write_response_lost"):
+            while len(session.events) < 16:
+                session.call(contract["lookup"], scope)
+            checkpoint = sequential_write_context(public_events(session), contract)
+            self.assertEqual((checkpoint["phase"], len(checkpoint[contract["ids"]])), ("verify_existing", 1))
+            self.assertEqual((checkpoint["available"], simple_feedback_action(checkpoint, contract)),
+                             (["stop"], "stop"))
+
+    def test_rule_choice_is_supported_by_public_evidence_on_random_histories(self):
+        random = Random(33)
+        open_obligations = set()
+        for trial in range(400):
+            fault = random.choice(("write_not_committed", "write_response_lost"))
+            stock = random.random() < 0.5
+            contract = WRITE_CONTRACT if stock else RELEASE_CONTRACT
+            references = {argument: ["0" * 24] for argument in contract["evidence"]}
+            if random.random() < 0.25:
+                # A history that opens anywhere, including a write attempted before any evidence.
+                session = RecoverySession("stock-write-recovery" if stock else "artifact-release", fault)
+            else:
+                # A history that opens at the interrupted write.
+                session, written = (self.session(fault), None) if stock else self.release_session(fault)
+                written = written or session.events[1]["arguments"]
+                for argument in references:
+                    references[argument].append(written[argument])
+            session.diagnosis_available = random.random() > 0.2
+            goal = session.goal
+            scope = {"request_ref": "HOLD-2702"} if stock else {"project": goal.project, "version": goal.version}
+            wrong = {"request_ref": "HOLD-0000"} if stock else {**scope, "version": "v" + goal.version}
+            identifiers = ["f" * 24]
+            for _ in range(random.randint(3, 12)):
+                move = random.choice(("evidence", "evidence", "write", "write", "lookup", "lookup", "wrong",
+                                      "verify", "toggle"))
+                if move == "evidence":
+                    argument = random.choice(list(contract["evidence"]))
+                    tool = random.choice(list(contract["evidence"][argument]))
+                    field = {"get_depot_inventory": "sku", "read_depot_count": "item_code",
+                             "get_build_manifest": "build_id", "read_artifact_mirror": "artifact_key",
+                             "get_project_publish_permission": "project"}[tool]
+                    value = goal.project if field == "project" else goal.resource
+                    receipt = session.call(tool, {field: value})
+                    references[argument].append(receipt.get(contract["evidence"][argument][tool], "0" * 24))
+                elif move == "write":
+                    cited = {argument: random.choice(issued[-2:]) for argument, issued in references.items()}
+                    fixed = ({"sku": "P-140", "quantity": 3, "request_ref": "HOLD-2702"} if stock else
+                             {**scope, "sha256": goal.digest})
+                    identifiers.append(session.call(contract["write"], {**fixed, **cited}).get(contract["id"], "f" * 24))
+                elif move in ("lookup", "wrong"):
+                    identifiers.extend(session.call(contract["lookup"], scope if move == "lookup" else wrong)
+                                       .get(contract["ids"], []))
+                elif move == "verify":
+                    session.call(contract["verify"], {contract["id"]: random.choice(identifiers)})
+                else:
+                    session.diagnosis_available = not session.diagnosis_available
+                checkpoint = sequential_write_context(public_events(session), contract)
+                if checkpoint is None:
+                    continue
+                committed = session.reservations if stock else session.family_backend.records
+                known = checkpoint[contract["ids"]]
+                choice = simple_feedback_action(checkpoint, contract)
+                failures = checkpoint["lookup_failures"]
+                open_obligations.add((stock, checkpoint["phase"], min(failures, 2), min(len(known), 2), choice))
+                self.assertIn(choice, checkpoint["available"])
+                self.assertTrue(set(known) <= set(committed))
+                if contract["write"] in checkpoint["available"] or choice == contract["write"]:
+                    # Repeating the write is offered only when nothing is committed, so never a duplicate.
+                    self.assertEqual((checkpoint["phase"], len(committed), failures), ("confirmed_absent", 0, 0))
+                if len(known) == 1:
+                    self.assertEqual(choice, contract["verify"])
+                if choice == "stop":
+                    self.assertTrue(len(known) > 1 or checkpoint["phase"] == "commit_unknown" and failures >= 2)
+        # The random histories reached every branch of the rule in both families.
+        for stock in (True, False):
+            reached = {row[1:] for row in open_obligations if row[0] == stock}
+            contract = WRITE_CONTRACT if stock else RELEASE_CONTRACT
+            self.assertTrue({contract["lookup"], contract["write"], contract["verify"], "stop"}
+                            <= {row[-1] for row in reached})
+            self.assertIn(("verify_existing", 2, 1, contract["verify"]), reached)
+            self.assertIn(("commit_unknown", 2, 0, "stop"), reached)
+
+    def launched(self, arm, fault, assignment=None):
+        agent, _ = self.protocol_agent()
+        with TemporaryDirectory() as directory, \
+                patch("extensions.toolmaze_recovery.run.VLLMAgent", return_value=agent), \
+                patch("extensions.toolmaze_recovery.run.version", return_value="cpu"):
+            output = Path(directory) / "episode"
+            smoke(output, "stock-write-recovery", fault, "http://127.0.0.1:1/v1", start_mode="write-checkpoint",
+                  seed=3301, first_tool=LOOKUP, arm=arm, assignment=assignment)
+            config = json.loads((output / "config.json").read_text())
+            logged = [json.loads(line)["request"] for line in (output / "requests.jsonl").read_text().splitlines()]
+            episode = json.loads((output / "episode.json").read_text())
+        self.assertTrue(episode["strict_success"], episode["issues"])
+        self.assertEqual((config["arm"], config["fault"], config["seed"], config["assignment"]),
+                         (arm, fault, 3301, assignment))
+        self.assertTrue(all(request["seed"] == 3301 for request in logged))
+        return [request.get("tool_choice", {}).get("function", {}).get("name") for request in logged], logged, episode
+
+    def test_launcher_requires_a_tool_only_at_the_registered_positions(self):
+        absent, lost = "write_not_committed", "write_response_lost"
+        # The eight registered episodes of experiment 035, through the launch entry and its request log.
+        for arm in ("react", "advice_only"):
+            for fault, turns in ((absent, 4), (lost, 3)):
+                required, logged, episode = self.launched(arm, fault)
+                self.assertEqual(required, [LOOKUP, *[None] * (turns - 1)])
+                self.assertTrue(all(len(request["tools"]) == 6 for request in logged))
+                advised = ["Recovery advice suggests" in request["messages"][0]["content"] for request in logged]
+                self.assertEqual(advised, [False, *[arm == "advice_only"] * (turns - 2), False])
+                self.assertEqual([c["rule_mode"] for c in episode["checkpoints"]][1:],
+                                 ["advice" if arm == "advice_only" else None] * (turns - 2))
+        for fault, expected in ((absent, [LOOKUP, WRITE, VERIFY, None]), (lost, [LOOKUP, VERIFY, None])):
+            required, logged, episode = self.launched("simple_feedback", fault)
+            self.assertEqual(required, expected)
+            self.assertEqual([len(request["tools"]) for request in logged], [6, *[1] * (len(expected) - 2), 6])
+            self.assertEqual([c["rule_selected"] for c in episode["checkpoints"]], [None, *expected[1:-1]])
+        for tool, expected in ((WRITE, [LOOKUP, WRITE, None, None]), (LOOKUP, [LOOKUP, LOOKUP, None, None, None])):
+            assignment = enumerated_assignment("confirmed_absent", tool)
+            required, logged, episode = self.launched("react", absent, assignment)
+            self.assertEqual(required, expected)
+            self.assertTrue(all(len(request["tools"]) == 6 for request in logged))
+            self.assertEqual(logged[1]["messages"][0], logged[0]["messages"][0])
+            recorded = [c["assignment"] for c in episode["checkpoints"]]
+            self.assertEqual(recorded[1], {**assignment, "applied": True, "followed": True})
+            self.assertEqual([bool(row) for row in recorded], [False, True, *[False] * (len(recorded) - 2)])
+        # Unregistered combinations are refused before anything is written.
+        with TemporaryDirectory() as directory:
+            for arguments in (
+                    {"arm": "advice_only", "assignment": enumerated_assignment("confirmed_absent", WRITE)},
+                    {"arm": "simple_feedback", "assignment": enumerated_assignment("confirmed_absent", WRITE)},
+                    {"arm": "advice_only", "task": "artifact-release"},
+                    {"arm": "react", "task": "artifact-release",
+                     "assignment": enumerated_assignment("confirmed_absent", "publish_release")}):
+                task = arguments.pop("task", "stock-write-recovery")
+                output = Path(directory) / "refused"
+                with self.assertRaises(ValueError):
+                    smoke(output, task, absent, "http://127.0.0.1:1/v1", **arguments)
+                self.assertFalse(output.exists())

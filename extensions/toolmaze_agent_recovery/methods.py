@@ -95,14 +95,17 @@ def unknown_action_values(context, continuation):
 
 
 def simple_feedback_action(context, contract):
-    # A failed lookup proves nothing, so ask once more; two failures in a row end the attempt.
-    if context["remaining_calls"] <= 0 or context["lookup_failures"] >= 2:
+    """Budget first, then the evidence already in hand, and only then the lookup stop-loss."""
+    if context["remaining_calls"] <= 0:
         return STOP
     if context["phase"] == "verify_existing":
+        # An identifier from an actual receipt stays valid whatever later lookups do.
         return contract["verify"] if len(context[contract["ids"]]) == 1 else STOP
     if context["phase"] == "confirmed_absent" and contract["write"] in context["available"]:
         return contract["write"]
-    return contract["lookup"]
+    # Lookup evidence is still needed. A failed lookup proves nothing, so ask once more;
+    # two failures in a row end the attempt.
+    return STOP if context["lookup_failures"] >= 2 else contract["lookup"]
 
 
 def recovery_context(events, contract):

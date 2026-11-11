@@ -57,8 +57,9 @@ RELEASE_CONTRACT = {
 
 
 def sequential_contract(tool_names):
+    names = set(tool_names)  # Read once: the caller may pass a generator.
     return next((contract for contract in (WRITE_CONTRACT, RELEASE_CONTRACT)
-                 if {contract["write"], contract["lookup"], contract["verify"]} <= set(tool_names)), None)
+                 if {contract["write"], contract["lookup"], contract["verify"]} <= names), None)
 
 
 @contextmanager
@@ -93,11 +94,12 @@ class FeedbackRuleAgent:
     Enforced: only the selected tool is offered and the request requires a call to it.
     Advice: every tool stays offered and the model decides whether to follow the suggestion.
     """
-    def __init__(self, agent, contract=WRITE_CONTRACT, *, enforce=True):
-        self.agent, self.contract, self.enforce = agent, contract, enforce
+    def __init__(self, agent, *, enforce=True):
+        self.agent, self.enforce = agent, enforce
         self.mode = "enforced" if enforce else "advice"
         self.label = "enforced simple_feedback" if enforce else "advice_only"
-        self.checkpoint = None
+        # Set together by the episode loop, so the rule always reads the contract of this task.
+        self.checkpoint = self.contract = None
 
     @property
     def messages(self):
@@ -237,7 +239,7 @@ def run_episode(agent, session, *, max_turns=BUDGET, resume=False, first_tool=No
         externally_first = bool(turn == 0 and first_tool)
         rule_context = context if not externally_first else None
         if rule:
-            rule.checkpoint = rule_context
+            rule.checkpoint, rule.contract = rule_context, contract
         checkpoint = None
         required = None
         if context is not None:
