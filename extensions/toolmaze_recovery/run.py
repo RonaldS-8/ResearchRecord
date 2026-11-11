@@ -1,6 +1,7 @@
 """Run the native ToolMaze Agent against one registered MVP development fixture."""
 
 import argparse
+from contextlib import contextmanager
 from copy import deepcopy
 from hashlib import sha256
 from importlib.metadata import version
@@ -29,18 +30,73 @@ REQUESTS = 12
 OUTPUT_LIMIT = 6144
 SEED = 2701
 CHECKPOINT_REFERENCE = "8ad504c68b872be913cad640"
-SEQUENTIAL_ARMS = ("react", "simple_feedback")
+SEQUENTIAL_ARMS = ("react", "simple_feedback", "advice_only")
+PHASES = ("commit_unknown", "confirmed_absent", "verify_existing")
+# Public facts of each family's write obligation: its tools, the identifier a write returns,
+# the fields a lookup is scoped by, where each cited reference is issued, and what a read-back
+# must show. Nothing here is hidden state.
 WRITE_CONTRACT = {
-    "reads": ("get_depot_inventory", "read_depot_count"),
     "write": "reserve_stock", "lookup": "lookup_reservations_by_request",
     "verify": "get_reservation_status", "timeout": WRITE_TIMEOUT,
+    "id": "reservation_id", "ids": "reservation_ids", "scope": ("request_ref",),
+    "evidence": {"evidence_ref": {"get_depot_inventory": "inventory_ref", "read_depot_count": "count_ticket"}},
+    "match": ("sku", "quantity"), "state": {"status": "active", "depot": "D4"},
+    "obligation": "Create exactly one requested reservation and read back its active status.",
+}
+RELEASE_CONTRACT = {
+    "write": "publish_release", "lookup": "inspect_project_release",
+    "verify": "get_release_status", "timeout": RELEASE_TIMEOUT,
+    "id": "release_id", "ids": "release_ids", "scope": ("project", "version"),
+    "evidence": {
+        "build_ref": {"get_build_manifest": "build_ref", "read_artifact_mirror": "mirror_ref"},
+        "permission_ref": {"get_project_publish_permission": "permission_ref"},
+    },
+    "match": ("project", "version", "sha256"), "state": {"status": "active"},
+    "obligation": "Create exactly one requested release and read back its active status.",
 }
 
 
+def sequential_contract(tool_names):
+    return next((contract for contract in (WRITE_CONTRACT, RELEASE_CONTRACT)
+                 if {contract["write"], contract["lookup"], contract["verify"]} <= set(tool_names)), None)
+
+
+@contextmanager
+def required_tool(agent, tool):
+    """Tool-level intervention on one model decision: the request must return a call to `tool`.
+
+    The model still writes every argument. With `tool` None the request is left as it is.
+    """
+    if tool is None:
+        yield
+        return
+    completions = agent.client.chat.completions
+    create = completions.create
+    completions.create = lambda **kwargs: create(
+        **{**kwargs, "tool_choice": {"type": "function", "function": {"name": tool}}})
+    try:
+        yield
+    finally:
+        completions.create = create
+
+
+def enumerated_assignment(phase, tool):
+    """One branch of a same-start design. The schedule assigns this tool with certainty."""
+    if phase not in PHASES or not tool or tool == STOP:
+        raise ValueError("Unregistered assignment phase or tool")
+    return {"phase": phase, "tool": tool, "schedule": "enumerated", "probability": 1.0}
+
+
 class FeedbackRuleAgent:
-    """Select only a tool; native Agent supplies every argument and final answer."""
-    def __init__(self, agent):
-        self.agent = agent
+    """The rule names only a tool; the native Agent supplies every argument and final answer.
+
+    Enforced: only the selected tool is offered and the request requires a call to it.
+    Advice: every tool stays offered and the model decides whether to follow the suggestion.
+    """
+    def __init__(self, agent, contract=WRITE_CONTRACT, *, enforce=True):
+        self.agent, self.contract, self.enforce = agent, contract, enforce
+        self.mode = "enforced" if enforce else "advice"
+        self.label = "enforced simple_feedback" if enforce else "advice_only"
         self.checkpoint = None
 
     @property
@@ -56,15 +112,26 @@ class FeedbackRuleAgent:
     def step(self, user_message=None):
         self.agent.tools = self.tools[:]
         self.messages[0]["content"] = self.system
+        required = None
         if self.checkpoint is not None:
-            selected = simple_feedback_action(self.checkpoint, WRITE_CONTRACT)
-            self.agent.tools = [tool for tool in self.tools if tool["function"]["name"] == selected]
-            self.messages[0]["content"] += (
-                "\nRecovery control selected stop. Explain the unresolved obligation."
-                if selected == STOP else
-                f"\nRecovery control selected {selected}. Call it with arguments from visible evidence."
-            )
-        return self.agent.step(user_message=user_message)
+            selected = simple_feedback_action(self.checkpoint, self.contract)
+            if self.enforce:
+                required = selected if selected != STOP else None
+                self.agent.tools = [tool for tool in self.tools if tool["function"]["name"] == selected]
+                self.messages[0]["content"] += (
+                    "\nRecovery control selected stop. Explain the unresolved obligation."
+                    if selected == STOP else
+                    f"\nRecovery control selected {selected}. Call it with arguments from visible evidence."
+                )
+            else:
+                self.messages[0]["content"] += (
+                    "\nRecovery advice suggests stopping. The decision is yours."
+                    if selected == STOP else
+                    f"\nRecovery advice suggests {selected} as the next tool. The decision is yours. "
+                    "If you call it, use arguments from visible evidence."
+                )
+        with required_tool(self.agent, required):
+            return self.agent.step(user_message=user_message)
 
     def receive_tool_result(self, tool, result):
         self.agent.receive_tool_result(tool, result)
@@ -127,10 +194,13 @@ def agent_for(agent, session, arm):
     return RecoveryMethodAgent(agent, arm, session.method_contract(), History())
 
 
-def run_episode(agent, session, *, max_turns=BUDGET, resume=False, first_tool=None):
+def run_episode(agent, session, *, max_turns=BUDGET, resume=False, first_tool=None, assignment=None):
     """Use the native Agent's initialize, step and receive-tool-result protocol."""
     if not 0 < max_turns <= BUDGET:
         raise ValueError("Invalid Agent turn budget")
+    rule = agent if isinstance(agent, FeedbackRuleAgent) else None
+    if assignment is not None and rule is not None:
+        raise ValueError("An assigned first action is followed by the native continuation only")
     started = perf_counter()
     view = session.public()
     if hasattr(agent, "perturbation_mode"):
@@ -159,40 +229,60 @@ def run_episode(agent, session, *, max_turns=BUDGET, resume=False, first_tool=No
     public_events = [{key: deepcopy(event[key]) for key in ("tool", "arguments", "result")}
                      for event in session.events]
     checkpoints = []
-    tool_names = {tool["name"] for tool in view["tools"]}
-    sequential = set((WRITE_CONTRACT["write"], WRITE_CONTRACT["lookup"],
-                      WRITE_CONTRACT["verify"])).issubset(tool_names)
-    continuation = "simple_feedback + native Agent" if isinstance(agent, FeedbackRuleAgent) else "native Agent"
+    contract = sequential_contract(tool["name"] for tool in view["tools"])
+    continuation = f"{rule.label} + native Agent" if rule else "native Agent"
+    assigned = False
     for turn in range(max_turns):
-        context = sequential_write_context(public_events, WRITE_CONTRACT) if sequential else None
-        rule_context = context if not (turn == 0 and first_tool) else None
-        if isinstance(agent, FeedbackRuleAgent):
-            agent.checkpoint = rule_context
+        context = sequential_write_context(public_events, contract) if contract else None
+        externally_first = bool(turn == 0 and first_tool)
+        rule_context = context if not externally_first else None
+        if rule:
+            rule.checkpoint = rule_context
         checkpoint = None
+        required = None
         if context is not None:
             checkpoint = {
                 "after": len(public_events), "task": view["task"], "tools": deepcopy(view["tools"]),
                 "history": deepcopy(public_events), "context": context,
                 "values": unknown_action_values(context, continuation),
                 "external_tool_constraint": first_tool if turn == 0 else None,
-                "rule_selected": simple_feedback_action(context, WRITE_CONTRACT)
-                                 if isinstance(agent, FeedbackRuleAgent) and rule_context else None,
+                "rule_selected": simple_feedback_action(context, contract) if rule and rule_context else None,
+                "rule_mode": rule.mode if rule and rule_context else None,
+                "assignment": None,
             }
+            # The assignment acts once, on the first decision made in its phase, and only if the
+            # public evidence already supports the tool. Otherwise it is recorded as not applied.
+            if assignment and not assigned and not externally_first and context["phase"] == assignment["phase"]:
+                assigned = True
+                applied = assignment["tool"] in context["available"]
+                required = assignment["tool"] if applied else None
+                checkpoint["assignment"] = {**assignment, "applied": applied}
+                checkpoint["external_tool_constraint"] = required
             checkpoints.append(checkpoint)
         model_started = perf_counter()
-        action = agent.step(user_message=prompt if turn == 0 and not resume else None)
+        with required_tool(agent, required):
+            action = agent.step(user_message=prompt if turn == 0 and not resume else None)
         model_seconds += perf_counter() - model_started
         if checkpoint is not None:
+            actual = action.tool_name if action.type == "tool_call" else STOP
             checkpoint["model_action"] = {
-                "type": action.type, "tool": action.tool_name if action.type == "tool_call" else STOP,
+                "type": action.type, "tool": actual,
                 "arguments": deepcopy(action.arguments) if action.type == "tool_call" else None,
+                "accepted": None,
             }
+            if checkpoint["rule_selected"] is not None:
+                checkpoint["rule_followed"] = actual == checkpoint["rule_selected"]
+            if checkpoint["assignment"] is not None:
+                checkpoint["assignment"]["followed"] = actual == assignment["tool"]
         if action.type == "final_answer":
             answer = action.content
             break
         if action.type != "tool_call":
             break
         result = session.call(action.tool_name, action.arguments)
+        if checkpoint is not None:
+            # A rejected call is not an executed action, whatever was selected or assigned.
+            checkpoint["model_action"]["accepted"] = not session.events[-1]["illegal"]
         public_events.append({"tool": action.tool_name, "arguments": deepcopy(action.arguments),
                               "result": deepcopy(result)})
         agent.receive_tool_result(action.tool_name, result)
@@ -213,14 +303,17 @@ def run_episode(agent, session, *, max_turns=BUDGET, resume=False, first_tool=No
     }
 
 
-def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED, first_tool=None, arm="react"):
+def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED, first_tool=None, arm="react",
+          assignment=None):
     if start_mode not in ("full", "write-checkpoint"):
         raise ValueError("Unknown start mode")
     if first_tool is not None and (
             start_mode != "write-checkpoint" or first_tool != "lookup_reservations_by_request"):
         raise ValueError("First-action assistance is restricted to the registered write checkpoint")
-    if arm not in SEQUENTIAL_ARMS or arm == "simple_feedback" and task != "stock-write-recovery":
+    if arm not in SEQUENTIAL_ARMS or arm != "react" and task != "stock-write-recovery":
         raise ValueError("Unregistered sequential recovery arm or task")
+    if assignment is not None and (arm != "react" or task != "stock-write-recovery"):
+        raise ValueError("First-action assignment is registered for the native continuation on the write task")
     output.mkdir()
     config = {
         "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
@@ -229,7 +322,7 @@ def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED, fi
         "python": platform.python_version(), "vllm": version("vllm"), "openai": version("openai"),
         "seed": seed, "temperature": 0, "requests": REQUESTS, "max_tokens": OUTPUT_LIMIT,
         "call_budget": BUDGET, "arm": arm, "start_mode": start_mode,
-        "first_tool_constraint": first_tool,
+        "first_tool_constraint": first_tool, "assignment": assignment,
         "lineage": {
             "base_task": LINEAGE[task][0], "shared_implementation": LINEAGE[task][1],
             "fault_parent": f"{LINEAGE[task][0]}/" + (
@@ -273,9 +366,10 @@ def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED, fi
         resume = start_mode == "write-checkpoint"
         if resume:
             prepare_write_checkpoint(session)
-        controlled = FeedbackRuleAgent(agent) if arm == "simple_feedback" else agent
+        controlled = agent if arm == "react" else FeedbackRuleAgent(agent, enforce=arm == "simple_feedback")
         try:
-            result = run_episode(controlled, session, max_turns=REQUESTS, resume=resume, first_tool=first_tool)
+            result = run_episode(controlled, session, max_turns=REQUESTS, resume=resume, first_tool=first_tool,
+                                 assignment=assignment)
         except Exception as exc:
             (output / "failure.json").write_text(json.dumps({
                 "error": repr(exc), "evaluation": evaluate(session, None),
@@ -304,6 +398,11 @@ if __name__ == "__main__":
     parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--first-tool", choices=("lookup_reservations_by_request",))
     parser.add_argument("--arm", choices=SEQUENTIAL_ARMS, default="react")
+    parser.add_argument("--assign-phase", choices=PHASES)
+    parser.add_argument("--assign-tool")
     args = parser.parse_args()
+    if bool(args.assign_phase) != bool(args.assign_tool):
+        parser.error("--assign-phase and --assign-tool are given together")
     smoke(args.out, args.task, args.condition, args.endpoint, start_mode=args.start_mode,
-          seed=args.seed, first_tool=args.first_tool, arm=args.arm)
+          seed=args.seed, first_tool=args.first_tool, arm=args.arm,
+          assignment=enumerated_assignment(args.assign_phase, args.assign_tool) if args.assign_phase else None)

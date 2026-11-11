@@ -22,60 +22,66 @@ def sequential_write_context(events, contract):
 
     `available` contains evidence-supported, task-safe next tools, rather than all
     callable APIs. No backend, fault label, score, or reference route is accepted.
+    Tool and field names come from the public contract of the task family.
     """
+    key = contract["id"]
     pending = None
     ids = []
     verified = set()
     absence = False
-    query_failed = False
-    evidence = set()
+    lookup_failures = 0
+    # Each write argument that must cite a receipt, and the references actually issued for it.
+    evidence = {argument: set() for argument in contract["evidence"]}
     for event in events:
         tool, result = event["tool"], event["result"]
         args = event["arguments"] if isinstance(event["arguments"], dict) else {}
-        if tool in contract["reads"] and "error" not in result:
-            evidence.update(result[key] for key in ("inventory_ref", "count_ticket") if key in result)
+        if "error" not in result:
+            for argument, sources in contract["evidence"].items():
+                if sources.get(tool) in result:
+                    evidence[argument].add(result[sources[tool]])
         if tool == contract["write"]:
             if result == contract["timeout"]:
                 pending = deepcopy(args)
-                absence, query_failed = False, False
-            elif pending is not None and "error" not in result and result.get("reservation_id"):
-                ids.append(result["reservation_id"])
+                absence, lookup_failures = False, 0
+            elif pending is not None and "error" not in result and result.get(key):
+                ids.append(result[key])
                 absence = False
         if pending is None:
             continue
         if tool == contract["lookup"]:
-            query_failed = "error" in result
-            if query_failed:
+            failed = "error" in result
+            lookup_failures = lookup_failures + 1 if failed else 0
+            returned = result.get(contract["ids"])
+            if failed:
                 absence = False
-            if (not query_failed and result.get("request_ref") == pending.get("request_ref")
-                    and isinstance(result.get("reservation_ids"), list)):
-                returned = result["reservation_ids"]
-                if result.get("status") == "found" and returned:
+            elif (all(result.get(field) == pending.get(field) for field in contract["scope"])
+                    and isinstance(returned, list)):
+                status = result.get("status", "found" if returned else "not_found")
+                if status == "found" and returned:
                     ids = list(dict.fromkeys([*ids, *returned]))
                     absence = False
-                elif result.get("status") == "not_found" and not returned:
+                elif status == "not_found" and not returned:
                     absence = not ids
         if (tool == contract["verify"] and "error" not in result
-                and args.get("reservation_id") in ids
-                and result.get("reservation_id") == args["reservation_id"]
-                and result.get("status") == "active"
-                and result.get("sku") == pending.get("sku")
-                and result.get("quantity") == pending.get("quantity")
-                and result.get("depot") == "D4"):
-            verified.add(result["reservation_id"])
+                and args.get(key) in ids and result.get(key) == args[key]
+                and all(result.get(field) == pending.get(field) for field in contract["match"])
+                and all(result.get(field) == value for field, value in contract["state"].items())):
+            verified.add(result[key])
     if pending is None or len(ids) == 1 and ids[0] in verified:
         return None
-    available = [contract["lookup"], *contract["reads"]]
+    available = [contract["lookup"],
+                 *dict.fromkeys(tool for sources in contract["evidence"].values() for tool in sources)]
     if ids:
         available.append(contract["verify"])
-    elif absence and pending.get("evidence_ref") in evidence:
+    elif absence and all(pending.get(argument) in issued for argument, issued in evidence.items()):
         available.append(contract["write"])
     remaining = BUDGET - len(events)
     return {
         "phase": "verify_existing" if ids else "confirmed_absent" if absence else "commit_unknown",
-        "obligation": "Create exactly one requested reservation and read back its active status.",
-        "write_arguments": pending, "reservation_ids": ids,
-        "query_failed": query_failed, "remaining_calls": remaining,
+        "obligation": contract["obligation"],
+        "write_arguments": pending, contract["ids"]: ids,
+        "query_failed": lookup_failures > 0, "lookup_failures": lookup_failures,
+        "remaining_calls": remaining,
         "available": [*(available if remaining > 0 else []), STOP],
     }
 
@@ -89,10 +95,11 @@ def unknown_action_values(context, continuation):
 
 
 def simple_feedback_action(context, contract):
-    if context["remaining_calls"] <= 0 or context["query_failed"]:
+    # A failed lookup proves nothing, so ask once more; two failures in a row end the attempt.
+    if context["remaining_calls"] <= 0 or context["lookup_failures"] >= 2:
         return STOP
     if context["phase"] == "verify_existing":
-        return contract["verify"] if len(context["reservation_ids"]) == 1 else STOP
+        return contract["verify"] if len(context[contract["ids"]]) == 1 else STOP
     if context["phase"] == "confirmed_absent" and contract["write"] in context["available"]:
         return contract["write"]
     return contract["lookup"]
