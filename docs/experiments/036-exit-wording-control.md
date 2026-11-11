@@ -2,7 +2,7 @@
 
 2026-11-12。探索性开发实验，承接 [实验 035](035-advice-enforcement-and-assignment.md) 与 [ADR-0032](../adr/0032-advice-enforcement-and-first-action-assignment.md)，不新增 ADR。Q2、诊断与 $Q^\pi(h,a)$ 沿用 AGENTS.md。登记时 main 为 `f4a7140`。
 
-**状态：预登记草案。两组提示的逐字文本待用户审批，审批前不运行模型。** 用户 2026-11-12 授权编写本登记、入口参数和 CPU 测试，并要求原始提示保持不变、新增条件独立标记。
+**状态：预登记。两组提示的逐字文本与四回合方案已由用户于 2026-11-12 批准；模型回合须在云端复核通过、PR 合入 main 之后运行。** 用户 2026-11-12 授权编写本登记、入口参数和 CPU 测试，并要求原始提示保持不变、新增条件独立标记。
 
 ## 预登记
 
@@ -22,7 +22,7 @@
 
 **对照的做法：只删不加。** 对照组把上面三句话原样删除，不添加任何文字。不采用改写，因为任何改写都会带入新的倾向（例如“只有试过所有工具才可以停止”本身就是一条建议），无法与 Gate 33 的 `advice_only` 区分。删除后模型仍然可以随时作答结束，没有被禁止停止。
 
-**两组提示的逐字文本（待审批）。**
+**两组提示的逐字文本（用户 2026-11-12 批准）。**
 
 原始组 `original`，系统提示：
 
@@ -119,7 +119,7 @@ Tool prices: 1 engineering unit per advertised tool call, including diagnosis an
 
 ## 运行入口
 
-**待用户批准逐字文本、PR 合入 main 之后才可执行。** 仅云端，在 `/home/ubuntu/Song/Agent`，先 CPU 后模型。模型步骤要求当前提交与 CPU 通过时的提交相同；vLLM 服务在脚本外启动和停止，服务日志另存。输出目录已存在时脚本拒绝覆盖。
+**逐字文本已获批准；云端复核通过、PR 合入 main 之后才可执行。** 仅云端，在 `/home/ubuntu/Song/Agent`，先 CPU 后模型。模型步骤要求当前提交与 CPU 通过时的提交相同；vLLM 服务在脚本外启动和停止，服务日志另存。输出目录已存在时脚本拒绝覆盖。
 
 ```bash
 bash scripts/run_exit_wording.sh cpu
@@ -149,4 +149,4 @@ bash scripts/run_exit_wording.sh agent
 
 ## 结果
 
-待用户批准逐字文本、云端运行后填写。
+待云端运行后填写。
