@@ -37,4 +37,33 @@
 
 ## 结果
 
-待填写。
+预登记提交 `4621252`，代码提交 `a7bc98c`，分支 `gate30-contract-revision`（`Dependence` 含相同提交），基于 main `939bf19`。本机为 Windows、Python 3.14.7、OpenAI SDK 3.49.0，无 vLLM、无 ToolMaze 数据，没有模型请求。
+
+**修改。** `tasks.py` 改了五个参数说明和两个工单任务文字，并给 `inspect_project_release.version` 补了说明。`environment.py` 的参数校验统一了标识不符的报错，新增 `version` 的任务范围校验和 `expires_at` 的格式校验。`families.py`、评分、故障注入和计费未改。
+
+**本机通过。** `test_toolmaze_recovery_mvp.py` 17 项、`test_toolmaze_write_agent.py` 3 项全部通过；`test_toolmaze_family_expansion.py` 10 项中 9 项通过。新增两项专项测试，各在一个文件中，逐项对应清单：
+
+- 第 1、5 项：`204`、`417`、`140`、`882` 被拒，报错点明参数名，不含任务取值，不产生读取凭据；任务原样标识通过。
+- 第 2 项：三种等价写法的期限全部被拒，无授权、无效果；随后用正确格式授权并复核，终态谓词通过，授权效果仅一次，非法调用计 4 次。
+- 第 3 项：发布已提交后，用 `v1.4.2` 查询得到点明 `version` 的校验报错，不再返回空列表；正确版本返回实际发布 ID，发布记录仍为一条。
+- 第 4 项：以上报错均为“参数与任务授权的值不符，须与任务中的写法一致”。
+- 第 6 项：两个工单任务文字含“正文即为摘要原文”的表述。
+
+**反向核对。** 把 `tasks.py` 与 `environment.py` 还原到修订前，两项新增测试均失败；恢复修订后通过。
+
+**未在本机验证。**
+
+- `test_toolmaze_family_expansion.py` 的辅助查询入口测试需要 vLLM 包，修订前后在本机都因缺包报错，与本次改动无关。
+- `test_toolmaze_recovery_integration.py`、`test_toolmaze_agent_recovery.py`、`test_no_leakage.py` 需要云端的 ToolMaze 数据。本次没有改它们依赖的 Gate 25/26 代码，但合入前应在云端跑一遍全量。
+
+云端复核入口：
+
+```bash
+agent_root=/home/ubuntu/Song/Agent
+"$agent_root/.venv/bin/python" -B -m unittest discover -s tests -p 'test_toolmaze*.py' -v
+"$agent_root/.venv/bin/python" -B -m unittest discover -s tests -p 'test_no_leakage.py' -v
+```
+
+预期为 Gate 29 的 51 项加本轮新增 2 项，共 53 项通过。
+
+**边界。** Gate 27–29 的结果与评分未动。修订后被拒的调用仍计费、仍计入非法调用，当前严格规则仍会否决含非法调用的回合；第 2 项只是把“悄悄接受后无法挽回”变成“报错后可以改正”。模型在修订后合同上的表现尚无证据。
