@@ -1,6 +1,6 @@
 """Gate 29 business-state and Agent-interface acceptance on authored development tasks."""
 
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from copy import deepcopy
 from io import StringIO
 import json
@@ -319,10 +319,25 @@ class FamilyExpansionTests(unittest.TestCase):
                 (root / "archive" / name / "episode.json").write_text(json.dumps(row))
             (root / "archive" / "slipped" / "config.json").write_text(json.dumps({"task": "facility-access"}))
             before = {path: path.read_bytes() for path in root.rglob("*.json")}
-            with redirect_stdout(StringIO()):
-                report = audit_illegal_calls([str(root / "archive"), "--out", str(root / "report.json")])
-                with self.assertRaises(FileExistsError):
-                    audit_illegal_calls([str(root / "archive"), "--out", str(root / "report.json")])
+            archive, slipped_dir = root / "archive", root / "archive" / "slipped"
+            (root / "empty").mkdir()
+            with redirect_stdout(StringIO()), redirect_stderr(StringIO()) as refusals:
+                report = audit_illegal_calls([str(archive), "--out", str(root / "report.json")])
+                split = audit_illegal_calls([str(archive / "clean"), str(slipped_dir),
+                                             "--out", str(root / "split.json")])
+                # A wrong, empty, repeated or nested source stops the audit. It never shrinks or doubles it.
+                for sources in ([archive], [root / "missing"], [root / "empty"], [slipped_dir / "episode.json"],
+                                [archive, root / "missing"], [archive, archive], [archive, slipped_dir],
+                                [archive, root / "empty" / ".." / "archive"]):
+                    target = root / ("report.json" if sources == [archive] else "refused.json")
+                    with self.assertRaises(SystemExit) as stopped:
+                        audit_illegal_calls([*map(str, sources), "--out", str(target)])
+                    self.assertEqual(stopped.exception.code, 2, sources)
+                    self.assertFalse((root / "refused.json").exists(), sources)
+            for reason in ("already exists", "not an existing directory", "holds no episode.json",
+                           "Sources overlap"):
+                self.assertIn(reason, refusals.getvalue())
+            self.assertEqual(split["summary"], report["summary"])
             self.assertEqual({path: path.read_bytes() for path in before}, before)
             self.assertEqual(json.loads((root / "report.json").read_text()), report)
         self.assertEqual(report["summary"], {

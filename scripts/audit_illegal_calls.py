@@ -62,18 +62,36 @@ def breakdown(report):
     }
 
 
+def episode_files(sources):
+    """Every source must be a directory that holds episodes, and no episode may be reached twice."""
+    files, seen = [], {}
+    for source in sources:
+        source = Path(source)
+        if not source.is_dir():
+            raise ValueError(f"Source is not an existing directory: {source}")
+        found = sorted(source.rglob("episode.json"))
+        if not found:
+            raise ValueError(f"Source holds no episode.json: {source}")
+        for path in found:
+            key = path.resolve()
+            if key in seen:
+                raise ValueError(f"Sources overlap: {path} is also reached through {seen[key]}")
+            seen[key] = source
+            files.append(path)
+    return files
+
+
 def audit(sources):
     episodes = []
-    for source in sources:
-        for path in sorted(Path(source).rglob("episode.json")):
-            raw = path.read_bytes()
-            config = path.with_name("config.json")
-            labels = json.loads(config.read_text()) if config.is_file() else {}
-            episodes.append({
-                "episode": path.as_posix(), "sha256": sha256(raw).hexdigest(),
-                **{key: labels.get(key) for key in ("task", "fault", "arm", "start_mode", "seed", "commit")},
-                **breakdown(json.loads(raw)),
-            })
+    for path in episode_files(sources):
+        raw = path.read_bytes()
+        config = path.with_name("config.json")
+        labels = json.loads(config.read_text()) if config.is_file() else {}
+        episodes.append({
+            "episode": path.as_posix(), "sha256": sha256(raw).hexdigest(),
+            **{key: labels.get(key) for key in ("task", "fault", "arm", "start_mode", "seed", "commit")},
+            **breakdown(json.loads(raw)),
+        })
     return {
         "rules": list(RULES), "sources": [Path(source).as_posix() for source in sources],
         "summary": {
@@ -96,7 +114,12 @@ def main(arguments=None):
     parser.add_argument("sources", nargs="+", type=Path, help="Result directories holding episode.json files.")
     parser.add_argument("--out", type=Path, required=True, help="New report file. Must not exist.")
     args = parser.parse_args(arguments)
-    report = audit(args.sources)
+    if args.out.exists():
+        parser.error(f"Report file already exists: {args.out}")
+    try:
+        report = audit(args.sources)
+    except ValueError as problem:
+        parser.error(str(problem))  # Exit status 2 and no report, never an empty audit.
     with args.out.open("x") as stream:
         json.dump(report, stream, ensure_ascii=False, indent=2)
     print(json.dumps(report["summary"], ensure_ascii=False, indent=2))
