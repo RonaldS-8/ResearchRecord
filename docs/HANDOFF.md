@@ -1,5 +1,13 @@
 # 当前进度（2026-11-11）
 
+## Gate 33 · PR #4 已合并，真实工具干预 Go
+
+[实验 035](experiments/035-advice-enforcement-and-assignment.md)记录完整七回合历史停止表、两次 PR 验收与八个真实开发回合。修复 head `0d33a0d` 及合并后的 main 均通过 66 项 ToolMaze CPU 和 5 项防泄漏；PR #4 合并提交/模型运行提交为 `d0ea1090a90facbdce5bd5b7295d63c6ea91e7d9`。原 No-Go 记录保留，发布生成器接入与已有 ID 后错误停止均已复核修复，未改合同/评分/费用。
+
+ReAct 和 advice_only 在 not_found 后都停止、found 后都完成；强制 simple_feedback 两种情形均完成。仅强制 reserve_stock 后，模型合法绑参并自主完成复核；仅强制再次查询后，模型仍停止且多付诊断费。全部 24 次 SDK 请求的约束位置核对正确，无非法调用、盲重试或重复效果。估值保持 unknown、支持 0，不把一次观察变成概率或泛化结论。
+
+结果在云端 `results/035-gate33-cpu-01/`、`035-gate33-agent-01/`、`035-gate33-service-01/`；历史只读提取和两个审查批次另行保留。服务已停止，GPU 464 MiB。工程及真实工具级干预机制 Go；本谱系简单强制规则已足够，不扩展预测器。下一阶段仅建议另行登记独立恢复谱系的强规则余量问题，未自动启动新实验。
+
 ## Gate 32 · 序贯恢复机制 Go，规则未解决 not_found
 
 [实验 034](experiments/034-sequential-recovery-decision.md)、[ADR-0031](adr/0031-sequential-recovery-decision.md)。预登记 `134c99d`，运行提交 `4efd6b0`，在 main 推进。新增公开反馈后的写入恢复检查点与 Simple Feedback Rule 工具选择包装；合同、执行器、原生 Agent、评分和历史审计保持原样，动作估值全部 unknown、支持 0。最终云端 58 项 ToolMaze 回归/专项及 5 项防泄漏通过。
