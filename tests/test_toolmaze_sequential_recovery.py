@@ -18,6 +18,7 @@ from extensions.toolmaze_recovery.run import (
     run_episode, sequential_contract, smoke,
 )
 from extensions.toolmaze_recovery.tasks import DEVELOPMENT
+from evaluation.agents.vllm_agent import VLLMAgent
 from openai.types.chat import ChatCompletion
 from test_toolmaze_agent_recovery import fake_agent
 
@@ -25,6 +26,18 @@ from test_toolmaze_agent_recovery import fake_agent
 LOOKUP = WRITE_CONTRACT["lookup"]
 WRITE = WRITE_CONTRACT["write"]
 VERIFY = WRITE_CONTRACT["verify"]
+# SHA-256 of the first SDK request shared by the eight Gate 33 episodes, as archived in experiment 035.
+GATE33_FIRST_REQUEST = "e5a227c1052115acd5d03f138b7acfc3d000ce7fb5f10650ec44f611e20ea528"
+# Experiment 036, written out here independently of run.py: the registered exit sentences.
+EXIT_SYSTEM_STOP = (
+    "- If you determine that a required step cannot be accomplished by any available tool or approach, "
+    "stop the workflow and clearly report which step failed and why, rather than proceeding with incomplete results."
+)
+EXIT_SYSTEM_HALTED = (
+    '- If HALTED: State clearly that the task was aborted and the reason (e.g., "Task aborted: the pricing tool '
+    'returned corrupted data after retry and no other alternative approaches exist"). Do not apologize excessively.'
+)
+EXIT_USER_BLOCKED = "If unable to complete the task, start your final reply with 'Blocked:' and briefly explain."
 
 
 def public_events(session):
@@ -158,9 +171,9 @@ class SequentialRecoveryTests(unittest.TestCase):
         self.assertEqual(session.call("publish_release", arguments), RELEASE_TIMEOUT)
         return session, arguments
 
-    def protocol_agent(self, contract=WRITE_CONTRACT):
+    def protocol_agent(self, contract=WRITE_CONTRACT, agent=None):
         """A scripted client that binds only from the conversation and obeys a required tool."""
-        agent, _ = fake_agent([])
+        agent = agent or fake_agent([])[0]
         requests = []
 
         def create(**kwargs):
@@ -570,21 +583,28 @@ class SequentialRecoveryTests(unittest.TestCase):
             self.assertIn(("verify_existing", 2, 1, contract["verify"]), reached)
             self.assertIn(("commit_unknown", 2, 0, "stop"), reached)
 
-    def launched(self, arm, fault, assignment=None):
-        agent, _ = self.protocol_agent()
+    def launched(self, arm, fault, assignment=None, exit_wording="original"):
+        # The launcher's own model, temperature and limits reach the request; only the endpoint is scripted.
+        def scripted(*args, **kwargs):
+            return self.protocol_agent(agent=VLLMAgent(*args, **kwargs))[0]
+
         with TemporaryDirectory() as directory, \
-                patch("extensions.toolmaze_recovery.run.VLLMAgent", return_value=agent), \
+                patch("extensions.toolmaze_recovery.run.VLLMAgent", side_effect=scripted), \
                 patch("extensions.toolmaze_recovery.run.version", return_value="cpu"):
             output = Path(directory) / "episode"
             smoke(output, "stock-write-recovery", fault, "http://127.0.0.1:1/v1", start_mode="write-checkpoint",
-                  seed=3301, first_tool=LOOKUP, arm=arm, assignment=assignment)
+                  seed=3301, first_tool=LOOKUP, arm=arm, assignment=assignment,
+                  # Left out for the original prompt, so the launcher's own default is what runs.
+                  **({} if exit_wording == "original" else {"exit_wording": exit_wording}))
             config = json.loads((output / "config.json").read_text())
             logged = [json.loads(line)["request"] for line in (output / "requests.jsonl").read_text().splitlines()]
             episode = json.loads((output / "episode.json").read_text())
         self.assertTrue(episode["strict_success"], episode["issues"])
-        self.assertEqual((config["arm"], config["fault"], config["seed"], config["assignment"]),
-                         (arm, fault, 3301, assignment))
+        self.assertEqual((config["arm"], config["fault"], config["seed"], config["assignment"], config["exit_wording"]),
+                         (arm, fault, 3301, assignment, exit_wording))
         self.assertTrue(all(request["seed"] == 3301 for request in logged))
+        # Every episode on the original prompt opens with the request the Gate 33 cloud run archived.
+        self.assertEqual(episode["first_request_sha256"] == GATE33_FIRST_REQUEST, exit_wording == "original")
         return [request.get("tool_choice", {}).get("function", {}).get("name") for request in logged], logged, episode
 
     def test_launcher_requires_a_tool_only_at_the_registered_positions(self):
@@ -626,3 +646,73 @@ class SequentialRecoveryTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     smoke(output, task, absent, "http://127.0.0.1:1/v1", **arguments)
                 self.assertFalse(output.exists())
+
+    def test_exit_wording_control_removes_the_registered_sentences_and_nothing_else(self):
+        absent, lost = "write_not_committed", "write_response_lost"
+        sentences = (EXIT_SYSTEM_STOP, EXIT_SYSTEM_HALTED, EXIT_USER_BLOCKED)
+
+        def cut(text):
+            for sentence in (EXIT_SYSTEM_STOP, EXIT_SYSTEM_HALTED):
+                text = text.replace("\n" + sentence, "")
+            return text.replace(" " + EXIT_USER_BLOCKED, "")
+
+        def prompts(request):
+            return [message["content"] for message in request["messages"][:2]]
+
+        # The four registered episodes of experiment 036, through the launch entry and its request log.
+        for fault in (absent, lost):
+            required, original, _ = self.launched("react", fault)
+            control_required, control, _ = self.launched("react", fault, exit_wording="removed")
+            self.assertEqual(control_required, required)
+            self.assertEqual(len(control), len(original))
+            for sentence in sentences:
+                self.assertEqual("".join(prompts(original[0])).count(sentence), 1)
+            # The first request differs by exactly the three sentences: same model, limits, seed,
+            # tools, required first tool and replayed prefix.
+            expected = deepcopy(original[0])
+            for message in expected["messages"][:2]:
+                message["content"] = cut(message["content"])
+            self.assertEqual(control[0], expected)
+            for before, after in zip(original, control):
+                self.assertEqual(prompts(after), [cut(text) for text in prompts(before)])
+                self.assertEqual(after["tools"], before["tools"])
+                self.assertEqual([m["role"] for m in after["messages"]], [m["role"] for m in before["messages"]])
+                for sentence in sentences:
+                    self.assertNotIn(sentence, json.dumps(after["messages"]))
+        # The control exists only for the unassigned native Agent at the registered write checkpoint.
+        with TemporaryDirectory() as directory:
+            for arguments in (
+                    {"arm": "advice_only"}, {"arm": "simple_feedback"},
+                    {"assignment": enumerated_assignment("confirmed_absent", WRITE)},
+                    {"task": "artifact-release"}, {"first_tool": None, "start_mode": "full"},
+                    {"exit_wording": "softened"}):
+                output = Path(directory) / "refused"
+                with self.assertRaises(ValueError):
+                    smoke(output, **{
+                        "task": "stock-write-recovery", "condition": absent, "endpoint": "http://127.0.0.1:1/v1",
+                        "start_mode": "write-checkpoint", "first_tool": LOOKUP, "exit_wording": "removed",
+                        **arguments})
+                self.assertFalse(output.exists())
+        for arguments in ({"assignment": enumerated_assignment("confirmed_absent", WRITE)}, {"rule": True}):
+            agent = fake_agent([])[0]
+            controlled = FeedbackRuleAgent(agent) if arguments.pop("rule", False) else agent
+            with self.assertRaises(ValueError):
+                run_episode(controlled, self.session(), resume=True, exit_wording="removed", **arguments)
+        # A prompt that no longer holds a registered sentence is refused, never run as if it were removed.
+        for name in ("EXIT_USER", "EXIT_SYSTEM"):
+            missing = " A sentence the prompt never held."
+            with patch(f"extensions.toolmaze_recovery.run.{name}", missing if name == "EXIT_USER" else (missing,)):
+                with self.assertRaises(ValueError):
+                    run_episode(fake_agent([])[0], self.session(), resume=True, exit_wording="removed")
+        # Without the sentences a stop is still a stop: nothing is called, written or scored as complete.
+        session = self.session()
+        agent, requests = fake_agent([])
+        result = run_episode(agent, session, resume=True, exit_wording="removed")
+        self.assertFalse(result["strict_success"])
+        self.assertEqual((len(result["events"]), len(result["effects"]), len(requests)), (2, 0, 1))
+        self.assertFalse(any(sentence in json.dumps(requests[0]["messages"]) for sentence in sentences))
+        # Asked for nothing, the loop sends the original prompt.
+        agent, requests = fake_agent([])
+        run_episode(agent, self.session(), resume=True)
+        self.assertEqual(["".join(prompts(requests[0])).count(sentence) for sentence in sentences], [1, 1, 1])
+        self.assertEqual(result["checkpoints"][0]["model_action"]["tool"], "stop")
