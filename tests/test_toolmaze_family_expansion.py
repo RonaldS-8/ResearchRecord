@@ -1,6 +1,8 @@
 """Gate 29 business-state and Agent-interface acceptance on authored development tasks."""
 
+from contextlib import redirect_stderr, redirect_stdout
 from copy import deepcopy
+from io import StringIO
 import json
 import os
 from pathlib import Path
@@ -13,6 +15,7 @@ from extensions.toolmaze_recovery.environment import RecoverySession, RELEASE_TI
 from extensions.toolmaze_recovery.families import DENIED, EXPIRED
 from extensions.toolmaze_recovery.run import smoke
 from extensions.toolmaze_recovery.tasks import DEVELOPMENT, LINEAGE, RESOURCE_FIELDS
+from scripts.audit_illegal_calls import breakdown, illegal_rules, main as audit_illegal_calls
 from evaluation.agents.vllm_agent import VLLMAgent
 from openai.types.chat import ChatCompletion
 
@@ -208,6 +211,144 @@ class FamilyExpansionTests(unittest.TestCase):
         self.assertEqual(LINEAGE["stock-reservation"], LINEAGE["stock-write-recovery"])
         self.assertEqual(len({entry[0] for entry in LINEAGE.values()}), 5)
         self.assertEqual(len({entry[1] for entry in LINEAGE.values()}), 4)
+
+    def test_differently_written_values_are_rejected_by_name_without_effects(self):
+        session = RecoverySession("facility-access")
+        goal = session.goal
+        meanings = {row["name"]: row["paradigms"]["function_call"]["spec"]["parameters"]["properties"]
+                    for row in session.public()["tools"]}
+        number = meanings["read_hr_clearance"]["employee_number"]["description"]
+        expiry = meanings["set_facility_access"]["expires_at"]["description"]
+        self.assertIn("complete person identifier", number)
+        self.assertIn("YYYY-MM-DDTHH:MM:SSZ", expiry)
+        shortened = session.call("read_hr_clearance", {"employee_number": "204"})
+        self.assertIn("'employee_number'", shortened["details"][0])
+        self.assertNotIn(goal.resource, json.dumps([number, shortened]))
+        args = access_args(session, acquire(session, 1))
+        # Equivalent instants in another notation used to create an access that could not be corrected.
+        for variant in ("2026-11-30T18:00:00+00:00", "2026-11-30T18:00:00.000Z", "2026-11-30 18:00:00Z"):
+            rejected = session.call("set_facility_access", {**args, "expires_at": variant})
+            self.assertIn("'expires_at'", rejected["details"][0])
+            self.assertNotIn(goal.expires_at, json.dumps([expiry, rejected]))
+        self.assertIsNone(session.family_backend.permission)
+        self.assertFalse(session.effects)
+        self.assertIn("permission_id", session.call("set_facility_access", args))
+        session.call("get_effective_access", {"person_id": goal.resource, "area": goal.area})
+        result = self.result(session)
+        self.assertFalse(result["issues"])
+        self.assertEqual(result["illegal_calls"], 4)
+        self.assertEqual([row["operation"] for row in result["effects"]], ["set_facility_access"])
+
+        session = RecoverySession("artifact-release", "write_response_lost")
+        goal = session.goal
+        self.assertEqual(finish(session, acquire(session, 0)), RELEASE_TIMEOUT)
+        # A version written differently must not be answered with an empty, absence-like list.
+        other = session.call("inspect_project_release", {"project": goal.project, "version": "v1.4.2"})
+        self.assertNotIn("release_ids", other)
+        self.assertIn("'version'", other["details"][0])
+        self.assertNotIn(goal.version, json.dumps(other))
+        found = session.call("inspect_project_release", {"project": goal.project, "version": goal.version})
+        self.assertEqual(found["release_ids"], list(session.family_backend.records))
+        mirror = session.call("read_artifact_mirror", {"artifact_key": "882"})
+        self.assertIn("'artifact_key'", mirror["details"][0])
+        self.assertEqual(len(session.family_backend.records), 1)
+
+    def test_rejected_calls_are_classified_by_rule_from_stored_results(self):
+        stock = RecoverySession("stock-reservation")
+        inventory = acquire(stock, 0)
+        hold = {"sku": "P-140", "quantity": 3, "evidence_ref": inventory["inventory_ref"]}
+        stock.call("get_case_record", {"case_id": "HD-417"})
+        stock.call("get_depot_inventory", {})
+        stock.call("get_depot_inventory", {"sku": "P-140", "depot": "D4"})
+        stock.call("reserve_stock", {**hold, "quantity": "3"})
+        stock.call("read_depot_count", {"item_code": "140"})
+        stock.call("reserve_stock", {**hold, "evidence_ref": "0" * 24})
+        stock.call("get_reservation_status", {"reservation_id": "0" * 24})
+        access = RecoverySession("facility-access")
+        access.call("read_hr_clearance", {"employee_number": "204"})
+        access.call("set_facility_access", {**access_args(access, acquire(access, 0)),
+                                            "expires_at": "2026-11-30T18:00:00+00:00"})
+        release = RecoverySession("artifact-release")
+        release.call("inspect_project_release", {"project": release.goal.project, "version": "v1.4.2"})
+        rejected = [event for session in (stock, access, release) for event in session.events if event["illegal"]]
+        self.assertEqual([illegal_rules(event) for event in rejected], [
+            ("unadvertised_tool",), ("argument_schema", "task_scope"), ("argument_schema",),
+            ("argument_schema",), ("task_scope",), ("business_precondition",), ("business_precondition",),
+            ("task_scope",), ("argument_schema",), ("task_scope",),
+        ])
+        self.assertEqual([event["fee"] for event in rejected], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+        self.assertEqual(illegal_rules(stock.events[0]), ())
+        # Archived episodes carry the wording from before the Gate 30 contract revision.
+        for detail in ("The resource is outside this task's authorized scope.",
+                       "The request reference is outside this task's authorized scope.",
+                       "The project is outside this task's authorized scope."):
+            old = {"illegal": True, "result": {"error": "Validation failed", "details": [detail]}}
+            self.assertEqual(illegal_rules(old), ("task_scope",))
+        for result in ({"error": "Validation failed", "details": ["A rule added later."]}, {"error": "Other."}):
+            self.assertEqual(illegal_rules({"illegal": True, "result": result}), ("unclassified",))
+
+    def test_breakdown_isolates_the_illegal_call_veto_and_leaves_archives_untouched(self):
+        def episode(slip, answer="Finished.", omit=False):
+            session = RecoverySession("facility-access")
+            if slip:
+                session.call("read_hr_clearance", {"employee_number": "204"})
+            finish(session, acquire(session, 1), omit=omit)
+            return {**evaluate(session, answer), "answer": answer}
+
+        slipped = episode(True)
+        stored = json.dumps(slipped, sort_keys=True)
+        view = breakdown(slipped)
+        self.assertEqual(json.dumps(slipped, sort_keys=True), stored)
+        # The Gate 29 facility episode: correct end state, one rejected identifier, strict denied.
+        self.assertEqual((slipped["strict_success"], slipped["issues"]), (False, []))
+        self.assertEqual((view["strict_success"], view["issues"], view["illegal_calls"]), (False, [], 1))
+        self.assertEqual(view["by_rule"]["task_scope"], 1)
+        self.assertEqual(sum(view["by_rule"].values()), 1)
+        self.assertEqual((view["charged_fee"], view["with_recorded_effect"]), (1, 0))
+        self.assertTrue(view["count_matches_archive"] and view["strict_denied_only_by_illegal_calls"])
+        clean = episode(False)
+        self.assertTrue(clean["strict_success"])
+        self.assertFalse(breakdown(clean)["strict_denied_only_by_illegal_calls"])
+        for other in (episode(True, "Blocked: stopped."), episode(True, omit=True)):
+            self.assertFalse(breakdown(other)["strict_denied_only_by_illegal_calls"])
+
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name, row in (("slipped", slipped), ("clean", clean)):
+                (root / "archive" / name).mkdir(parents=True)
+                (root / "archive" / name / "episode.json").write_text(json.dumps(row))
+            (root / "archive" / "slipped" / "config.json").write_text(json.dumps({"task": "facility-access"}))
+            before = {path: path.read_bytes() for path in root.rglob("*.json")}
+            archive, slipped_dir = root / "archive", root / "archive" / "slipped"
+            (root / "empty").mkdir()
+            with redirect_stdout(StringIO()), redirect_stderr(StringIO()) as refusals:
+                report = audit_illegal_calls([str(archive), "--out", str(root / "report.json")])
+                split = audit_illegal_calls([str(archive / "clean"), str(slipped_dir),
+                                             "--out", str(root / "split.json")])
+                # A wrong, empty, repeated or nested source stops the audit. It never shrinks or doubles it.
+                for sources in ([archive], [root / "missing"], [root / "empty"], [slipped_dir / "episode.json"],
+                                [archive, root / "missing"], [archive, archive], [archive, slipped_dir],
+                                [archive, root / "empty" / ".." / "archive"]):
+                    target = root / ("report.json" if sources == [archive] else "refused.json")
+                    with self.assertRaises(SystemExit) as stopped:
+                        audit_illegal_calls([*map(str, sources), "--out", str(target)])
+                    self.assertEqual(stopped.exception.code, 2, sources)
+                    self.assertFalse((root / "refused.json").exists(), sources)
+            for reason in ("already exists", "not an existing directory", "holds no episode.json",
+                           "Sources overlap"):
+                self.assertIn(reason, refusals.getvalue())
+            self.assertEqual(split["summary"], report["summary"])
+            self.assertEqual({path: path.read_bytes() for path in before}, before)
+            self.assertEqual(json.loads((root / "report.json").read_text()), report)
+        self.assertEqual(report["summary"], {
+            "episodes": 2, "episodes_with_illegal_calls": 1, "illegal_calls": 1,
+            "by_rule": {"unadvertised_tool": 0, "argument_schema": 0, "task_scope": 1,
+                        "business_precondition": 0, "unclassified": 0},
+            "charged_fee": 1, "with_recorded_effect": 0, "strict_denied_only_by_illegal_calls": 1,
+            "count_mismatches": 0,
+        })
+        self.assertEqual([row["task"] for row in report["episodes"]], [None, "facility-access"])
+        self.traces.append(report)
 
     def test_assisted_query_forces_only_first_sdk_tool_and_model_binds_args(self):
         for condition in ("write_not_committed", "write_response_lost"):

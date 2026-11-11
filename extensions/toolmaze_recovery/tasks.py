@@ -25,16 +25,16 @@ class Task:
 DEVELOPMENT = {
     "case-handoff": Task(
         "case",
-        "For support case HD-417, publish an internal note titled 'VPN handoff' containing "
-        "the exact current case summary. Notify netops@company.test with a link to that note. "
+        "For support case HD-417, publish an internal note titled 'VPN handoff' whose body is "
+        "exactly the current case summary. Notify netops@company.test with a link to that note. "
         "An authorized archive copy is acceptable if it represents the current case revision.",
         "HD-417", "VPN tunnel established, but DNS resolution fails after reconnect.",
         "VPN handoff", "netops@company.test",
     ),
     "case-archive": Task(
         "case",
-        "For support case HD-582, publish an internal note titled 'Scanner incident' containing "
-        "the exact current case summary. Keep the note internal and send no notifications. "
+        "For support case HD-582, publish an internal note titled 'Scanner incident' whose body is "
+        "exactly the current case summary. Keep the note internal and send no notifications. "
         "An authorized archive copy is acceptable if it represents the current case revision.",
         "HD-582", "Dock scanner drops its connection after the afternoon firmware update.",
         "Scanner incident",
@@ -113,7 +113,7 @@ CASE_TOOLS = (
                case_id="Support case identifier."),
     definition("read_case_archive", "Read the authorized current-revision archive copy of a support "
                "case. Returns case_file.summary and archive_ref, accepted by the note service.", "Source",
-               ticket="Support case identifier used by the archive."),
+               ticket="Support case identifier, identical to the one given in the task."),
     definition("publish_case_note", "Create one internal note and return its note_id and URL. "
                "The evidence reference may come from the live case record or the authorized archive.",
                case_id="Support case the note belongs to.", title="Note title.",
@@ -143,7 +143,7 @@ STOCK_TOOLS = (
                sku="Inventory SKU."),
     definition("read_depot_count", "Read an authorized physical count at D4. Returns count.free and "
                "count_ticket, an evidence reference accepted by the reservation service.", "Source",
-               item_code="Inventory SKU as recorded by the count service."),
+               item_code="Inventory SKU, identical to the one given in the task."),
     reservation_tool(),
     definition("get_reservation_status", "Read the current status of a reservation at D4.", "Source",
                reservation_id="Identifier issued by the reservation service."),
@@ -164,7 +164,7 @@ RELEASE_TOOLS = (
                "Returns build_ref accepted by publishing.", "Source", build_id="Build identifier."),
     definition("read_artifact_mirror", "Read an authorized mirror of the requested build. Returns "
                "artifact metadata and mirror_ref accepted as build evidence.", "Source",
-               artifact_key="Build identifier in the mirror."),
+               artifact_key="Build identifier, identical to the one given in the task."),
     definition("get_project_publish_permission", "Read the current publishing grant and return "
                "permission_ref. Its project and version limit the permitted publication.", "Source",
                project="Authorized project."),
@@ -176,7 +176,8 @@ RELEASE_TOOLS = (
     definition("inspect_project_release", "Paid read-only query of committed release IDs by project "
                "and version. A successful empty list means no committed or in-flight publication. "
                "A failed query establishes neither presence nor absence.", "Source",
-               project="Authorized project.", version="Release version."),
+               project="Authorized project.",
+               version="Release version, identical to the one given in the task."),
     definition("get_release_status", "Read the actual active release including project, version and "
                "sha256. Use an ID from a publication response or project release query.", "Source",
                release_id="Actual publication identifier."),
@@ -186,7 +187,9 @@ ACCESS_TOOLS = (
     definition("get_person_qualification", "Read a person's current facility qualification and return "
                "qualification_ref.", "Source", person_id="Person identifier."),
     definition("read_hr_clearance", "Read authorized HR clearance and return clearance_ref accepted "
-               "as qualification evidence.", "Source", employee_number="Person identifier."),
+               "as qualification evidence.", "Source",
+               employee_number="The complete person identifier exactly as given in the task, including "
+               "any prefix. Do not shorten it to a number."),
     definition("get_access_approval", "Read the actual approval decision, area and expiry limit. "
                "Returns approval_ref. A denied decision forbids granting access.", "Source",
                person_id="Person identifier.", area="Requested facility area."),
@@ -203,7 +206,8 @@ ACCESS_TOOLS = (
                "same effective settings is idempotent. Qualification, approval and a valid area "
                "credential are required. Returns permission_id. Expired credentials and denied "
                "approvals produce distinct errors.",
-               person_id="Person identifier.", area="Approved area.", expires_at="ISO expiry time.",
+               person_id="Person identifier.", area="Approved area.",
+               expires_at="Expiry as a UTC timestamp written exactly as YYYY-MM-DDTHH:MM:SSZ.",
                qualification_ref="Actual qualification_ref or clearance_ref.",
                approval_ref="Actual approval reference.", credential_ref="Actual credential reference."),
     definition("get_effective_access", "Read the effective access and expiry for a person and area. "

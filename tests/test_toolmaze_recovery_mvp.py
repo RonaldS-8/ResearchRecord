@@ -326,6 +326,25 @@ class RecoveryMVPTests(unittest.TestCase):
                 self.assertIn('"completion": null', requests[-1]["messages"][0]["content"])
         self.assertTrue(all(tools == tool_names[0] for tools in tool_names))
 
+    def test_alternate_read_identifiers_follow_the_task_and_errors_name_the_argument(self):
+        for task, tool, field, shortened in (
+                ("case-handoff", "read_case_archive", "ticket", "417"),
+                ("stock-reservation", "read_depot_count", "item_code", "140")):
+            session = RecoverySession(task)
+            spec = next(row for row in session.public()["tools"] if row["name"] == tool)
+            meaning = spec["paradigms"]["function_call"]["spec"]["parameters"]["properties"][field]["description"]
+            self.assertIn("identical to the one given in the task", meaning)
+            rejected = session.call(tool, {field: shortened})
+            self.assertEqual(rejected["error"], "Validation failed")
+            self.assertIn(f"'{field}'", rejected["details"][0])
+            self.assertNotIn(session.goal.resource, json.dumps([meaning, rejected]))
+            self.assertFalse(session.acquisitions)
+            self.assertNotIn("error", session.call(tool, {field: session.goal.resource}))
+            row = self.result(session)
+            self.assertEqual((row["illegal_calls"], row["tool_fee"]), (1, 2))
+        for task in ("case-handoff", "case-archive"):
+            self.assertIn("whose body is exactly the current case summary", DEVELOPMENT[task].query)
+
     def test_budget_and_nonadvertised_tools_are_enforced(self):
         session = RecoverySession("stock-reservation")
         for _ in range(BUDGET):

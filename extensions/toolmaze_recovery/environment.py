@@ -3,6 +3,7 @@
 from collections import Counter
 from copy import deepcopy
 from pathlib import Path
+import re
 from secrets import token_hex
 from types import SimpleNamespace
 
@@ -17,6 +18,7 @@ FAULTS += ("credential_expired", "authorization_denied", "backup_unavailable")
 WRITE_TIMEOUT = {"error": "The reservation request timed out. Its outcome is unknown."}
 RELEASE_TIMEOUT = {"error": "The publication request timed out. Its outcome is unknown."}
 INVALID = "invalid_argument"
+UTC_TIMESTAMP = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z")
 
 
 class ContractExecutor(ToolExecutor):
@@ -37,16 +39,20 @@ class ContractExecutor(ToolExecutor):
         properties = spec["parameters"]["properties"]
         if arguments.keys() - properties.keys():
             errors.append("Undeclared arguments.")
-        field = RESOURCE_FIELDS.get(tool_name)
-        if field is not None and arguments.get(field) != self.resource:
-            errors.append("The resource is outside this task's authorized scope.")
-        if "request_ref" in properties and arguments.get("request_ref") != self.request_ref:
-            errors.append("The request reference is outside this task's authorized scope.")
-        for field, authorized in self.scopes.items():
-            if field in properties and arguments.get(field) != authorized:
-                errors.append(f"The {field} is outside this task's authorized scope.")
+        # Name the argument and never the authorized value: a differently written identifier
+        # is a binding slip to correct, and must not be answered as if nothing were found.
+        authorized = {**self.scopes, "request_ref": self.request_ref}
+        if (field := RESOURCE_FIELDS.get(tool_name)) is not None:
+            authorized[field] = self.resource
+        for field, value in authorized.items():
+            if field in properties and arguments.get(field) != value:
+                errors.append(f"Argument '{field}' does not match the value authorized by this task. "
+                              "It must be identical to the value given in the task.")
         if "quantity" in properties and type(arguments.get("quantity")) is not int:
             errors.append("Quantity must be an integer.")
+        expiry = arguments.get("expires_at")
+        if "expires_at" in properties and not (isinstance(expiry, str) and UTC_TIMESTAMP.fullmatch(expiry)):
+            errors.append("Argument 'expires_at' must be a UTC timestamp written as YYYY-MM-DDTHH:MM:SSZ.")
         return errors
 
 
@@ -64,7 +70,8 @@ class RecoverySession(Session):
         catalog = STOCK_WRITE_TOOLS if self.goal.request_ref else TOOLS[self.goal.family]
         definitions = {tool["name"]: tool for tool in deepcopy(catalog)}
         executor = ContractExecutor(definitions, self.goal.resource, self.goal.request_ref,
-                                    {"project": self.goal.project, "area": self.goal.area})
+                                    {"project": self.goal.project, "area": self.goal.area,
+                                     "version": self.goal.version})
         engine = SimpleNamespace(tool_executor=executor, tool_definitions=list(definitions.values()),
                                  task_description=self.goal.query)
         super().__init__(task, fault, case=(engine, None), read_tools=READS[self.goal.family])
