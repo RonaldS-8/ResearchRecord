@@ -1,7 +1,7 @@
 # ADR-0032 · 建议与强制分离、首动作分配
 
 - 日期：2026-11-11
-- 状态：已批准实现与 CPU 验收（用户 2026-11-11 批准 A–E 及三条附加要求）；模型回合按 [实验 035](../experiments/035-advice-enforcement-and-assignment.md) 由云端执行
+- 状态：已批准实现与 CPU 验收（用户 2026-11-11 批准 A–E 及三条附加要求）；模型回合已于 2026-11-11 在合并提交 `d0ea109` 上由云端执行，工程与工具级干预机制 Go，结果见 [实验 035](../experiments/035-advice-enforcement-and-assignment.md)
 
 Gate 33，在 `Dependence` 分支完成后提 PR。Q2、诊断定义与 $Q^\pi(h,a)$ 沿用 AGENTS.md，序贯检查点沿用 [ADR-0031](0031-sequential-recovery-decision.md)。
 

@@ -88,6 +88,30 @@ def enumerated_assignment(phase, tool):
     return {"phase": phase, "tool": tool, "schedule": "enumerated", "probability": 1.0}
 
 
+# Experiment 036. The sentences that tell the model how to give up: two in the native fault-aware
+# system prompt, one in the task message. The control removes them verbatim and adds no words.
+# "original" is the default and leaves every prompt byte for byte as it was.
+EXIT_WORDING = ("original", "removed")
+EXIT_SYSTEM = (
+    "\n- If you determine that a required step cannot be accomplished by any available tool or approach, "
+    "stop the workflow and clearly report which step failed and why, rather than proceeding with "
+    "incomplete results.",
+    '\n- If HALTED: State clearly that the task was aborted and the reason (e.g., "Task aborted: the pricing '
+    'tool returned corrupted data after retry and no other alternative approaches exist"). '
+    "Do not apologize excessively.",
+)
+EXIT_USER = " If unable to complete the task, start your final reply with 'Blocked:' and briefly explain."
+
+
+def without_exit_wording(text, sentences):
+    for sentence in sentences:
+        # A prompt that no longer holds the registered sentence must not run as if it had been removed.
+        if text.count(sentence) != 1:
+            raise ValueError("Registered exit wording is not present exactly once")
+        text = text.replace(sentence, "")
+    return text
+
+
 class FeedbackRuleAgent:
     """The rule names only a tool; the native Agent supplies every argument and final answer.
 
@@ -196,13 +220,16 @@ def agent_for(agent, session, arm):
     return RecoveryMethodAgent(agent, arm, session.method_contract(), History())
 
 
-def run_episode(agent, session, *, max_turns=BUDGET, resume=False, first_tool=None, assignment=None):
+def run_episode(agent, session, *, max_turns=BUDGET, resume=False, first_tool=None, assignment=None,
+                exit_wording="original"):
     """Use the native Agent's initialize, step and receive-tool-result protocol."""
     if not 0 < max_turns <= BUDGET:
         raise ValueError("Invalid Agent turn budget")
     rule = agent if isinstance(agent, FeedbackRuleAgent) else None
     if assignment is not None and rule is not None:
         raise ValueError("An assigned first action is followed by the native continuation only")
+    if exit_wording not in EXIT_WORDING or exit_wording != "original" and (rule or assignment):
+        raise ValueError("The exit-wording control is registered for the unassigned native Agent only")
     started = perf_counter()
     view = session.public()
     if hasattr(agent, "perturbation_mode"):
@@ -213,6 +240,9 @@ def run_episode(agent, session, *, max_turns=BUDGET, resume=False, first_tool=No
         "including diagnosis and failed calls. If unable to complete the task, "
         "start your final reply with 'Blocked:' and briefly explain."
     )
+    if exit_wording == "removed":
+        agent.messages[0]["content"] = without_exit_wording(agent.messages[0]["content"], EXIT_SYSTEM)
+        prompt = without_exit_wording(prompt, (EXIT_USER,))
     if resume:
         if not session.events:
             raise ValueError("Checkpoint has no actual tool history")
@@ -306,9 +336,12 @@ def run_episode(agent, session, *, max_turns=BUDGET, resume=False, first_tool=No
 
 
 def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED, first_tool=None, arm="react",
-          assignment=None):
+          assignment=None, exit_wording="original"):
     if start_mode not in ("full", "write-checkpoint"):
         raise ValueError("Unknown start mode")
+    if exit_wording not in EXIT_WORDING or exit_wording != "original" and (
+            task != "stock-write-recovery" or arm != "react" or assignment is not None or first_tool is None):
+        raise ValueError("The exit-wording control is registered for the native Agent at the write checkpoint")
     if first_tool is not None and (
             start_mode != "write-checkpoint" or first_tool != "lookup_reservations_by_request"):
         raise ValueError("First-action assistance is restricted to the registered write checkpoint")
@@ -324,7 +357,7 @@ def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED, fi
         "python": platform.python_version(), "vllm": version("vllm"), "openai": version("openai"),
         "seed": seed, "temperature": 0, "requests": REQUESTS, "max_tokens": OUTPUT_LIMIT,
         "call_budget": BUDGET, "arm": arm, "start_mode": start_mode,
-        "first_tool_constraint": first_tool, "assignment": assignment,
+        "first_tool_constraint": first_tool, "assignment": assignment, "exit_wording": exit_wording,
         "lineage": {
             "base_task": LINEAGE[task][0], "shared_implementation": LINEAGE[task][1],
             "fault_parent": f"{LINEAGE[task][0]}/" + (
@@ -371,7 +404,7 @@ def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED, fi
         controlled = agent if arm == "react" else FeedbackRuleAgent(agent, enforce=arm == "simple_feedback")
         try:
             result = run_episode(controlled, session, max_turns=REQUESTS, resume=resume, first_tool=first_tool,
-                                 assignment=assignment)
+                                 assignment=assignment, exit_wording=exit_wording)
         except Exception as exc:
             (output / "failure.json").write_text(json.dumps({
                 "error": repr(exc), "evaluation": evaluate(session, None),
@@ -402,9 +435,11 @@ if __name__ == "__main__":
     parser.add_argument("--arm", choices=SEQUENTIAL_ARMS, default="react")
     parser.add_argument("--assign-phase", choices=PHASES)
     parser.add_argument("--assign-tool")
+    parser.add_argument("--exit-wording", choices=EXIT_WORDING, default="original")
     args = parser.parse_args()
     if bool(args.assign_phase) != bool(args.assign_tool):
         parser.error("--assign-phase and --assign-tool are given together")
     smoke(args.out, args.task, args.condition, args.endpoint, start_mode=args.start_mode,
           seed=args.seed, first_tool=args.first_tool, arm=args.arm,
-          assignment=enumerated_assignment(args.assign_phase, args.assign_tool) if args.assign_phase else None)
+          assignment=enumerated_assignment(args.assign_phase, args.assign_tool) if args.assign_phase else None,
+          exit_wording=args.exit_wording)
