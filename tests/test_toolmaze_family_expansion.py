@@ -229,8 +229,9 @@ class FamilyExpansionTests(unittest.TestCase):
                 if previous.get("status") != "active":
                     message["tool_calls"] = [{"id": f"cpu_{len(requests)}", "type": "function",
                                              "function": {"name": tool, "arguments": json.dumps(args)}}]
-                return ChatCompletion(id="cpu", created=0, model="cpu",
-                                      choices=[{"index": 0, "message": message, "finish_reason": "stop"}],
+                return ChatCompletion(id="cpu", object="chat.completion", created=0, model="cpu",
+                                      choices=[{"index": 0, "message": message,
+                                                "finish_reason": "tool_calls" if "tool_calls" in message else "stop"}],
                                       usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0})
             native.client = SimpleNamespace(with_options=lambda **_: SimpleNamespace(
                 chat=SimpleNamespace(completions=SimpleNamespace(create=create))))
