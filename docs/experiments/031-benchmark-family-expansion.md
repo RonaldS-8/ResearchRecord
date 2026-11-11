@@ -1,5 +1,7 @@
 # 实验 031 · main Gate 29 家族扩展与 Agent 验收
 
+2026-11-11 补充：assisted-not-committed 的 not_found 后停止原文及实际推理字段已只读核查，见 [实验 035 的历史停止审计](035-advice-enforcement-and-assignment.md#七个历史停止回合)。未纳入其他失败回合，原归档、评分和下述结果保留。
+
 2026-11-11。探索性开发与工程验收，见 [ADR-0029](../adr/0029-benchmark-family-expansion.md)。
 
 ## 预登记

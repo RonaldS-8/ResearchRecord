@@ -109,3 +109,58 @@ bash scripts/run_gate33.sh agent
 ## 结果
 
 待云端运行后填写。
+
+## 2026-11-11 · 历史停止审计与 PR #4 验收
+
+这是合并前的只读历史审计和 CPU 验收，**不是八回合模型结果**。GitHub 最新 head 为 `dbb7d190cd68a992e4b227ca8e4946fa4f7b19a0`，base/main 为 `f832f843b48624b0e82eefd26f166adfc92efd55`。两端 main 开始时干净。未改 PR 实现、实验假设、冻结提示、合同、评分或费用；记录另存 `codex/gate33-pr4-acceptance` 文档分支，未合并 PR。
+
+### 七个历史停止回合
+
+只读提取指定的 Gate 28 四例、Gate 29 一例和 Gate 32 两例。七例最终 SDK 响应都保存了非空 `reasoning` 字段，最终答复与 Agent 历史一致。这里的“推理”仅指实际输出并被 SDK 保存的模型自述，不能据此推测内部原因或作因果证明。完整停止前请求、最终响应、Agent 最后消息、实际回执和源文件 SHA-256 在云端 `results/035-gate33-history-audit-01/extract.json`；提取前后原始 config/requests/episode 文件哈希一致。
+
+七例任务均为 D4、SKU P-140、3 单位、请求号 HOLD-2702。隐藏条件只作归档定位，判断合法动作不使用它。表中两种公开证据状态为：
+
+- **A：提交未知。** 最后返回 `The reservation request timed out. Its outcome is unknown.`。合法恢复为按 HOLD-2702 调用 `lookup_reservations_by_request`；库存读取或连接状态不能证明未提交，没有可见 ID 时不能直接复核。非幂等盲重试不能保证恰好一笔。
+- **B：确认无记录。** 最后返回 `request_ref=HOLD-2702, status=not_found, reservation_ids=[]`。可用任务实参和真实库存凭据调用 `reserve_stock`，取得实际 ID 后调用 `get_reservation_status`；也可重查或刷新库存证据。“当前没有 ID”不等于必须停止。
+
+实际 SDK 工具定义证实 Gate 28/29 当时已经公开非幂等写入、超时可发生于提交前后及强一致请求查询。本表没有把后来的合同修订反向套入旧回合。
+
+| Gate / 来源子目录 | 故障条件 | 最后返回 | 停止理由关键原文：最终答复；reasoning | 合法恢复 | 可观察错误类型与边界 |
+| --- | --- | --- | --- | --- | --- |
+| 28 / checkpoint-not-committed | write_not_committed | A：写入超时 | `no reservation ID available to verify status.`；`So the reservation didn't get created successfully.` | A：先查询 | 选择：未查询即停；自述把未知当未创建，与合同不符；无恢复绑参尝试，缺创建/复核 |
+| 28 / checkpoint-response-lost | write_response_lost | A：写入超时 | `no reservation ID was generated to verify its status.`；`The tool response says the outcome is unknown. So the reservation wasn't created.` | A：先查询 | 选择：未查询即停；自述作出未创建断言；恢复绑参未观察，缺复核 |
+| 28 / full-not-committed | write_not_committed | A：写入超时 | `no alternative path to verify reservation status.`；`The tools available don't have a way to retry or handle timeouts here.` | A：先查询 | 选择：遗漏公开查询；自述“无路径”与工具清单不符；故障前参数合法，缺创建/复核 |
+| 28 / full-response-lost | write_response_lost | A：写入超时 | `no alternative approach exists to complete the task.`；`The tools don't mention retrying or alternative methods, so this is the end.` | A：先查询 | 选择：遗漏公开查询；自述“无替代”与查询能力不符；恢复绑参未观察，缺复核 |
+| 29 / assisted-not-committed | write_not_committed | B：not_found | `no reservation ID available to verify status.`；`There's no way to proceed further because the reservation isn't there.` | B：重新预留、复核 | 选择：无记录后仍停；自述将无记录视为无法继续；首查询外部限制、绑参合法，重试未观察 |
+| 32 / react-write_not_committed | write_not_committed | B：not_found | `no reservation ID returned to verify status.`；`The tools don't have a way to retry the reservation without another tool call` | B：重新预留、复核 | 选择：未执行可行写入；该句没有证明重试不可行；查询绑参合法，重试/续程未观察 |
+| 32 / simple_feedback-write_not_committed | write_not_committed | B：not_found | `no active reservation was established for request HOLD-2702.`；`The user needs to retry the reservation or check if there's another way` | B：规则已选 reserve_stock | 选择/遵从：未调用所选工具；此请求仅保留 reserve_stock，但无 tool_choice；无重试绑参错误可供判断 |
+
+来源：Gate 28 为提交 `25e0e87c8a6f44aed9e2fab00f166a62be05cee6`、`results/030-gate28-agent-01/`；Gate 29 为 `0750c66ff85edcb4aec3dce2ea14430edb6fd1ae`、`results/031-gate29-agent-01/`；Gate 32 为 `4efd6b007245f57bcb4415fff2bdb658c50bdfc6`、`results/034-gate32-agent-01/`。表内子目录分别对应这些原目录，不包括 Gate 29 其他失败回合。
+
+**观察：** 四例停在查询前，三例获 not_found 后仍停止，没有执行后故障重试；“合同理解”仅指可见文本与实际合同不符，“选择”指实际停止而未调用恢复工具，两者不能据自述确定内部因果先后。没有尝试绑参不等于绑参能力通过，缺后续义务也不是已经观察到“正确恢复调用之后执行失败”。**解释边界：** 原系统提示确有“确定无任何可行工具/路径时停止”的条件，但这些文本不能证明该提示导致停止，也不能证明缺少估值是瓶颈。不据此改实验 035 的提示或条件。
+
+### 独立 worktree 的 CPU 验收
+
+工作树 `/home/ubuntu/Song/Agent-worktrees/gate33-pr4-dbb7d19` 固定于 PR head，直接执行该树的 Python 测试，未调用写死 main 路径的 `run_gate33.sh cpu`。仅临时链接云端已有 ToolMaze 数据，测试后移除本轮链接，未改源数据或下载结果。日志、源码哈希及边界复现保存在 `results/035-gate33-pr4-review-01/`。
+
+| 检查 | 结果与边界 |
+| --- | --- |
+| 全部 test_toolmaze*.py | 62 项通过：原 50 项加序贯 12 项；无既有回归失败 |
+| test_no_leakage.py | 5 项通过 |
+| 启动脚本 | Bash 语法检查通过，未在审查 worktree 运行硬编码 main 的脚本 |
+| 三组差异 | ReAct 保留完整工具/原提示；advice_only 保留完整工具、建议句且无规则 tool_choice；simple_feedback 单工具、规则句及对应 tool_choice |
+| 分配与实际执行 | 假客户端覆盖阶段首次分配、applied/followed、实际工具/参数/accepted、不遵从、伪造引用被拒和不受证据支持时不施加；未把分配当成实际完成 |
+| 调用边界 | 首查询由 smoke 首 SDK 请求施加；规则强制由规则决策施加；一次分配后恢复原生续程。规则/执行器不代填参数或完成任务。真实 SDK 干预尚未验证 |
+| 信息隔离 | 上下文只接受公开调用和回执；库存/发布 CPU 证人不传入私有故障状态；所有估值仍 unknown、支持 0 |
+| 不变性 | AGENTS、公开任务合同、环境执行器/评分、原生 Agent、旧防泄漏文件与 main f832f84 字节一致，哈希在 invariants.json；原历史未写入或重新计价 |
+
+**发现两个实质缺陷，均在未修改的 PR head 上复现。**
+
+1. `run.py:59–61` 在各候选合同内调用 `set(tool_names)`，但 `run_episode:232` 实际传入生成器。库存候选已耗尽它，发布候选看到空集。同一发布工具名的列表输入返回发布合同，生成器输入返回 None；真实发布超时前缀经 `run_episode(..., resume=True)` 得到 **0 个检查点**，而直接对同一公开历史重建上下文为 commit_unknown。现有发布测试只传列表并绕过 Agent loop。最小建议：函数入口一次转为集合，候选复用；补生成器和发布原生循环的检查点测试。
+2. `methods.py:99–102` 在判断已有有效 ID 之前按“两次查询失败”停止。库存与发布均复现“超时→合法查询获单一实际 ID→两次查询失败”：上下文仍为 verify_existing，复核工具仍在 available，规则却选 stop。用先前实际 ID 调原复核工具仍返回 active 并解除义务。最小建议：预算耗尽优先；单一有效 ID 可复核时优先 verify；仅对仍需查询证据的状态应用失败止损，覆盖两家族。冻结文档的“两次失败停止”是概括规则，修订时须明确其适用范围，不能本轮静默改成新实验条件。
+
+源代码及结果为 `edge_repro.py`、`edge-repro.json`；这些是 CPU 接口证人，不是真实模型效果样本。未自行修实现、补跑模型或调整八回合条件。
+
+**合并前 No-Go。** 既有 CPU 与防泄漏通过，但上述边界缺陷未解决，暂缓 PR #4 合并及八回合实验。本轮模型请求为 0、未启动服务，GPU 为 464 MiB；main 未合并、PR head 未改。需先修复并复核新 SHA，再由用户批准合并；之后才按登记在合并后的干净 main 上运行 CPU 与八回合。H1/H2/H3、干预实际结果与后缀费用目前均未验证，不能填写为成功或失败。
+
+**下一阶段优先的一个科学问题：** confirmed_absent 后，外部工具干预确实执行 reserve_stock、参数由 LLM 生成时，原生续程能否完成真实预留复核？它区分未选动作与绑参/续程瓶颈；一次观察只提供明确工具干预及续程下的实际结果和完整后缀费用，不能形成成功概率、跨任务泛化或动作价值优势。本轮不开发预测器或新算法项目。

@@ -1,5 +1,11 @@
 # 当前进度（2026-11-11）
 
+## Gate 33 · PR #4 合并前 No-Go
+
+本节仅存在于 `codex/gate33-pr4-acceptance` 验收文档分支，PR head `dbb7d190` 和 main `f832f84` 未改。七个指定历史停止回合已只读提取，均有 SDK 保存的 reasoning；原文、合法恢复动作和归因边界见 [实验 035](experiments/035-advice-enforcement-and-assignment.md#2026-11-11--历史停止审计与-pr-4-验收)。模型自述不作因果证明。
+
+云端独立 worktree 直接运行 62 项 ToolMaze CPU 和 5 项防泄漏测试均通过，但额外复现发现：生成器输入使发布合同接入被跳过；已有有效 ID 时，两次查询失败仍使规则停止，尽管真实复核可成功。暂缓合并及八回合实验，未自行修实现或改冻结条件，本轮模型请求 0。日志和复现代码在 `results/035-gate33-pr4-review-01/`，历史提取在 `results/035-gate33-history-audit-01/`。先修复并复核新 SHA，再请用户批准合并；之后才运行实验 035，优先回答强制合法工具后 LLM 绑参与原生续程是否可行。
+
 ## Gate 32 · 序贯恢复机制 Go，规则未解决 not_found
 
 [实验 034](experiments/034-sequential-recovery-decision.md)、[ADR-0031](adr/0031-sequential-recovery-decision.md)。预登记 `134c99d`，运行提交 `4efd6b0`，在 main 推进。新增公开反馈后的写入恢复检查点与 Simple Feedback Rule 工具选择包装；合同、执行器、原生 Agent、评分和历史审计保持原样，动作估值全部 unknown、支持 0。最终云端 58 项 ToolMaze 回归/专项及 5 项防泄漏通过。
