@@ -110,6 +110,21 @@ bash scripts/run_gate33.sh agent
 
 云端终端在未修改的 PR head `dbb7d19` 上复现了两处缺陷，结论为合并前 No-Go，由用户于 2026-11-11 转达。复现材料是 CPU 接口证人，保存在云端（`edge_repro.py`、`edge-repro.json`），不是真实模型的效果样本。复核时模型请求为 0，未启动服务，未改 main 和 PR head。本机在同一提交上复现了两处，现象与云端描述一致。
 
+**云端第一次验收的原始记录。** 云端自己写的 No-Go 记录在分支 `codex/gate33-pr4-acceptance` 的提交 `28b1732`，该分支未并入 main，证据目录为云端 `results/035-gate33-pr4-review-01/`。其中的验收表原样收录如下，两处缺陷的原文与下面两段内容一致，不再重复。
+
+> 工作树 `/home/ubuntu/Song/Agent-worktrees/gate33-pr4-dbb7d19` 固定于 PR head，直接执行该树的 Python 测试，未调用写死 main 路径的 `run_gate33.sh cpu`。仅临时链接云端已有 ToolMaze 数据，测试后移除本轮链接，未改源数据或下载结果。日志、源码哈希及边界复现保存在 `results/035-gate33-pr4-review-01/`。
+>
+> | 检查 | 结果与边界 |
+> | --- | --- |
+> | 全部 test_toolmaze*.py | 62 项通过：原 50 项加序贯 12 项；无既有回归失败 |
+> | test_no_leakage.py | 5 项通过 |
+> | 启动脚本 | Bash 语法检查通过，未在审查 worktree 运行硬编码 main 的脚本 |
+> | 三组差异 | ReAct 保留完整工具/原提示；advice_only 保留完整工具、建议句且无规则 tool_choice；simple_feedback 单工具、规则句及对应 tool_choice |
+> | 分配与实际执行 | 假客户端覆盖阶段首次分配、applied/followed、实际工具/参数/accepted、不遵从、伪造引用被拒和不受证据支持时不施加；未把分配当成实际完成 |
+> | 调用边界 | 首查询由 smoke 首 SDK 请求施加；规则强制由规则决策施加；一次分配后恢复原生续程。规则/执行器不代填参数或完成任务。真实 SDK 干预尚未验证 |
+> | 信息隔离 | 上下文只接受公开调用和回执；库存/发布 CPU 证人不传入私有故障状态；所有估值仍 unknown、支持 0 |
+> | 不变性 | AGENTS、公开任务合同、环境执行器/评分、原生 Agent、旧防泄漏文件与 main f832f84 字节一致，哈希在 invariants.json；原历史未写入或重新计价 |
+
 **缺陷一：发布家族在回合循环里拿不到合同。** `sequential_contract` 对每个候选合同各调用一次 `set(tool_names)`，而回合循环传入的是生成器。库存候选先把它耗尽，发布候选看到空集，返回 `None`。结果是发布任务经 `run_episode` 运行时检查点为 0 个，而对同一公开历史直接重建上下文是 `commit_unknown`。原有发布测试只传列表，并且绕过了回合循环，所以没有发现。
 
 **缺陷二：规则在已有有效标识时仍因查询失败而停止。** `simple_feedback_action` 把“连续两次查询失败即停”放在所有判断之前。写入超时、查询拿到单一实际标识、之后两次查询失败时，上下文仍是 `verify_existing`，复核工具仍在允许集合内，规则却选择停止；用该标识调用复核工具实际返回 active 并解除义务。两个家族都复现。
