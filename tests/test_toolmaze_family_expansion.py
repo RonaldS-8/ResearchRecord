@@ -1,6 +1,8 @@
 """Gate 29 business-state and Agent-interface acceptance on authored development tasks."""
 
+from contextlib import redirect_stdout
 from copy import deepcopy
+from io import StringIO
 import json
 import os
 from pathlib import Path
@@ -13,6 +15,7 @@ from extensions.toolmaze_recovery.environment import RecoverySession, RELEASE_TI
 from extensions.toolmaze_recovery.families import DENIED, EXPIRED
 from extensions.toolmaze_recovery.run import smoke
 from extensions.toolmaze_recovery.tasks import DEVELOPMENT, LINEAGE, RESOURCE_FIELDS
+from scripts.audit_illegal_calls import breakdown, illegal_rules, main as audit_illegal_calls
 from evaluation.agents.vllm_agent import VLLMAgent
 from openai.types.chat import ChatCompletion
 
@@ -249,6 +252,88 @@ class FamilyExpansionTests(unittest.TestCase):
         mirror = session.call("read_artifact_mirror", {"artifact_key": "882"})
         self.assertIn("'artifact_key'", mirror["details"][0])
         self.assertEqual(len(session.family_backend.records), 1)
+
+    def test_rejected_calls_are_classified_by_rule_from_stored_results(self):
+        stock = RecoverySession("stock-reservation")
+        inventory = acquire(stock, 0)
+        hold = {"sku": "P-140", "quantity": 3, "evidence_ref": inventory["inventory_ref"]}
+        stock.call("get_case_record", {"case_id": "HD-417"})
+        stock.call("get_depot_inventory", {})
+        stock.call("get_depot_inventory", {"sku": "P-140", "depot": "D4"})
+        stock.call("reserve_stock", {**hold, "quantity": "3"})
+        stock.call("read_depot_count", {"item_code": "140"})
+        stock.call("reserve_stock", {**hold, "evidence_ref": "0" * 24})
+        stock.call("get_reservation_status", {"reservation_id": "0" * 24})
+        access = RecoverySession("facility-access")
+        access.call("read_hr_clearance", {"employee_number": "204"})
+        access.call("set_facility_access", {**access_args(access, acquire(access, 0)),
+                                            "expires_at": "2026-11-30T18:00:00+00:00"})
+        release = RecoverySession("artifact-release")
+        release.call("inspect_project_release", {"project": release.goal.project, "version": "v1.4.2"})
+        rejected = [event for session in (stock, access, release) for event in session.events if event["illegal"]]
+        self.assertEqual([illegal_rules(event) for event in rejected], [
+            ("unadvertised_tool",), ("argument_schema", "task_scope"), ("argument_schema",),
+            ("argument_schema",), ("task_scope",), ("business_precondition",), ("business_precondition",),
+            ("task_scope",), ("argument_schema",), ("task_scope",),
+        ])
+        self.assertEqual([event["fee"] for event in rejected], [0, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+        self.assertEqual(illegal_rules(stock.events[0]), ())
+        # Archived episodes carry the wording from before the Gate 30 contract revision.
+        for detail in ("The resource is outside this task's authorized scope.",
+                       "The request reference is outside this task's authorized scope.",
+                       "The project is outside this task's authorized scope."):
+            old = {"illegal": True, "result": {"error": "Validation failed", "details": [detail]}}
+            self.assertEqual(illegal_rules(old), ("task_scope",))
+        for result in ({"error": "Validation failed", "details": ["A rule added later."]}, {"error": "Other."}):
+            self.assertEqual(illegal_rules({"illegal": True, "result": result}), ("unclassified",))
+
+    def test_breakdown_isolates_the_illegal_call_veto_and_leaves_archives_untouched(self):
+        def episode(slip, answer="Finished.", omit=False):
+            session = RecoverySession("facility-access")
+            if slip:
+                session.call("read_hr_clearance", {"employee_number": "204"})
+            finish(session, acquire(session, 1), omit=omit)
+            return {**evaluate(session, answer), "answer": answer}
+
+        slipped = episode(True)
+        stored = json.dumps(slipped, sort_keys=True)
+        view = breakdown(slipped)
+        self.assertEqual(json.dumps(slipped, sort_keys=True), stored)
+        # The Gate 29 facility episode: correct end state, one rejected identifier, strict denied.
+        self.assertEqual((slipped["strict_success"], slipped["issues"]), (False, []))
+        self.assertEqual((view["strict_success"], view["issues"], view["illegal_calls"]), (False, [], 1))
+        self.assertEqual(view["by_rule"]["task_scope"], 1)
+        self.assertEqual(sum(view["by_rule"].values()), 1)
+        self.assertEqual((view["charged_fee"], view["with_recorded_effect"]), (1, 0))
+        self.assertTrue(view["count_matches_archive"] and view["strict_denied_only_by_illegal_calls"])
+        clean = episode(False)
+        self.assertTrue(clean["strict_success"])
+        self.assertFalse(breakdown(clean)["strict_denied_only_by_illegal_calls"])
+        for other in (episode(True, "Blocked: stopped."), episode(True, omit=True)):
+            self.assertFalse(breakdown(other)["strict_denied_only_by_illegal_calls"])
+
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name, row in (("slipped", slipped), ("clean", clean)):
+                (root / "archive" / name).mkdir(parents=True)
+                (root / "archive" / name / "episode.json").write_text(json.dumps(row))
+            (root / "archive" / "slipped" / "config.json").write_text(json.dumps({"task": "facility-access"}))
+            before = {path: path.read_bytes() for path in root.rglob("*.json")}
+            with redirect_stdout(StringIO()):
+                report = audit_illegal_calls([str(root / "archive"), "--out", str(root / "report.json")])
+                with self.assertRaises(FileExistsError):
+                    audit_illegal_calls([str(root / "archive"), "--out", str(root / "report.json")])
+            self.assertEqual({path: path.read_bytes() for path in before}, before)
+            self.assertEqual(json.loads((root / "report.json").read_text()), report)
+        self.assertEqual(report["summary"], {
+            "episodes": 2, "episodes_with_illegal_calls": 1, "illegal_calls": 1,
+            "by_rule": {"unadvertised_tool": 0, "argument_schema": 0, "task_scope": 1,
+                        "business_precondition": 0, "unclassified": 0},
+            "charged_fee": 1, "with_recorded_effect": 0, "strict_denied_only_by_illegal_calls": 1,
+            "count_mismatches": 0,
+        })
+        self.assertEqual([row["task"] for row in report["episodes"]], [None, "facility-access"])
+        self.traces.append(report)
 
     def test_assisted_query_forces_only_first_sdk_tool_and_model_binds_args(self):
         for condition in ("write_not_committed", "write_response_lost"):
