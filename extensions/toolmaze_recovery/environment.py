@@ -13,17 +13,20 @@ from .tasks import DEVELOPMENT, DIAGNOSTIC, READS, RESERVATION_LOOKUP, RESOURCE_
 
 WRITE_FAULTS = ("write_not_committed", "write_response_lost")
 FAULTS = ("clean", "transient", "persistent", "correlated", "blocked", *WRITE_FAULTS)
+FAULTS += ("credential_expired", "authorization_denied", "backup_unavailable")
 WRITE_TIMEOUT = {"error": "The reservation request timed out. Its outcome is unknown."}
+RELEASE_TIMEOUT = {"error": "The publication request timed out. Its outcome is unknown."}
 INVALID = "invalid_argument"
 
 
 class ContractExecutor(ToolExecutor):
-    def __init__(self, definitions, resource, request_ref):
+    def __init__(self, definitions, resource, request_ref, scopes=None):
         # Fixtures register in memory. ToolMaze still validates, dispatches and records calls.
         directory = str(Path(__file__).with_name("plugins"))
         super().__init__(directory, directory, SimpleNamespace(get_tool_by_name=definitions.get))
         self.resource = resource
         self.request_ref = request_ref
+        self.scopes = scopes or {}
 
     def _coerce_types(self, tool_name, arguments):
         return arguments
@@ -39,6 +42,9 @@ class ContractExecutor(ToolExecutor):
             errors.append("The resource is outside this task's authorized scope.")
         if "request_ref" in properties and arguments.get("request_ref") != self.request_ref:
             errors.append("The request reference is outside this task's authorized scope.")
+        for field, authorized in self.scopes.items():
+            if field in properties and arguments.get(field) != authorized:
+                errors.append(f"The {field} is outside this task's authorized scope.")
         if "quantity" in properties and type(arguments.get("quantity")) is not int:
             errors.append("Quantity must be an integer.")
         return errors
@@ -49,11 +55,16 @@ class RecoverySession(Session):
         if task not in DEVELOPMENT or fault not in FAULTS:
             raise ValueError("Unknown ToolMaze-Recovery development task or condition")
         self.goal = DEVELOPMENT[task]
-        if fault in WRITE_FAULTS and not self.goal.request_ref:
+        if fault in WRITE_FAULTS and not (self.goal.request_ref or self.goal.family == "release"):
             raise ValueError("Write faults require the request-scoped reservation contract")
+        if fault in ("credential_expired", "authorization_denied") and self.goal.family != "access":
+            raise ValueError("Credential and approval conditions require the facility contract")
+        if fault == "backup_unavailable" and self.goal.family not in ("release", "access"):
+            raise ValueError("Backup condition requires an expansion family")
         catalog = STOCK_WRITE_TOOLS if self.goal.request_ref else TOOLS[self.goal.family]
         definitions = {tool["name"]: tool for tool in deepcopy(catalog)}
-        executor = ContractExecutor(definitions, self.goal.resource, self.goal.request_ref)
+        executor = ContractExecutor(definitions, self.goal.resource, self.goal.request_ref,
+                                    {"project": self.goal.project, "area": self.goal.area})
         engine = SimpleNamespace(tool_executor=executor, tool_definitions=list(definitions.values()),
                                  task_description=self.goal.query)
         super().__init__(task, fault, case=(engine, None), read_tools=READS[self.goal.family])
@@ -70,6 +81,11 @@ class RecoverySession(Session):
             "reserve_stock": self.reserve_stock, "get_reservation_status": self.reservation_status,
             DIAGNOSTIC: self.service_status, RESERVATION_LOOKUP: self.lookup_reservations,
         }
+        self.family_backend = None
+        if self.goal.family in ("release", "access"):
+            from .families import AccessBackend, ReleaseBackend
+            self.family_backend = ReleaseBackend(self) if self.goal.family == "release" else AccessBackend(self)
+            operations.update(self.family_backend.operations())
         for tool in definitions:
             def execute(arguments, context, name=tool):
                 if name in self.read_tools:
@@ -81,11 +97,15 @@ class RecoverySession(Session):
         return {"reads": self.read_tools, "diagnostic": DIAGNOSTIC}
 
     def charge_kind(self, tool):
-        return "diagnosis" if tool in (DIAGNOSTIC, RESERVATION_LOOKUP) else "execution"
+        return "diagnosis" if tool in (
+            DIAGNOSTIC, RESERVATION_LOOKUP, "inspect_project_release", "inspect_facility_credential",
+        ) else "execution"
 
     def fault_result(self, tool):
         if tool not in self.read_tools:
             return None
+        if self.fault == "backup_unavailable":
+            return TIMEOUT if tool == self.read_tools[0] and self.attempts[tool] == 1 else UNAVAILABLE
         attempts = sum(self.attempts[name] for name in self.read_tools)
         if self.fault == "correlated":
             return TIMEOUT if attempts <= 2 else None
@@ -106,6 +126,8 @@ class RecoverySession(Session):
         }
 
     def acquire(self, tool):
+        if self.family_backend is not None:
+            return self.family_backend.acquire(tool)
         goal = self.goal
         reference = token_hex(12)
         self.acquisitions[reference] = {
@@ -225,12 +247,17 @@ def completion_issues(session):
         event = session.events[effect["call"] - 1]
         state = effect["state"]
         # A valid commit can be journaled even when its public write response is lost.
-        ambiguous_write = event["tool"] == "reserve_stock" and event["result"] == WRITE_TIMEOUT
+        ambiguous_write = (
+            event["tool"] == "reserve_stock" and event["result"] == WRITE_TIMEOUT
+            or event["tool"] == "publish_release" and event["result"] == RELEASE_TIMEOUT
+        )
         if (event["tool"] != effect["operation"] or event["illegal"]
                 or ("error" in event["result"] and not ambiguous_write)
                 or any(state.get(key) != value for key, value in event["arguments"].items())
                 or any(state[key] != value for key, value in event["result"].items() if key in state)):
             return ["Write state does not match the actual call and receipt."]
+    if session.family_backend is not None:
+        return session.family_backend.issues()
     if goal.family == "case":
         expected = ["publish_case_note"] + (["send_note_notice"] if goal.recipient else [])
         if len(session.notes) != 1 or len(session.notices) != int(bool(goal.recipient)):
@@ -282,16 +309,22 @@ def evaluate(session, answer):
     strict = responded and not reports_block and not issues and not illegal
     correct_stop = bool(reports_block and blocked == set(session.read_tools) and not acquired
                         and not session.effects and not illegal)
+    if session.family_backend is not None:
+        correct_stop = bool(reports_block and not illegal
+                            and (session.family_backend.denied()
+                                 or blocked == set(session.read_tools))
+                            and not any(e["operation"] in ("publish_release", "set_facility_access")
+                                        for e in session.effects))
     # Recovery is witnessed only if a failed acquisition precedes a successful acquisition.
     failed = [event["call"] for event in session.events if event["tool"] in session.read_tools
               and not event["illegal"] and event["result"] == TIMEOUT]
     successful_reads = Counter(row["tool"] for row in session.acquisitions.values())
     recovered_read = failed and any(row["call"] > failed[0] for row in session.acquisitions.values())
-    recovered_write = strict and any(e["tool"] == "reserve_stock" and e["result"] == WRITE_TIMEOUT
-                                     for e in session.events)
+    recovered_write = strict and any(e["result"] in (WRITE_TIMEOUT, RELEASE_TIMEOUT) for e in session.events)
+    recovered_credential = strict and any(e["result"].get("code") == "credential_expired" for e in session.events)
     return deepcopy({
         "strict_success": strict, "correct_stop": correct_stop, "issues": issues,
-        "recovery_witness": bool(recovered_read or recovered_write),
+        "recovery_witness": bool(recovered_read or recovered_write or recovered_credential),
         "events": session.events, "effects": session.effects, "acquisitions": session.acquisitions,
         "notes": session.notes, "notices": session.notices, "reservations": session.reservations,
         "available_units": session.available_units, "checks": session.checks, "illegal_calls": illegal,
@@ -300,4 +333,5 @@ def evaluate(session, answer):
         "diagnostic_calls": sum(e["kind"] == "diagnosis" for e in session.events),
         "failed_calls": sum("error" in e["result"] for e in session.events),
         "repeated_acquisitions": sum(n - 1 for n in successful_reads.values()),
+        "family_state": session.family_backend.report() if session.family_backend is not None else {},
     })

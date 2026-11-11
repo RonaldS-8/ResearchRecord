@@ -13,8 +13,8 @@ from time import perf_counter
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from .environment import FAULTS, WRITE_FAULTS, WRITE_TIMEOUT, RecoverySession, evaluate
-from .tasks import DEVELOPMENT
+from .environment import FAULTS, RELEASE_TIMEOUT, WRITE_FAULTS, WRITE_TIMEOUT, RecoverySession, evaluate
+from .tasks import DEVELOPMENT, LINEAGE
 from extensions.toolmaze_agent_recovery.methods import ARMS, STOP, History, MethodAgent
 from extensions.toolmaze_agent_recovery.session import BUDGET
 from evaluation.agents.base_agent import AgentAction
@@ -47,14 +47,17 @@ def write_behavior(events):
     ambiguous = False
     blind_retries = 0
     for event in events:
-        if event["tool"] == "reserve_stock" and not event["illegal"]:
+        if event["tool"] in ("reserve_stock", "publish_release") and not event["illegal"]:
             blind_retries += int(ambiguous)
-        if event["tool"] == "reserve_stock" and event["result"] == WRITE_TIMEOUT:
+        if event["result"] in (WRITE_TIMEOUT, RELEASE_TIMEOUT):
             ambiguous = True
         if (event["tool"] == "lookup_reservations_by_request" and not event["illegal"]
                 and event["result"].get("status") in ("found", "not_found")):
             ambiguous = False
-    return {"write_fault_observed": any(e["result"] == WRITE_TIMEOUT for e in events),
+        if (event["tool"] == "inspect_project_release" and not event["illegal"]
+                and isinstance(event["result"].get("release_ids"), list)):
+            ambiguous = False
+    return {"write_fault_observed": any(e["result"] in (WRITE_TIMEOUT, RELEASE_TIMEOUT) for e in events),
             "blind_write_retries": blind_retries}
 
 
@@ -123,9 +126,12 @@ def run_episode(agent, session, *, max_turns=BUDGET, resume=False):
     }
 
 
-def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED):
+def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED, first_tool=None):
     if start_mode not in ("full", "write-checkpoint"):
         raise ValueError("Unknown start mode")
+    if first_tool is not None and (
+            start_mode != "write-checkpoint" or first_tool != "lookup_reservations_by_request"):
+        raise ValueError("First-action assistance is restricted to the registered write checkpoint")
     output.mkdir()
     config = {
         "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
@@ -134,6 +140,13 @@ def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED):
         "python": platform.python_version(), "vllm": version("vllm"), "openai": version("openai"),
         "seed": seed, "temperature": 0, "requests": REQUESTS, "max_tokens": OUTPUT_LIMIT,
         "call_budget": BUDGET, "arm": "react", "start_mode": start_mode,
+        "first_tool_constraint": first_tool,
+        "lineage": {
+            "base_task": LINEAGE[task][0], "shared_implementation": LINEAGE[task][1],
+            "fault_parent": f"{LINEAGE[task][0]}/" + (
+                "ambiguous-write" if condition in WRITE_FAULTS else condition
+            ), "split": "development",
+        },
     }
     (output / "config.json").write_text(json.dumps(config, indent=2))
     agent = VLLMAgent(MODEL, endpoint, temperature=0, max_tokens=OUTPUT_LIMIT, request_timeout=120)
@@ -147,6 +160,8 @@ def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED):
                 raise RuntimeError("MVP request cap reached.")
             calls += 1
             kwargs["seed"] = seed
+            if calls == 1 and first_tool is not None:
+                kwargs["tool_choice"] = {"type": "function", "function": {"name": first_tool}}
             entry = {"request": deepcopy(kwargs)}
             started = perf_counter()
             try:
@@ -176,6 +191,7 @@ def smoke(output, task, condition, endpoint, *, start_mode="full", seed=SEED):
         "prefix_execution_fee": 2 if resume else 0,
         "post_checkpoint_tool_fee": result["tool_fee"] - (2 if resume else 0),
         "duplicate_reservations": max(0, len(result["reservations"]) - 1),
+        "duplicate_publications": max(0, len(result["family_state"].get("releases", {})) - 1),
         "first_request_sha256": sha256(json.dumps(first_request, sort_keys=True).encode()).hexdigest(),
     }
     (output / "episode.json").write_text(json.dumps(report, ensure_ascii=False, indent=2))
@@ -189,5 +205,7 @@ if __name__ == "__main__":
     parser.add_argument("--endpoint", default="http://127.0.0.1:8000/v1")
     parser.add_argument("--start-mode", choices=("full", "write-checkpoint"), default="full")
     parser.add_argument("--seed", type=int, default=SEED)
+    parser.add_argument("--first-tool", choices=("lookup_reservations_by_request",))
     args = parser.parse_args()
-    smoke(args.out, args.task, args.condition, args.endpoint, start_mode=args.start_mode, seed=args.seed)
+    smoke(args.out, args.task, args.condition, args.endpoint, start_mode=args.start_mode,
+          seed=args.seed, first_tool=args.first_tool)

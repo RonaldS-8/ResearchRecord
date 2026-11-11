@@ -15,6 +15,7 @@ from test_toolmaze_agent_recovery import fake_agent
 
 
 DONE = "Finished."
+ORIGINAL_TASKS = ("case-handoff", "case-archive", "stock-reservation", "stock-write-recovery")
 BLOCKED = "Blocked: both compatible acquisition routes report session unavailability."
 REF_KEYS = {
     "get_case_record": "record_ref", "read_case_archive": "archive_ref",
@@ -62,7 +63,7 @@ class RecoveryMVPTests(unittest.TestCase):
         return row
 
     def test_every_development_task_has_two_native_dispatch_routes(self):
-        for task in DEVELOPMENT:
+        for task in ORIGINAL_TASKS:
             for branch in (0, 1):
                 with self.subTest(task=task, branch=branch):
                     session = RecoverySession(task)
@@ -75,7 +76,7 @@ class RecoveryMVPTests(unittest.TestCase):
                     self.assertEqual(len(session.engine.context.history), len(result["events"]))
 
     def test_retry_switch_and_shared_outage(self):
-        for task in DEVELOPMENT:
+        for task in ORIGINAL_TASKS:
             for condition, branch, expected_fees in (("transient", 0, 1), ("persistent", 1, 1),
                                                        ("correlated", 1, 2)):
                 with self.subTest(task=task, condition=condition):
@@ -112,7 +113,7 @@ class RecoveryMVPTests(unittest.TestCase):
         self.assertNotIn("error", retries["transient", False])
 
     def test_stopping_requires_explicit_evidence_from_both_routes(self):
-        for task in DEVELOPMENT:
+        for task in ORIGINAL_TASKS:
             with self.subTest(task=task):
                 session = RecoverySession(task, "blocked")
                 self.assertEqual(read(session, 0), TIMEOUT)
