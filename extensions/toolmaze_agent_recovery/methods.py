@@ -17,6 +17,87 @@ CONTINUATION = "try each remaining read at most once, then execute the same publ
 STOP = "stop"
 
 
+def sequential_write_context(events, contract):
+    """Reconstruct the registered strong-consistency write obligation from public receipts.
+
+    `available` contains evidence-supported, task-safe next tools, rather than all
+    callable APIs. No backend, fault label, score, or reference route is accepted.
+    """
+    pending = None
+    ids = []
+    verified = set()
+    absence = False
+    query_failed = False
+    evidence = set()
+    for event in events:
+        tool, result = event["tool"], event["result"]
+        args = event["arguments"] if isinstance(event["arguments"], dict) else {}
+        if tool in contract["reads"] and "error" not in result:
+            evidence.update(result[key] for key in ("inventory_ref", "count_ticket") if key in result)
+        if tool == contract["write"]:
+            if result == contract["timeout"]:
+                pending = deepcopy(args)
+                absence, query_failed = False, False
+            elif pending is not None and "error" not in result and result.get("reservation_id"):
+                ids.append(result["reservation_id"])
+                absence = False
+        if pending is None:
+            continue
+        if tool == contract["lookup"]:
+            query_failed = "error" in result
+            if query_failed:
+                absence = False
+            if (not query_failed and result.get("request_ref") == pending.get("request_ref")
+                    and isinstance(result.get("reservation_ids"), list)):
+                returned = result["reservation_ids"]
+                if result.get("status") == "found" and returned:
+                    ids = list(dict.fromkeys([*ids, *returned]))
+                    absence = False
+                elif result.get("status") == "not_found" and not returned:
+                    absence = not ids
+        if (tool == contract["verify"] and "error" not in result
+                and args.get("reservation_id") in ids
+                and result.get("reservation_id") == args["reservation_id"]
+                and result.get("status") == "active"
+                and result.get("sku") == pending.get("sku")
+                and result.get("quantity") == pending.get("quantity")
+                and result.get("depot") == "D4"):
+            verified.add(result["reservation_id"])
+    if pending is None or len(ids) == 1 and ids[0] in verified:
+        return None
+    available = [contract["lookup"], *contract["reads"]]
+    if ids:
+        available.append(contract["verify"])
+    elif absence and pending.get("evidence_ref") in evidence:
+        available.append(contract["write"])
+    remaining = BUDGET - len(events)
+    return {
+        "phase": "verify_existing" if ids else "confirmed_absent" if absence else "commit_unknown",
+        "obligation": "Create exactly one requested reservation and read back its active status.",
+        "write_arguments": pending, "reservation_ids": ids,
+        "query_failed": query_failed, "remaining_calls": remaining,
+        "available": [*(available if remaining > 0 else []), STOP],
+    }
+
+
+def unknown_action_values(context, continuation):
+    """No eligible Agent history exists. Do not turn rule witnesses into Agent Q."""
+    return {action: {
+        "status": "unknown", "support": 0, "continuation": continuation,
+        "completion": None, "remaining_tool_fee": None, "remaining_diagnostic_fee": None,
+    } for action in context["available"]}
+
+
+def simple_feedback_action(context, contract):
+    if context["remaining_calls"] <= 0 or context["query_failed"]:
+        return STOP
+    if context["phase"] == "verify_existing":
+        return contract["verify"] if len(context["reservation_ids"]) == 1 else STOP
+    if context["phase"] == "confirmed_absent" and contract["write"] in context["available"]:
+        return contract["write"]
+    return contract["lookup"]
+
+
 def recovery_context(events, contract):
     """Public checkpoint features. Successful acquisition returns control to the Agent."""
     reads = [event for event in events if event["tool"] in contract["reads"]]

@@ -16,6 +16,7 @@ ADR（Architecture Decision Record）记录影响后续工作的重要决策：�
 | [0028](0028-agent-write-recovery.md) | 真实 Agent 写入恢复与覆盖设计 | 已批准四回合行为验收 |
 | [0029](0029-benchmark-family-expansion.md) | main 的 Benchmark 独立家族扩展 | 工程验收 Go，方法实验暂缓 |
 | [0030](0030-public-contract-revision.md) | 公开工具合同修订 | 已批准修订与 CPU 验收 |
+| [0031](0031-sequential-recovery-decision.md) | 新反馈后的序贯恢复检查点 | 已批准机制 MVP、CPU 与四回合开发对照 |
 
 新增时复制 [模板](template.md)，使用递增四位编号与描述性英文文件名，并更新此索引。已接受的决策若被替代，保留旧记录，将其状态改为“被 ADR-xxxx 替代”，再新增记录。只纠正事实和补充验证证据，不重写历史理由。
 
