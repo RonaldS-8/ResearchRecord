@@ -209,6 +209,47 @@ class FamilyExpansionTests(unittest.TestCase):
         self.assertEqual(len({entry[0] for entry in LINEAGE.values()}), 5)
         self.assertEqual(len({entry[1] for entry in LINEAGE.values()}), 4)
 
+    def test_differently_written_values_are_rejected_by_name_without_effects(self):
+        session = RecoverySession("facility-access")
+        goal = session.goal
+        meanings = {row["name"]: row["paradigms"]["function_call"]["spec"]["parameters"]["properties"]
+                    for row in session.public()["tools"]}
+        number = meanings["read_hr_clearance"]["employee_number"]["description"]
+        expiry = meanings["set_facility_access"]["expires_at"]["description"]
+        self.assertIn("complete person identifier", number)
+        self.assertIn("YYYY-MM-DDTHH:MM:SSZ", expiry)
+        shortened = session.call("read_hr_clearance", {"employee_number": "204"})
+        self.assertIn("'employee_number'", shortened["details"][0])
+        self.assertNotIn(goal.resource, json.dumps([number, shortened]))
+        args = access_args(session, acquire(session, 1))
+        # Equivalent instants in another notation used to create an access that could not be corrected.
+        for variant in ("2026-11-30T18:00:00+00:00", "2026-11-30T18:00:00.000Z", "2026-11-30 18:00:00Z"):
+            rejected = session.call("set_facility_access", {**args, "expires_at": variant})
+            self.assertIn("'expires_at'", rejected["details"][0])
+            self.assertNotIn(goal.expires_at, json.dumps([expiry, rejected]))
+        self.assertIsNone(session.family_backend.permission)
+        self.assertFalse(session.effects)
+        self.assertIn("permission_id", session.call("set_facility_access", args))
+        session.call("get_effective_access", {"person_id": goal.resource, "area": goal.area})
+        result = self.result(session)
+        self.assertFalse(result["issues"])
+        self.assertEqual(result["illegal_calls"], 4)
+        self.assertEqual([row["operation"] for row in result["effects"]], ["set_facility_access"])
+
+        session = RecoverySession("artifact-release", "write_response_lost")
+        goal = session.goal
+        self.assertEqual(finish(session, acquire(session, 0)), RELEASE_TIMEOUT)
+        # A version written differently must not be answered with an empty, absence-like list.
+        other = session.call("inspect_project_release", {"project": goal.project, "version": "v1.4.2"})
+        self.assertNotIn("release_ids", other)
+        self.assertIn("'version'", other["details"][0])
+        self.assertNotIn(goal.version, json.dumps(other))
+        found = session.call("inspect_project_release", {"project": goal.project, "version": goal.version})
+        self.assertEqual(found["release_ids"], list(session.family_backend.records))
+        mirror = session.call("read_artifact_mirror", {"artifact_key": "882"})
+        self.assertIn("'artifact_key'", mirror["details"][0])
+        self.assertEqual(len(session.family_backend.records), 1)
+
     def test_assisted_query_forces_only_first_sdk_tool_and_model_binds_args(self):
         for condition in ("write_not_committed", "write_response_lost"):
             native = VLLMAgent("cpu", "http://127.0.0.1:1/v1")
