@@ -37,6 +37,18 @@ agent_root=/home/ubuntu/Song/Agent
   --out results/033-gate31-illegal-call-audit-01.json
 ```
 
+## 本机验收
+
+预登记提交 `e55e356`，代码提交 `54b4428`，分支 `gate30-contract-revision`（`Dependence` 含相同提交），基于 main `939bf19`。本机为 Windows、Python 3.14.7，无 vLLM、无云端归档，没有模型请求。
+
+工具为 `scripts/audit_illegal_calls.py`，只依赖标准库，不导入项目代码，不需要模型或 ToolMaze 数据。没有改 `environment.py`、评分或任何既有结果。
+
+- `test_toolmaze_family_expansion.py` 新增 2 项，均通过；该文件 12 项中 11 项通过，剩下 1 项是既有的辅助查询入口测试，本机缺 vLLM 包而报错，与本轮无关。`test_toolmaze_recovery_mvp.py` 17 项、`test_toolmaze_write_agent.py` 3 项通过。
+- **分类。** 用真实执行器在库存、设施、发布三个家族上制造 10 次被拒调用，覆盖四个类别及一次同时触发两类的调用，分类与预期逐条一致，没有落入 `unclassified`。Gate 30 修订前的三种旧报错文本都归入 `task_scope`。无法识别的报错归入 `unclassified`，不会被悄悄丢掉。
+- **分项与评分的关系。** 复现 Gate 29 设施正常回合的形态：终态正确、1 次标识被拒。原评分为严格未完成、`issues` 为空；分项给出 `task_scope` 1 次、收费 1、无实际效果、“仅因非法调用未获严格完成”为真。无非法调用、报告阻断、缺后续义务三种对照下该标记均为假。
+- **不变性。** 审计前后源文件逐字节相同；输入对象未被修改；报告文件已存在时拒绝写入。
+- 按上面的运行入口，对一份用旧报错文本构造的模拟归档实际执行了命令，汇总与预期一致。这只验证工具，不是历史数据的统计。
+
 ## 结果
 
-待填写。
+**历史归档的分项统计尚未产生。** 归档只在云端，本机无法读取。须由云端终端执行上面的命令，把输出的汇总和逐回合表填到这里，并与预登记的预期（12 回合中 1 次、`task_scope`、收费 1、无效果、1 个回合仅因非法调用未获严格完成）核对。出现 `unclassified`、计数不一致或带效果的非法调用时原样报告。
