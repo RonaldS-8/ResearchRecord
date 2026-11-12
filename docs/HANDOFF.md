@@ -1,5 +1,11 @@
 # 当前进度（2026-11-12）
 
+## Gate 35 · 反馈控制完成，工程 Go，参数修复未成功
+
+PR #11固定b9f4fb2独立104项及038全部20回合复放通过，合并main `f36d094`。实验[039](experiments/039-write-rejection-feedback-control.md)先登记`10a9735`，最小适配/正式108项CPU/真实两回合锁`35f1f36`。默认original不改旧结果，specific仅明确被拒参数类别；详细独立Review见[039审核](reviews/039-pr11-and-feedback-control-review.md)。
+
+P05第一次拒写后的同一真实SDK历史，original直接停止；specific识别content mismatch却重读主工具超时后停止。都无修复写入/回读，新执行费0/1；固定前缀非法1意味着strict必为false，未放宽评分。仅3个SDK请求，无补跑；038原141文件哈希未变。工程Go，“仅澄清文案解决P05”本对No-Go，无新增付费诊断价值证据。下一轮最多12回合信息/无信息诊断与ReAct仅是设计建议，不自动运行；不开展方法或F2。证据results/039-{pr11-cloud-review,feedback-control-cpu,feedback-control-agent,feedback-control-service}-01/。服务2209697已停，GPU464MiB。
+
 ## Gate 34-B · 真实开发完成，工程 Go，方法/F2 不启动
 
 Gate34-A独立验收重新通过94项与全部精确数值，PR #10合并`a5765c54128a603dd772d6e871b1094024da2843`；PR #9关闭未合并。用户已明确授权后续直接推送main，无需逐Gate PR。实验038先登记`f1ca7e8`，适配器/运行/102项CPU锁`9dc67656529fbf08b7d54254320bcdf79861b122`，原夹具/评分/original提示未改。
