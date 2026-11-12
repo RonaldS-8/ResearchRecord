@@ -155,9 +155,8 @@ def round0():
     return out
 
 
-def round1():
-    point, top, unit_top, material, violations, count = None, None, None, 0, [], 0
-    quantiles = []
+def grid():
+    """The registered R1 grid: (parameters, quote, optimum fee, cheaper fixed rule's fee)."""
     for p1, p2, gamma, fee, primary, backup in product(
             (Q(1, 10), Q(3, 10), Q(1, 2), Q(7, 10), Q(9, 10)), (Q(1, 10), Q(3, 10), Q(1, 2), Q(7, 10), Q(9, 10)),
             (Q(1, 2), Q(4, 5), Q(9, 10), Q(1)), (Q(0), Q(1, 10), Q(3, 10)), (Q(1), Q(2), Q(3)),
@@ -166,8 +165,14 @@ def round1():
         cell = binary("grid", {"X1": (Q(1, 2), p1), "X2": (Q(1, 2), p2)}, ((quote, Q(1)),), gamma)
         best, switch, retry = value(cell), value(cell, fixed(0)), value(cell, fixed(1))
         assert best[0] == switch[0] == retry[0] == 1
-        simple = min(switch[1], retry[1])
-        saving, mean = simple - best[1], (p1 + p2) / 2
+        yield (p1, p2, gamma, fee, primary, backup), quote, best[1], min(switch[1], retry[1])
+
+
+def round1():
+    point, top, unit_top, material, violations, count = None, None, None, 0, [], 0
+    quantiles = []
+    for (p1, p2, gamma, fee, primary, backup), quote, best_fee, simple in grid():
+        saving, mean = simple - best_fee, (p1 + p2) / 2
         wasted, premium = primary, max(quote.fee(SWITCH, True) - quote.fee(RETRY, True), Q(0))
         bound = min(mean * premium, (1 - mean) * wasted)
         ceiling = wasted * premium / (wasted + premium)
@@ -364,7 +369,79 @@ def round6():
     return out
 
 
-ROUNDS = {"0": round0, "1": round1, "2": round2, "3": round3, "4": round4, "5": round5, "6": round6}
+def composite():
+    """S4: the four fault types of cells A, G and H together, with context-dependent priors."""
+    faults = {"fast": Fault(Q(1)), "shared": Fault((Q(0), Q(1)), (Q(0), Q(1))),
+              "persistent": Fault(Q(0)), "blocked": Fault(Q(0), Q(0))}
+
+    def mix(*p):
+        return dict(zip(faults, p))
+    return build("S4", faults, {"X1": (Q(1, 3), mix(Q(3, 5), Q(1, 5), Q(1, 10), Q(1, 10))),
+                                "X2": (Q(1, 3), mix(Q(1, 10), Q(1, 10), Q(2, 5), Q(2, 5))),
+                                "X3": (Q(1, 3), mix(Q(3, 10), Q(3, 5), Q(1, 20), Q(1, 20)))})
+
+
+def round7():
+    bound = {"violations": 0, "largest_cap": Q(0), "largest_relative": Q(0)}
+    for _, quote, best_fee, simple in grid():
+        wasted, success = quote.primary, quote.fee(RETRY, True)
+        premium = max(quote.fee(SWITCH, True) - success, Q(0))
+        cap = wasted * premium / ((wasted + premium) * (success + premium))
+        relative = (simple - best_fee) / simple
+        bound["violations"] += relative > cap or cap > Q(1, 4)
+        bound["largest_cap"] = max(bound["largest_cap"], cap)
+        bound["largest_relative"] = max(bound["largest_relative"], relative)
+    out = {"relative_bound": {k: str(v) for k, v in bound.items()}}
+    cell = composite()
+    best = value(cell)
+    orders = {"".join(a[0] for a in seq): ar.order(*seq)
+              for n in (1, 2, 3) for seq in product((RETRY, SWITCH), repeat=n)}
+    rules, _ = named_rules(cell, ar.simulate(cell, ar.uniform, 3000, 0))
+    table = {}
+    value(cell, table=table)
+    pick = {k: (lambda x, r=r: r) for k, r in orders.items()}
+
+    def tasks(rows):
+        return [(Q(1, len(rows)), r["x"], r["quote"]) for r in rows]
+
+    def global_order(rows):
+        return orders[Planner(ar.fit(rows), cell.alphabet()).select(pick, tasks(rows), cell.left)]
+
+    def context_order(rows):
+        planner = Planner(ar.fit(rows), cell.alphabet())
+        chosen = {x: orders[planner.select(pick, [t for t in tasks(rows) if t[1] == x], cell.left)]
+                  for x in {r["x"] for r in rows}}
+        return lambda view: chosen[view.x](view) if view.x in chosen else STOP
+    nothing, context = value(cell, sees=()), value(cell, sees=("x",))
+    out["S4"] = {
+        "public_optimum": show(best), "oracle": show(ar.oracle(cell)),
+        "optimal_plan": {x: [[repr(events), action] for (cx, _, events), action in sorted(table.items(), key=repr)
+                             if cx == x and len(events) <= 2] for x in ("X1", "X2", "X3")},
+        "best_rule_reading": {"no_public_information": show(nothing) + [loss(nothing, best)],
+                              "only_x": show(context) + [loss(context, best)]},
+        "fixed_orders": {k: show(value(cell, r)) + [loss(value(cell, r), best)] for k, r in orders.items()},
+        "named_rules": {k: show(value(cell, r)) + [loss(value(cell, r), best)] for k, r in rules.items()},
+        "learned": learn(cell, cell, ar.uniform, (100, 300, 1000, 3000),
+                         {"learned_fixed_order": global_order, "learned_context_order": context_order,
+                          "acv": acv(cell)})}
+    out["btm_style_variants"] = {}
+    for name, target in {**cells(), "S4": cell}.items():
+        found = ar.btm_statistics(ar.simulate(target, ar.uniform, 3000, 0))
+        top = value(target)
+        variants = {"retry_once": ar.btm_style(found), "compare_switch": ar.btm_style(found, None),
+                    "bar_4/5": ar.btm_style(found, Q(4, 5)),
+                    "retry_once_stop_below_1/2": ar.btm_style(found, poor=Q(1, 2)),
+                    "retry_once_stop_below_3/5": ar.btm_style(found, poor=Q(3, 5))}
+        out["btm_style_variants"][name] = {
+            "public_optimum": show(top),
+            "statistics": {"recovery": {str(k): round(float(v), 4) for k, v in found["recovery"].items()},
+                           "switch": round(float(found["switch"]), 4)},
+            **{k: show(value(target, r)) + [loss(value(target, r), top)] for k, r in variants.items()}}
+    return out
+
+
+ROUNDS = {"0": round0, "1": round1, "2": round2, "3": round3, "4": round4, "5": round5, "6": round6,
+          "7": round7}
 
 
 def main():

@@ -217,6 +217,14 @@ def fixed(retries, backups=3, guard=True):
     return choose
 
 
+def order(*actions):
+    """A fixed sequence of attempts, one per call since the first timeout, then stop."""
+    def choose(view):
+        step = sum(e[0] != "first" for e in view.events)
+        return actions[step] if step < len(actions) and actions[step] in view.legal() else STOP
+    return choose
+
+
 def recent_feedback(good, first=RETRY):
     """Retry while the latest primary error detail is in `good`; otherwise switch."""
     def choose(view):
@@ -403,16 +411,19 @@ def btm_statistics(history):
             "support": {"recovery": {key: len(records) for key, records in task.items()}, "switch": len(switch)}}
 
 
-def btm_style(statistics, bar=Q(1)):
+def btm_style(statistics, bar=Q(1), poor=None):
     """Deterministic CPU proxy of the BTM prompt clauses (gate18.BTM_RETRY, BTM_GUIDANCE,
     BTM_CONSTRAINTS): the same tool again at least once; another try only while the
     (tool, error) recovery belief exceeds `bar` (None: the switch belief); stop only
-    when no route is left. It never buys a diagnostic and never reads x or prices.
-    This is not the original BTM, where an LLM reads these statistics in its prompt."""
+    when no route is left, or, with `poor`, once both beliefs are below it after that
+    first retry ("when both look poor ... stop"). It never buys a diagnostic and never
+    reads x or prices. This is not the original BTM, where an LLM reads these statistics."""
     def choose(view):
         options = view.legal()
         if not view.count(SWITCH):
             belief = statistics["recovery"].get(view.last("first", RETRY), Q(1, 2))
+            if poor is not None and view.count(RETRY) and belief < poor and statistics["switch"] < poor:
+                return STOP
             if RETRY in options and view.left - 1 >= BACKUP_PATH and (
                     not view.count(RETRY) or belief > (statistics["switch"] if bar is None else bar)):
                 return RETRY
