@@ -85,7 +85,7 @@ def bernoulli(rng, probability):
     return rng.randrange(probability.denominator) < probability.numerator
 
 
-def sample(distribution, seed):
+def sample(distribution, seed, *, write_feedback="original"):
     """Sample Z once, then an independent noise coin, with separate RNG domains."""
     context = ("X1" if stream(seed, "context").randrange(2) == 0 else "X2") if distribution.cell == "B" else None
     transient = bernoulli(stream(seed, "fault"), distribution.transient_probability(context))
@@ -94,20 +94,25 @@ def sample(distribution, seed):
     namespace = f"{stream(seed, 'receipts').getrandbits(256):064x}"
     session = MechanismSession(transient, signal=signal, context=context,
                                diagnostic_fee=distribution.diagnostic_fee if distribution.cell == "E" else None,
-                               _namespace=namespace)
+                               write_feedback=write_feedback, _namespace=namespace)
     return session
 
 
 class MechanismSession(Session):
     def __init__(self, transient, *, signal="transient_hint", context=None,
-                 diagnostic_fee=None, _namespace=None):
+                 diagnostic_fee=None, write_feedback="original", _namespace=None):
         if type(transient) is not bool or signal not in ("transient_hint", "persistent_hint"):
             raise ValueError("Invalid private world")
         if context not in (None, "X1", "X2"):
             raise ValueError("Invalid public context")
         if diagnostic_fee is not None and diagnostic_fee not in (Fraction(1, 10), Fraction(1, 2)):
             raise ValueError("Invalid diagnostic price")
+        # "original" is the frozen experiment 038 receipt; "specific" names which
+        # argument a rejected write got wrong. Acceptance is identical in both.
+        if write_feedback not in ("original", "specific"):
+            raise ValueError("Unregistered write feedback condition")
         self.call_budget = CALL_BUDGET
+        self._write_feedback = write_feedback
         self._signal, self._diagnostic_fee = signal, diagnostic_fee
         self._context, self._namespace = context, _namespace or token_hex(32)
         self._issued = 0
@@ -184,7 +189,7 @@ class MechanismSession(Session):
                 source = self.acquisitions.get(certificate["pending_ref"])
             if (source is None or source["record_id"] != args["record_id"] or args["content"] != source["content"]
                     or source["tool"] == BACKUP and certificate is None):
-                return invalid("An actual primary or granularity-verified backup evidence_ref is required.")
+                return invalid(self._write_rejection(source, certificate, args))
             identifier = self._reference()
             state = {"publication_id": identifier, "record_id": RESOURCE, "content": args["content"],
                      "status": "active", "evidence_ref": args["evidence_ref"]}
@@ -199,6 +204,23 @@ class MechanismSession(Session):
             self.checks.append({"call": call, **result})
             return result
         return {"signal": self._signal}
+
+    def _write_rejection(self, source, certificate, args):
+        """Reasons come only from receipts already returned to the caller; never echoes the content."""
+        if self._write_feedback == "original":
+            return "An actual primary or granularity-verified backup evidence_ref is required."
+        if source is None:
+            return ("evidence_ref is not a primary evidence_ref or a validate_record_granularity "
+                    "evidence_ref issued in this task.")
+        if source["tool"] == BACKUP and certificate is None:
+            return ("A raw backup pending_ref is not accepted; use the evidence_ref returned by "
+                    "validate_record_granularity.")
+        reasons = []
+        if source["record_id"] != args["record_id"]:
+            reasons.append("record_id does not match the record of this evidence_ref.")
+        if args["content"] != source["content"]:
+            reasons.append("content does not exactly match the content returned with this evidence_ref.")
+        return " ".join(reasons)
 
     def call(self, tool, arguments):
         # Consume the permission even on a malformed first diagnostic call. The
