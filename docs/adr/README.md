@@ -18,7 +18,7 @@ ADR（Architecture Decision Record）记录影响后续工作的重要决策：�
 | [0030](0030-public-contract-revision.md) | 公开工具合同修订 | 已批准修订与 CPU 验收 |
 | [0031](0031-sequential-recovery-decision.md) | 新反馈后的序贯恢复检查点 | 机制 Go；规则未解决 not_found，方法比较暂缓 |
 | [0032](0032-advice-enforcement-and-first-action-assignment.md) | 建议与强制分离、首动作分配 | 工程与工具级干预机制 Go；估值仍 unknown，方法比较暂缓 |
-| [0033](0033-decision-tradeoff-lineage-and-strong-baselines.md) | 有决策权衡的恢复谱系与强基线冻结设计 | 提议；设计草案待用户审批，未授权实现或运行 |
+| [0033](0033-decision-tradeoff-lineage-and-strong-baselines.md) | 有决策权衡的恢复谱系与强基线冻结设计 | 提议；Gate 34-A 实施前设计收口，待用户审批，未授权实现或运行 |
 
 新增时复制 [模板](template.md)，使用递增四位编号与描述性英文文件名，并更新此索引。已接受的决策若被替代，保留旧记录，将其状态改为“被 ADR-xxxx 替代”，再新增记录。只纠正事实和补充验证证据，不重写历史理由。
 
