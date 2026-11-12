@@ -1,9 +1,13 @@
 """Experiment 040: the macro decision model against the Gate 34 exact reference and its own invariants."""
 from fractions import Fraction as Q
 from itertools import combinations, product
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
 
 from extensions.toolmaze_recovery import autoresearch as ar
+from extensions.toolmaze_recovery import autoresearch_rounds as rounds
 from extensions.toolmaze_recovery.autoresearch import (
     DIAGNOSE, HINTS, PUBLIC, RETRY, STOP, SWITCH, Fault, Planner, Quote, View, build)
 from extensions.toolmaze_recovery.autoresearch_rounds import gate34, hint
@@ -152,6 +156,111 @@ class AutoresearchModelTests(unittest.TestCase):
         # Compared with the switch belief, two saturated Beta means are ordered by support alone.
         self.assertLess(statistics["switch"], statistics["recovery"][None])
         self.assertEqual(ar.btm_style(statistics, None)(View("X2", Quote(), ((RETRY, None),), 5)), RETRY)
+
+
+class AutoresearchRoundTests(unittest.TestCase):
+    """Exact values registered in docs/experiments/040; none of these samples anything."""
+
+    def test_registered_cells_and_their_minimal_public_information(self):
+        expected = {
+            "A": ((1, Q(16, 5)), [set()]), "B": ((1, Q(37, 10)), [{"x"}]), "C": ((1, Q(39, 10)), [{"quote"}]),
+            "D": ((1, Q(4)), [set()]), "E": ((1, Q(37, 10)), [{"signal"}]), "F": ((1, Q(77, 20)), [{"detail"}]),
+            "G": ((Q(1, 2), Q(2)), [set()]), "H": ((1, Q(7, 2)), [set()]),
+            "CX": ((1, Q(43, 10)), [{"quote", "x"}]), "V": ((1, Q(37, 10)), [{"quote", "signal", "x"}]),
+        }
+        cells = rounds.cells()
+        self.assertEqual(set(cells), set(expected))
+        for name, (best, minimal) in expected.items():
+            values = {frozenset(s): ar.value(cells[name], sees=s)
+                      for n in range(5) for s in combinations(sorted(PUBLIC), n)}
+            enough = [s for s, v in values.items() if v == values[PUBLIC]]
+            with self.subTest(cell=name):
+                self.assertEqual(values[PUBLIC], best)
+                self.assertCountEqual([set(s) for s in enough if not any(o < s for o in enough)], minimal)
+        self.assertEqual(ar.value(cells["D"], ar.fixed(1, guard=False)), (Q(4, 5), Q(13, 5)))
+        self.assertEqual(ar.value(cells["D"], ar.simple_feedback), (Q(4, 5), Q(13, 5)))
+        self.assertEqual(ar.value(cells["G"], ar.fixed(1)), (Q(1, 2), Q(3)))
+        self.assertEqual(ar.value(cells["H"], ar.fixed(1)), (1, Q(4)))
+        self.assertEqual(ar.value(cells["CX"], sees=("x",)), (1, Q(217, 50)))
+        self.assertEqual(ar.value(cells["V"], ar.simple_feedback), (1, Q(77, 20)))
+
+    def test_no_policy_saves_more_than_the_headroom_cap(self):
+        for p, gamma, fee, primary, backup in product((Q(1, 10), Q(1, 2), Q(9, 10)), (Q(9, 10), Q(1)),
+                                                      (Q(0), Q(1, 10)), (Q(1), Q(3)), (Q(1, 5), Q(1), Q(5), Q(17))):
+            quote = Quote(backup, fee, primary)
+            cell = rounds.binary("grid", {"X1": (Q(1, 2), p), "X2": (Q(1, 2), 1 - p)}, ((quote, Q(1)),), gamma)
+            simple = min(ar.value(cell, ar.fixed(0))[1], ar.value(cell, ar.fixed(1))[1])
+            wasted, success = primary, quote.fee(RETRY, True)
+            premium = max(quote.fee(SWITCH, True) - success, Q(0))
+            saving = simple - ar.value(cell)[1]
+            self.assertLessEqual(saving, min(premium, wasted) / 2)
+            cap = wasted * premium / ((wasted + premium) * (success + premium))
+            self.assertLessEqual(saving / simple, cap)
+            self.assertLessEqual(cap, Q(1, 4))
+        unit = rounds.binary("grid", {None: (Q(1), Q(1, 2))}, ((Quote(diagnostic=Q(0)), Q(1)),), Q(1))
+        self.assertEqual(ar.value(unit), (1, Q(7, 2)))  # the 12.5% unit-price ceiling is attained
+
+    def test_strict_completion_first_ignores_cost_and_never_stops_on_a_noisy_signal(self):
+        for beta in (Q(99, 100), Q(7, 10)):
+            cell = rounds.binary("U", rounds.one(Q(9, 10)), backup=beta)
+            strict, loose = rounds.optimal_policy(cell), rounds.optimal_policy(cell, tolerance=Q(1, 20))
+            start = View(None, Quote(), (), cell.left)
+            self.assertEqual((strict(start), loose(start)), (SWITCH, RETRY))
+            gain = ar.value(cell)[0] - ar.value(cell, ar.fixed(1))[0]
+            self.assertEqual(gain, Q(1, 10) * (1 - beta) ** 2 * beta)
+            self.assertGreater(ar.value(cell)[1] - ar.value(cell, ar.fixed(1))[1], Q(4, 5))
+        blocked = build("GD", {"persistent": Fault(Q(0), Q(1), signal=hint(Q(9, 10), True)),
+                               "blocked": Fault(Q(0), Q(0), signal=hint(Q(9, 10), False))},
+                        {None: (Q(1), {"persistent": Q(1, 2), "blocked": Q(1, 2)})},
+                        ((Quote(diagnostic=Q(1, 10)), Q(1)),))
+        table = {}
+        self.assertEqual(ar.value(blocked, table=table), (Q(1, 2), Q(5, 2)))
+        self.assertEqual(table[None, blocked.roots[0][2], ()], SWITCH)
+        self.assertNotEqual(table[None, blocked.roots[0][2], ((DIAGNOSE, HINTS[1]),)], STOP)
+
+    def test_composite_cell_and_rule_scoring_on_estimates(self):
+        cell = rounds.composite()
+        self.assertEqual(ar.value(cell), (Q(49, 60), Q(209, 60)))
+        self.assertEqual(ar.value(cell, sees=()), (Q(49, 60), Q(109, 30)))
+        self.assertEqual(ar.value(cell, ar.order(SWITCH, RETRY)), (Q(49, 60), Q(109, 30)))
+        # A rule's futile paid calls are charged when it is scored on estimates.
+        blocked = rounds.cells()["G"]
+        planner = Planner(ar.fit(ar.simulate(blocked, ar.uniform, 4000, 1)), blocked.alphabet())
+        for sequence in ((RETRY,), (RETRY, SWITCH), (RETRY, SWITCH, SWITCH), (SWITCH, SWITCH)):
+            rule = ar.order(*sequence)
+            estimate = planner.node(None, Quote(), (), blocked.left, rule)[1]
+            exact = ar.value(blocked, rule)
+            self.assertAlmostEqual(float(estimate[0]), float(exact[0]), delta=0.04, msg=sequence)
+            self.assertAlmostEqual(float(estimate[1]), float(exact[1]), delta=0.12, msg=sequence)
+        self.assertGreater(planner.node(None, Quote(), (), blocked.left, ar.order(RETRY, SWITCH, SWITCH))[1][1],
+                           planner.node(None, Quote(), (), blocked.left, ar.order(RETRY))[1][1] + Q(1, 2))
+
+    def test_noise_in_estimated_completion_decides_a_strict_planner_and_a_tolerance_stops_it(self):
+        """Round 7 failure, seed 0: equal true completion, estimates about 0.02 apart."""
+        cell = rounds.composite()
+        counts = ar.fit(ar.simulate(cell, ar.uniform, 3000, 0))
+        strict, loose = Planner(counts, cell.alphabet()), Planner(counts, cell.alphabet(), tolerance=Q(1, 20))
+        best = rounds.optimal_policy(cell)
+        for x, wrong in (("X1", SWITCH), ("X2", RETRY)):
+            start = View(x, Quote(), (), cell.left)
+            values = strict.node(x, Quote(), (), cell.left)[2]
+            self.assertLess(abs(values[SWITCH][0] - values[RETRY][0]), Q(1, 20))
+            self.assertGreater(abs(values[SWITCH][1] - values[RETRY][1]), Q(3, 10))
+            self.assertEqual(strict(start), wrong)
+            self.assertEqual(loose(start), best(start))
+            self.assertNotEqual(best(start), wrong)
+        self.assertTrue(ar.better(ar.value(cell, loose), ar.value(cell, strict), Q(1, 20)))
+
+    def test_result_digest_ignores_run_metadata(self):
+        with TemporaryDirectory() as directory:
+            paths = []
+            for index, commit in enumerate(("a", "b")):
+                paths.append(Path(directory) / f"{index}.json")
+                paths[-1].write_text(json.dumps({"commit": commit, "result": {"100": {"k": [1, "1/2"]}}}),
+                                     encoding="utf-8")
+            self.assertEqual(rounds.digest(paths[0]), rounds.digest(paths[1]))
+            paths[1].write_text(json.dumps({"commit": "a", "result": {"100": {"k": [2, "1/2"]}}}), encoding="utf-8")
+            self.assertNotEqual(rounds.digest(paths[0]), rounds.digest(paths[1]))
 
 
 if __name__ == "__main__":

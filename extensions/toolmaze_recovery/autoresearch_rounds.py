@@ -1,6 +1,7 @@
 """Experiment 040 cells and rounds. Registered in docs/experiments/040-*.md before each run."""
 import argparse
 from fractions import Fraction as Q
+from hashlib import sha256
 from itertools import combinations, product
 import json
 from pathlib import Path
@@ -470,6 +471,12 @@ ROUNDS = {"0": round0, "1": round1, "2": round2, "3": round3, "4": round4, "5": 
           "7": round7, "8": round8}
 
 
+def digest(path):
+    """Hash of a result file's "result" field as stored, for comparing runs across machines."""
+    result = json.loads(Path(path).read_text(encoding="utf-8"))["result"]
+    return sha256(json.dumps(result, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()[:16]
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", type=Path, required=True)
@@ -480,10 +487,11 @@ def main():
     dirty = bool(subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=no"], text=True).strip())
     for number in args.rounds:
         # Exclusive creation: an earlier result, including a failed or negative one, is never overwritten.
-        with (args.out / f"round{number}.json").open("x", encoding="utf-8") as stream:
+        path = args.out / f"round{number}.json"
+        with path.open("x", encoding="utf-8") as stream:
             json.dump({"commit": commit, "uncommitted_changes": dirty, "round": number,
                        "result": ROUNDS[number]()}, stream, indent=1, ensure_ascii=False)
-        print(f"round {number} written")
+        print(f"round {number} written, result sha256 {digest(path)}")
 
 
 if __name__ == "__main__":
