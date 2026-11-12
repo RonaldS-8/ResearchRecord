@@ -356,3 +356,7 @@ E 同时报告强制购买诊断的最优续程费用、自由选择的最优费
 云端复现：在此代码提交的独立工作树，设置 `PYTHONPATH="$PWD/benchmarks/ToolMaze:$PWD/tests:$PWD"`，使用已有 `/home/ubuntu/Song/Agent/.venv/bin/python -B` 运行两项 unittest discover，再执行 `-m extensions.toolmaze_recovery.gate34a_cpu --out <不存在的新目录>`。旧数据仅需只读临时链接；不用任何写死 main 路径的模型脚本。
 
 CPU Go 的边界是“合法机制及理想续程理论成立”。它没有验证 LLM 会选择、绑定或完成这些路径，没有估计 Q^π_Agent；普通策略也未获知理论生成律。下一阶段如需验证真实 Agent 在原始提示下能否完成新凭据链，应另行预登记与批准；本轮在 CPU 验收结束处停止。
+
+### 后续独立复核与合并
+
+2026-11-12：固定cd7d0b0在全新detached worktree重新通过94项测试和全部计数。仅用真实合同的另一套有限递归及独立联合概率表复算全部理论值一致。1,359/2,380/5,688分别为规范合法工具状态抽象中的决策节点/不同结果对/真实转换，不是任意参数、答复或随机LLM策略的完整空间；不读隐藏状态的确定性最优值在此抽象下保持。PR #10合并a5765c54128a603dd772d6e871b1094024da2843，PR #9关闭未合并。证据results/037-gate34a-independent-review-01/。后续已授权的真实模型开发见实验038，未实现未批准的方法。
