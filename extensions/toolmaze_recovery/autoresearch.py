@@ -339,7 +339,7 @@ class Planner:
             values = {STOP: (Q(), Q())}
             options = legal(left, events, quote.diagnostic is not None)
             if policy is not None:
-                options = [a for a in options if a == policy(View(None, quote, events, left))]
+                options = [a for a in (policy(View(None, quote, events, left)),) if a in options]
             for action in options:
                 chances = self.outcome(context, events, action) if action != STOP else None
                 if chances is None:
@@ -368,9 +368,14 @@ class Planner:
     def select(self, candidates, tasks, left=CALLS_LEFT):
         """Name of the candidate with the best estimated value over (weight, x, quote) tasks.
         A candidate maps x to a rule, because estimated nodes carry no x."""
+        weights = defaultdict(Q)
+        for w, x, quote in tasks:
+            weights[x, quote] += w
+
         def estimate(rule):
-            pairs = [(w, self.node(self.key(x, quote), quote, (), left, rule(x))[1])
-                     for w, x, quote in tasks]
+            rules = {x: rule(x) for x, _ in weights}
+            pairs = [(w, self.node(self.key(x, quote), quote, (), left, rules[x])[1])
+                     for (x, quote), w in weights.items()]
             return tuple(sum((w * v[i] for w, v in pairs), Q()) for i in (0, 1))
         best = None
         for name, rule in candidates.items():
