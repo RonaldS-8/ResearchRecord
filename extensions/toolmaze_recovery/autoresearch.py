@@ -361,9 +361,14 @@ class Planner:
                         completion, fee = completion + p * c, fee + p * (quote.fee(action) + f)
                 values[action] = (completion, fee)
             chosen = STOP
-            for action in ACTIONS:
-                if action in values and better(values[action], values[chosen], self.tolerance):
-                    chosen = action
+            if policy is not None:
+                # A rule is scored on the action it takes, including a futile paid call;
+                # an illegal or unsupported action counts as stopping.
+                chosen = options[0] if options and options[0] in values else STOP
+            else:
+                for action in ACTIONS:
+                    if action in values and better(values[action], values[chosen], self.tolerance):
+                        chosen = action
             self.cache[cached] = (chosen, values[chosen], values)
         return self.cache[cached]
 
@@ -380,9 +385,11 @@ class Planner:
         for w, x, quote in tasks:
             weights[x, quote] += w
 
+        total = sum(weights.values(), Q())
+
         def estimate(rule):
             rules = {x: rule(x) for x, _ in weights}
-            pairs = [(w, self.node(self.key(x, quote), quote, (), left, rules[x])[1])
+            pairs = [(w / total, self.node(self.key(x, quote), quote, (), left, rules[x])[1])
                      for (x, quote), w in weights.items()]
             return tuple(sum((w * v[i] for w, v in pairs), Q()) for i in (0, 1))
         best = None

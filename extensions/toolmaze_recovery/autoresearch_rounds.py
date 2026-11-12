@@ -381,6 +381,27 @@ def composite():
                                 "X3": (Q(1, 3), mix(Q(3, 10), Q(3, 5), Q(1, 20), Q(1, 20)))})
 
 
+def order_learners(cell, tolerance=Q()):
+    """Fixed attempt orders chosen on the planner's own estimates: one for all tasks, or one per x."""
+    orders = {"".join(a[0] for a in seq): ar.order(*seq)
+              for n in (1, 2, 3) for seq in product((RETRY, SWITCH), repeat=n)}
+    pick = {k: (lambda x, r=r: r) for k, r in orders.items()}
+
+    def tasks(rows):
+        return [(Q(1, len(rows)), r["x"], r["quote"]) for r in rows]
+
+    def global_order(rows):
+        planner = Planner(ar.fit(rows), cell.alphabet(), tolerance=tolerance)
+        return orders[planner.select(pick, tasks(rows), cell.left)]
+
+    def context_order(rows):
+        planner = Planner(ar.fit(rows), cell.alphabet(), tolerance=tolerance)
+        chosen = {x: orders[planner.select(pick, [t for t in tasks(rows) if t[1] == x], cell.left)]
+                  for x in {r["x"] for r in rows}}
+        return lambda view: chosen[view.x](view) if view.x in chosen else STOP
+    return orders, global_order, context_order
+
+
 def round7():
     bound = {"violations": 0, "largest_cap": Q(0), "largest_relative": Q(0)}
     for _, quote, best_fee, simple in grid():
@@ -394,24 +415,10 @@ def round7():
     out = {"relative_bound": {k: str(v) for k, v in bound.items()}}
     cell = composite()
     best = value(cell)
-    orders = {"".join(a[0] for a in seq): ar.order(*seq)
-              for n in (1, 2, 3) for seq in product((RETRY, SWITCH), repeat=n)}
+    orders, global_order, context_order = order_learners(cell)
     rules, _ = named_rules(cell, ar.simulate(cell, ar.uniform, 3000, 0))
     table = {}
     value(cell, table=table)
-    pick = {k: (lambda x, r=r: r) for k, r in orders.items()}
-
-    def tasks(rows):
-        return [(Q(1, len(rows)), r["x"], r["quote"]) for r in rows]
-
-    def global_order(rows):
-        return orders[Planner(ar.fit(rows), cell.alphabet()).select(pick, tasks(rows), cell.left)]
-
-    def context_order(rows):
-        planner = Planner(ar.fit(rows), cell.alphabet())
-        chosen = {x: orders[planner.select(pick, [t for t in tasks(rows) if t[1] == x], cell.left)]
-                  for x in {r["x"] for r in rows}}
-        return lambda view: chosen[view.x](view) if view.x in chosen else STOP
     nothing, context = value(cell, sees=()), value(cell, sees=("x",))
     out["S4"] = {
         "public_optimum": show(best), "oracle": show(ar.oracle(cell)),
@@ -440,8 +447,27 @@ def round7():
     return out
 
 
+def round8():
+    """Completion ties within a tolerance, where completion itself has to be estimated."""
+    out, sizes = {}, (100, 300, 1000, 3000)
+    tolerances = {"0": Q(0), "0.01": Q(1, 100), "0.02": Q(1, 50), "0.05": Q(1, 20), "0.1": Q(1, 10), "0.3": Q(3, 10)}
+    targets = {"S4": composite(), "G": cells()["G"], "D": cells()["D"],
+               "U_beta_0.7": binary("U", one(Q(9, 10)), backup=Q(7, 10))}
+    for name, cell in targets.items():
+        variants = {f"acv_tolerance_{k}": acv(cell, tolerance=t) for k, t in tolerances.items()}
+        if name == "S4":
+            for k in ("0", "0.05"):
+                _, global_order, context_order = order_learners(cell, tolerances[k])
+                variants[f"learned_fixed_order_tolerance_{k}"] = global_order
+                variants[f"learned_context_order_tolerance_{k}"] = context_order
+        out[name] = {"strict_optimum": show(value(cell)),
+                     "tolerance_0.05_optimum": show(value(cell, tolerance=Q(1, 20))),
+                     **learn(cell, cell, ar.uniform, sizes, variants)}
+    return out
+
+
 ROUNDS = {"0": round0, "1": round1, "2": round2, "3": round3, "4": round4, "5": round5, "6": round6,
-          "7": round7}
+          "7": round7, "8": round8}
 
 
 def main():
