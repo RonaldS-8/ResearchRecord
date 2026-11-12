@@ -121,6 +121,57 @@ class Gate34ATests(unittest.TestCase):
         self.assertIn("error", session.call(VERIFY, {"publication_id": "guessed"}))
         self.assertFalse(self.outcome(session, label="guessed_readback")["strict_success"])
 
+    def test_specific_write_feedback_names_the_wrong_argument(self):
+        original = "An actual primary or granularity-verified backup evidence_ref is required."
+        content = "content does not exactly match the content returned with this evidence_ref."
+        record = "record_id does not match the record of this evidence_ref."
+        foreign = "evidence_ref is not a primary evidence_ref or a validate_record_granularity evidence_ref issued in this task."
+        other = self.start(_namespace="other-task")
+        foreign_certificate = self.finish(other, BACKUP, omit=True)[0]["evidence_ref"]
+        # expected=None: the executor's scope check answers before the fixture, in both conditions.
+        cases = (
+            (MAIN, {"content": CONTENT[:-1]}, False, content),
+            (MAIN, {}, True, record),
+            (MAIN, {"content": "wrong"}, True, f"{record} {content}"),
+            (MAIN, {"evidence_ref": "fake"}, False, foreign),
+            (MAIN, {"evidence_ref": foreign_certificate}, False, foreign),
+            (BACKUP, {}, False, "A raw backup pending_ref is not accepted; use the evidence_ref returned by "
+                                "validate_record_granularity."),
+            (VALIDATE, {"content": CONTENT[:-1]}, False, content),
+            (MAIN, {"record_id": "REC-other"}, False, None),
+        )
+        for source, changes, rescope, expected in cases:
+            rows = {}
+            for condition in ("original", "specific"):
+                session = self.start(write_feedback=condition, _namespace="same-task")
+                if source == VALIDATE:
+                    self.call(session, BACKUP)
+                receipt = self.call(session, source)
+                ref = receipt.get("evidence_ref") or receipt["pending_ref"]
+                if rescope:
+                    session.acquisitions[ref]["record_id"] = "other"
+                result = session.call(WRITE, {"record_id": RESOURCE, "content": CONTENT,
+                                               "evidence_ref": ref, **changes})
+                if expected is None:
+                    self.assertNotIn(result["error"], (original, record, content, foreign))
+                else:
+                    self.assertEqual(result["error"], original if condition == "original" else expected)
+                self.assertNotIn(CONTENT, json.dumps(result))
+                self.assertFalse(session.publications or session.effects)
+                self.assertTrue(session.events[-1]["illegal"])
+                rows[condition] = self.outcome(session, label=f"{condition}:{source}:{changes}")
+            # Only the error text differs: acceptance, legality, fees and score are unchanged.
+            for row in rows.values():
+                row["events"][-1]["result"].pop("error")
+            self.assertEqual(rows["original"], rows["specific"])
+        session = self.start(write_feedback="specific")
+        self.finish(session, BACKUP)
+        self.assertTrue(self.outcome(session)["strict_success"])
+        self.assertEqual(sample(Distribution("A"), 1, write_feedback="specific")._write_feedback, "specific")
+        self.assertEqual(sample(Distribution("A"), 1)._write_feedback, "original")
+        with self.assertRaises(ValueError):
+            MechanismSession(True, write_feedback="verbose")
+
     def test_duplicate_write_no_extra_effect_but_strict_failure(self):
         session = self.start()
         self.finish(session)
