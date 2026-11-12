@@ -1,4 +1,12 @@
-# 当前进度（2026-11-11）
+# 当前进度（2026-11-12）
+
+## 实验 036 · 退出措辞对照完成，工程 Go
+
+用户批准 PR #8 工程合并和四回合逐字提示实验。最终 head `233ec9e` 相比已验收 `8d65a8b` 仅改 ADR-0033/实验 037；合并及运行提交 `eb157c878a4ed507112894f863b0ad34910dec87`。合并后 67 项 ToolMaze 和 5 项防泄漏测试通过，提交锁一致。
+
+[实验 036](experiments/036-exit-wording-control.md)记录全部请求核验、真实动作、费用和格式分析。original 两例重现 Gate 33 的 not_found 停止、found 复核完成；removed 在 not_found 仍停止，且 found 也停止、漏掉实际 ID 的状态复核。四份答复均无 Blocked: 前缀，换中性答复的只读评分核验不改变结果，失败不是格式导致。9 次 SDK 请求，无非法调用/盲重试/重复效果，无补跑或改提示。
+
+证据在云端 `results/036-exit-wording-cpu-01/`、`036-exit-wording-agent-01/`、`036-exit-wording-service-01/`；原始首请求完整匹配 Gate 33，删除组只少三句话。工程 Go；建议后续共同提示沿用 original，不据单次观察推断概率或一般因果结论。专用服务已停止，GPU 464 MiB。实验 037 仍未冻结，未实现 Gate 34 或新方法。
 
 ## Gate 33 · PR #4 已合并，真实工具干预 Go
 
