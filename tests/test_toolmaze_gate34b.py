@@ -108,6 +108,30 @@ class Gate34BTests(unittest.TestCase):
                          [MAIN,BACKUP,VALIDATE,WRITE,VERIFY])
         self.assertNotIn('tool_choice',requests[-1])
 
+    def test_write_feedback_condition_reaches_the_model_and_only_changes_that_text(self):
+        # The experiment 038 P05 mistake: the trailing period dropped from the content.
+        plan = [*backup_plan()[:2],
+                (WRITE, lambda r: {"record_id": RESOURCE, "content": r[-2]["content"][:-1],
+                                   "evidence_ref": r[-1]["evidence_ref"]})]
+        runs = {}
+        for condition in ("original", "specific"):
+            s = MechanismSession(False, write_feedback=condition, _namespace="gate34b-cpu")
+            s.call(MAIN, {"record_id": RESOURCE})
+            a, requests = client_agent(plan)
+            r = run_episode(a, s)
+            self.assertFalse(r["strict_success"])
+            self.assertFalse(s.effects)
+            self.assertTrue(s.events[-1]["illegal"])
+            runs[condition] = (requests, r)
+        (old_requests, old), (new_requests, new) = runs["original"], runs["specific"]
+        self.assertEqual(json.loads(old_requests[-1]["messages"][-1]["content"])["error"],
+                         "An actual primary or granularity-verified backup evidence_ref is required.")
+        self.assertEqual(json.loads(new_requests[-1]["messages"][-1]["content"])["error"],
+                         "content does not exactly match the content returned with this evidence_ref.")
+        self.assertEqual(old_requests[:-1], new_requests[:-1])
+        self.assertEqual(old_requests[-1]["messages"][:-1], new_requests[-1]["messages"][:-1])
+        self.assertEqual((old["suffix_fee"], old["illegal_calls"]), (new["suffix_fee"], new["illegal_calls"]))
+
     def test_budget_attempt_saved_not_executed_or_automatically_finished(self):
         a,_=client_agent([(BACKUP,{"record_id":RESOURCE})]*7)
         s=session()
