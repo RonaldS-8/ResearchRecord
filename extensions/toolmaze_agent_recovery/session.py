@@ -109,6 +109,12 @@ class Session:
     def charge_kind(self, tool):
         return "execution"
 
+    def call_fee(self, tool):
+        return 1
+
+    def billable_call(self, tool, arguments):
+        return isinstance(tool, str) and tool in self.tools and isinstance(arguments, dict)
+
     def valid_arguments(self, tool, arguments):
         return not self.engine.tool_executor._validate(tool, arguments)
 
@@ -117,11 +123,11 @@ class Session:
         return {
             "task": self.engine.task_description,
             "tools": deepcopy(definitions),
-            "prices": {tool: 1 for tool in sorted(self.tools)},
+            "prices": {tool: self.call_fee(tool) for tool in sorted(self.tools)},
         }
 
     def call(self, tool, arguments):
-        if len(self.events) >= BUDGET:
+        if len(self.events) >= getattr(self, "call_budget", BUDGET):
             raise ValueError("Call budget exhausted")
         executor = self.engine.tool_executor
         step = len(self.events) + 1
@@ -142,14 +148,15 @@ class Session:
                 valid = valid and tool in executor.plugins
                 self.events.append({
                     "call": step, "tool": tool, "arguments": deepcopy(coerced), "result": deepcopy(result),
-                    "fee": 1, "illegal": not valid, "kind": kind,
+                    "fee": self.call_fee(tool), "illegal": not valid, "kind": kind,
                 })
                 return deepcopy(result)
             self.engine.context.record(step, tool, coerced, result, "error")
             arguments = coerced
         self.events.append({
             "call": step, "tool": tool, "arguments": deepcopy(arguments), "result": deepcopy(result),
-            "fee": int(advertised), "illegal": not advertised, "kind": kind,
+            "fee": self.call_fee(tool) if self.billable_call(tool, arguments) else 0,
+            "illegal": not advertised, "kind": kind,
         })
         return deepcopy(result)
 
