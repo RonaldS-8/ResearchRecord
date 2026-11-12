@@ -112,6 +112,9 @@ class Session:
     def call_fee(self, tool):
         return 1
 
+    def billable_call(self, tool, arguments):
+        return isinstance(tool, str) and tool in self.tools and isinstance(arguments, dict)
+
     def valid_arguments(self, tool, arguments):
         return not self.engine.tool_executor._validate(tool, arguments)
 
@@ -152,7 +155,8 @@ class Session:
             arguments = coerced
         self.events.append({
             "call": step, "tool": tool, "arguments": deepcopy(arguments), "result": deepcopy(result),
-            "fee": self.call_fee(tool) if advertised else 0, "illegal": not advertised, "kind": kind,
+            "fee": self.call_fee(tool) if self.billable_call(tool, arguments) else 0,
+            "illegal": not advertised, "kind": kind,
         })
         return deepcopy(result)
 

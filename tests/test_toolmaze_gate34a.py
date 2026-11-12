@@ -145,6 +145,7 @@ class Gate34ATests(unittest.TestCase):
                      {"record_id": "another"}, [], None):
             session = MechanismSession(True)
             self.assertIn("error", session.call(MAIN, args))
+            self.assertEqual(Q(session.events[-1]["fee"]), 1)
             self.assertEqual(session.attempts[MAIN], 0)
             self.assertEqual(session.call(MAIN, {"record_id": RESOURCE}), TIMEOUT)
             self.assertEqual(session.attempts[MAIN], 1)
@@ -178,10 +179,12 @@ class Gate34ATests(unittest.TestCase):
             row = self.outcome(session, label="repeated_diagnostic")
             self.assertEqual(Q(row["diagnostic_fee"]), 2 * fee)
             json.dumps(session.view())
-        malformed = self.start(diagnostic_fee=Q(1, 10))
-        malformed.call(DIAGNOSE, {})
-        self.assertIn("error", self.call(malformed, DIAGNOSE))
-        self.assertFalse(self.outcome(malformed, label="malformed_diagnostic_consumes_permission")["strict_success"])
+        for args in ({}, None, []):
+            malformed = self.start(diagnostic_fee=Q(1, 10))
+            malformed.call(DIAGNOSE, args)
+            self.assertEqual(Q(malformed.events[-1]["fee"]), Q(1, 10))
+            self.assertIn("error", self.call(malformed, DIAGNOSE))
+            self.assertEqual(Q(self.outcome(malformed, label="malformed_diagnostic_consumes_permission")["diagnostic_fee"]), Q(1, 5))
 
     def test_exact_per_call_prices_and_maximum_path_budget(self):
         for fee in (Q(1, 10), Q(1, 2)):

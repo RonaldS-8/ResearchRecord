@@ -132,6 +132,11 @@ class MechanismSession(Session):
     def call_fee(self, tool):
         return self._diagnostic_fee if tool == DIAGNOSE and self._diagnostic_fee is not None else Fraction(1)
 
+    def billable_call(self, tool, arguments):
+        # New contract charges even a malformed parameter container; legacy
+        # Session billing is intentionally unchanged.
+        return isinstance(tool, str) and tool in self.tools
+
     def charge_kind(self, tool):
         return "diagnosis" if tool == DIAGNOSE else "execution"
 
@@ -271,7 +276,7 @@ def evaluate(session, answer):
         for i, (e, h) in enumerate(zip(events, ledger))
     ):
         issues.append("Native execution ledger mismatch.")
-    if any(Fraction(e["fee"]) != (session.call_fee(e["tool"]) if e["tool"] in session.tools else 0) for e in events):
+    if any(Fraction(e["fee"]) != (session.call_fee(e["tool"]) if session.billable_call(e["tool"], e["arguments"]) else 0) for e in events):
         issues.append("Per-call fee mismatch.")
     valid_answer = bool(isinstance(answer, str) and answer.strip()
                         and not answer.lstrip().startswith(("Error:", "Error during execution:"))

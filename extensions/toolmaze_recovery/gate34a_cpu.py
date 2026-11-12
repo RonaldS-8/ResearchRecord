@@ -320,8 +320,8 @@ def calculate(distribution, context=None, *, check_transitions=True):
         results["optimal_net_saving"] = str(no_diag.cost - best.cost)
     attainable = reference.attainable(State(), reference.initial)
     assert best == max(attainable, key=lambda v: (v.success, -v.cost))
-    return {"cell": distribution.cell, "context": context, "gamma": str(distribution.gamma),
-            "diagnostic_fee": str(distribution.diagnostic_fee), "plans": results,
+    return {"cell": distribution.cell, "context": context, "gamma": str(distribution.gamma) if distribution.cell == "E" else None,
+            "diagnostic_fee": str(distribution.diagnostic_fee) if distribution.cell == "E" else None, "plans": results,
             "finite_public_decision_nodes": len(reference.nodes),
             "real_contract_transitions_checked": check_all_transitions(distribution, context) if check_transitions else None,
             "all_distinct_finite_plan_values": [v.json() for v in sorted(attainable, key=lambda v: (v.success, v.cost))],
