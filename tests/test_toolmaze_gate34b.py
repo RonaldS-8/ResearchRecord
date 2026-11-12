@@ -11,8 +11,9 @@ from unittest.mock import patch
 from extensions.toolmaze_recovery.gate34a import MechanismSession, RESOURCE, evaluate
 from extensions.toolmaze_recovery.gate34b import (
     BACKUP, DIAGNOSE, MAIN, VALIDATE, VERIFY, WRITE, MODEL, PAIRS, SMOKE,
-    VLLMAgent, episode, feedback_tool, initialize, run_episode,
+    VLLMAgent, episode, feedback_tool, initialize, run_episode, p05_checkpoint,
 )
+from extensions.toolmaze_recovery.gate34a import Distribution, sample
 from extensions.toolmaze_recovery.run import EXIT_SYSTEM, EXIT_USER
 
 
@@ -31,8 +32,12 @@ def client_agent(plan):
             msg = {"role": "assistant", "content": "", "tool_calls": [{"id": f"call-{len(requests)}",
                    "type": "function", "function": {"name": tool, "arguments": json.dumps(args)}}]}
         return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(model_dump=lambda **kw: msg))],
-                               usage=SimpleNamespace(prompt_tokens=3, completion_tokens=2))
-    agent.client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+                               usage=SimpleNamespace(prompt_tokens=3, completion_tokens=2),
+                               model_dump=lambda **kw: {"choices": [{"message": msg}],
+                                   "usage": {"prompt_tokens": 3, "completion_tokens": 2}})
+    client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+    client.with_options = lambda **kw: client
+    agent.client = client
     return agent, requests
 
 
@@ -50,6 +55,94 @@ def backup_plan():
 
 
 class Gate34BTests(unittest.TestCase):
+    def checkpoint_archive(self, directory):
+        s = sample(Distribution("E", F(9, 10), F(1, 10)), 35005)
+        s.call(MAIN, {"record_id": RESOURCE})
+        plan = [(DIAGNOSE, {"record_id": RESOURCE}), *backup_plan()[:2],
+                (WRITE, lambda r: {"record_id": RESOURCE, "content": r[-2]["content"][:-1],
+                                    "evidence_ref": r[-1]["evidence_ref"]})]
+        a, requests = client_agent(plan)
+        result = run_episode(a, s, arm="simple_feedback")
+        for request in requests:
+            request["seed"] = 3301
+        path = Path(directory)
+        (path / "config.json").write_text(json.dumps({"case": "P05", "arm": "simple_feedback", "cell": "E",
+                 "env_seed": 35005, "gamma": "9/10", "diagnostic_fee": "1/10"}))
+        (path / "result.json").write_text(json.dumps(result))
+        (path / "requests.jsonl").write_text("\n".join(json.dumps({"request": r}) for r in requests))
+        return path, requests
+
+    def test_checkpoint_actual_history_and_only_one_rejection_changes(self):
+        with TemporaryDirectory() as directory:
+            path, requests = self.checkpoint_archive(directory)
+            old, oq, _ = p05_checkpoint(path, "original")
+            new, nq, provenance = p05_checkpoint(path, "specific")
+            self.assertEqual(oq["messages"], requests[4]["messages"])
+            self.assertEqual(oq["messages"][:-1], nq["messages"][:-1])
+            self.assertNotEqual(oq["messages"][-1]["content"], nq["messages"][-1]["content"])
+            self.assertNotIn("tool_choice", oq)
+            self.assertNotIn("tool_choice", nq)
+            self.assertEqual(provenance["prior_model_requests"], 4)
+            for s in (old, new):
+                self.assertEqual(s.view()["remaining_calls"], 2)
+                self.assertEqual(s._write_feedback, "original")
+                bad = deepcopy(s.events[-1]["arguments"])
+                receipt = s.call(WRITE, bad)
+                self.assertEqual(receipt["error"], "An actual primary or granularity-verified backup evidence_ref is required.")
+
+    def test_checkpoint_repair_is_model_bound_and_strict_failure_is_retained(self):
+        with TemporaryDirectory() as directory:
+            path, _ = self.checkpoint_archive(directory)
+            for condition in ("original", "specific"):
+                s, request, _ = p05_checkpoint(path, condition)
+                plan = [(WRITE, lambda r: {"record_id": RESOURCE,
+                            "content": next(x["content"] for x in r if "pending_ref" in x),
+                            "evidence_ref": next(x["evidence_ref"] for x in r if "evidence_ref" in x)}),
+                        (VERIFY, lambda r: {"publication_id": r[-1]["publication_id"]})]
+                a, actual = client_agent(plan)
+                result = run_episode(a, s, initial_messages=request["messages"], request_limit=8)
+                self.assertEqual(actual[0]["messages"], request["messages"])
+                self.assertTrue(result["obligations_complete"])
+                self.assertFalse(result["strict_success"])
+                self.assertEqual(result["illegal_calls"], 1)
+                self.assertEqual(len(result["events"]), 7)
+                self.assertEqual(F(result["execution_fee"]), 6)
+                self.assertEqual(F(result["diagnostic_fee"]), F(1, 10))
+                self.assertTrue(all("tool_choice" not in q for q in actual))
+                self.assertEqual(len(s.effects), 1)
+
+    def test_checkpoint_refuses_corrupted_prefix(self):
+        with TemporaryDirectory() as directory:
+            path, _ = self.checkpoint_archive(directory)
+            result = json.loads((path / "result.json").read_text())
+            result["events"][2]["result"]["content"] = "fabricated"
+            (path / "result.json").write_text(json.dumps(result))
+            with self.assertRaises(ValueError):
+                p05_checkpoint(path, "original")
+
+    def test_checkpoint_episode_archives_explicit_feedback_and_guards_first_request(self):
+        with TemporaryDirectory() as directory:
+            source = Path(directory) / "source"
+            source.mkdir()
+            path, _ = self.checkpoint_archive(source)
+            for condition in ("original", "specific"):
+                a, _ = client_agent([])
+                with patch("extensions.toolmaze_recovery.gate34b.VLLMAgent", return_value=a):
+                    out = Path(directory) / condition
+                    result = episode(out, PAIRS[4], "react", "http://127.0.0.1:1/v1",
+                                     write_feedback=condition, resume_source=path)
+                config = json.loads((out / "config.json").read_text())
+                self.assertEqual(config["write_feedback"], condition)
+                self.assertEqual(config["feedback_scope"], "checkpoint_rejection_only")
+                self.assertEqual(config["continuation_request_cap"], 8)
+                self.assertFalse(result["sdk_error"])
+                self.assertEqual(result["model_requests"], 1)
+                self.assertEqual(len(result["events"]), 5)  # Executor never repairs model parameters.
+                self.assertFalse(result["obligations_complete"])
+                with self.assertRaises(FileExistsError):
+                    episode(out, PAIRS[4], "react", "http://127.0.0.1:1/v1",
+                            write_feedback=condition, resume_source=path)
+
     def test_original_prompt_and_public_facts_only(self):
         a,_ = client_agent([])
         b,_ = client_agent([])

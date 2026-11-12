@@ -77,12 +77,17 @@ def initialize(agent, session):
         agent.receive_tool_result(event["tool"], event["result"])
 
 
-def run_episode(agent, session, *, arm="react", first_tool=None):
+def run_episode(agent, session, *, arm="react", first_tool=None,
+                initial_messages=None, request_limit=REQUESTS):
     if arm not in ("react", "simple_feedback") or first_tool and arm != "react":
         raise ValueError("Unregistered control combination")
     initialize(agent, session)
+    if initial_messages is not None:
+        if initial_messages[:2] != agent.messages[:2]:
+            raise ValueError("Checkpoint prompt differs from the original Agent prompt")
+        agent.messages = deepcopy(initial_messages)
     answer, checkpoints, model_seconds = None, [], 0.0
-    for turn in range(REQUESTS):
+    for turn in range(request_limit):
         view = session.view()
         selected = first_tool if turn == 0 and first_tool else feedback_tool(view) if arm == "simple_feedback" else None
         checkpoint = {"after": len(session.events), "public_view": view,
@@ -123,21 +128,75 @@ def run_episode(agent, session, *, arm="react", first_tool=None):
             "model_seconds": model_seconds}
 
 
-def episode(output, spec, arm, endpoint):
+def p05_checkpoint(source, write_feedback):
+    """Replay actual calls, retain actual SDK history; alter only rejection five."""
+    config = json.loads((source / "config.json").read_text())
+    if (config["case"], config["arm"], config["cell"], config["env_seed"],
+            config["gamma"], config["diagnostic_fee"]) != (
+            "P05", "simple_feedback", "E", 35005, "9/10", "1/10"):
+        raise ValueError("Expected frozen experiment 038 P05 source")
+    archived = json.loads((source / "result.json").read_text())
+    requests = [json.loads(line)["request"] for line in (source / "requests.jsonl").read_text().splitlines()]
+    expected = deepcopy(requests[4])  # Request after the first four real model actions.
+    session = sample(Distribution("E", F(9, 10), F(1, 10)), 35005)
+    prefix = archived["events"][:5]
+    if len(prefix) != 5 or prefix[-1]["tool"] != WRITE or not prefix[-1]["illegal"]:
+        raise ValueError("Expected first rejected write at call five")
+    for event in prefix:
+        if session.call(event["tool"], event["arguments"]) != event["result"]:
+            raise ValueError("Archived receipt differs from real executor")
+    if session.events != prefix:
+        raise ValueError("Prefix ledger changed")
+    if json.loads(expected["messages"][-1]["content"]) != prefix[-1]["result"]:
+        raise ValueError("SDK history does not end at the rejected write")
+    if write_feedback == "specific":
+        # Regenerate the same prefix via the registered condition, never edit the ledger.
+        session = sample(Distribution("E", F(9, 10), F(1, 10)), 35005)
+        for event in prefix:
+            session._write_feedback = "specific" if event["call"] == 5 else "original"
+            session.call(event["tool"], event["arguments"])
+        changed = deepcopy(session.events)
+        changed[-1]["result"]["error"] = prefix[-1]["result"]["error"]
+        if changed != prefix:
+            raise ValueError("Feedback condition changed more than rejection text")
+        expected["messages"][-1]["content"] = json.dumps(session.events[-1]["result"])
+        session._write_feedback = "original"  # All future receipts are equal between arms.
+    elif write_feedback != "original":
+        raise ValueError("Unregistered feedback condition")
+    expected.pop("tool_choice")  # Native continuation, identical removal in both arms.
+    provenance = {name: sha256((source / name).read_bytes()).hexdigest()
+                  for name in ("config.json", "result.json", "requests.jsonl")}
+    return session, expected, {"source": str(source), "sha256": provenance,
+                               "prefix_calls": 5, "prior_model_requests": 4}
+
+
+def episode(output, spec, arm, endpoint, *, write_feedback="original", resume_source=None):
     output.mkdir()  # Never overwrite any existing evidence, including failed runs.
     name, cell, env_seed, gamma, fee, first_tool = spec
     distribution = Distribution(cell, F(gamma or "9/10"), F(fee or "1/10"))
-    session = sample(distribution, env_seed)
+    session = sample(distribution, env_seed, write_feedback=write_feedback)
+    expected, provenance = None, None
+    if resume_source is not None:
+        if spec != PAIRS[4] or arm != "react":
+            raise ValueError("Only registered P05 native checkpoint continuation is supported")
+        session, expected, provenance = p05_checkpoint(resume_source, write_feedback)
+    request_limit = REQUESTS - provenance["prior_model_requests"] if provenance else REQUESTS
     config = {"commit": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
               "case": name, "cell": cell, "env_seed": env_seed, "gamma": gamma, "diagnostic_fee": fee,
               "arm": arm, "first_tool": first_tool, "model": MODEL, "revision": MODEL_REVISION,
               "model_seed": MODEL_SEED, "temperature": 0, "max_tokens": OUTPUT_LIMIT, "request_cap": REQUESTS,
               "call_budget": session.call_budget, "exit_wording": "original", "endpoint": endpoint,
+              "write_feedback": write_feedback, "feedback_scope": "checkpoint_rejection_only" if provenance else "episode",
+              "checkpoint_source": provenance, "continuation_request_cap": request_limit,
               "python": platform.python_version(), "vllm": version("vllm"), "openai": version("openai")}
     (output / "config.json").write_text(json.dumps(config, indent=2))
     (output / "private-world.json").write_text(json.dumps({"fault": session.fault, "signal": session._signal,
                                                            "context": session.public()["context"]}, indent=2))
-    session.call(MAIN, {"record_id": RESOURCE})  # Registered exogenous prefix, not a model action.
+    if provenance is None:
+        session.call(MAIN, {"record_id": RESOURCE})  # Registered exogenous prefix, not a model action.
+    else:
+        (output / "checkpoint.json").write_text(json.dumps({"provenance": provenance, "events": session.events,
+                  "remaining_calls": session.view()["remaining_calls"], "expected_first_request": expected}, indent=2))
     agent = VLLMAgent(MODEL, endpoint, temperature=0, max_tokens=OUTPUT_LIMIT, request_timeout=120)
     completions = agent.client.with_options(max_retries=0).chat.completions
     calls, usage, sdk_error = 0, {"input_tokens": 0, "output_tokens": 0}, False
@@ -145,13 +204,15 @@ def episode(output, spec, arm, endpoint):
     with (output / "requests.jsonl").open("x") as records:
         def create(**kwargs):
             nonlocal calls, sdk_error
-            if calls >= REQUESTS:
+            if calls >= request_limit:
                 raise RuntimeError("Registered request cap reached.")
             calls += 1
             kwargs["seed"] = MODEL_SEED
             entry = {"request": deepcopy(kwargs)}
             call_started = perf_counter()
             try:
+                if calls == 1 and expected is not None and kwargs != expected:
+                    raise ValueError("First SDK request changed beyond registered feedback/tool_choice control")
                 response = completions.create(**kwargs)
                 entry["response"] = response.model_dump(mode="json")
                 if response.usage:
@@ -168,7 +229,9 @@ def episode(output, spec, arm, endpoint):
                 records.flush()
         agent.client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
         try:
-            result = run_episode(agent, session, arm=arm, first_tool=first_tool)
+            result = run_episode(agent, session, arm=arm, first_tool=first_tool,
+                                 initial_messages=expected["messages"] if expected else None,
+                                 request_limit=request_limit)
         except Exception as exc:
             (output / "failure.json").write_text(json.dumps({"error": repr(exc), "evaluation": evaluate(session, None),
                                                             "history": agent.get_conversation_history()}, indent=2))
@@ -199,6 +262,7 @@ def main():
     parser.add_argument("--stage", choices=("smoke", "pairs"), required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--smoke-dir", type=Path)
+    parser.add_argument("--write-feedback", choices=("original", "specific"), default="original")
     args = parser.parse_args()
     if args.stage == "pairs":
         if args.smoke_dir is None or not smoke_gate(args.smoke_dir)["go"]:
@@ -210,7 +274,8 @@ def main():
         for arm in (("react",) if args.stage == "smoke" else ("react", "simple_feedback")):
             name = f"{spec[0]}-{arm}"
             try:
-                result = episode(args.out / name, spec, arm, "http://127.0.0.1:8000/v1")
+                result = episode(args.out / name, spec, arm, "http://127.0.0.1:8000/v1",
+                                 write_feedback=args.write_feedback)
                 print(name, result["strict_success"], result["suffix_fee"], flush=True)
             except Exception as exc:
                 failures.append({"case": name, "error": repr(exc)})
