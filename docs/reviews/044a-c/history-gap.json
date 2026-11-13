@@ -1,0 +1,69 @@
+{
+  "artifact": "gate44a-c training-history gap report",
+  "version": "044a-c-gap-v1",
+  "base_commit": "1a5b0d1183a7531d803c8b1d9636d4094bf89026",
+  "verdict": "No authorized real-Agent training pool exists for R2/R3. No frozen statistics were produced. Nothing was fabricated, collected or run.",
+  "access_limit": "raw trajectories live only on LabServer results/ (gitignored). This review read Git records and code only; no raw file was opened or hashed.",
+  "candidates_with_overlapping_tools": [
+    {
+      "source": "experiment 038 (Gate 34-B)",
+      "model": "Qwen3-4B-Thinking-2507 rev 768f209d9ea81521153ed38c47d515654e938aea, vLLM 0.31.0, temperature 0, SDK seed 3301",
+      "raw": ["results/038-gate34b-smoke-01/", "results/038-gate34b-pairs-01/"],
+      "episodes": {
+        "natural_react": ["S01", "S02", "P01-react", "P02-react", "P03-react", "P04-react", "P05-react", "P06-react"],
+        "forced_first_action": ["S03", "S04", "S05", "S06", "S07", "S08"],
+        "rule_forced_every_checkpoint": ["P01..P06 simple_feedback"]
+      },
+      "task": "same base task REC-3401 as M3/M4 (gate34a fixture, cells A/B/E, budget 7)",
+      "authorization": "none; 038 record line 132 says the run does not automatically enter training history",
+      "contamination": "same development base task; its results shaped later designs (039 feedback text; 042 M3/M4 mechanisms were built where the direct backup path fails)",
+      "recommended_use": "only the 8 natural ReAct episodes, only after explicit authorization and raw-file hashing on the cloud"
+    },
+    {
+      "source": "experiment 039 (Gate 35)",
+      "episodes": 2,
+      "requests": 3,
+      "recommended_use": "exclude: replays 038 P05 prefix under a modified feedback condition; post-hoc development"
+    }
+  ],
+  "excluded_sources": {
+    "cpu_or_fake_sdk": ["040", "041", "042A (4 fake-SDK requests)", "042B", "043A-R", "037", "027", "023", "024"],
+    "real_model_but_different_tools": ["006", "007", "015", "020", "021", "025", "028", "029", "030", "031", "034", "035", "036"],
+    "never_allowed": ["Gate 44A smoke and development episodes", "generator probabilities, Oracle or CPU optimal tables"]
+  },
+  "structural_support_check": {
+    "method": "from code, not from data: gate34a.MechanismSession._execute only returns a legal service error for read_primary_record (timeout); validate/publish return only illegal rejections; archive/prepare/confirm do not exist in that fixture",
+    "support_in_any_038_pool": {
+      "(validate_record_granularity, 'Current item-level authority could not be established for this receipt.')": 0,
+      "(publish_verified_record, 'Publication endpoint unavailable; no publication was committed.')": 0,
+      "read_archive_record calls": 0,
+      "prepare_alternate_publication calls": 0,
+      "confirm_alternate_publication calls": 0,
+      "switch read_backup_record -> read_archive_record": 0,
+      "switch read_primary_record -> read_archive_record": 0,
+      "switch publish_verified_record -> prepare_alternate_publication": 0
+    }
+  },
+  "illustrative_projection_not_frozen": {
+    "warning": "derived from the 038 report text (lines 84-107: every natural ReAct episode was prefix timeout -> backup -> validate -> publish -> readback, strict success, suffix fee 4, no rejection). Not computed from raw files; must not be used to run any arm.",
+    "pool": "8 natural ReAct episodes",
+    "R2": {
+      "read_primary_record": "0/8 (all 8 are the exogenous prefix timeout)",
+      "read_backup_record": "8/8",
+      "validate_record_granularity": "8/8",
+      "publish_verified_record": "8/8",
+      "read_published_record": "8/8",
+      "read_archive_record": "unknown",
+      "prepare_alternate_publication": "unknown",
+      "confirm_alternate_publication": "unknown"
+    },
+    "R3": {
+      "(read_primary_record, 'Upstream request timed out.')": "0.900 (n=8)",
+      "switch read_primary_record -> read_backup_record": "0.900 (n=8)",
+      "M3 current key (validate, authority failure)": "0.500 (n=0; no observations)",
+      "M4 current key (publish, endpoint unavailable)": "0.500 (n=0; no observations)",
+      "all other static switch pairs": "0.500 (n=0; no observations)"
+    },
+    "consequence": "At both decisive keys R3 reduces to BTM static text + uniform beliefs; R2 reports validate/publish as 1.000 right after they failed. At M4 (3 calls left) one retry of the writer leaves 2 calls, fewer than prepare -> confirm -> readback needs."
+  }
+}
