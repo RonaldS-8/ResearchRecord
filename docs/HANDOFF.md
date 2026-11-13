@@ -1,5 +1,10 @@
 # 当前进度（2026-11-13）
 
+## Gate44A-Obs：4回合观察准备，等待运行批准
+
+用户新授权仅恢复R0/R1观察准备；R2/R3、核心方法与Benchmark扩展继续暂停。新增真实入口gate44obs，冻结4回合/seed444001/48请求上限，不启动40或160回合。全仓199项CPU通过，真实tokenizer离线渲染与模型revision核对通过，无真实模型调用、未合并PR17。见[独立预登记](experiments/044a-obs-real-agent-observation.md)及[准备manifest](evidence/044a-obs/preparation.json)。待用户明确批准后才启动服务和4回合；人工A–F归因、成本余量及研究路线目前unknown。
+
+
 **用户最新决定（2026-11-13）：当前工作暂停，等待后续通知。获得真实Agent失败归因、可避免成本及强简单基线剩余改进空间之前，不再批准新的核心数学方法或为其定制Benchmark；以[ADR-0033末节](adr/0033-decision-tradeoff-lineage-and-strong-baselines.md)为准。**
 
 

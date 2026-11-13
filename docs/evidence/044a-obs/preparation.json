@@ -1,0 +1,51 @@
+{
+  "status": "Prepared awaiting explicit approval for four real episodes",
+  "run_id": "044a-obs-01",
+  "preparation_run": "044a-obs-preparation-01",
+  "pr17_head": "d382bb3239e6a86bf292cd8dd1e9d911e21b9194",
+  "plan": [
+    [
+      "M3",
+      "R0"
+    ],
+    [
+      "M3",
+      "R1"
+    ],
+    [
+      "M4",
+      "R1"
+    ],
+    [
+      "M4",
+      "R0"
+    ]
+  ],
+  "seed": 444001,
+  "model": "Qwen3-4B-Thinking-2507",
+  "revision": "768f209d9ea81521153ed38c47d515654e938aea",
+  "runtime": {
+    "python": "3.10.12",
+    "vllm": "0.31.0",
+    "openai": "3.42.0"
+  },
+  "initial_rendered_tokens": {
+    "M3-R0": 1551,
+    "M3-R1": 1665,
+    "M4-R0": 1911,
+    "M4-R1": 2025
+  },
+  "budget": {
+    "sdk_requests": 48,
+    "output_tokens": 294912,
+    "tool_fee_units": 42,
+    "prefix_sunk_fee_units": 14,
+    "batch_wall_seconds": 7200
+  },
+  "real_model_calls": 0,
+  "files_sha256": {
+    "extensions/toolmaze_recovery/gate44obs.py": "3e7a5b78d6d1b0e82b67b2f2e0addd50a55b99e0e0bbcaaec1dcccf0a79cd586",
+    "tests/test_toolmaze_gate44obs.py": "b46ca0bb2943a90fae3b507c5393b8b567ff0a6b591a786261a1b85aad793b57",
+    "docs/evidence/044a-0/manifest.json": "fd2263b5845137cfd2e703d051c93e6e243f8155155539c5ad68e7563939b5a0"
+  }
+}
