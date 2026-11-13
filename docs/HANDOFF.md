@@ -1,5 +1,12 @@
 # 当前进度（2026-11-13）
 
+## Gate43A-R复验未放行 / Gate44A仅预登记
+
+PR16最新head固定3efa57b，独立worktree静态与证据核验完成：七文件14个正负零差异、三个对照零差异；25份d1无负零且result哈希与清单一致。工程No-Go（完整回归/防泄漏及Python3.10独立d1尚未完成；LabServer超时、本地依赖缺失且安装网络失败），不是实现失败结论；HMM方法线No-Go。详见[验收报告](reviews/043a-r-final-independent-acceptance.md)。未合并、未运行模型，保留五份既有未跟踪Review。
+
+[实验044](experiments/044-gate44a-real-agent-bottleneck.md)及[信息合同/预算](reviews/044a-information-contract-and-budget.md)登记R0–R3、40个协议smoke+160个开发回合、固定15pp/5pp/15%关注信号、分项成本与A–E路线。运行前须补工程证据、checkpoint/提示/真实训练池及冻结BTM产物哈希并获批；本轮没有自动启动smoke或训练采集。
+
+
 ## Gate 42A · CPU独立验收及真实执行器准备完成（2026-11-13）
 
 PR #15固定9eb2890通过独立139项、实验040/041全部16轮哈希、独立上界与M3/M4逐状态评分核验；合并main `3448777`。详细[Review](reviews/042a-pr15-independent-review.md)已提交。设计先登记`5438f7e`，最小执行器/正式CPU锁`a0333b6`，[实验042](experiments/042-gate42a-real-executor-preparation.md)记录设计、合法/错误路径与证据。
