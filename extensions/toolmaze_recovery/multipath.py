@@ -182,16 +182,18 @@ def shift(cell, mass):
 
 
 def solve(cell, mass, left, events, sees, policy=None, ban=(), table=None, x=None, quote=None,
-          tolerance=Q(), force=None):
+          tolerance=Q(), force=None, choose=None):
     """Exact (completion mass, fee mass) from one information state on; see autoresearch.solve.
-    `force` fixes the action at this node only."""
+    `force` fixes the action at this node only. `choose(candidates, total)` replaces the pairwise
+    tolerance comparison by a rule that sees all (action, value) candidates of a node at once, so
+    its result cannot depend on the order in which they are compared."""
     options = [a for a in legal(cell.graph, events, left, cell.diagnostic) if a not in ban]
     if policy is not None:
         choice = policy(View(x, quote, events, left, cell.graph))
         options = [choice if choice in options else STOP]
     if force is not None:
         options = [force if force in options else STOP]
-    best = None
+    best, candidates = None, []
     for action in options:
         value = (Q(), Q())
         if action != STOP:
@@ -215,11 +217,14 @@ def solve(cell, mass, left, events, sees, policy=None, ban=(), table=None, x=Non
             for label, part in merged.items():
                 spent = 1 + (step.certain if label == PASS else 0)
                 c, f = solve(cell, shift(cell, part), left - spent, events + ((action, label),), sees, policy,
-                             ban, table, x, quote, tolerance)
+                             ban, table, x, quote, tolerance, None, choose)
                 completion, fee = completion + c, fee + f
             value = (completion, fee)
-        if best is None or better(value, best[1], tolerance * sum(mass.values(), Q())):
+        candidates.append((action, value))
+        if choose is None and (best is None or better(value, best[1], tolerance * sum(mass.values(), Q()))):
             best = (action, value)
+    if choose is not None:
+        best = choose(candidates, sum(mass.values(), Q()))
     if table is not None:
         table[x, quote, events] = best[0]
     return best[1]
@@ -353,6 +358,9 @@ class Planner:
                               with guard, stopping is never preferred to an action
                               whose estimated completion is positive
       ("lcb", z)              strict comparison of lower bounds
+      ("within", d)           the cheapest action whose completion is within d of the highest;
+                              unlike "tolerance" the result does not depend on comparison order
+      ("priced", r)           the highest completion - r * fee: a total order
       ("noninferior", d, z)   take the action with the highest estimate unless a cheaper
                               one is credibly within d of it (its lower bound, estimate
                               - z posterior sd, is at least the highest estimate - d);
@@ -428,6 +436,12 @@ class Planner:
                 if better(values[action][:2], values[chosen][:2], self.compare[1]):
                     chosen = action
             return chosen
+        if kind == "within":
+            top = max(values[a][0] for a in order)
+            return min((a for a in order if values[a][0] >= top - self.compare[1]),
+                       key=lambda a: (values[a][1], order.index(a)))
+        if kind == "priced":
+            return max(order, key=lambda a: (values[a][0] - self.compare[1] * values[a][1], -order.index(a)))
         if kind == "noninferior":
             margin, z = float(self.compare[1]), self.compare[2]
             top = max(values[a][0] for a in order)

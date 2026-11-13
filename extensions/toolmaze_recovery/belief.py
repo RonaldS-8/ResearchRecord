@@ -39,9 +39,10 @@ def sequences(history):
 
 
 class Model:
-    def __init__(self, start, emit, move, transitions, loglik=0.0, size=1, mass=None):
+    def __init__(self, start, emit, move, transitions, loglik=0.0, size=1, mass=None, stale=None):
         self.start, self.emit, self.move, self.transitions = start, emit, move, transitions
         self.k, self.loglik, self.size = len(move), loglik, size
+        self.stale = loglik if stale is None else stale  # the likelihood one M-step behind (rounds c1-c5 used it)
         self.mass = mass  # expected counts behind start, emit and move at the last E-step, without pseudo-counts
         self.pooled = [sum(v[i] for v in start.values()) / len(start) for i in range(self.k)]
 
@@ -49,8 +50,8 @@ class Model:
         free = sum(len(by_label) - 1 for by_label in self.emit.values())
         return len(self.start) * (self.k - 1) + self.k * free + (self.k * (self.k - 1) if self.transitions else 0)
 
-    def bic(self):
-        return -2 * self.loglik + self.parameters() * log(self.size)
+    def bic(self, loglik=None):
+        return -2 * (self.loglik if loglik is None else loglik) + self.parameters() * log(self.size)
 
     def filter(self, x, events):
         """Belief over hidden states after the public events; None when the model gives them no mass."""
@@ -85,10 +86,12 @@ def logged_labels(history):
     return labels
 
 
-def fit(history, cell, k, seed, transitions=True, iterations=40, labels=None):
+def fit(history, cell, k, seed, transitions=True, iterations=40, labels=None, exact=False):
     """EM for one K from one random start. Only logged tools get outcome distributions. The label
     table defaults to the cell's public contract (`cell.alphabet()`, as in the registered rounds);
-    pass `logged_labels(history)` to use nothing but the log."""
+    pass `logged_labels(history)` to use nothing but the log. Rounds c1-c5 kept the likelihood and
+    expected counts of the E-step before the last M-step; `exact` adds one E-step so that both
+    belong to the parameters that are returned."""
     data = {key: n for key, n in sequences(history).items() if key[1]}
     # Sorted, because the alphabet is built from a set and the random start must not depend on its order.
     alphabet = cell.alphabet() if labels is None else labels
@@ -108,7 +111,8 @@ def fit(history, cell, k, seed, transitions=True, iterations=40, labels=None):
     if transitions and k > 1:
         move = [[0.9 if i == j else 0.1 / (k - 1) for j in range(k)] for i in range(k)]
     states, size, previous, loglik = range(k), sum(data.values()), None, 0.0
-    for _ in range(iterations):
+
+    def expect():
         first = {x: [SOFT] * k for x in start}
         seen = {tool: {name: [SOFT] * k for name in names} for tool, names in labels.items()}
         hops = [[(STICKY if i == j else LOOSE) for j in states] for i in states]
@@ -138,25 +142,56 @@ def fit(history, cell, k, seed, transitions=True, iterations=40, labels=None):
                     seen[action][name][z] += n * alpha[z] * beta[z]
             for z in states:
                 first[x][z] += n * alphas[0][z] * beta[z]
+        mass = ({x: [v - SOFT for v in row] for x, row in first.items()},
+                {tool: {name: [v - SOFT for v in row] for name, row in by.items()} for tool, by in seen.items()},
+                [[hops[i][j] - (STICKY if i == j else LOOSE) for j in states] for i in states])
+        return first, seen, hops, loglik, mass
+    for _ in range(iterations):
+        first, seen, hops, loglik, mass = expect()
         start = {x: [v / sum(row) for v in row] for x, row in first.items()}
         for tool, by_label in seen.items():
             totals = [sum(by_label[name][z] for name in by_label) for z in states]
             emit[tool] = {name: [by_label[name][z] / totals[z] for z in states] for name in by_label}
         if transitions:
             move = [[v / sum(row) for v in row] for row in hops]
-        mass = ({x: [v - SOFT for v in row] for x, row in first.items()},
-                {tool: {name: [v - SOFT for v in row] for name, row in by.items()} for tool, by in seen.items()},
-                [[hops[i][j] - (STICKY if i == j else LOOSE) for j in states] for i in states])
         if previous is not None and loglik - previous < 1e-7 * size:
             break
         previous = loglik
-    return Model(start, emit, move, transitions and k > 1, loglik, size, mass)
+    stale = loglik
+    if exact:
+        _, _, _, loglik, mass = expect()
+    return Model(start, emit, move, transitions and k > 1, loglik, size, mass, stale)
 
 
-def train(history, cell, k, seed, transitions=True, restarts=2, iterations=40, labels=None):
+def train(history, cell, k, seed, transitions=True, restarts=2, iterations=40, labels=None, exact=False):
     """Best of a few EM starts by likelihood."""
-    return max((fit(history, cell, k, seed * 1000 + r, transitions, iterations, labels) for r in range(restarts)),
-               key=lambda m: m.loglik)
+    return max((fit(history, cell, k, seed * 1000 + r, transitions, iterations, labels, exact)
+                for r in range(restarts)), key=lambda m: m.loglik)
+
+
+def within(band):
+    """Order-free form of the tie band: of the actions whose completion is within `band` of the best
+    at this node, the cheapest (the first in the public order on an exact tie). Each decision gives up
+    at most `band` of conditional completion, so a plan of H decisions gives up at most H * band."""
+    def choose(candidates, total):
+        top = max(value[0] for _, value in candidates)
+        return min((c for c in candidates if c[1][0] >= top - band * total), key=lambda c: c[1][1])
+    return choose
+
+
+def priced(rate):
+    """Total order: completion - rate * fee. If no plan can cost more than F, then with rate = d / F
+    the chosen plan's completion is within d of the best achievable, whatever the tree looks like:
+    c(best) - c(chosen) <= rate * (fee(best) - fee(chosen)) <= rate * F = d."""
+    def choose(candidates, total):
+        return max(candidates, key=lambda c: c[1][0] - rate * c[1][1])
+    return choose
+
+
+def fee_bound(cell, quote):
+    """No episode can cost more than its call budget at the dearest public price."""
+    prices = [1, *(price for _, price in quote.tool)] + ([quote.diagnostic] if quote.diagnostic is not None else [])
+    return cell.left * float(max(prices))
 
 
 def confident_band(completion, episodes, margin=0.05, z=2.0):
@@ -227,9 +262,12 @@ class BeliefPolicy:
     predictive check, or at a history the model gave no plan for. Tools logged fewer than
     `enough` times have no outcome estimate and are left out of the plan. `tolerance` is the tie
     band on the model's own completion estimates: a number, or a function of (strict completion
-    estimate, logged episodes in that context) such as `confident_band`."""
+    estimate, logged episodes in that context) such as `confident_band`. `rule`, when given, replaces
+    it by an order-free rule: ("within", d) or ("priced", d), d being the completion given up per
+    decision or over the whole plan (see `within` and `priced`)."""
 
-    def __init__(self, model, cell, counts, fallback, guard=True, enough=5, tolerance=NUMERIC, floor=None):
+    def __init__(self, model, cell, counts, fallback, guard=True, enough=5, tolerance=NUMERIC, floor=None,
+                 rule=None):
         self.model, self.fallback, self.table, self.estimates = model, fallback, {}, {}
         self.rejected = guard and not consistent(model, counts)
         if self.rejected:
@@ -249,8 +287,11 @@ class BeliefPolicy:
             if callable(tolerance):
                 strict = mp.solve(learned, mass, cell.left, (), mp.PUBLIC, ban=ban, tolerance=NUMERIC)[0] / total
                 band = tolerance(strict, episodes[x])
+            choose = None
+            if rule is not None:
+                choose = within(rule[1]) if rule[0] == "within" else priced(rule[1] / fee_bound(cell, quote))
             completion, fee = mp.solve(learned, mass, cell.left, (), mp.PUBLIC, ban=ban, table=self.table,
-                                       x=x, quote=quote, tolerance=band)
+                                       x=x, quote=quote, tolerance=band, choose=choose)
             self.estimates[x, quote] = (completion / total, fee / total)
 
     def __call__(self, view):

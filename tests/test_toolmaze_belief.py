@@ -1,6 +1,7 @@
 """Experiment 042: the learnable hidden-state model against exact references and its own guards."""
 from fractions import Fraction as Q
-from math import sqrt
+from itertools import permutations
+from math import log, sqrt
 import unittest
 
 from extensions.toolmaze_recovery import autoresearch as ar
@@ -243,6 +244,74 @@ class SimpleRuleTests(unittest.TestCase):
         source = Path(simple_rules.__file__).read_text(encoding="utf-8").split('"""', 2)[2]
         for word in ("Planner", "belief", "solve", "faults", "import multipath as"):
             self.assertNotIn(word, source)
+
+
+class Gate43ARepairTests(unittest.TestCase):
+    def test_exact_likelihood_belongs_to_the_returned_parameters(self):
+        cell = r41.held_cells()["S4b"]
+        rows = mp.simulate(cell, mp.uniform, 300, 4005)
+
+        def forward(model):
+            total = 0.0
+            for (x, obs), n in belief.sequences(rows).items():
+                alpha = model.start[x]
+                for action, name in obs:
+                    joint = [a * w for a, w in zip(alpha, model.emit[action][name])]
+                    scale = sum(joint)
+                    total += n * log(scale)
+                    alpha = [sum(joint[i] / scale * model.move[i][j] for i in range(model.k)) for j in range(model.k)]
+            return total
+        old, new = belief.fit(rows, cell, 3, 7), belief.fit(rows, cell, 3, 7, exact=True)
+        self.assertEqual((old.start, old.emit, old.move), (new.start, new.emit, new.move))   # same parameters
+        self.assertAlmostEqual(new.loglik, forward(new), places=8)
+        self.assertEqual((old.loglik, new.stale), (old.stale, old.loglik))
+        self.assertGreater(abs(old.loglik - forward(old)), 1e-6)       # what rounds c1-c5 stored was one step behind
+        self.assertAlmostEqual(sum(sum(row) for row in new.mass[0].values()), 300, places=6)
+
+    def test_order_free_rules_do_not_depend_on_the_order_of_comparison(self):
+        values = {"a": (1.0, 3.0), "b": (0.96, 2.0), "c": (0.92, 1.0)}     # the reviewer's example, tolerance 0.05
+        pairwise, banded, scored = set(), set(), set()
+        for order in permutations(values):
+            best = order[0]
+            for name in order[1:]:
+                if ar.better(values[name], values[best], 0.05):
+                    best = name
+            pairwise.add(best)
+            candidates = [(name, values[name]) for name in order]
+            banded.add(belief.within(0.05)(candidates, 1.0)[0])
+            scored.add(belief.priced(0.01)(candidates, 1.0)[0])
+        self.assertEqual(pairwise, {"a", "b", "c"})                        # the defect: any of the three
+        self.assertEqual((banded, scored), ({"b"}, {"a"}))
+        counts = {(None, (), "x"): {mp.DONE: 1}}
+        planner = mp.Planner(counts, r41.lift(rounds40.cells()["A"]), compare=("within", 0.05))
+        triples = {name: (*value, 0.0) for name, value in values.items()}
+        chosen = {planner.choose({ar.STOP: (0.0, 0.0, 0.0), **{n: triples[n] for n in order}})
+                  for order in permutations(values)}
+        self.assertEqual(chosen, {"b"})
+
+    def test_priced_rule_keeps_the_whole_plan_within_its_margin(self):
+        for cell in (r41.fresh_cells()["M5"], r41.m3(8), r41.m4()):
+            counts = {(None, (), t): {mp.DONE: 9} for t in r41.tools(cell)}
+
+            def planned(rule):
+                policy = belief.BeliefPolicy(true_model(cell), cell, counts, lambda view: ar.STOP, guard=False,
+                                             rule=rule)
+                return policy.estimates
+            strict = planned(None)
+            for margin in (0.01, 0.05, 0.3):
+                for root, (completion, fee) in planned(("priced", margin)).items():
+                    self.assertGreaterEqual(completion, strict[root][0] - margin - 1e-12)
+                    self.assertLessEqual(fee, strict[root][1] + 1e-12)
+            for _, x, quote, _ in cell.roots:      # no plan, not even the strict one, costs more than the bound
+                self.assertGreaterEqual(belief.fee_bound(cell, quote), strict[x, quote][1])
+        dear = mp.Prices((("retry", Q(3)),), Q(1, 2))
+        self.assertEqual(belief.fee_bound(r41.lift(rounds40.cells()["A"]), dear), 6 * 3.0)
+
+    def test_corrected_round_scores_every_variant_and_stores_no_negative_zero(self):
+        got = rounds.round_d1("E", range(1))
+        self.assertEqual(set(got["by_size"][100]), set(rounds.REPAIRED))
+        self.assertIn("exact_changes_restart", got["likelihood_fix_audit"][100])
+        self.assertEqual(repr(rounds.unsigned({"a": [-0.0, 1.5, 2]})), "{'a': [0.0, 1.5, 2]}")
 
 
 if __name__ == "__main__":

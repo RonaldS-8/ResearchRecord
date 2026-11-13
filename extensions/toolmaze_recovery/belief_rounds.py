@@ -8,7 +8,9 @@ from collections import defaultdict
 from fractions import Fraction as Q
 import json
 from pathlib import Path
+import platform
 import subprocess
+import sys
 
 from . import autoresearch as ar
 from . import autoresearch_rounds as rounds40
@@ -91,7 +93,37 @@ def policies(cell, true_k, rows, counts, seed, orders, names):
         found.update({n: plan(wide, floor=SECOND[n][0], tolerance=SECOND[n][1]) for n in names if n in SECOND})
         if "belief2bic_tol0.05" in names:
             found["belief2bic_tol0.05"] = plan(min(fits.values(), key=lambda m: m.bic()), tolerance=0.05)
+    if any(n in THIRD for n in names):
+        found.update(corrected(cell, rows, counts, seed, names, notes))
     return found, notes
+
+
+def corrected(cell, rows, counts, seed, names, notes):
+    """Round d1 (Gate 43A-R). Differences from the second version: the likelihood belongs to the returned
+    parameters, the label table is read from the log, every comparison rule is order-free, and the
+    fallback is the count planner under the same order-free rule. `notes` records whether the stale
+    likelihood of rounds c1-c5 would have picked a different restart, structure or state count."""
+    labels = belief.logged_labels(rows)
+    starts = {(k, moving): [belief.fit(rows, cell, k, seed * 1000 + r, moving, LONG, labels, True) for r in range(2)]
+              for k in KS for moving in (False, True)}
+
+    def pick(by):
+        fits = {key: max(group, key=by) for key, group in starts.items()}
+        wide = min((fits[KS[-1], moving] for moving in (False, True)), key=lambda m: m.bic(by(m)))
+        return fits, wide, min(fits.values(), key=lambda m: m.bic(by(m)))
+    (fits, wide, free), (old, old_wide, old_free) = pick(lambda m: m.loglik), pick(lambda m: m.stale)
+    notes["exact_changes_restart"] = sum(fits[key] is not old[key] for key in fits)
+    notes["exact_changes_structure"] = int(wide.transitions != old_wide.transitions)
+    notes["exact_changes_states"] = int((free.k, free.transitions) != (old_free.k, old_free.transitions))
+    notes["free_states"] = free.k
+    fallback = mp.Planner(counts, cell, compare=("within", Q(1, 20)))
+    models = {"pooled": fits[1, False], "belief3": wide, "belief3bic": free}
+    found = {"acv_untried": mp.Planner(counts, cell, untried=True),
+             "acv_within0.01_untried": mp.Planner(counts, cell, compare=("within", Q(1, 100)), untried=True)}
+    for name in names:
+        if name in THIRD and name not in found:
+            found[name] = belief.BeliefPolicy(models[name.split("_")[0]], cell, counts, fallback, rule=THIRD[name])
+    return {name: policy for name, policy in found.items() if name in names}
 
 
 def compare(train, test, true_k, logging, sizes, seeds, names, insider=False):
@@ -100,6 +132,7 @@ def compare(train, test, true_k, logging, sizes, seeds, names, insider=False):
     table = {n: {name: defaultdict(float) for name in names} for n in sizes}
     chosen = {n: defaultdict(int) for n in sizes}
     moving = {n: defaultdict(int) for n in sizes}
+    audit = {n: defaultdict(int) for n in sizes}
     for seed in seeds:
         rows = mp.simulate(train, logging, max(sizes), seed, insider)
         for n in sizes:
@@ -108,6 +141,11 @@ def compare(train, test, true_k, logging, sizes, seeds, names, insider=False):
                 chosen[n][notes["auto_k"]] += 1
             if "wide_transitions" in notes:
                 moving[n][notes["wide_transitions"]] += 1
+            for key, value in notes.items():
+                if key.startswith("exact_"):
+                    audit[n][key] += value
+                elif key == "free_states":
+                    audit[n][f"free_states_{value}"] += 1
             for name in names:
                 if name not in found:
                     continue
@@ -138,6 +176,8 @@ def compare(train, test, true_k, logging, sizes, seeds, names, insider=False):
            "by_size": {n: {name: brief(c) for name, c in by.items() if c} for n, by in table.items()}}
     if any(moving.values()):
         out["wide_transition_counts"] = {n: dict(sorted(c.items())) for n, c in moving.items()}
+    if any(audit.values()):
+        out["likelihood_fix_audit"] = {n: dict(sorted(c.items())) for n, c in audit.items()}
     return out
 
 
@@ -240,7 +280,36 @@ def round_c5(name, seeds=LATER):
     return compare(cell, cell, 0, mp.uniform, SIZES, seeds, SIMPLE)
 
 
-ROUNDS = {"c1": round_c1, "c2": round_c2, "c3": round_c3, "c4": round_c4, "c5": round_c5}
+# name: the order-free rule of belief.BeliefPolicy; None is strict. "pooled" is one state: statistics
+# shared across nodes with no hidden state at all.
+THIRD = {"acv_untried": None, "acv_within0.01_untried": None,
+         "pooled_within0.01": ("within", 0.01), "belief3_strict": None, "belief3_within0.01": ("within", 0.01),
+         "belief3_priced0.01": ("priced", 0.01), "belief3_priced0.05": ("priced", 0.05),
+         "belief3bic_within0.01": ("within", 0.01)}
+REPAIRED = ("acv_strict", "acv_tol0.05", *THIRD)
+
+
+def round_d1(name, seeds=LATER):
+    """Gate 43A-R: the corrected version on the histories of round c4. A new version, not a re-run of c4."""
+    if name == "controls":
+        return round_c3("all", seeds, REPAIRED)
+    if name.startswith("thin-"):
+        return round_c2(name[5:], seeds, (0.1,), REPAIRED)
+    cell = r41.lift(rounds40.cells()["A"]) if name == "A" else cells()[name][0]
+    return compare(cell, cell, 0, mp.uniform, SIZES, seeds, REPAIRED)
+
+
+def unsigned(value):
+    """Results of round d1 on are stored without negative zeros, whose sign depends on how the Python
+    version sums floats (see docs/reviews/043a-r-reflection.md)."""
+    if isinstance(value, dict):
+        return {key: unsigned(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [unsigned(item) for item in value]
+    return value + 0.0 if isinstance(value, float) else value
+
+
+ROUNDS = {"c1": round_c1, "c2": round_c2, "c3": round_c3, "c4": round_c4, "c5": round_c5, "d1": round_d1}
 
 
 def main():
@@ -257,8 +326,11 @@ def main():
     # Exclusive creation: an earlier result, including a failed or negative one, is never overwritten.
     path = args.out / f"round{args.round}-{args.cell}{'-' + args.seeds.replace(':', '-') if part else ''}.json"
     with path.open("x", encoding="utf-8") as stream:
+        result = ROUNDS[args.round](args.cell, part) if part else ROUNDS[args.round](args.cell)
         json.dump({"commit": commit, "uncommitted_changes": dirty, "round": args.round, "cell": args.cell,
-                   "result": ROUNDS[args.round](args.cell, part) if part else ROUNDS[args.round](args.cell)},
+                   "seeds": args.seeds, "python": sys.version, "platform": platform.platform(),
+                   "command": " ".join(sys.argv),
+                   "result": unsigned(result) if args.round >= "d" else result},
                   stream, indent=1, ensure_ascii=False)
     print(f"round {args.round} {args.cell} written, result sha256 {r41.digest(path)}", flush=True)
 
