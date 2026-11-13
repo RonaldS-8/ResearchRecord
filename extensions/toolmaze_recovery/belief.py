@@ -71,8 +71,9 @@ class Model:
 def fit(history, cell, k, seed, transitions=True, iterations=40):
     """EM for one K from one random start. Only logged tools get outcome distributions."""
     data = {key: n for key, n in sequences(history).items() if key[1]}
-    labels = {tool: (OK, *fails) for tool, fails in cell.alphabet().items() if tool != DIAGNOSE}
-    labels[DIAGNOSE] = cell.alphabet()[DIAGNOSE]
+    # Sorted, because the alphabet is built from a set and the random start must not depend on its order.
+    alphabet = cell.alphabet()
+    labels = {tool: alphabet[tool] if tool == DIAGNOSE else (OK, *alphabet[tool]) for tool in sorted(alphabet)}
     labels = {tool: names for tool, names in labels.items() if names and any(
         action == tool for _, obs in data for action, _ in obs)}
     rng = stream(seed, f"042:init:{k}:{transitions}")

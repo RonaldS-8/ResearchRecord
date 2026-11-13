@@ -123,34 +123,34 @@ MAIN = ("acv_strict", "acv_tol0.05", "learned_context_order", "belief_auto", "be
         "belief_trueK", "belief_K-1", "belief_K+1", "belief_static")
 
 
-def round_c1(name):
+def round_c1(name, seeds=SEEDS):
     """Same-history comparison on one cell under uniform randomized logging."""
     cell, true_k = cells()[name]
-    return compare(cell, cell, true_k, mp.uniform, SIZES, SEEDS, MAIN)
+    return compare(cell, cell, true_k, mp.uniform, SIZES, seeds, MAIN)
 
 
-def round_c2(name):
+def round_c2(name, seeds=FEWER):
     """Thinner coverage: only a share of logged steps is randomized, the rest follow the contract order."""
     cell, true_k = cells()[name]
     default = mp.priority(r41.tools(cell))
     out = {}
     for share in (0.3, 0.1):
         logging = (lambda view, rng, s=share: mp.uniform(view, rng) if rng.random() < s else default(view))
-        out[str(share)] = compare(cell, cell, true_k, logging, (300, 3000), FEWER,
+        out[str(share)] = compare(cell, cell, true_k, logging, (300, 3000), seeds,
                                   ("acv_tol0.05", "learned_context_order", "belief_auto", "belief_trueK"))
     return out
 
 
-def round_c3(name):
+def round_c3(name, seeds=FEWER):
     """Negative controls: confounded logs and distribution shift."""
     names = ("acv_tol0.05", "belief_auto", "belief_trueK")
     hidden = r41.lift(rounds40.binary("K", rounds40.one(Q(3, 10))))
-    out = {"confounded_insider_log": compare(hidden, hidden, 2, r41.insider, (1000,), FEWER, names, True),
-           "uniform_log": compare(hidden, hidden, 2, mp.uniform, (1000,), FEWER, names)}
+    out = {"confounded_insider_log": compare(hidden, hidden, 2, r41.insider, (1000,), seeds, names, True),
+           "uniform_log": compare(hidden, hidden, 2, mp.uniform, (1000,), seeds, names)}
     simple = r41.lift(rounds40.cells()["A"])
     for p in (Q(9, 10), Q(3, 10), Q(1, 10)):
         test = r41.lift(rounds40.binary("A", rounds40.one(p)))
-        out[f"shift_to_{p}"] = compare(simple, test, 2, mp.uniform, (1000,), FEWER, names)
+        out[f"shift_to_{p}"] = compare(simple, test, 2, mp.uniform, (1000,), seeds, names)
     return out
 
 
@@ -162,15 +162,18 @@ def main():
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--round", required=True, choices=sorted(ROUNDS))
     parser.add_argument("--cell", default="all")
+    parser.add_argument("--seeds", default="", help="first:stop, to run a registered seed range in parts")
     args = parser.parse_args()
+    part = range(*map(int, args.seeds.split(":"))) if args.seeds else None
     args.out.mkdir(parents=True, exist_ok=True)
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     dirty = bool(subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=no"], text=True).strip())
     # Exclusive creation: an earlier result, including a failed or negative one, is never overwritten.
-    path = args.out / f"round{args.round}-{args.cell}.json"
+    path = args.out / f"round{args.round}-{args.cell}{'-' + args.seeds.replace(':', '-') if part else ''}.json"
     with path.open("x", encoding="utf-8") as stream:
         json.dump({"commit": commit, "uncommitted_changes": dirty, "round": args.round, "cell": args.cell,
-                   "result": ROUNDS[args.round](args.cell)}, stream, indent=1, ensure_ascii=False)
+                   "result": ROUNDS[args.round](args.cell, part) if part else ROUNDS[args.round](args.cell)},
+                  stream, indent=1, ensure_ascii=False)
     print(f"round {args.round} {args.cell} written, result sha256 {r41.digest(path)}", flush=True)
 
 
