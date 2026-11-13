@@ -1,5 +1,8 @@
 # 当前进度（2026-11-13）
 
+**用户最新决定（2026-11-13）：当前工作暂停，等待后续通知。获得真实Agent失败归因、可避免成本及强简单基线剩余改进空间之前，不再批准新的核心数学方法或为其定制Benchmark；以[ADR-0033末节](adr/0033-decision-tradeoff-lineage-and-strong-baselines.md)为准。**
+
+
 ## Gate44A-0：Smoke Not Ready（仅CPU准备）
 
 新增最小gate44a准备模块及7项假SDK检查，冻结两检查点/私有构造/引用流与提示哈希；全仓194项CPU通过。现有91份含模型配置中没有M3/M4真实历史，旧BTM训练任务/续程合同不可直接迁移。R2/R3仅缺数据占位，不是已拟合产物；真实网络启动预检尚未放行，无真实模型调用、不合并PR。见[准备记录](experiments/044a-0-preparation.md)及[manifest](evidence/044a-0/manifest.json)。后续先批准真实训练来源/适配或另登记采集，补齐产物后再申请40 smoke，不扩大160回合。
