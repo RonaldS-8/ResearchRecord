@@ -15,6 +15,7 @@ from . import autoresearch_rounds as rounds40
 from . import belief
 from . import multipath as mp
 from . import multipath_rounds as r41
+from . import simple_rules
 
 SEEDS, FEWER = range(5000, 5100), range(5000, 5060)
 SIZES = (30, 100, 300, 1000, 3000)
@@ -59,6 +60,11 @@ def policies(cell, true_k, rows, counts, seed, orders, names):
     found = {"acv_strict": mp.Planner(counts, cell), "acv_tol0.05": fallback}
     if "learned_context_order" in names:
         found["learned_context_order"] = orders(counts, rows)
+    # Simple-rule baselines: plain log frequencies, no planner and no model (see simple_rules.py).
+    if "simple_last_feedback" in names:
+        found["simple_last_feedback"] = simple_rules.LastFeedbackRule(rows)
+    if "simple_diagnose_first" in names:
+        found["simple_diagnose_first"] = simple_rules.LastFeedbackRule(rows, diagnose_first=True)
     notes, plans = {}, {}
 
     def plan(model, guard=True, floor=None, tolerance=belief.NUMERIC):
@@ -221,7 +227,20 @@ def round_c4(name, seeds=LATER):
     return compare(cell, cell, true_k, mp.uniform, SIZES, seeds, FOLLOW)
 
 
-ROUNDS = {"c1": round_c1, "c2": round_c2, "c3": round_c3, "c4": round_c4}
+SIMPLE = ("acv_tol0.05", "simple_last_feedback", "simple_diagnose_first")
+
+
+def round_c5(name, seeds=LATER):
+    """Simple rules that use the most recent feedback, on the histories of round c4."""
+    if name == "controls":
+        return round_c3("all", seeds, SIMPLE)
+    if name.startswith("thin-"):
+        return round_c2(name[5:], seeds, (0.1,), SIMPLE)
+    cell = r41.lift(rounds40.cells()["A"]) if name == "A" else cells()[name][0]
+    return compare(cell, cell, 0, mp.uniform, SIZES, seeds, SIMPLE)
+
+
+ROUNDS = {"c1": round_c1, "c2": round_c2, "c3": round_c3, "c4": round_c4, "c5": round_c5}
 
 
 def main():

@@ -205,5 +205,45 @@ class BeliefFollowUpTests(unittest.TestCase):
         self.assertEqual(sum(got["wide_transition_counts"][100].values()), 1)
 
 
+class SimpleRuleTests(unittest.TestCase):
+    """The simple-rule baselines are kept apart from the method they are compared with."""
+
+    def view(self, events, x="X"):
+        graph = {mp.START: (mp.Step("a", mp.DONE), mp.Step("b", mp.DONE, 1), mp.Step("c", mp.DONE))}
+        return mp.View(x, mp.Prices((), Q(1)), events, 6, graph)   # b costs 2 on success: one follow-up call
+
+    def rows(self, spec, x="X"):
+        """spec: ((events, tool, successes, failures), ...) as logged steps."""
+        return [{"x": x, "steps": [(events, tool, mp.DONE if i < wins else None)]}
+                for events, tool, wins, losses in spec for i in range(wins + losses)]
+
+    def test_last_feedback_rule_by_hand(self):
+        from extensions.toolmaze_recovery import simple_rules
+        failed_a = (("a", None),)
+        rule = simple_rules.LastFeedbackRule(self.rows((
+            ((), "a", 3, 2), ((), "b", 5, 0),            # at the start: a 0.6 per unit, b 1.0 at cost 2 = 0.5
+            (failed_a, "a", 0, 6), (failed_a, "b", 3, 3),  # after a failed: a never works again, b half the time
+            (failed_a, "c", 1, 1))))                      # c has too few calls anywhere
+        self.assertEqual(rule(self.view(())), "a")
+        self.assertEqual(rule(self.view(failed_a)), "b")
+        self.assertEqual(rule.rate("X", ("a", None), "c"), None)
+        self.assertEqual(rule.rate("other", None, "a"), 3 / 11)            # another context: the tool alone
+        only_dead = simple_rules.LastFeedbackRule(self.rows(((failed_a, "a", 0, 6), (failed_a, "b", 0, 6),
+                                                             (failed_a, "c", 0, 6))))
+        self.assertEqual(only_dead(self.view(failed_a)), ar.STOP)          # nothing ever worked here: stop
+        # Feedback never logged: context-level rates, a 3/11 per unit against b 8/11 at cost 2.
+        self.assertEqual(rule(self.view((("b", None),))), "b")
+        first = simple_rules.LastFeedbackRule(self.rows((((), "a", 5, 0),)), diagnose_first=True)
+        self.assertEqual(first(self.view(())), ar.DIAGNOSE)
+        self.assertEqual(first(self.view((("diagnose", "hint"),))), "a")
+
+    def test_simple_rules_share_no_code_with_the_method(self):
+        from pathlib import Path
+        from extensions.toolmaze_recovery import simple_rules
+        source = Path(simple_rules.__file__).read_text(encoding="utf-8").split('"""', 2)[2]
+        for word in ("Planner", "belief", "solve", "faults", "import multipath as"):
+            self.assertNotIn(word, source)
+
+
 if __name__ == "__main__":
     unittest.main()
