@@ -1,0 +1,42 @@
+{
+  "status": "Not Ready",
+  "blockers": [
+    "No approved same-source real Agent training cohort or fitted R2/R3 artifacts"
+  ],
+  "model": "Qwen3-4B-Thinking-2507",
+  "revision": "768f209d9ea81521153ed38c47d515654e938aea",
+  "smoke_episodes": 40,
+  "sdk_cap": 480,
+  "output_token_cap": 2949120,
+  "tool_fee_upper_bound": 420,
+  "model_calls": 0,
+  "checkpoints": {
+    "M3": {
+      "public_sha256": "e656cdbc0d5c7be0bfb54dd664170cbd37e3ac99808f880cd8905d4430516599",
+      "prefix_calls": 3,
+      "remaining_calls": 6
+    },
+    "M4": {
+      "public_sha256": "1be4e44d92b79dd9f4b127d294daed9ae0020cd09f390d5bc83abf81d9587ffb",
+      "prefix_calls": 4,
+      "remaining_calls": 3
+    }
+  },
+  "files": {
+    "M3/R0-prompt.json": "442570c983dd0a983cb6d07e23ea7772d633c39d735cf0304bc8bd0bb1c25bf7",
+    "M3/R1-prompt.json": "fc5028b49a79614d0f77581c6722edae90d8143212c0625d286eef60da08f215",
+    "M3/R2-prompt.json": "a2cd3fce320c9c447fbca060d381d442ae9ee1f8cc642f500d6f91eae2ef311a",
+    "M3/R3-prompt.json": "ce21f3e4018a3ff2ab4f7f296e4dc677d4412e80250e2eb94a440587edd7c198",
+    "M3/private-construction.json": "270eb42f85d5a353c3f7f4b13d4c00baa152e3b2d8661f632fe0d404e8509ada",
+    "M3/public.json": "e656cdbc0d5c7be0bfb54dd664170cbd37e3ac99808f880cd8905d4430516599",
+    "M3/reference-stream.json": "a64bf5dfff3a5c8ad10b0aa6b75610aa82dabe642afcdd6ade52db92f55f450a",
+    "M4/R0-prompt.json": "3e68af85b1fe7fc0ca5465ae7ab4bb04b5f5da8c0f58ed03874d87e859b47d0e",
+    "M4/R1-prompt.json": "81f791bf81b273dca6e87b5122e067a24fb4edc9c6288c745fe65244a5e0730c",
+    "M4/R2-prompt.json": "a3435c34b03b5f972ed65ffda39d464e0eadf9b27ef954a2cb985d61c63dcb0b",
+    "M4/R3-prompt.json": "74613e8eea65b856d0fb110ee85c94e30a0897579f6945e4f0f86ca4b3f45858",
+    "M4/private-construction.json": "71e833061b669f2ee0ab7d10a97e07f00afc8bd8be70f1d23a195ef18d5f619a",
+    "M4/public.json": "1be4e44d92b79dd9f4b127d294daed9ae0020cd09f390d5bc83abf81d9587ffb",
+    "M4/reference-stream.json": "3c2d090ae64a9d9088ac64df7dcfb1f575c87f0a8ca5b149e7fc4d32cdd3ed2c",
+    "training.json": "5002244e0d01283e767997c664c6ff9c6d057b7a4fece5cd5eb577ec46074f28"
+  }
+}

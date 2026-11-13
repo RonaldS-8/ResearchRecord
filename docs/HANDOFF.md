@@ -1,5 +1,10 @@
 # 当前进度（2026-11-13）
 
+## Gate44A-0：Smoke Not Ready（仅CPU准备）
+
+新增最小gate44a准备模块及7项假SDK检查，冻结两检查点/私有构造/引用流与提示哈希；全仓194项CPU通过。现有91份含模型配置中没有M3/M4真实历史，旧BTM训练任务/续程合同不可直接迁移。R2/R3仅缺数据占位，不是已拟合产物；真实网络启动预检尚未放行，无真实模型调用、不合并PR。见[准备记录](experiments/044a-0-preparation.md)及[manifest](evidence/044a-0/manifest.json)。后续先批准真实训练来源/适配或另登记采集，补齐产物后再申请40 smoke，不扩大160回合。
+
+
 ## Gate43A-R最终工程Go / Gate44A仅预登记
 
 用户配置服务器后，固定PR16 head 3efa57b独立Python3.10.12复验完成：PR原树全仓191项、临时整合树206项通过；25份d1字段及哈希与提交一致、无负零；040/041全部16轮旧哈希一致。七文件14个正负零差异由云端旧原始结果确认；382冻结归档未变。似然修正的2640场合结构/状态选择0变、26400初值选择241变，独立穷举数学核验通过。整合首轮缺历史夹具的4错误及重跑证据均保留。云端证据results/043a-r-final-independent-01；[验收报告](reviews/043a-r-final-independent-acceptance.md)、[运行记录](experiments/043a-r-independent-acceptance.md)。
