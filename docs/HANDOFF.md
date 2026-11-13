@@ -1,9 +1,10 @@
 # 当前进度（2026-11-13）
 
-## Gate44A-Obs：4回合观察准备，等待运行批准
+## Gate44A-Obs：已批准4回合完成，恢复均失败
 
-用户新授权仅恢复R0/R1观察准备；R2/R3、核心方法与Benchmark扩展继续暂停。新增真实入口gate44obs，冻结4回合/seed444001/48请求上限，不启动40或160回合。全仓199项CPU通过，真实tokenizer离线渲染与模型revision核对通过，无真实模型调用、未合并PR17。见[独立预登记](experiments/044a-obs-real-agent-observation.md)及[准备manifest](evidence/044a-obs/preparation.json)。待用户明确批准后才启动服务和4回合；人工A–F归因、成本余量及研究路线目前unknown。
+源码1aa0081，用户批准后按M3-R0/M3-R1/M4-R1/M4-R0固定顺序完成，无补跑/改条件。7个SDK请求，无SDK错误/截断/预算触发；四轮业务及严格均失败。三轮直接停止；M3-R1归档与核验成功，发布内容漏句点被拒后停止。独立重放原始实参/回执/评分一致。总输入16852、输出8854（推理8574不重复加），后缀费用5，模型119.288秒。服务2594385已停、GPU464MiB。
 
+[逐轨迹/瓶颈审计](reviews/044a-obs-bottleneck-audit.md)、[实验记录](experiments/044a-obs-real-agent-observation.md)，原始证据云端results/044a-obs-01、044a-obs-service-01。先定位执行可靠性及公开替代路径识别/停止遵从；最强简单基线剩余余量及可避免总成本仍unknown，不放行新数学方法或定制Benchmark。本轮完成，后续等待用户通知；R2/R3、40 smoke及160开发回合均未启动。
 
 **用户最新决定（2026-11-13）：当前工作暂停，等待后续通知。获得真实Agent失败归因、可避免成本及强简单基线剩余改进空间之前，不再批准新的核心数学方法或为其定制Benchmark；以[ADR-0033末节](adr/0033-decision-tradeoff-lineage-and-strong-baselines.md)为准。**
 
