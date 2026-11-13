@@ -78,7 +78,7 @@ def initialize(agent, session):
 
 
 def run_episode(agent, session, *, arm="react", first_tool=None,
-                initial_messages=None, request_limit=REQUESTS):
+                initial_messages=None, request_limit=REQUESTS, scorer=evaluate):
     if arm not in ("react", "simple_feedback") or first_tool and arm != "react":
         raise ValueError("Unregistered control combination")
     initialize(agent, session)
@@ -123,7 +123,7 @@ def run_episode(agent, session, *, arm="react", first_tool=None,
         checkpoint["realized_suffix_fees"] = {
             kind: str(sum((F(e["fee"]) for e in suffix if e["kind"] == kind), F()))
             for kind in ("execution", "diagnosis")}
-    return {**evaluate(session, answer), "answer": answer, "checkpoints": checkpoints,
+    return {**scorer(session, answer), "answer": answer, "checkpoints": checkpoints,
             "history": deepcopy(agent.get_conversation_history()), "tokens": agent.get_token_usage().to_dict(),
             "model_seconds": model_seconds}
 
