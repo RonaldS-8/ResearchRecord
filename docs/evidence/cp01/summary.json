@@ -1,0 +1,58 @@
+{
+ "commit": "5144f597cef5f662775ffa0bb377c20f6808397c",
+ "program_sha256": {
+  "case-handoff": {
+   "contingency": "fae462141034cd54f28511ebd2a0f0a8c7d97a45c4ad45b09777eab3974c51a1",
+   "happy_path": "7f7d469ba7c68642a76947a9440689a39e02c5984ab8936dccb1ad1749791273"
+  },
+  "case-archive": {
+   "contingency": "284360c09ca7c098ad57ed6a13478645f63accec1f4cd4903104746549af85d6",
+   "happy_path": "92deab1ee467687cc200d3bec3e7e1354722ac6a3cfc55ba3a3bd061822cedf3"
+  },
+  "stock-reservation": {
+   "contingency": "be8682984b3d1d196fadefe87195ed0d471d730e6823121af1a46824e6506bce",
+   "happy_path": "3cfcdd775a047920b6896d1223abe7733b3c7c3af7037d6316c67ccac762e4b2"
+  },
+  "stock-write-recovery": {
+   "contingency": "5a2aea83ac8b764bb54445551cdbeff80152d6f60bee09eea60a1b37dd227b18",
+   "happy_path": "0e6f806da578b5135969b8aa11ae9e2f5dfd96abfa835df7aeadd9e149a87d06"
+  },
+  "artifact-release": {
+   "contingency": "48cd778f29e7c2180cdfc568a892bd4077a255a557ed21c01fd7cc7815a083ae",
+   "happy_path": "aa29af34d31d74b8bae4f8ed0ca07e8f263de606d42580dbbdf0bdee97726713"
+  },
+  "facility-access": {
+   "contingency": "4d4d27ae763e5b9d199c9426211d1c366cbcc88f07006d21f038aa1a7caeee5f",
+   "happy_path": "f5a0bf6b552598e6556822b1ce307eb2ca696c045259a2edbd187403be8f556b"
+  }
+ },
+ "totals": {
+  "contingency": {
+   "cells": 38,
+   "met": 38,
+   "status": {
+    "finished": 38
+   },
+   "illegal_calls": 0,
+   "tool_fee": 159,
+   "diagnostic_fee": 4,
+   "stepwise_decisions": 201,
+   "program_decisions": 38
+  },
+  "happy_path": {
+   "cells": 38,
+   "met": 7,
+   "status": {
+    "finished": 7,
+    "escalated": 31
+   },
+   "illegal_calls": 0,
+   "tool_fee": 62,
+   "diagnostic_fee": 0,
+   "stepwise_decisions": 100,
+   "program_decisions": 38,
+   "hybrid_decisions": 170,
+   "prefix_mismatches": 0
+  }
+ }
+}
