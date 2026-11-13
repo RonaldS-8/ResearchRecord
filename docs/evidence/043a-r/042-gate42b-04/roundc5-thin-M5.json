@@ -1,0 +1,91 @@
+{
+ "commit": "abf6ee628f77777ab8c71e0820649b8a7907c028",
+ "uncommitted_changes": false,
+ "round": "c5",
+ "cell": "thin-M5",
+ "result": {
+  "0.1": {
+   "public_optimum": [
+    "9/10",
+    "17/5",
+    3.4
+   ],
+   "blind_optimum_no_history": [
+    "9/10",
+    "39/10",
+    3.9
+   ],
+   "seeds": 60,
+   "auto_k_counts": {
+    "300": {},
+    "3000": {}
+   },
+   "by_size": {
+    "300": {
+     "acv_tol0.05": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 56,
+      "mean_completion": 0.815,
+      "mean_fee": 3.755,
+      "wrong_first_action": 0.4222,
+      "materially_wrong_first_action": 0.4222,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.18348,
+      "completion_estimate_error": 0.18387,
+      "fee_estimate_bias": -0.0239
+     },
+     "simple_last_feedback": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 60,
+      "mean_completion": 0.59167,
+      "mean_fee": 3.4683,
+      "wrong_first_action": 0.1556,
+      "materially_wrong_first_action": 0.1556,
+      "model_rejected_seeds": 0
+     },
+     "simple_diagnose_first": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 60,
+      "mean_completion": 0.59167,
+      "mean_fee": 3.4683,
+      "wrong_first_action": 0.1556,
+      "materially_wrong_first_action": 0.1556,
+      "model_rejected_seeds": 0
+     }
+    },
+    "3000": {
+     "acv_tol0.05": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 60,
+      "mean_completion": 0.86556,
+      "mean_fee": 3.8989,
+      "wrong_first_action": 0.4611,
+      "materially_wrong_first_action": 0.4611,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.1296,
+      "completion_estimate_error": 0.1298,
+      "fee_estimate_bias": 0.0933
+     },
+     "simple_last_feedback": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 60,
+      "mean_completion": 0.74833,
+      "mean_fee": 3.4061,
+      "wrong_first_action": 0.0,
+      "materially_wrong_first_action": 0.0,
+      "model_rejected_seeds": 0
+     },
+     "simple_diagnose_first": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 60,
+      "mean_completion": 0.74833,
+      "mean_fee": 3.4061,
+      "wrong_first_action": 0.0,
+      "materially_wrong_first_action": 0.0,
+      "model_rejected_seeds": 0
+     }
+    }
+   }
+  }
+ }
+}
