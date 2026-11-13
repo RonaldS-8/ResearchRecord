@@ -102,6 +102,24 @@ python -m extensions.toolmaze_recovery.contingency_cpu --out results/cp01-cpu-01
 
 **已知风险：** 思考模型可能在 6144 输出内用完 Token 而没写出程序；按失败记录，不调大上限补跑。
 
+**获批后在 LabServer `/home/ubuntu/Song/Agent` 运行（本轮未执行）：**
+
+```sh
+bash benchmarks/ToolMaze/evaluation/scripts/serve_local_vllm.sh
+```
+
+```sh
+export PYTHONPATH=benchmarks/ToolMaze:tests:.
+mkdir -p results/cp01-gpu-01/react results/cp01-gpu-01/program
+for cell in $(.venv/bin/python -c "from extensions.toolmaze_recovery.contingency_cpu import cells; print(' '.join(t + '/' + f for t, f in cells()))"); do
+  t=${cell%/*}; f=${cell#*/}
+  .venv/bin/python -m extensions.toolmaze_recovery.run --task "$t" --condition "$f" --out "results/cp01-gpu-01/react/$t-$f"
+  .venv/bin/python -m extensions.toolmaze_recovery.contingency --task "$t" --condition "$f" --out "results/cp01-gpu-01/program/$t-$f"
+done
+```
+
+启动前先在云端跑 `tests/test_toolmaze_contingency.py` 与 `tests/test_no_leakage.py`（后者本地缺 ToolMaze 数据，无法在本机运行）。单回合异常不自动重跑，保留 `failure.json` 后继续下一格。
+
 ## 结果（CPU，`cp01-cpu-01`）
 
 运行于预登记提交 `5144f597cef5f662775ffa0bb377c20f6808397c`，工作区无未提交改动；本地 Python 3.14，代码已按 3.10 语法检查。原始输出在本地 `results/cp01-cpu-01/`，副本见 [summary.json](../evidence/cp01/summary.json)（SHA256 `530dadb0…72b1`）与 [cells.json](../evidence/cp01/cells.json)（`717e9735…50e7`）。一次运行，无重跑，未改程序。
