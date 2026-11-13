@@ -68,6 +68,14 @@ class BeliefModelTests(unittest.TestCase):
                         cell.roots[:1], cell.left)
         again = belief.train(rows, blank, 4, 4001)       # a cell with no generator in it: same fit
         self.assertEqual((model.start, model.emit, model.move), (again.start, again.emit, again.move))
+        # With diagnostic signals the fit also needs their public names, and nothing else, from the cell.
+        signalled = rounds.cells()["E"][0]
+        names = signalled.alphabet()[ar.DIAGNOSE]
+        only = mp.Fault({t: Q(1) for t in r41.tools(signalled)}, signal=tuple((name, Q(1, 2)) for name in names))
+        nameless = mp.Cell(signalled.name, signalled.graph, {"only": only}, signalled.roots, signalled.left)
+        logged = mp.simulate(signalled, mp.uniform, 300, 4001)
+        first, second = belief.train(logged, signalled, 2, 4001), belief.train(logged, nameless, 2, 4001)
+        self.assertEqual((first.start, first.emit, first.move), (second.start, second.emit, second.move))
         truth = true_model(cell)
         for x in ("X1", "X2", "X3"):
             for events, tool in (((), "r0"), ((("r0", None),), "r1"), ((("r0", None), ("r1", None)), "r2")):
@@ -121,14 +129,22 @@ class BeliefFollowUpTests(unittest.TestCase):
         self.assertEqual(model.emit["a"][OK], [0.97, 0.3])                                 # the fit is not altered
 
     def test_merging_seed_ranges_adds_counts_and_weights_means(self):
-        def part(seeds, fee, regret, k):
+        def part(seeds, fee, regret, k, rejected=0, bias=None):
+            row = {"material_regret_seeds": regret, "mean_fee": fee, "model_rejected_seeds": rejected}
+            if bias is not None:
+                row["completion_estimate_bias"] = bias
             return {"public_optimum": ["1", "4", 4.0], "blind_optimum_no_history": ["1", "4", 4.0], "seeds": seeds,
-                    "auto_k_counts": {"300": {k: seeds}},
-                    "by_size": {"300": {"p": {"material_regret_seeds": regret, "mean_fee": fee}}}}
+                    "auto_k_counts": {"300": {k: seeds}}, "by_size": {"300": {"p": row}}}
         got = rounds.merged([part(25, 4.0, 2, "2"), part(75, 3.0, 6, "3")])
         self.assertEqual(got["seeds"], 100)
-        self.assertEqual(got["by_size"]["300"]["p"], {"material_regret_seeds": 8, "mean_fee": 3.25})
+        self.assertEqual(got["by_size"]["300"]["p"],
+                         {"material_regret_seeds": 8, "mean_fee": 3.25, "model_rejected_seeds": 0})
         self.assertEqual(got["auto_k_counts"]["300"], {"2": 25, "3": 75})
+        # An estimate is averaged over the seeds whose model was kept: 50 and 10 of them here, not 50 and 50.
+        uneven = rounds.merged([part(50, 4.0, 0, "2", 0, 0.10), part(50, 4.0, 0, "2", 40, 0.50)])
+        self.assertAlmostEqual(uneven["by_size"]["300"]["p"]["completion_estimate_bias"], 0.16667, places=5)
+        absent = rounds.merged([part(50, 4.0, 0, "2", 50), part(50, 4.0, 0, "2", 0, 0.20)])
+        self.assertAlmostEqual(absent["by_size"]["300"]["p"]["completion_estimate_bias"], 0.20)
 
     def test_strict_comparison_acts_on_smoothing_and_a_tie_band_does_not(self):
         cell = r41.lift(rounds40.cells()["A"])          # retry is right nine times in ten; optimum 3.2
@@ -144,6 +160,12 @@ class BeliefFollowUpTests(unittest.TestCase):
         self.assertAlmostEqual(fee(belief.NUMERIC), 4.0)   # switches for a few billionths of estimated completion
         self.assertAlmostEqual(fee(0.01), 3.2)
         self.assertAlmostEqual(fee(belief.confident_band), 3.2)
+        counts = {(None, (), t): {mp.DONE: 10} for t in r41.tools(cell)}     # twenty logged episodes: no band left
+        self.assertAlmostEqual(fee(belief.confident_band), 4.0)
+        for calls, completion in ((4, 0.9), (5, 1.0)):                        # a tool needs five logged calls to be planned
+            counts = {(None, (), "retry"): {mp.DONE: 500}, (None, (), "switch"): {mp.DONE: calls}}
+            policy = belief.BeliefPolicy(model, cell, counts, lambda view: ar.STOP, guard=False, tolerance=0.01)
+            self.assertAlmostEqual(float(mp.value(cell, policy)[0]), completion)
 
     def test_confident_band_closes_when_the_log_is_thin(self):
         self.assertAlmostEqual(belief.confident_band(0.9, 1000), 0.05 - 2 * sqrt(0.09 / 1000) - 0.001)

@@ -76,7 +76,7 @@ def policies(cell, true_k, rows, counts, seed, orders, names):
                       "belief_static": lambda: plan(belief.train(rows, cell, true_k, seed, transitions=False))}
         found.update({n: registered[n]() for n in names if n in registered and (n != "belief_K-1" or true_k > 1)})
     if any(n.startswith("belief2") for n in names):
-        # Follow-up (round c4): EM run to convergence, the widest state count, static or with transitions by BIC.
+        # Follow-up (round c4): 300 EM iterations, the widest state count, static or with transitions by BIC.
         ks = KS if "belief2bic_tol0.05" in names else KS[-1:]
         fits = {(k, moving): belief.train(rows, cell, k, seed, moving, iterations=LONG)
                 for k in ks for moving in (False, True)}
@@ -170,7 +170,10 @@ def round_c3(name, seeds=FEWER, names=("acv_tol0.05", "belief_auto", "belief_tru
 
 
 def merged(parts):
-    """Combine compare() results of disjoint seed ranges: counts add, means are weighted by seeds."""
+    """Combine compare() results of disjoint seed ranges. Counts add and means are weighted by seeds.
+    The estimate fields are means over the seeds whose model was not rejected, so those are the
+    weights there; for the count-based planners, whose support can also differ by context, this
+    is approximate."""
     total = sum(p["seeds"] for p in parts)
     out = {"public_optimum": parts[0]["public_optimum"], "blind_optimum_no_history": parts[0]["blind_optimum_no_history"],
            "seeds": total, "auto_k_counts": {}, "by_size": {}}
@@ -184,11 +187,14 @@ def merged(parts):
             out.setdefault(key, {})[n] = dict(sorted(counts.items()))
         out["by_size"][n] = {}
         for name in parts[0]["by_size"][n]:
-            row = {}
-            for key in parts[0]["by_size"][n][name]:
-                values = [(p["by_size"][n][name].get(key, 0), p["seeds"]) for p in parts]
-                row[key] = (sum(v for v, _ in values) if key.endswith("_seeds")
-                            else round(sum(v * w for v, w in values) / total, 5))
+            rows, row = [(p["by_size"][n][name], p["seeds"]) for p in parts], {}
+            for key in dict.fromkeys(key for found, _ in rows for key in found):
+                if key.endswith("_seeds"):
+                    row[key] = sum(found.get(key, 0) for found, _ in rows)
+                    continue
+                values = [(found[key], seeds - found.get("model_rejected_seeds", 0) if "estimate" in key else seeds)
+                          for found, seeds in rows if key in found]
+                row[key] = round(sum(v * w for v, w in values) / sum(w for _, w in values), 5)
             out["by_size"][n][name] = row
     return out
 
