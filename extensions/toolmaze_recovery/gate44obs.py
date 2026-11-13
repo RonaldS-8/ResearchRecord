@@ -34,14 +34,14 @@ def check_frozen(mechanism, arm, agent, session):
     return messages
 
 
-def observe(agent, mechanism, arm, output, render, *, evidence_kind, deadline=None):
+def observe(agent, mechanism, arm, output, render, *, evidence_kind, deadline=None, seed=SEED, run_id=RUN_ID):
     """Same entry for fake SDK tests and approved real SDK; render is offline tokenizer."""
     session = restored(mechanism)
     check_frozen(mechanism, arm, agent, session)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
-    (output / 'config.json').write_text(json.dumps({'run_id': RUN_ID, 'model': MODEL, 'revision': MODEL_REVISION,
-        'seed': SEED, 'mechanism': mechanism, 'arm': arm, 'evidence_kind': evidence_kind,
+    (output / 'config.json').write_text(json.dumps({'run_id': run_id, 'model': MODEL, 'revision': MODEL_REVISION,
+        'seed': seed, 'mechanism': mechanism, 'arm': arm, 'evidence_kind': evidence_kind,
         'temperature': 0, 'max_tokens': 6144, 'request_timeout': 120, 'request_cap': 12}, indent=2))
     original = agent.client
     backend = original.with_options(max_retries=0).chat.completions.create
@@ -69,7 +69,7 @@ def observe(agent, mechanism, arm, output, render, *, evidence_kind, deadline=No
         if (kwargs.get('temperature'), kwargs.get('max_tokens'), kwargs.get('timeout')) != (0, 6144, 120):
             raise ValueError('Sampling configuration drift')
         request = deepcopy(kwargs)
-        request['seed'] = SEED
+        request['seed'] = seed
         text, token_count = render(request['messages'], request['tools'])
         if token_count + 6144 > 32768:
             stopped = True

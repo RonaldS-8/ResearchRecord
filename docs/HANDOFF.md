@@ -155,3 +155,7 @@ Gate 9 单任务 MVP 已验收。Gate 10 移除了对 Gate 7 的直接依赖，�
 ## Gate 11 · 按当前报价重算通过验收
 
 重算动作价值与上下文阈值在 144 个起点全部同选。只读审计找到两组优先同键候选，尚待家族与严格完成准入。多步手算中当前反馈有价值，直接读反馈的阈值已达理论最优。完整 BTM 和多步环境未运行。见[实验 013](experiments/013-action-value-and-btm-comparability.md)。
+
+## Gate45 准备与授权（2026-11-14）
+
+用户已授权真实方法迁移探索，取代前轮等待通知状态。审计R0/R1 Ready，完整BTM/ACV/HMM因无合法同源训练产物及合同映射Not Ready，不阻塞Ready组。全仓201项CPU通过；[预登记045](experiments/045-real-agent-method-comparison.md)固定20回合A→B自动协议门、seed450001–450005，模型/提示/任务/scorer沿用。运行入口scripts/run_gate45.sh，云端results/045-real-agent-01、045-service-01；提交运行后允许暂停对话。原始结果须后续人工归因及报告，不以提交运行视为实验完成。不新增训练/任务/超过50回合。
