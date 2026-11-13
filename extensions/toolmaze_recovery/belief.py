@@ -2,7 +2,9 @@
 
 The model is a hidden Markov model with K states: a start distribution per public
 context, one outcome distribution per (state, tool), and one transition matrix applied
-after every call. The belief after a call with outcome o is
+after every decision step: one logged action with its feedback. The calls that follow a
+success automatically (a step's `certain` calls) do not advance it, in fitting, filtering
+and planning alike. The belief after a step with outcome o is
 
     b'(z') ~ sum_z b(z) P(o | z, tool) P(z' | z).
 
@@ -69,11 +71,27 @@ class Model:
         return None if belief is None else sum(b * w for b, w in zip(belief, self.emit[tool][OK]))
 
 
-def fit(history, cell, k, seed, transitions=True, iterations=40):
-    """EM for one K from one random start. Only logged tools get outcome distributions."""
+def logged_labels(history):
+    """The feedback label table read from the log alone: every tool can fail with whatever labels its
+    logged failures carried (the unlabelled failure always included), and the diagnostic has the
+    signals that were seen. Nothing about the cell is needed."""
+    found = defaultdict(set)
+    for row in history:
+        for _, action, seen in row["steps"]:
+            found[action].add(outcome(seen))
+    labels = {tool: tuple(sorted(found[tool] - {OK, None}, key=str)) for tool in found if tool != DIAGNOSE}
+    labels = {tool: names or (None,) for tool, names in labels.items()}
+    labels[DIAGNOSE] = tuple(sorted(found.get(DIAGNOSE, ())))
+    return labels
+
+
+def fit(history, cell, k, seed, transitions=True, iterations=40, labels=None):
+    """EM for one K from one random start. Only logged tools get outcome distributions. The label
+    table defaults to the cell's public contract (`cell.alphabet()`, as in the registered rounds);
+    pass `logged_labels(history)` to use nothing but the log."""
     data = {key: n for key, n in sequences(history).items() if key[1]}
     # Sorted, because the alphabet is built from a set and the random start must not depend on its order.
-    alphabet = cell.alphabet()
+    alphabet = cell.alphabet() if labels is None else labels
     labels = {tool: alphabet[tool] if tool == DIAGNOSE else (OK, *alphabet[tool]) for tool in sorted(alphabet)}
     labels = {tool: names for tool, names in labels.items() if names and any(
         action == tool for _, obs in data for action, _ in obs)}
@@ -135,9 +153,9 @@ def fit(history, cell, k, seed, transitions=True, iterations=40):
     return Model(start, emit, move, transitions and k > 1, loglik, size, mass)
 
 
-def train(history, cell, k, seed, transitions=True, restarts=2, iterations=40):
+def train(history, cell, k, seed, transitions=True, restarts=2, iterations=40, labels=None):
     """Best of a few EM starts by likelihood."""
-    return max((fit(history, cell, k, seed * 1000 + r, transitions, iterations) for r in range(restarts)),
+    return max((fit(history, cell, k, seed * 1000 + r, transitions, iterations, labels) for r in range(restarts)),
                key=lambda m: m.loglik)
 
 

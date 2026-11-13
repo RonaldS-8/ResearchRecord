@@ -62,7 +62,7 @@ class Cell:
     faults: dict    # hidden state -> Fault
     roots: tuple    # ((P, x, Prices, ((state, P(state | x, prices)), ...)), ...)
     left: int = CALLS_LEFT
-    moves: dict = None  # optional hidden transition after every call: state -> ((state, P), ...)
+    moves: dict = None  # optional hidden transition after every decision step: state -> ((state, P), ...)
 
     @property
     def diagnostic(self):
@@ -169,7 +169,8 @@ def branches(cell, mass, action, events):
 
 
 def shift(cell, mass):
-    """Apply the hidden transition that follows a call; cells without `moves` are static."""
+    """Apply the hidden transition that follows one decision step (not each of a step's
+    `certain` follow-up calls); cells without `moves` are static."""
     if not cell.moves:
         return mass
     moved = {}

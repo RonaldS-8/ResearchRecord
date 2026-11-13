@@ -76,6 +76,14 @@ class BeliefModelTests(unittest.TestCase):
         logged = mp.simulate(signalled, mp.uniform, 300, 4001)
         first, second = belief.train(logged, signalled, 2, 4001), belief.train(logged, nameless, 2, 4001)
         self.assertEqual((first.start, first.emit, first.move), (second.start, second.emit, second.move))
+        # The label table can come from the log alone; then no cell, private or public, changes the training input.
+        table = belief.logged_labels(logged)
+        self.assertEqual(table, signalled.alphabet())
+        other = rounds.cells()["M5"][0]                  # an unrelated generator
+        third, fourth = (belief.train(logged, c, 2, 4001, labels=table) for c in (signalled, other))
+        self.assertEqual((first.start, first.emit, first.move), (third.start, third.emit, third.move))
+        self.assertEqual((third.start, third.emit, third.move), (fourth.start, fourth.emit, fourth.move))
+        self.assertLessEqual(set(belief.logged_labels(logged[:1])[ar.DIAGNOSE]), set(names))
         truth = true_model(cell)
         for x in ("X1", "X2", "X3"):
             for events, tool in (((), "r0"), ((("r0", None),), "r1"), ((("r0", None), ("r1", None)), "r2")):
@@ -86,6 +94,23 @@ class BeliefModelTests(unittest.TestCase):
         got, best = mp.value(cell, policy), mp.value(cell)
         self.assertLess(abs(float(got[0] - best[0])), 0.005)
         self.assertLess(float(got[1]), float(best[1]) * 1.05)   # 3.9% above the optimum on this seed
+
+    def test_the_hidden_state_moves_once_per_decision_step_not_per_call(self):
+        # A success here is followed by three automatic calls; the model still moves once.
+        cell = r41.lift(rounds40.cells()["A"])
+        self.assertEqual(max(step.certain for step in cell.graph[mp.START]), 3)
+        model = Model({None: [1.0, 0.0]}, {"retry": {OK: [0.0, 1.0], None: [1.0, 0.0]},
+                                           "switch": {OK: [0.0, 1.0], None: [1.0, 0.0]}},
+                      [[0.5, 0.5], [0.0, 1.0]], True)
+        self.assertAlmostEqual(model.success(None, (("retry", None),), "retry"), 0.5)
+        # Each failure shows the first state; one move then puts half the mass in the second.
+        self.assertAlmostEqual(model.success(None, (("retry", None), ("retry", None)), "retry"), 0.5)
+        learned = belief.learned_cell(model, cell)
+        self.assertEqual(mp.shift(learned, {(0, 0): 1.0}), {(0, 0): 0.5, (0, 1): 0.5})
+        # Planning uses the same clock: one failed retry, one move, then room for exactly one switch (four calls).
+        after = mp.solve(learned, mp.shift(learned, {(0, 0): 1.0}), 4, (("retry", None),), mp.PUBLIC,
+                         force="switch", ban=("retry",))[0]
+        self.assertAlmostEqual(after, 0.5)
 
     def test_guard_rejects_a_model_that_contradicts_well_supported_frequencies(self):
         cell = r41.held_cells()["S4b"]
