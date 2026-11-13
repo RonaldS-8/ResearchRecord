@@ -37,9 +37,10 @@ def sequences(history):
 
 
 class Model:
-    def __init__(self, start, emit, move, transitions, loglik=0.0, size=1):
+    def __init__(self, start, emit, move, transitions, loglik=0.0, size=1, mass=None):
         self.start, self.emit, self.move, self.transitions = start, emit, move, transitions
         self.k, self.loglik, self.size = len(move), loglik, size
+        self.mass = mass  # expected counts behind start, emit and move at the last E-step, without pseudo-counts
         self.pooled = [sum(v[i] for v in start.values()) / len(start) for i in range(self.k)]
 
     def parameters(self):
@@ -125,16 +126,47 @@ def fit(history, cell, k, seed, transitions=True, iterations=40):
             emit[tool] = {name: [by_label[name][z] / totals[z] for z in states] for name in by_label}
         if transitions:
             move = [[v / sum(row) for v in row] for row in hops]
+        mass = ({x: [v - SOFT for v in row] for x, row in first.items()},
+                {tool: {name: [v - SOFT for v in row] for name, row in by.items()} for tool, by in seen.items()},
+                [[hops[i][j] - (STICKY if i == j else LOOSE) for j in states] for i in states])
         if previous is not None and loglik - previous < 1e-7 * size:
             break
         previous = loglik
-    return Model(start, emit, move, transitions and k > 1, loglik, size)
+    return Model(start, emit, move, transitions and k > 1, loglik, size, mass)
 
 
-def train(history, cell, k, seed, transitions=True, restarts=2):
+def train(history, cell, k, seed, transitions=True, restarts=2, iterations=40):
     """Best of a few EM starts by likelihood."""
-    return max((fit(history, cell, k, seed * 1000 + r, transitions) for r in range(restarts)),
+    return max((fit(history, cell, k, seed * 1000 + r, transitions, iterations) for r in range(restarts)),
                key=lambda m: m.loglik)
+
+
+def confident_band(completion, episodes, margin=0.05, z=2.0):
+    """A tie band that closes when the log is thin: the fixed margin less z binomial standard errors
+    of an estimate from `episodes` complete episodes and one episode's worth. Two plans tie only
+    when, allowing for that much estimation error, the cheaper one is still within `margin`."""
+    if not episodes:
+        return NUMERIC
+    return max(NUMERIC, margin - z * sqrt(max(completion * (1 - completion), 0.0) / episodes) - 1 / episodes)
+
+
+def snapped(model, floor):
+    """The model with every probability that rests on less than `floor` expected observations set to
+    zero, so that pseudo-counts alone never make an unobserved outcome possible. Rows left with no
+    observed mass keep their smoothed values."""
+    def clean(values, weights):
+        kept = [v if w >= floor else 0.0 for v, w in zip(values, weights)]
+        return [v / sum(kept) for v in kept] if sum(kept) > 0 else list(values)
+    first, seen, hops = model.mass
+    start = {x: clean(model.start[x], first[x]) for x in model.start}
+    emit = {}
+    for tool, by_label in model.emit.items():
+        names = list(by_label)
+        rows = [clean([by_label[name][z] for name in names], [seen[tool][name][z] for name in names])
+                for z in range(model.k)]
+        emit[tool] = {name: [rows[z][i] for z in range(model.k)] for i, name in enumerate(names)}
+    move = [clean(model.move[z], hops[z]) for z in range(model.k)] if model.transitions else model.move
+    return Model(start, emit, move, model.transitions, model.loglik, model.size, model.mass)
 
 
 def learned_cell(model, cell):
@@ -175,23 +207,32 @@ def consistent(model, counts, support=30, limit=4.0):
 class BeliefPolicy:
     """Plan on the fitted hidden-state model; hand over to `fallback` when the model fails the
     predictive check, or at a history the model gave no plan for. Tools logged fewer than
-    `enough` times have no outcome estimate and are left out of the plan."""
+    `enough` times have no outcome estimate and are left out of the plan. `tolerance` is the tie
+    band on the model's own completion estimates: a number, or a function of (strict completion
+    estimate, logged episodes in that context) such as `confident_band`."""
 
-    def __init__(self, model, cell, counts, fallback, guard=True, enough=5, tolerance=NUMERIC):
+    def __init__(self, model, cell, counts, fallback, guard=True, enough=5, tolerance=NUMERIC, floor=None):
         self.model, self.fallback, self.table, self.estimates = model, fallback, {}, {}
         self.rejected = guard and not consistent(model, counts)
         if self.rejected:
             return
-        calls = defaultdict(int)
-        for (_, _, action), seen in counts.items():
+        if floor is not None:
+            model = snapped(model, floor)
+        calls, episodes = defaultdict(int), defaultdict(int)
+        for (context, events, action), seen in counts.items():
             calls[action] += sum(seen.values())
+            if not events:
+                episodes[context] += sum(seen.values())
         tools = {step.tool for steps in cell.graph.values() for step in steps} | {DIAGNOSE}
         ban = tuple(t for t in tools if calls[t] < enough or t not in model.emit)
         learned = learned_cell(model, cell)
         for (x, quote), mass in mp.groups(learned, mp.PUBLIC).items():
-            total = sum(mass.values())
+            total, band = sum(mass.values()), tolerance
+            if callable(tolerance):
+                strict = mp.solve(learned, mass, cell.left, (), mp.PUBLIC, ban=ban, tolerance=NUMERIC)[0] / total
+                band = tolerance(strict, episodes[x])
             completion, fee = mp.solve(learned, mass, cell.left, (), mp.PUBLIC, ban=ban, table=self.table,
-                                       x=x, quote=quote, tolerance=tolerance)
+                                       x=x, quote=quote, tolerance=band)
             self.estimates[x, quote] = (completion / total, fee / total)
 
     def __call__(self, view):

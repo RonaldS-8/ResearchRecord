@@ -1,8 +1,10 @@
 """Experiment 042: the learnable hidden-state model against exact references and its own guards."""
 from fractions import Fraction as Q
+from math import sqrt
 import unittest
 
 from extensions.toolmaze_recovery import autoresearch as ar
+from extensions.toolmaze_recovery import autoresearch_rounds as rounds40
 from extensions.toolmaze_recovery import belief
 from extensions.toolmaze_recovery import belief_rounds as rounds
 from extensions.toolmaze_recovery import multipath as mp
@@ -102,6 +104,58 @@ class BeliefModelTests(unittest.TestCase):
         got = rounds.compare(cell, cell, true_k, mp.uniform, (300,), range(2), rounds.MAIN)
         self.assertEqual(set(got["by_size"][300]), set(rounds.MAIN))
         self.assertEqual(sum(got["auto_k_counts"][300].values()), 2)
+
+
+class BeliefFollowUpTests(unittest.TestCase):
+    def test_snapping_removes_only_outcomes_that_rest_on_pseudo_counts(self):
+        mass = ({None: [10.0, 0.2]},
+                {"a": {OK: [9.9, 0.0], None: [0.1, 0.2]}},
+                [[5.0, 0.01], [0.0, 0.0]])
+        model = Model({None: [0.98, 0.02]}, {"a": {OK: [0.97, 0.3], None: [0.03, 0.7]}},
+                      [[0.99, 0.01], [0.4, 0.6]], True, mass=mass)
+        clean = belief.snapped(model, 0.5)
+        self.assertEqual(clean.start[None], [1.0, 0.0])
+        self.assertEqual([clean.emit["a"][OK][0], clean.emit["a"][None][0]], [1.0, 0.0])   # failure never observed
+        self.assertEqual([clean.emit["a"][OK][1], clean.emit["a"][None][1]], [0.3, 0.7])   # no evidence: left as is
+        self.assertEqual(clean.move, [[1.0, 0.0], [0.4, 0.6]])
+        self.assertEqual(model.emit["a"][OK], [0.97, 0.3])                                 # the fit is not altered
+
+    def test_merging_seed_ranges_adds_counts_and_weights_means(self):
+        def part(seeds, fee, regret, k):
+            return {"public_optimum": ["1", "4", 4.0], "blind_optimum_no_history": ["1", "4", 4.0], "seeds": seeds,
+                    "auto_k_counts": {"300": {k: seeds}},
+                    "by_size": {"300": {"p": {"material_regret_seeds": regret, "mean_fee": fee}}}}
+        got = rounds.merged([part(25, 4.0, 2, "2"), part(75, 3.0, 6, "3")])
+        self.assertEqual(got["seeds"], 100)
+        self.assertEqual(got["by_size"]["300"]["p"], {"material_regret_seeds": 8, "mean_fee": 3.25})
+        self.assertEqual(got["auto_k_counts"]["300"], {"2": 25, "3": 75})
+
+    def test_strict_comparison_acts_on_smoothing_and_a_tie_band_does_not(self):
+        cell = r41.lift(rounds40.cells()["A"])          # retry is right nine times in ten; optimum 3.2
+        model = true_model(cell)
+        for tool in model.emit:                         # what 0.1 pseudo-counts leave after 500 clean observations
+            ok = [(p * 500 + 0.1) / 500.2 for p in model.emit[tool][OK]]
+            model.emit[tool] = {OK: ok, None: [1 - p for p in ok]}
+        counts = {(None, (), t): {mp.DONE: 500} for t in r41.tools(cell)}
+
+        def fee(tolerance):
+            policy = belief.BeliefPolicy(model, cell, counts, lambda view: ar.STOP, guard=False, tolerance=tolerance)
+            return float(mp.value(cell, policy)[1])
+        self.assertAlmostEqual(fee(belief.NUMERIC), 4.0)   # switches for a few billionths of estimated completion
+        self.assertAlmostEqual(fee(0.01), 3.2)
+        self.assertAlmostEqual(fee(belief.confident_band), 3.2)
+
+    def test_confident_band_closes_when_the_log_is_thin(self):
+        self.assertAlmostEqual(belief.confident_band(0.9, 1000), 0.05 - 2 * sqrt(0.09 / 1000) - 0.001)
+        self.assertAlmostEqual(belief.confident_band(1.0, 300), 0.05 - 1 / 300)
+        self.assertEqual(belief.confident_band(0.9, 100), belief.NUMERIC)   # two standard errors exceed the margin
+        self.assertEqual(belief.confident_band(0.5, 0), belief.NUMERIC)
+
+    def test_follow_up_round_scores_every_variant(self):
+        cell, true_k = rounds.cells()["E"]
+        got = rounds.compare(cell, cell, true_k, mp.uniform, (100,), range(1), rounds.FOLLOW)
+        self.assertEqual(set(got["by_size"][100]), set(rounds.FOLLOW))
+        self.assertEqual(sum(got["wide_transition_counts"][100].values()), 1)
 
 
 if __name__ == "__main__":
