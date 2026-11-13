@@ -25,7 +25,7 @@
 
 ## 复现与阻塞问题
 
-使用登记入口 `python -B -m extensions.toolmaze_recovery.belief_rounds --out <新目录> --round <轮次> --cell <格> [--seeds 起点:终点]`。c1–c3 种子 5000 起；c4/c5 为 6000–6059，N 与对象保持登记值。分段按文档数量及范围执行；全部 49 个 CPU 任务正常退出、工作区均干净。哈希按排序序列化的 `result` 字段计算，未把运行提交混入结果哈希。
+使用登记入口 `python -B -m extensions.toolmaze_recovery.belief_rounds --out <新目录> --round <轮次> --cell <格> [--seeds 起点:终点]`。c1–c3 种子 5000 起；c4/c5 为 6000–6059，N 与对象保持登记值。分段按文档数量及范围执行；全部 49 个 CPU 任务正常退出、已跟踪源文件均干净（运行器的 dirty 字段不计未跟踪的只读数据链接）。哈希按排序序列化的 `result` 字段计算，未把运行提交混入结果哈希。
 
 | 轮次 | 文件数 | 登记哈希匹配 |
 | --- | ---: | ---: |
