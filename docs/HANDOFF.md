@@ -1,11 +1,10 @@
 # 当前进度（2026-11-13）
 
-## Gate43A-R复验未放行 / Gate44A仅预登记
+## Gate43A-R最终工程Go / Gate44A仅预登记
 
-PR16最新head固定3efa57b，独立worktree静态与证据核验完成：七文件14个正负零差异、三个对照零差异；25份d1无负零且result哈希与清单一致。工程No-Go（完整回归/防泄漏及Python3.10独立d1尚未完成；LabServer超时、本地依赖缺失且安装网络失败），不是实现失败结论；HMM方法线No-Go。详见[验收报告](reviews/043a-r-final-independent-acceptance.md)。未合并、未运行模型，保留五份既有未跟踪Review。
+用户配置服务器后，固定PR16 head 3efa57b独立Python3.10.12复验完成：PR原树全仓191项、临时整合树206项通过；25份d1字段及哈希与提交一致、无负零；040/041全部16轮旧哈希一致。七文件14个正负零差异由云端旧原始结果确认；382冻结归档未变。似然修正的2640场合结构/状态选择0变、26400初值选择241变，独立穷举数学核验通过。整合首轮缺历史夹具的4错误及重跑证据均保留。云端证据results/043a-r-final-independent-01；[验收报告](reviews/043a-r-final-independent-acceptance.md)、[运行记录](experiments/043a-r-independent-acceptance.md)。
 
-[实验044](experiments/044-gate44a-real-agent-bottleneck.md)及[信息合同/预算](reviews/044a-information-contract-and-budget.md)登记R0–R3、40个协议smoke+160个开发回合、固定15pp/5pp/15%关注信号、分项成本与A–E路线。运行前须补工程证据、checkpoint/提示/真实训练池及冻结BTM产物哈希并获批；本轮没有自动启动smoke或训练采集。
-
+工程Go、HMM方法线No-Go；未合并PR、未运行任何模型，等待用户批准合并。[实验044](experiments/044-gate44a-real-agent-bottleneck.md)及[信息合同/预算](reviews/044a-information-contract-and-budget.md)仍只登记R0–R3、40 smoke+160开发回合；启动前须补checkpoint/提示/真实训练池及冻结BTM产物哈希并获批，不自动新增训练采集或模型比较。五份既有未跟踪Review保留。
 
 ## Gate 42A · CPU独立验收及真实执行器准备完成（2026-11-13）
 

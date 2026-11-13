@@ -1,10 +1,10 @@
-# Gate 43A-R 最终独立验收（未放行）
+# Gate 43A-R 最终独立验收
 
 2026-11-13。独立工作树 `/private/tmp/gate43ar-review`，detached PR #16 head **3efa57b42eea804115711486e7d2c985163bda53**；本地主线 **3a2e699a7e042e6a63fe3c692c495fc0dad604ac**。没有合并 PR、调用模型或修改任务/评分。阅读依据：AGENTS、ADR-0033、实验040/041/042A/042B/043A-R、Gate42A执行器及测试、PR新增实现及043反思。
 
 ## 两项独立判断
 
-**工程验收 No-Go（证据未齐，不能最终验收）**。完整回归、防泄漏及 Python3.10 d1 独立复算未完成；不得用提交者的结果代替验收结果。**HMM 方法研究 No-Go**：当前证据不足以支持进入真实 Agent 比较；不否定未来其他任务上的状态推断。此判断与工程是否正确分开。
+**最终工程验收 Go；HMM 方法研究 No-Go。** 用户配置服务器后，已补齐Python3.10.12独立复算、完整CPU/防泄漏及旧合同兼容性证据，详见文末。前次因环境不可达作出的工程No-Go已解除；下文保留初次验收观察，不覆盖负记录。工程Go不授权合并PR或真实模型比较。
 
 ## 本轮实际观察
 
@@ -36,3 +36,27 @@ PR分叉早于main的Gate42A，端点diff中Gate42A缺失不是PR主动删除。
 后续验收必须：取得云端status；在固定PR head的Python3.10.12完整CPU/防泄漏；按提交launch_d1的25分段独立运行并保留全部失败、逐结果/哈希对账；独立核对最终似然/BIC选择计数；在临时整合树验证Gate42A及冻结旧合同。命令用`PYTHONPATH=benchmarks/ToolMaze:tests:. python -m unittest discover -s tests -p 'test_toolmaze*.py'`及test_no_leakage.py，结果新建results/043a-r-final-independent-<批次>/。云端原始数据留云端。全部满足前工程No-Go，不请求合并批准。
 
 本轮本地核验日志留/private/tmp/43ar-{tests,leak,artifact-audit}.log及43ar-merge-tree.txt；这些不是云端正式归档，需后续归档补齐。Gate44A仅设计见实验044和合同附件。
+
+
+## 服务器恢复后的最终独立复验（2026-11-13）
+
+运行登记与过程见[独立复验实验记录](../experiments/043a-r-independent-acceptance.md)。初始云端main为3a2e699a且干净，Python3.10.12；GitHub复核PR最新head仍为3efa57b。使用固定源码bundle创建独立工作树，不修改SSH信任设置。临时整合树只应用PR差异，不生成合并提交、不移动main。全程CPU，无真实模型/API调用，云端数据和原始结果未下载。
+
+| 检查 | 独立结果 |
+| --- | --- |
+| PR原树完整仓库CPU | 191/191通过（其中ToolMaze153、防泄漏5） |
+| 临时整合树完整仓库CPU | 206/206通过（其中ToolMaze168、防泄漏5，包含Gate42A） |
+| 修正版d1，25个原登记分段 | 全部正常退出；全部result逐字段及规范JSON哈希一致；零负零 |
+| 旧040九轮＋041七轮 | 16/16结果字段及result哈希与前次独立云端证据一致 |
+| 七处c4差异，直接对云端旧独立原始JSON | 仅14个0/-0字段；其余字段一致 |
+| 冻结文件/旧合同 | 382/382归档SHA256不变；原执行器、评分、gate34b及Gate42A源码diff为空 |
+| 最终参数似然及期望计数 | 静态/动态、1/2/10步，隐状态轨迹穷举最大误差1.78e-15 |
+| BIC独立计算 | 参数自由度及非空episode数一致；穷举例BIC误差≤7.11e-15，另以独立前向计算复核M3/N30/seed6000全部20次拟合 |
+
+25份d1是在Linux/Python3.10.12从源码重新生成，与提交中的Windows/Python3.14记录比较；可确认本轮登记配置下跨这两个环境一致，不保证所有平台任意配置逐位相同。source commit与result哈希分别核对，环境字段允许不同。d1的2640个拟合场合结构/状态数变更均0，26400次初值选择中241次不同，与提交审计一致。d1仍复用已暴露历史，不升级为确认性研究。
+
+全仓首轮整合回归因缺旧005结果夹具有4个错误，补只读云端results链接后206项通过；首轮日志保留。原树191项也使用同一既有夹具；未伪造数据、修改评分或忽略失败。整合树的base HEAD不是整合代码提交，以PR patch SHA256 `4640ca725631c45c408e83517737080b6d5ea6860ea68dfa8f4fc1d9dcdd20b0`及integration-source.json锁定真实源码。
+
+证据均在云端 `results/043a-r-final-independent-01/`：d1/、040/、041/、scripts/、pr-all-cpu.log、integration-all-cpu{,-02}.log、专项与防泄漏日志、frozen-and-c4-audit.json、corrected-independent-math.json、final-result-comparison.json、old-result-hash-check.json、environment-source.json、integration-source.json、artifact-sha256.json。未修改上一轮独立证据或提交者结果。
+
+**工程Go**：修复的似然、记录和比较规则已具独立CPU证据，旧合同兼容通过。**HMM方法研究No-Go**：完成优势被强基线解释，剩余费用优势受模型类、支持度与比较规则限制；本次复算未提供新的真实Agent证据。PR合并仍等待用户单独批准。Gate44A只设计，冻结训练源/产物、最终提示和检查点哈希及模型运行预算仍须补齐获批；不得据工程Go启动smoke或正式LLM比较。

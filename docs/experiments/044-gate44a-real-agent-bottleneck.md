@@ -1,6 +1,6 @@
 # 实验044 · Gate44A真实Agent瓶颈诊断预登记
 
-2026-11-13。**仅设计，未运行任何模型（包括smoke）**。科研主线暂定Reliable and Cost-efficient Agent Recovery；本登记不修改Q2、冻结任务或评分，不预设HMM/VOI有效。工程验收尚未放行，见[独立验收](../reviews/043a-r-final-independent-acceptance.md)。只有验收补齐、材料冻结及用户批准后才能运行。设计固定部分自本提交生效；待填清单是运行阻断项，填入后须先提交并批准，不能冒充完整可执行冻结。
+2026-11-13。**仅设计，未运行任何模型（包括smoke）**。科研主线暂定Reliable and Cost-efficient Agent Recovery；本登记不修改Q2、冻结任务或评分，不预设HMM/VOI有效。工程验收已独立Go（不授权合并或运行模型），见[独立验收](../reviews/043a-r-final-independent-acceptance.md)。只有验收补齐、材料冻结及用户批准后才能运行。设计固定部分自本提交生效；待填清单是运行阻断项，填入后须先提交并批准，不能冒充完整可执行冻结。
 
 ## 问题、假设与竞争解释
 
