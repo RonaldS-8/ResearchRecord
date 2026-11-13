@@ -259,8 +259,9 @@ def learn(train, test, logging, sizes, compare, seeds, insider=False, extra=None
         for n in sizes:
             counts = mp.fit(rows[:n])
             for name in names:
-                policy = (mp.Planner(counts, test, compare=compare[name]) if name in compare
-                          else extra[name](counts, rows[:n]))
+                policy = (extra[name](counts, rows[:n]) if name not in compare
+                          else mp.Planner(counts, test, **compare[name]) if isinstance(compare[name], dict)
+                          else mp.Planner(counts, test, compare=compare[name]))
                 got, cell = reference.score(policy), table[n][name]
                 pair = (got["completion"], got["fee"])
                 cell["optimal"] += pair == reference.best
@@ -462,8 +463,56 @@ def round_b3(out):
     return result
 
 
-ROUNDS = {"a1": round_a1, "a2": round_a2, "a3": round_a3, "b1": round_b1, "b2": round_b2, "b3": round_b3}
-NEEDS_OUT = ("b2", "b3")
+FRESH_SEEDS = range(3000, 3200)
+NONINFERIOR = ("noninferior", MARGIN, 1.64)  # fixed in advance: the materiality line and a one-sided 95% bound
+
+
+def fresh_cells():
+    """Cells for round b4; none was run before that round was registered."""
+    three = m3(7, {"X1": (Q(1, 2), Q(3, 10), Q(1, 10), Q(1, 10)), "X2": (Q(1, 5), Q(1, 5), Q(1, 2), Q(1, 10)),
+                   "X3": (Q(1, 10), Q(1, 5), Q(1, 5), Q(1, 2))})
+    slots = m4()
+    priors = {"X1": (Q(1, 2), Q(1, 5), Q(3, 10)), "X2": (Q(1, 10), Q(1, 2), Q(2, 5)),
+              "X3": (Q(3, 10), Q(2, 5), Q(3, 10))}
+    slots = mp.build("M4c", slots.graph, slots.faults,
+                     {x: (Q(1, 3), dict(zip(slots.faults, p))) for x, p in priors.items()}, left=7)
+    names = ("r0", "r1", "r2")
+    search = mp.build(
+        "M5", {START: tuple(Step(name, DONE, 2) for name in names)},
+        {**{name: Fault({other: Q(int(other == name)) for other in names}) for name in names},
+         "blocked": Fault({name: Q(0) for name in names})},
+        {f"X{i + 1}": (Q(1, 3), dict(zip((*names, "blocked"), p))) for i, p in enumerate((
+            (Q(3, 5), Q(1, 5), Q(1, 10), Q(1, 10)), (Q(1, 10), Q(3, 5), Q(1, 5), Q(1, 10)),
+            (Q(1, 5), Q(1, 10), Q(3, 5), Q(1, 10))))}, left=6)
+    composite = rounds40.composite()
+    shifted = ar.build("S4c", composite.faults, {f"X{i + 1}": (Q(1, 3), dict(zip(composite.faults, p)))
+                                                  for i, p in enumerate(((Q(1, 2), Q(1, 10), Q(3, 10), Q(1, 10)),
+                                                                         (Q(1, 10), Q(1, 2), Q(1, 10), Q(3, 10)),
+                                                                         (Q(1, 4), Q(1, 4), Q(1, 4), Q(1, 4))))})
+    return {"M3c": mp.Cell("M3c", three.graph, three.faults, three.roots, 7), "M4c": slots, "M5": search,
+            "S4c": lift(shifted), "Dc": lift(rounds40.binary("Dc", rounds40.one(Q(3, 5)), left=4)),
+            "Uc": lift(rounds40.binary("Uc", rounds40.one(Q(4, 5)), backup=Q(4, 5))),
+            "B2R-mini-phase5": b2r((Q(3, 10), Q(9, 20), Q(1, 4)))}
+
+
+def round_b4(out):
+    """A completion-protecting comparison rule against the earlier rules, on fresh cells and seeds."""
+    chosen = choose(json.loads((out / "roundb1.json").read_text(encoding="utf-8"))["result"])
+    all_rules = rules()
+    base = {"tol_0": all_rules["tol_0"], "tol_0.05": all_rules["tol_0.05"], "tol_0.1": all_rules["tol_0.1"],
+            chosen["interval"]: all_rules[chosen["interval"]], "noninferior_0.05_1.64": NONINFERIOR}
+    compare = {**base, **{f"{name}+untried": {"compare": rule, "untried": True} for name, rule in base.items()}}
+    result = {"frozen_interval_rule": chosen["interval"]}
+    for name, cell in fresh_cells().items():
+        result[name] = {"blind_optimum_no_history": show(mp.value(cell, sees=())),
+                        "oracle": show(mp.oracle(cell)),
+                        **learn(cell, cell, mp.uniform, SIZES, compare, FRESH_SEEDS)}
+    return result
+
+
+ROUNDS = {"a1": round_a1, "a2": round_a2, "a3": round_a3, "b1": round_b1, "b2": round_b2, "b3": round_b3,
+          "b4": round_b4}
+NEEDS_OUT = ("b2", "b3", "b4")
 
 
 def digest(path):

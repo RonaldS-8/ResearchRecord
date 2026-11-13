@@ -339,15 +339,24 @@ class Planner:
                               with guard, stopping is never preferred to an action
                               whose estimated completion is positive
       ("lcb", z)              strict comparison of lower bounds
+      ("noninferior", d, z)   take the action with the highest estimate unless a cheaper
+                              one is credibly within d of it (its lower bound, estimate
+                              - z posterior sd, is at least the highest estimate - d);
+                              uncertainty therefore never favours the cheaper action,
+                              and stopping is never preferred to a positive estimate
     The posterior sd comes from a Dirichlet prior of weight `prior` on every public
     outcome label and is propagated up the estimated tree assuming independent nodes.
+
+    `untried=True` changes execution only: where the plan would stop, or nothing has
+    support, an affordable tool that has not failed in this episode and has no support
+    at this node is called first. Planning still values unsupported branches at zero.
     """
 
     def __init__(self, counts, cell, key=lambda x, quote: x, compare=("tolerance", Q()), prior=0.5,
-                 fallback=None):
+                 fallback=None, untried=False):
         self.counts, self.key, self.compare, self.prior = counts, key, compare, prior
         self.graph, self.alphabet = cell.graph, cell.alphabet()
-        self.fallback = fallback
+        self.fallback, self.untried = fallback, untried
         self.cache = {}
 
     def estimate(self, context, quote, events, left, action, policy):
@@ -405,6 +414,15 @@ class Planner:
                 if better(values[action][:2], values[chosen][:2], self.compare[1]):
                     chosen = action
             return chosen
+        if kind == "noninferior":
+            margin, z = float(self.compare[1]), self.compare[2]
+            top = max(values[a][0] for a in order)
+            lead = min((a for a in order if values[a][0] == top), key=lambda a: (values[a][1], order.index(a)))
+            keep = [a for a in order
+                    if a == lead or float(values[a][0]) - z * sqrt(values[a][2]) >= float(top) - margin]
+            if any(values[a][0] > 0 for a in keep if a != STOP):
+                keep = [a for a in keep if a != STOP]
+            return min(keep, key=lambda a: (values[a][1], order.index(a)))
         z = self.compare[1]
         low = {a: float(values[a][0]) - z * sqrt(values[a][2]) for a in order}
         if kind == "lcb":
@@ -416,9 +434,12 @@ class Planner:
 
     def __call__(self, view):
         action, _, values = self.node(self.key(view.x, view.quote), view.quote, view.events, view.left)
-        if len(values) > 1:
+        if len(values) > 1 and (action != STOP or not self.untried):
             return action
         options = view.legal()
+        if self.untried:
+            failed = {e[0] for e in view.events if e[1] != PASS}
+            return next((a for a in options if a not in (STOP, DIAGNOSE, *failed) and a not in values), STOP)
         return next((a for a in self.fallback or options if a in options), STOP)
 
     def select(self, candidates, tasks, left):
