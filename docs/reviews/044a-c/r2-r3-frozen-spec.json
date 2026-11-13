@@ -1,0 +1,97 @@
+{
+  "artifact": "gate44a-c R2/R3 history-baseline specification",
+  "version": "044a-c-spec-v1",
+  "status": "specification only; contains no training counts; NOT runnable until an authorized training pool manifest with raw-file SHA-256 is frozen (see history-gap.json)",
+  "base_commit": "1a5b0d1183a7531d803c8b1d9636d4094bf89026",
+  "applies_to": {
+    "checkpoints": ["M3", "M4"],
+    "executor": "extensions/toolmaze_recovery/gate42a.py",
+    "tools_visible": {
+      "M3": ["read_primary_record", "read_backup_record", "validate_record_granularity", "publish_verified_record", "read_published_record", "read_archive_record"],
+      "M4": ["read_primary_record", "read_backup_record", "validate_record_granularity", "publish_verified_record", "read_published_record", "prepare_alternate_publication", "confirm_alternate_publication"]
+    },
+    "checkpoint_current_error": {
+      "M3": {"tool": "validate_record_granularity", "error": "Current item-level authority could not be established for this receipt."},
+      "M4": {"tool": "publish_verified_record", "error": "Publication endpoint unavailable; no publication was committed."}
+    }
+  },
+  "training_pool": {
+    "shared_by": ["R2", "R3"],
+    "unit": "one complete training episode = registered exogenous prefix + native suffix, as archived by its own run",
+    "admissible_if_all": [
+      "real model SDK responses (not CPU rule, scripted client, fake SDK or macro replay)",
+      "native suffix: no tool_choice / required_tool / forced first action in any request",
+      "same tool names as the Gate 44A checkpoints",
+      "listed in a frozen manifest with raw result.json and requests.jsonl SHA-256 and explicit user authorization as training data",
+      "not a Gate 44A smoke or development episode, and not produced after any Gate 44A arm was run"
+    ],
+    "recommended_candidate_pending_authorization": "experiment 038 natural ReAct episodes S01, S02, P01-react ... P06-react (8 episodes); see history-gap.json",
+    "excluded": "038 forced-first-action S03-S08, 038 simple_feedback arm, 039 replays, 042A fake SDK, 040/041/042B/043A-R CPU rounds, all other Qwen runs (different tool sets)",
+    "frozen_once": "counts are computed once from the manifest; Gate 44A outcomes never update them; artifact SHA-256 is checked before and after every episode"
+  },
+  "R2": {
+    "name": "per-tool historical success frequency + current actual error",
+    "not": "no prior, no smoothing, no error-conditioned table, no episode outcome label, no source->target relation, no action value, no planner, no HMM/belief",
+    "count_unit": "each executed tool-call event in the training pool, including registered exogenous prefix calls (same scope as gate18.recovery_keys, which reads views[0].history + events)",
+    "per_tool_fields": {
+      "s": "events with illegal == false and no 'error' key in result (receipt satisfies the tool's contract postcondition: read -> content+ref, validate -> evidence_ref, publish/confirm -> publication_id, readback -> record state, prepare -> pending_publication_ref)",
+      "n": "events with illegal == false (legal successes + legal service/verification failures)",
+      "r": "events with illegal == true (argument/protocol/provenance rejections, code=invalid); excluded from n and shown separately",
+      "excluded": "calls refused by the budget guard (never executed, no event) are not counted"
+    },
+    "error_types": "R2 does not aggregate by error; any legal failure is a failure regardless of text. The current error is quoted verbatim from the last checkpoint receipt and is not re-labelled",
+    "missing": "n == 0 -> 'unknown (no legal calls in the training pool)'; no default rate",
+    "template": [
+      "Recovery information (historical tool frequencies):",
+      "From a frozen pool of {episodes} past episodes. For each tool: successful legal calls / legal calls. Rejected calls (invalid arguments or references) are listed separately and not included.",
+      "- {tool}: {s}/{n} ({rate:.3f}); rejected {r}",
+      "- {tool}: unknown (no legal calls in the training pool); rejected {r}",
+      "Current actual error from {current_tool}: {current_error_json}"
+    ],
+    "rendering_rules": "one line per visible tool of that checkpoint, sorted by tool name (the order Session.public() shows tools to the model); rate printed with 3 decimals; current_error_json = json.dumps of the checkpoint receipt"
+  },
+  "R3": {
+    "name": "frozen (fixed, not online) BTM prompt reproduction",
+    "reused_from": {
+      "statistics": "extensions/action_conditioned_recovery/gate18.py recovery_keys/history_summary/btm_prompt (episode-level key sets, label = episode success, posterior (s+1)/(n+2), format '{p:.3f} (n={n}; no observations)')",
+      "target_sentence": "extensions/toolmaze_agent_recovery/methods.py History.btm 'target' string",
+      "static_text": "gate18.BTM_GUIDANCE, gate18.BTM_RETRY, gate18.BTM_CONSTRAINTS verbatim",
+      "project_exception": "methods.py btm_full line 'Never retry a tool explicitly reported unavailable for this session.' (project deviation, not in the paper; kept because 044a commits to it)"
+    },
+    "label": "y = strict_success of the training episode under the scorer of its own run (038: gate34a evaluate). Not R2's per-call success",
+    "prior": "Beta(1,1) for every key; posterior mean (s+1)/(n+2); n shown",
+    "recovery_key": "(tool, result['error'] verbatim) for every legal (illegal == false) failure in the episode, prefix included; de-duplicated within an episode",
+    "switch_pairs_static_map": {
+      "M3": [["read_primary_record", "read_backup_record"], ["read_primary_record", "read_archive_record"], ["read_backup_record", "read_archive_record"]],
+      "M4": [["read_primary_record", "read_backup_record"], ["publish_verified_record", "prepare_alternate_publication"]]
+    },
+    "static_map_source": "public tool descriptions only (backup/archive described as alternative sources needing validation; prepare_alternate_publication described as an independent writer)",
+    "switch_key": "pair (source,target) observed in an episode if a legal call to target follows (a) a legal failure of source, or (b) a legal validate_record_granularity failure on a pending_ref issued by source; de-duplicated within an episode. Clause (b) is an adaptation needed because at M3 the read itself succeeds and its validation fails; it needs joint approval",
+    "keys_listed": "every recovery key present in the pool for a visible tool, plus the checkpoint's current key, plus every static switch pair of that checkpoint; missing keys printed as 0.500 (n=0; no observations)",
+    "block_is_static": "one block per episode, rendered once at the checkpoint, not re-rendered after later failures (the paper's block lists all tool/error beliefs at once)",
+    "template": [
+      "<tool_reliability>",
+      "Final episode success under the training continuation, not a causal action effect. Pool: {episodes} past episodes.",
+      "{tool}: episode recovery for {error}: {p:.3f} (n={n}[; no observations])",
+      "{source} -> {target}, same record and required fields, switch episode recovery: {p:.3f} (n={n}[; no observations])",
+      "{BTM_GUIDANCE}",
+      "{mapping line for each static pair: '{source} -> {target}, same record and required fields'; for the writer pair: 'publish_verified_record -> prepare_alternate_publication then confirm_alternate_publication, same record, content and evidence_ref'}",
+      "{BTM_RETRY}",
+      "{BTM_CONSTRAINTS}",
+      "Never retry a tool explicitly reported unavailable for this session.",
+      "</tool_reliability>"
+    ]
+  },
+  "common_block_rules_proposed": {
+    "placement": "one extra message appended once after the last checkpoint-prefix tool result, identical role for R1/R2/R3; original system and user messages unchanged; R0 gets nothing",
+    "role": "must be fixed before freezing and checked on the cloud with the served model's chat template (render the full request and confirm the block appears once, in the intended position)",
+    "deviation_note": "the paper and gate18/methods put the BTM block in the system prompt; 044a places it after the prefix. Uniform placement is kept for fairness and recorded as an R3 reproduction deviation"
+  },
+  "open_items_blocking_freeze": [
+    "user authorization of a training pool (or explicit decision that none exists)",
+    "raw-file SHA-256 of every pool episode, computed on the cloud",
+    "approval of switch_key clause (b) and the static map",
+    "role/placement of the block and chat-template rendering check",
+    "exact English bytes of R1 (044a gives only the Chinese meaning)"
+  ]
+}
