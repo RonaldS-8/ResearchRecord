@@ -62,6 +62,7 @@ class Cell:
     faults: dict    # hidden state -> Fault
     roots: tuple    # ((P, x, Prices, ((state, P(state | x, prices)), ...)), ...)
     left: int = CALLS_LEFT
+    moves: dict = None  # optional hidden transition after every call: state -> ((state, P), ...)
 
     @property
     def diagnostic(self):
@@ -167,6 +168,18 @@ def branches(cell, mass, action, events):
     return after
 
 
+def shift(cell, mass):
+    """Apply the hidden transition that follows a call; cells without `moves` are static."""
+    if not cell.moves:
+        return mass
+    moved = {}
+    for (root, state), weight in mass.items():
+        for target, p in cell.moves[state]:
+            if p:
+                moved[root, target] = moved.get((root, target), 0) + weight * p
+    return moved
+
+
 def solve(cell, mass, left, events, sees, policy=None, ban=(), table=None, x=None, quote=None,
           tolerance=Q(), force=None):
     """Exact (completion mass, fee mass) from one information state on; see autoresearch.solve.
@@ -200,8 +213,8 @@ def solve(cell, mass, left, events, sees, policy=None, ban=(), table=None, x=Non
                     seen[key] = seen.get(key, Q()) + weight
             for label, part in merged.items():
                 spent = 1 + (step.certain if label == PASS else 0)
-                c, f = solve(cell, part, left - spent, events + ((action, label),), sees, policy, ban, table,
-                             x, quote, tolerance)
+                c, f = solve(cell, shift(cell, part), left - spent, events + ((action, label),), sees, policy,
+                             ban, table, x, quote, tolerance)
                 completion, fee = completion + c, fee + f
             value = (completion, fee)
         if best is None or better(value, best[1], tolerance * sum(mass.values(), Q())):
