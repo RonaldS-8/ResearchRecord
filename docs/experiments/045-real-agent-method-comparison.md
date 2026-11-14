@@ -75,3 +75,13 @@ R4 HMM为**信念信息组**，并非已适配完整Belief-SSP恢复规划器。
 首轮统计组CPU全仓205/205通过，含不遵从建议仍原样记录、无工具限制、空支持不造值、完整BTM指导保留、基于日志的HMM拟合；原始证据results/045-stat-preparation-01/all-cpu.log。最终资格校验再核对每条候选source_result_sha256及24个唯一采集ID，精确冻结版本重新生成并保留首轮产物；不运行已暂缓的行为分析脚本。
 
 最终验收：all-cpu-final.log为205/205通过，最终24-ID/source-result哈希资格检查和tokenizer精确提示冻结成功。tmux启动脚本launch_gate45stats_tmux.sh保留remain-on-exit终端和实际exit-code.txt，20小时timeout及服务退出清理同时保留；已有同名会话/结果目录时拒绝覆盖。HMM复用部分旧docstring描述的是原CPU模型，实际Gate45映射以本节逐实际调用时钟及gate45stats适配器为准，未复用其宏动作规划。
+
+## 扩展统计批次完成核验（2026-11-14，仅状态，不分析效果）
+
+运行源码a600b724，tmux gate45-stat正常退出（pane_dead_status/exit-code均0）。新增R2/R3/R4各M3/M4五回合，共30回合、119次SDK请求，输入407437/输出67817 Token。全部30回合独立scorer重放、首次冻结messages/tools、采样配置及原始SDK错误检查通过；89次tool_calls/30次stop完成，无length截断，无OOM日志匹配。
+
+六格前5回合的不同实际工具/实参/回执后缀数依次为M3-R2=1、M3-R3=1、M3-R4=2、M4-R2=1、M4-R3=1、M4-R4=1，均少于预登记3种，故全部跳过第6–10回合。独立复算哈希与progress及六份extension-skipped标记一致。不是按成功率停跑，未追加seed制造样本量。服务10:55:45启动、11:11:12采集完成、11:11:13清理（Asia/Singapore），约15分28秒；20小时是安全上限，不是预计用时。GPU恢复464MiB。
+
+核验摘要docs/evidence/045-stat/completion-index.json，原始证据results/045-stat-01、045-stat-service-01、045-stat-dispatch-01；核验脚本与输出results/045-stat-completion-verification-01，不覆盖原始结果。此前R0/R1共20回合/63请求，加本批对照累计50回合/182请求；C候选训练另24回合/56请求。总真实回合74、请求238，训练与对照不混合评分。
+
+本轮已批准的GPU运行任务全部按冻结规则结束；剩余工作是集中分析、建议/实际动作/格式/执行分类、训练支持与复现偏差说明及正式文件报告，Gate科研结论尚未验收。R4仍为HMM信念信息组，完整Belief-SSP后续规划没有被运行/证明。无需为用满剩余GPU时间重启重复批次；新增任务家族、算法变体或采集仍先固定方案，不把原授权视为任意加实验。
