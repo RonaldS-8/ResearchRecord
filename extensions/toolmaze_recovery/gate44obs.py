@@ -41,7 +41,7 @@ def observe(agent, mechanism, arm, output, render, *, evidence_kind, deadline=No
         check_frozen(mechanism, arm, agent, session)
         advice = treatment(arm, session.view(), empty_training())
     else:
-        if run_id != '045c-training-01' or not isinstance(collection_advice, str):
+        if run_id not in ('045c-training-01','045-stat-01') or not isinstance(collection_advice, str):
             raise ValueError('Unregistered collection override')
         initialize(agent, session)
         advice = collection_advice

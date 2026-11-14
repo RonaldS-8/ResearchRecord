@@ -1,0 +1,2214 @@
+{
+  "versions": {
+    "python": "3.10.12",
+    "vllm": "0.31.0",
+    "openai": "3.42.0",
+    "transformers": "5.17.0"
+  },
+  "run": "045-stat-01",
+  "model": "Qwen3-4B-Thinking-2507",
+  "revision": "768f209d9ea81521153ed38c47d515654e938aea",
+  "training_path": "results/045c-training-01/public-training-candidates.jsonl",
+  "training_sha256": "5b4b420249edf04942494333aaff6e56cf6d5db1b1c50a25de1e4c3fdf84790d",
+  "training_episodes": 24,
+  "information": {
+    "M3": {
+      "training_episodes": 12,
+      "btm": {
+        "tool_error": [
+          {
+            "tool": "read_primary_record",
+            "error": "Upstream request timed out.",
+            "n": 12,
+            "successes": 4,
+            "beta_mean": 0.35714285714285715,
+            "prior": "Beta(1,1)"
+          },
+          {
+            "tool": "validate_record_granularity",
+            "error": "verification_failed",
+            "n": 12,
+            "successes": 4,
+            "beta_mean": 0.35714285714285715,
+            "prior": "Beta(1,1)"
+          }
+        ],
+        "switch": [
+          {
+            "source": "read_primary_record",
+            "target": "read_backup_record",
+            "n": 12,
+            "successes": 4,
+            "beta_mean": 0.35714285714285715,
+            "prior": "Beta(1,1)"
+          },
+          {
+            "source": "validate_record_granularity",
+            "target": "read_archive_record",
+            "n": 4,
+            "successes": 4,
+            "beta_mean": 0.8333333333333334,
+            "prior": "Beta(1,1)"
+          },
+          {
+            "source": "validate_record_granularity",
+            "target": "read_primary_record",
+            "n": 4,
+            "successes": 0,
+            "beta_mean": 0.16666666666666666,
+            "prior": "Beta(1,1)"
+          }
+        ]
+      },
+      "acv": {
+        "publish_verified_record": {
+          "support": 0,
+          "completion": null,
+          "remaining_fee": null
+        },
+        "read_archive_record": {
+          "support": 4,
+          "completion": 1.0,
+          "remaining_fee": 6.0
+        },
+        "read_backup_record": {
+          "support": 0,
+          "completion": null,
+          "remaining_fee": null
+        },
+        "read_primary_record": {
+          "support": 4,
+          "completion": 0.0,
+          "remaining_fee": 1.0
+        },
+        "read_published_record": {
+          "support": 0,
+          "completion": null,
+          "remaining_fee": null
+        },
+        "stop": {
+          "support": 4,
+          "completion": 0.0,
+          "remaining_fee": 0.0
+        },
+        "validate_record_granularity": {
+          "support": 0,
+          "completion": null,
+          "remaining_fee": null
+        }
+      },
+      "acv_suggestion": "read_archive_record",
+      "hmm": {
+        "states": 1,
+        "dynamic": false,
+        "loglik": -9.48477468229367,
+        "bic": 33.87898926331535,
+        "candidate_bic": [
+          {
+            "states": 1,
+            "dynamic": false,
+            "bic": 33.87898926331535
+          },
+          {
+            "states": 1,
+            "dynamic": false,
+            "bic": 33.87898926331535
+          },
+          {
+            "states": 2,
+            "dynamic": false,
+            "bic": 51.47143437647853
+          },
+          {
+            "states": 2,
+            "dynamic": true,
+            "bic": 54.9832755637415
+          }
+        ],
+        "belief": [
+          1.0
+        ],
+        "next_call": {
+          "publish_verified_record": {
+            "p_next_receipt_ok": 0.9761904761904763,
+            "observed_calls": 4
+          },
+          "read_archive_record": {
+            "p_next_receipt_ok": 0.9761904761904763,
+            "observed_calls": 4
+          },
+          "read_backup_record": {
+            "p_next_receipt_ok": 0.9918032786885246,
+            "observed_calls": 12
+          },
+          "read_primary_record": {
+            "p_next_receipt_ok": 0.006172839506172839,
+            "observed_calls": 16
+          },
+          "read_published_record": {
+            "p_next_receipt_ok": 0.9761904761904763,
+            "observed_calls": 4
+          },
+          "validate_record_granularity": {
+            "p_next_receipt_ok": 0.25308641975308643,
+            "observed_calls": 16
+          }
+        },
+        "parameters": {
+          "start": {
+            "M3": [
+              1.0
+            ]
+          },
+          "emit": {
+            "publish_verified_record": {
+              "ok": [
+                0.9761904761904763
+              ],
+              "null": [
+                0.023809523809523815
+              ]
+            },
+            "read_archive_record": {
+              "ok": [
+                0.9761904761904763
+              ],
+              "null": [
+                0.023809523809523815
+              ]
+            },
+            "read_backup_record": {
+              "ok": [
+                0.9918032786885246
+              ],
+              "null": [
+                0.00819672131147541
+              ]
+            },
+            "read_primary_record": {
+              "ok": [
+                0.006172839506172839
+              ],
+              "Upstream request timed out.": [
+                0.993827160493827
+              ]
+            },
+            "read_published_record": {
+              "ok": [
+                0.9761904761904763
+              ],
+              "null": [
+                0.023809523809523815
+              ]
+            },
+            "validate_record_granularity": {
+              "ok": [
+                0.25308641975308643
+              ],
+              "verification_failed": [
+                0.7469135802469136
+              ]
+            }
+          },
+          "move": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "clock": "one actual logged tool call and its receipt, including prefix; no automatic tails",
+        "recommendation": null,
+        "limitation": "Next-receipt probabilities are not final completion or remaining cost; no CPU reference planner transplanted."
+      }
+    },
+    "M4": {
+      "training_episodes": 12,
+      "btm": {
+        "tool_error": [
+          {
+            "tool": "publish_verified_record",
+            "error": "Publication endpoint unavailable; no publication was committed.",
+            "n": 12,
+            "successes": 4,
+            "beta_mean": 0.35714285714285715,
+            "prior": "Beta(1,1)"
+          },
+          {
+            "tool": "read_primary_record",
+            "error": "Upstream request timed out.",
+            "n": 12,
+            "successes": 4,
+            "beta_mean": 0.35714285714285715,
+            "prior": "Beta(1,1)"
+          }
+        ],
+        "switch": [
+          {
+            "source": "publish_verified_record",
+            "target": "prepare_alternate_publication",
+            "n": 4,
+            "successes": 4,
+            "beta_mean": 0.8333333333333334,
+            "prior": "Beta(1,1)"
+          },
+          {
+            "source": "read_primary_record",
+            "target": "read_backup_record",
+            "n": 12,
+            "successes": 4,
+            "beta_mean": 0.35714285714285715,
+            "prior": "Beta(1,1)"
+          }
+        ]
+      },
+      "acv": {
+        "confirm_alternate_publication": {
+          "support": 0,
+          "completion": null,
+          "remaining_fee": null
+        },
+        "prepare_alternate_publication": {
+          "support": 4,
+          "completion": 1.0,
+          "remaining_fee": 3.0
+        },
+        "publish_verified_record": {
+          "support": 0,
+          "completion": null,
+          "remaining_fee": null
+        },
+        "read_backup_record": {
+          "support": 0,
+          "completion": null,
+          "remaining_fee": null
+        },
+        "read_primary_record": {
+          "support": 0,
+          "completion": null,
+          "remaining_fee": null
+        },
+        "read_published_record": {
+          "support": 0,
+          "completion": null,
+          "remaining_fee": null
+        },
+        "stop": {
+          "support": 8,
+          "completion": 0.0,
+          "remaining_fee": 0.0
+        },
+        "validate_record_granularity": {
+          "support": 0,
+          "completion": null,
+          "remaining_fee": null
+        }
+      },
+      "acv_suggestion": "prepare_alternate_publication",
+      "hmm": {
+        "states": 1,
+        "dynamic": false,
+        "loglik": -0.684234577501468,
+        "bic": 18.76281570351894,
+        "candidate_bic": [
+          {
+            "states": 1,
+            "dynamic": false,
+            "bic": 18.76281570351894
+          },
+          {
+            "states": 1,
+            "dynamic": false,
+            "bic": 18.76281570351894
+          },
+          {
+            "states": 2,
+            "dynamic": false,
+            "bic": 38.839905102952926
+          },
+          {
+            "states": 2,
+            "dynamic": true,
+            "bic": 44.91199569053346
+          }
+        ],
+        "belief": [
+          1.0
+        ],
+        "next_call": {
+          "confirm_alternate_publication": {
+            "p_next_receipt_ok": 0.9761904761904763,
+            "observed_calls": 4
+          },
+          "prepare_alternate_publication": {
+            "p_next_receipt_ok": 0.9761904761904763,
+            "observed_calls": 4
+          },
+          "publish_verified_record": {
+            "p_next_receipt_ok": 0.00819672131147541,
+            "observed_calls": 12
+          },
+          "read_backup_record": {
+            "p_next_receipt_ok": 0.9918032786885246,
+            "observed_calls": 12
+          },
+          "read_primary_record": {
+            "p_next_receipt_ok": 0.00819672131147541,
+            "observed_calls": 12
+          },
+          "read_published_record": {
+            "p_next_receipt_ok": 0.9761904761904763,
+            "observed_calls": 4
+          },
+          "validate_record_granularity": {
+            "p_next_receipt_ok": 0.9918032786885246,
+            "observed_calls": 12
+          }
+        },
+        "parameters": {
+          "start": {
+            "M4": [
+              1.0
+            ]
+          },
+          "emit": {
+            "confirm_alternate_publication": {
+              "ok": [
+                0.9761904761904763
+              ],
+              "null": [
+                0.023809523809523815
+              ]
+            },
+            "prepare_alternate_publication": {
+              "ok": [
+                0.9761904761904763
+              ],
+              "null": [
+                0.023809523809523815
+              ]
+            },
+            "publish_verified_record": {
+              "ok": [
+                0.00819672131147541
+              ],
+              "Publication endpoint unavailable; no publication was committed.": [
+                0.9918032786885246
+              ]
+            },
+            "read_backup_record": {
+              "ok": [
+                0.9918032786885246
+              ],
+              "null": [
+                0.00819672131147541
+              ]
+            },
+            "read_primary_record": {
+              "ok": [
+                0.00819672131147541
+              ],
+              "Upstream request timed out.": [
+                0.9918032786885246
+              ]
+            },
+            "read_published_record": {
+              "ok": [
+                0.9761904761904763
+              ],
+              "null": [
+                0.023809523809523815
+              ]
+            },
+            "validate_record_granularity": {
+              "ok": [
+                0.9918032786885246
+              ],
+              "null": [
+                0.00819672131147541
+              ]
+            }
+          },
+          "move": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "clock": "one actual logged tool call and its receipt, including prefix; no automatic tails",
+        "recommendation": null,
+        "limitation": "Next-receipt probabilities are not final completion or remaining cost; no CPU reference planner transplanted."
+      }
+    }
+  },
+  "prompts": {
+    "M3R2": {
+      "advice": "Frozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nUse the tool/error and source-to-target recovery beliefs to guide recovery.\nA high recovery belief favors another try. A low one and a stronger alternative favor switching.\nCheck returned fields after switching. When both look poor, consider asking for help or transferring,\nrepresented here by stop. Alternative tools are equivalent only at the same node and credential granularity.\nAfter a tool failure, try the same tool again at least once before other options, when available.\nVerify every required field and its granularity after switching.\nBefore an irreversible operation, confirm required fields from actual tool responses.\nUse a calculation tool for price calculations if the domain has one. Here prices are quoted directly.\nInspect the result of every write for errors.\nEscalate only after retry and alternative routes are exhausted.\nNever retry a tool explicitly reported unavailable for this session.\nFrozen Bayesian Tool Memory (final episode strict success, per episode key deduplication; includes publicly observed write/validation errors):\n{\"tool_error\": [{\"tool\": \"read_primary_record\", \"error\": \"Upstream request timed out.\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}, {\"tool\": \"validate_record_granularity\", \"error\": \"verification_failed\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}], \"switch\": [{\"source\": \"read_primary_record\", \"target\": \"read_backup_record\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}, {\"source\": \"validate_record_granularity\", \"target\": \"read_archive_record\", \"n\": 4, \"successes\": 4, \"beta_mean\": 0.8333333333333334, \"prior\": \"Beta(1,1)\"}, {\"source\": \"validate_record_granularity\", \"target\": \"read_primary_record\", \"n\": 4, \"successes\": 0, \"beta_mean\": 0.16666666666666666, \"prior\": \"Beta(1,1)\"}]}",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are an autonomous AI assistant that executes tool-based workflows. Tools may occasionally fail or return unexpected data.\n\nTASK COMPLETION\n- The user query may describe multiple sub-tasks. You must complete ALL of them \u2014 do NOT skip any sub-tasks.\n- Every fact, data retrieval, or state change must come from a tool call. Never substitute a tool result with internal knowledge, and never report a step as completed unless you actually called the corresponding tool and received its result in this conversation.\n- Sub-tasks may be accomplishable through different tool combinations.\n\nFAULT HANDLING\n- When evaluating tool outputs, consider whether the returned data is coherent and usable for the next step \u2014 fields should be present, values should be semantically reasonable, and types should match what the workflow requires.\n- If you determine that a required step cannot be accomplished by any available tool or approach, stop the workflow and clearly report which step failed and why, rather than proceeding with incomplete results.\n\nFINAL ANSWER FORMAT\n- Be CONCISE and DIRECT. No emojis, markdown formatting (**, \u2705, etc.), or bullet points.\n- If SUCCESSFUL: State only essential facts and requested results (e.g., confirmation codes). Omit internal technical details.\n- If HALTED: State clearly that the task was aborted and the reason (e.g., \"Task aborted: the pricing tool returned corrupted data after retry and no other alternative approaches exist\"). Do not apologize excessively."
+        },
+        {
+          "role": "user",
+          "content": "For record REC-3401, publish exactly one copy of its current item-level content. Use an actual primary evidence receipt, or an authorized backup receipt after its granularity has been verified. Read back the actual publication and check that its record, content and active status match. Give a final response.\n\nTool prices (engineering units per advertised call, including failed calls): {\"publish_verified_record\": \"1\", \"read_archive_record\": \"3\", \"read_backup_record\": \"1\", \"read_primary_record\": \"1\", \"read_published_record\": \"1\", \"validate_record_granularity\": \"1\"}. Public context: \"X1\". Tool call budget: 9 total, including the observed prefix. If unable to complete the task, start your final reply with 'Blocked:' and briefly explain."
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_1",
+              "type": "function",
+              "function": {
+                "name": "read_primary_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_1",
+          "name": "read_primary_record",
+          "content": "{\"error\": \"Upstream request timed out.\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_2",
+              "type": "function",
+              "function": {
+                "name": "read_backup_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_2",
+          "name": "read_backup_record",
+          "content": "{\"record_id\": \"REC-3401\", \"content\": \"Valve A: 12 units; Valve B: 8 units.\", \"pending_ref\": \"49a470f8ac27823b504fa136\", \"items\": [{\"item\": \"Valve A\", \"units\": 12}, {\"item\": \"Valve B\", \"units\": 8}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_3",
+              "type": "function",
+              "function": {
+                "name": "validate_record_granularity",
+                "arguments": "{\"record_id\": \"REC-3401\", \"pending_ref\": \"49a470f8ac27823b504fa136\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_3",
+          "name": "validate_record_granularity",
+          "content": "{\"error\": \"Current item-level authority could not be established for this receipt.\", \"code\": \"verification_failed\"}"
+        },
+        {
+          "role": "user",
+          "content": "Recovery information:\nFrozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nUse the tool/error and source-to-target recovery beliefs to guide recovery.\nA high recovery belief favors another try. A low one and a stronger alternative favor switching.\nCheck returned fields after switching. When both look poor, consider asking for help or transferring,\nrepresented here by stop. Alternative tools are equivalent only at the same node and credential granularity.\nAfter a tool failure, try the same tool again at least once before other options, when available.\nVerify every required field and its granularity after switching.\nBefore an irreversible operation, confirm required fields from actual tool responses.\nUse a calculation tool for price calculations if the domain has one. Here prices are quoted directly.\nInspect the result of every write for errors.\nEscalate only after retry and alternative routes are exhausted.\nNever retry a tool explicitly reported unavailable for this session.\nFrozen Bayesian Tool Memory (final episode strict success, per episode key deduplication; includes publicly observed write/validation errors):\n{\"tool_error\": [{\"tool\": \"read_primary_record\", \"error\": \"Upstream request timed out.\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}, {\"tool\": \"validate_record_granularity\", \"error\": \"verification_failed\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}], \"switch\": [{\"source\": \"read_primary_record\", \"target\": \"read_backup_record\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}, {\"source\": \"validate_record_granularity\", \"target\": \"read_archive_record\", \"n\": 4, \"successes\": 4, \"beta_mean\": 0.8333333333333334, \"prior\": \"Beta(1,1)\"}, {\"source\": \"validate_record_granularity\", \"target\": \"read_primary_record\", \"n\": 4, \"successes\": 0, \"beta_mean\": 0.16666666666666666, \"prior\": \"Beta(1,1)\"}]}"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "publish_verified_record",
+            "description": "Publish exactly the current record content using a primary evidence_ref or an evidence_ref issued by validate_record_granularity. Raw backup pending_ref is not accepted. Creates one non-idempotent publication; duplicate writes are forbidden. Returns publication_id. The caller must read it back to verify publication.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Exact current content."
+                },
+                "evidence_ref": {
+                  "type": "string",
+                  "description": "Actual authorized evidence receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "content",
+                "evidence_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_archive_record",
+            "description": "Read the independent authorized archive of this record. Returns content, item rows and pending_ref. Current item-level authority must be checked by validate_record_granularity before this pending receipt can authorize publication.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_backup_record",
+            "description": "Read the authorized backup of the same record. Returns content and pending_ref and item rows. Its granularity has not been verified; pending_ref is not a write reference. validate_record_granularity checks its actual item-level coverage.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_primary_record",
+            "description": "Read the current item-level record. Returns content and evidence_ref accepted by publish_verified_record. Read-only; retry is permitted after timeout.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_published_record",
+            "description": "Read an actual publication_id returned by a previous publication in this task. Returns its record_id, content and active status.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "publication_id": {
+                  "type": "string",
+                  "description": "ID from the actual write receipt."
+                }
+              },
+              "required": [
+                "publication_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "validate_record_granularity",
+            "description": "Check the record, item-level coverage and current authority of an actual pending_ref issued by an authorized backup or archive read in this task. A read returns unverified data, not writing permission. Returns evidence_ref only after successful verification. A verification failure issues no writable reference.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "pending_ref": {
+                  "type": "string",
+                  "description": "Actual pending read receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "pending_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      ],
+      "sha256": "c5b599b4d8cd099b3f322916428d5427e1dfaa8336980864e792d9b38e586e14",
+      "input_tokens": 2159,
+      "rendered_sha256": "a0dec32c300a9be1864fb4a7b1689960079c3a0f1f42197815cc1f5b3c1daf5d"
+    },
+    "M3R3": {
+      "advice": "Frozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nHistorical ACTUAL first-action completion and remaining simulated tool fee (includes that action and entire realized suffix):\n{\"publish_verified_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"read_archive_record\": {\"support\": 4, \"completion\": 1.0, \"remaining_fee\": 6.0}, \"read_backup_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"read_primary_record\": {\"support\": 4, \"completion\": 0.0, \"remaining_fee\": 1.0}, \"read_published_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"stop\": {\"support\": 4, \"completion\": 0.0, \"remaining_fee\": 0.0}, \"validate_record_granularity\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}}\nSuggested first action among supported entries, greatest observed completion then lowest fee on exact ties: read_archive_record",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are an autonomous AI assistant that executes tool-based workflows. Tools may occasionally fail or return unexpected data.\n\nTASK COMPLETION\n- The user query may describe multiple sub-tasks. You must complete ALL of them \u2014 do NOT skip any sub-tasks.\n- Every fact, data retrieval, or state change must come from a tool call. Never substitute a tool result with internal knowledge, and never report a step as completed unless you actually called the corresponding tool and received its result in this conversation.\n- Sub-tasks may be accomplishable through different tool combinations.\n\nFAULT HANDLING\n- When evaluating tool outputs, consider whether the returned data is coherent and usable for the next step \u2014 fields should be present, values should be semantically reasonable, and types should match what the workflow requires.\n- If you determine that a required step cannot be accomplished by any available tool or approach, stop the workflow and clearly report which step failed and why, rather than proceeding with incomplete results.\n\nFINAL ANSWER FORMAT\n- Be CONCISE and DIRECT. No emojis, markdown formatting (**, \u2705, etc.), or bullet points.\n- If SUCCESSFUL: State only essential facts and requested results (e.g., confirmation codes). Omit internal technical details.\n- If HALTED: State clearly that the task was aborted and the reason (e.g., \"Task aborted: the pricing tool returned corrupted data after retry and no other alternative approaches exist\"). Do not apologize excessively."
+        },
+        {
+          "role": "user",
+          "content": "For record REC-3401, publish exactly one copy of its current item-level content. Use an actual primary evidence receipt, or an authorized backup receipt after its granularity has been verified. Read back the actual publication and check that its record, content and active status match. Give a final response.\n\nTool prices (engineering units per advertised call, including failed calls): {\"publish_verified_record\": \"1\", \"read_archive_record\": \"3\", \"read_backup_record\": \"1\", \"read_primary_record\": \"1\", \"read_published_record\": \"1\", \"validate_record_granularity\": \"1\"}. Public context: \"X1\". Tool call budget: 9 total, including the observed prefix. If unable to complete the task, start your final reply with 'Blocked:' and briefly explain."
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_1",
+              "type": "function",
+              "function": {
+                "name": "read_primary_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_1",
+          "name": "read_primary_record",
+          "content": "{\"error\": \"Upstream request timed out.\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_2",
+              "type": "function",
+              "function": {
+                "name": "read_backup_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_2",
+          "name": "read_backup_record",
+          "content": "{\"record_id\": \"REC-3401\", \"content\": \"Valve A: 12 units; Valve B: 8 units.\", \"pending_ref\": \"49a470f8ac27823b504fa136\", \"items\": [{\"item\": \"Valve A\", \"units\": 12}, {\"item\": \"Valve B\", \"units\": 8}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_3",
+              "type": "function",
+              "function": {
+                "name": "validate_record_granularity",
+                "arguments": "{\"record_id\": \"REC-3401\", \"pending_ref\": \"49a470f8ac27823b504fa136\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_3",
+          "name": "validate_record_granularity",
+          "content": "{\"error\": \"Current item-level authority could not be established for this receipt.\", \"code\": \"verification_failed\"}"
+        },
+        {
+          "role": "user",
+          "content": "Recovery information:\nFrozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nHistorical ACTUAL first-action completion and remaining simulated tool fee (includes that action and entire realized suffix):\n{\"publish_verified_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"read_archive_record\": {\"support\": 4, \"completion\": 1.0, \"remaining_fee\": 6.0}, \"read_backup_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"read_primary_record\": {\"support\": 4, \"completion\": 0.0, \"remaining_fee\": 1.0}, \"read_published_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"stop\": {\"support\": 4, \"completion\": 0.0, \"remaining_fee\": 0.0}, \"validate_record_granularity\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}}\nSuggested first action among supported entries, greatest observed completion then lowest fee on exact ties: read_archive_record"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "publish_verified_record",
+            "description": "Publish exactly the current record content using a primary evidence_ref or an evidence_ref issued by validate_record_granularity. Raw backup pending_ref is not accepted. Creates one non-idempotent publication; duplicate writes are forbidden. Returns publication_id. The caller must read it back to verify publication.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Exact current content."
+                },
+                "evidence_ref": {
+                  "type": "string",
+                  "description": "Actual authorized evidence receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "content",
+                "evidence_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_archive_record",
+            "description": "Read the independent authorized archive of this record. Returns content, item rows and pending_ref. Current item-level authority must be checked by validate_record_granularity before this pending receipt can authorize publication.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_backup_record",
+            "description": "Read the authorized backup of the same record. Returns content and pending_ref and item rows. Its granularity has not been verified; pending_ref is not a write reference. validate_record_granularity checks its actual item-level coverage.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_primary_record",
+            "description": "Read the current item-level record. Returns content and evidence_ref accepted by publish_verified_record. Read-only; retry is permitted after timeout.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_published_record",
+            "description": "Read an actual publication_id returned by a previous publication in this task. Returns its record_id, content and active status.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "publication_id": {
+                  "type": "string",
+                  "description": "ID from the actual write receipt."
+                }
+              },
+              "required": [
+                "publication_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "validate_record_granularity",
+            "description": "Check the record, item-level coverage and current authority of an actual pending_ref issued by an authorized backup or archive read in this task. A read returns unverified data, not writing permission. Returns evidence_ref only after successful verification. A verification failure issues no writable reference.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "pending_ref": {
+                  "type": "string",
+                  "description": "Actual pending read receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "pending_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      ],
+      "sha256": "900ddb838feb87c26897e424aca5540c393e07136e33c830629feb513f8d08f8",
+      "input_tokens": 1844,
+      "rendered_sha256": "667b2798525f961a76dedeff07cf6fedba322428bf6dce5df5bad71dd2d6ae63"
+    },
+    "M3R4": {
+      "advice": "Frozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nHistory-fitted HMM information only; anonymous statistical states are not named fault causes. No final-completion planner or forced action.\n{\"states\": 1, \"dynamic\": false, \"loglik\": -9.48477468229367, \"bic\": 33.87898926331535, \"candidate_bic\": [{\"states\": 1, \"dynamic\": false, \"bic\": 33.87898926331535}, {\"states\": 1, \"dynamic\": false, \"bic\": 33.87898926331535}, {\"states\": 2, \"dynamic\": false, \"bic\": 51.47143437647853}, {\"states\": 2, \"dynamic\": true, \"bic\": 54.9832755637415}], \"belief\": [1.0], \"next_call\": {\"publish_verified_record\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"read_archive_record\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"read_backup_record\": {\"p_next_receipt_ok\": 0.9918032786885246, \"observed_calls\": 12}, \"read_primary_record\": {\"p_next_receipt_ok\": 0.006172839506172839, \"observed_calls\": 16}, \"read_published_record\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"validate_record_granularity\": {\"p_next_receipt_ok\": 0.25308641975308643, \"observed_calls\": 16}}, \"clock\": \"one actual logged tool call and its receipt, including prefix; no automatic tails\", \"recommendation\": null, \"limitation\": \"Next-receipt probabilities are not final completion or remaining cost; no CPU reference planner transplanted.\"}",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are an autonomous AI assistant that executes tool-based workflows. Tools may occasionally fail or return unexpected data.\n\nTASK COMPLETION\n- The user query may describe multiple sub-tasks. You must complete ALL of them \u2014 do NOT skip any sub-tasks.\n- Every fact, data retrieval, or state change must come from a tool call. Never substitute a tool result with internal knowledge, and never report a step as completed unless you actually called the corresponding tool and received its result in this conversation.\n- Sub-tasks may be accomplishable through different tool combinations.\n\nFAULT HANDLING\n- When evaluating tool outputs, consider whether the returned data is coherent and usable for the next step \u2014 fields should be present, values should be semantically reasonable, and types should match what the workflow requires.\n- If you determine that a required step cannot be accomplished by any available tool or approach, stop the workflow and clearly report which step failed and why, rather than proceeding with incomplete results.\n\nFINAL ANSWER FORMAT\n- Be CONCISE and DIRECT. No emojis, markdown formatting (**, \u2705, etc.), or bullet points.\n- If SUCCESSFUL: State only essential facts and requested results (e.g., confirmation codes). Omit internal technical details.\n- If HALTED: State clearly that the task was aborted and the reason (e.g., \"Task aborted: the pricing tool returned corrupted data after retry and no other alternative approaches exist\"). Do not apologize excessively."
+        },
+        {
+          "role": "user",
+          "content": "For record REC-3401, publish exactly one copy of its current item-level content. Use an actual primary evidence receipt, or an authorized backup receipt after its granularity has been verified. Read back the actual publication and check that its record, content and active status match. Give a final response.\n\nTool prices (engineering units per advertised call, including failed calls): {\"publish_verified_record\": \"1\", \"read_archive_record\": \"3\", \"read_backup_record\": \"1\", \"read_primary_record\": \"1\", \"read_published_record\": \"1\", \"validate_record_granularity\": \"1\"}. Public context: \"X1\". Tool call budget: 9 total, including the observed prefix. If unable to complete the task, start your final reply with 'Blocked:' and briefly explain."
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_1",
+              "type": "function",
+              "function": {
+                "name": "read_primary_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_1",
+          "name": "read_primary_record",
+          "content": "{\"error\": \"Upstream request timed out.\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_2",
+              "type": "function",
+              "function": {
+                "name": "read_backup_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_2",
+          "name": "read_backup_record",
+          "content": "{\"record_id\": \"REC-3401\", \"content\": \"Valve A: 12 units; Valve B: 8 units.\", \"pending_ref\": \"49a470f8ac27823b504fa136\", \"items\": [{\"item\": \"Valve A\", \"units\": 12}, {\"item\": \"Valve B\", \"units\": 8}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_3",
+              "type": "function",
+              "function": {
+                "name": "validate_record_granularity",
+                "arguments": "{\"record_id\": \"REC-3401\", \"pending_ref\": \"49a470f8ac27823b504fa136\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_3",
+          "name": "validate_record_granularity",
+          "content": "{\"error\": \"Current item-level authority could not be established for this receipt.\", \"code\": \"verification_failed\"}"
+        },
+        {
+          "role": "user",
+          "content": "Recovery information:\nFrozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nHistory-fitted HMM information only; anonymous statistical states are not named fault causes. No final-completion planner or forced action.\n{\"states\": 1, \"dynamic\": false, \"loglik\": -9.48477468229367, \"bic\": 33.87898926331535, \"candidate_bic\": [{\"states\": 1, \"dynamic\": false, \"bic\": 33.87898926331535}, {\"states\": 1, \"dynamic\": false, \"bic\": 33.87898926331535}, {\"states\": 2, \"dynamic\": false, \"bic\": 51.47143437647853}, {\"states\": 2, \"dynamic\": true, \"bic\": 54.9832755637415}], \"belief\": [1.0], \"next_call\": {\"publish_verified_record\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"read_archive_record\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"read_backup_record\": {\"p_next_receipt_ok\": 0.9918032786885246, \"observed_calls\": 12}, \"read_primary_record\": {\"p_next_receipt_ok\": 0.006172839506172839, \"observed_calls\": 16}, \"read_published_record\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"validate_record_granularity\": {\"p_next_receipt_ok\": 0.25308641975308643, \"observed_calls\": 16}}, \"clock\": \"one actual logged tool call and its receipt, including prefix; no automatic tails\", \"recommendation\": null, \"limitation\": \"Next-receipt probabilities are not final completion or remaining cost; no CPU reference planner transplanted.\"}"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "publish_verified_record",
+            "description": "Publish exactly the current record content using a primary evidence_ref or an evidence_ref issued by validate_record_granularity. Raw backup pending_ref is not accepted. Creates one non-idempotent publication; duplicate writes are forbidden. Returns publication_id. The caller must read it back to verify publication.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Exact current content."
+                },
+                "evidence_ref": {
+                  "type": "string",
+                  "description": "Actual authorized evidence receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "content",
+                "evidence_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_archive_record",
+            "description": "Read the independent authorized archive of this record. Returns content, item rows and pending_ref. Current item-level authority must be checked by validate_record_granularity before this pending receipt can authorize publication.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_backup_record",
+            "description": "Read the authorized backup of the same record. Returns content and pending_ref and item rows. Its granularity has not been verified; pending_ref is not a write reference. validate_record_granularity checks its actual item-level coverage.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_primary_record",
+            "description": "Read the current item-level record. Returns content and evidence_ref accepted by publish_verified_record. Read-only; retry is permitted after timeout.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_published_record",
+            "description": "Read an actual publication_id returned by a previous publication in this task. Returns its record_id, content and active status.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "publication_id": {
+                  "type": "string",
+                  "description": "ID from the actual write receipt."
+                }
+              },
+              "required": [
+                "publication_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "validate_record_granularity",
+            "description": "Check the record, item-level coverage and current authority of an actual pending_ref issued by an authorized backup or archive read in this task. A read returns unverified data, not writing permission. Returns evidence_ref only after successful verification. A verification failure issues no writable reference.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "pending_ref": {
+                  "type": "string",
+                  "description": "Actual pending read receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "pending_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      ],
+      "sha256": "a0607b06d36dbc2a0717b09c122e892473ba206a09171888b0d983ef0afbd95f",
+      "input_tokens": 2153,
+      "rendered_sha256": "247510f1d3212634c53877ee74d93c90e912c2c766649799a17e3caa161f7e8a"
+    },
+    "M4R2": {
+      "advice": "Frozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nUse the tool/error and source-to-target recovery beliefs to guide recovery.\nA high recovery belief favors another try. A low one and a stronger alternative favor switching.\nCheck returned fields after switching. When both look poor, consider asking for help or transferring,\nrepresented here by stop. Alternative tools are equivalent only at the same node and credential granularity.\nAfter a tool failure, try the same tool again at least once before other options, when available.\nVerify every required field and its granularity after switching.\nBefore an irreversible operation, confirm required fields from actual tool responses.\nUse a calculation tool for price calculations if the domain has one. Here prices are quoted directly.\nInspect the result of every write for errors.\nEscalate only after retry and alternative routes are exhausted.\nNever retry a tool explicitly reported unavailable for this session.\nFrozen Bayesian Tool Memory (final episode strict success, per episode key deduplication; includes publicly observed write/validation errors):\n{\"tool_error\": [{\"tool\": \"publish_verified_record\", \"error\": \"Publication endpoint unavailable; no publication was committed.\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}, {\"tool\": \"read_primary_record\", \"error\": \"Upstream request timed out.\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}], \"switch\": [{\"source\": \"publish_verified_record\", \"target\": \"prepare_alternate_publication\", \"n\": 4, \"successes\": 4, \"beta_mean\": 0.8333333333333334, \"prior\": \"Beta(1,1)\"}, {\"source\": \"read_primary_record\", \"target\": \"read_backup_record\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}]}",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are an autonomous AI assistant that executes tool-based workflows. Tools may occasionally fail or return unexpected data.\n\nTASK COMPLETION\n- The user query may describe multiple sub-tasks. You must complete ALL of them \u2014 do NOT skip any sub-tasks.\n- Every fact, data retrieval, or state change must come from a tool call. Never substitute a tool result with internal knowledge, and never report a step as completed unless you actually called the corresponding tool and received its result in this conversation.\n- Sub-tasks may be accomplishable through different tool combinations.\n\nFAULT HANDLING\n- When evaluating tool outputs, consider whether the returned data is coherent and usable for the next step \u2014 fields should be present, values should be semantically reasonable, and types should match what the workflow requires.\n- If you determine that a required step cannot be accomplished by any available tool or approach, stop the workflow and clearly report which step failed and why, rather than proceeding with incomplete results.\n\nFINAL ANSWER FORMAT\n- Be CONCISE and DIRECT. No emojis, markdown formatting (**, \u2705, etc.), or bullet points.\n- If SUCCESSFUL: State only essential facts and requested results (e.g., confirmation codes). Omit internal technical details.\n- If HALTED: State clearly that the task was aborted and the reason (e.g., \"Task aborted: the pricing tool returned corrupted data after retry and no other alternative approaches exist\"). Do not apologize excessively."
+        },
+        {
+          "role": "user",
+          "content": "For record REC-3401, publish exactly one copy of its current item-level content. Use an actual primary evidence receipt, or an authorized backup receipt after its granularity has been verified. Read back the actual publication and check that its record, content and active status match. Give a final response.\n\nTool prices (engineering units per advertised call, including failed calls): {\"confirm_alternate_publication\": \"1\", \"prepare_alternate_publication\": \"1\", \"publish_verified_record\": \"1\", \"read_backup_record\": \"1\", \"read_primary_record\": \"1\", \"read_published_record\": \"1\", \"validate_record_granularity\": \"1\"}. Public context: \"X1\". Tool call budget: 7 total, including the observed prefix. If unable to complete the task, start your final reply with 'Blocked:' and briefly explain."
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_1",
+              "type": "function",
+              "function": {
+                "name": "read_primary_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_1",
+          "name": "read_primary_record",
+          "content": "{\"error\": \"Upstream request timed out.\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_2",
+              "type": "function",
+              "function": {
+                "name": "read_backup_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_2",
+          "name": "read_backup_record",
+          "content": "{\"record_id\": \"REC-3401\", \"content\": \"Valve A: 12 units; Valve B: 8 units.\", \"pending_ref\": \"1bf8746651186bc66e2c4ef8\", \"items\": [{\"item\": \"Valve A\", \"units\": 12}, {\"item\": \"Valve B\", \"units\": 8}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_3",
+              "type": "function",
+              "function": {
+                "name": "validate_record_granularity",
+                "arguments": "{\"record_id\": \"REC-3401\", \"pending_ref\": \"1bf8746651186bc66e2c4ef8\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_3",
+          "name": "validate_record_granularity",
+          "content": "{\"record_id\": \"REC-3401\", \"evidence_ref\": \"2143291bb5381346922b77a3\", \"granularity\": \"item\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_4",
+              "type": "function",
+              "function": {
+                "name": "publish_verified_record",
+                "arguments": "{\"record_id\": \"REC-3401\", \"content\": \"Valve A: 12 units; Valve B: 8 units.\", \"evidence_ref\": \"2143291bb5381346922b77a3\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_4",
+          "name": "publish_verified_record",
+          "content": "{\"error\": \"Publication endpoint unavailable; no publication was committed.\"}"
+        },
+        {
+          "role": "user",
+          "content": "Recovery information:\nFrozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nUse the tool/error and source-to-target recovery beliefs to guide recovery.\nA high recovery belief favors another try. A low one and a stronger alternative favor switching.\nCheck returned fields after switching. When both look poor, consider asking for help or transferring,\nrepresented here by stop. Alternative tools are equivalent only at the same node and credential granularity.\nAfter a tool failure, try the same tool again at least once before other options, when available.\nVerify every required field and its granularity after switching.\nBefore an irreversible operation, confirm required fields from actual tool responses.\nUse a calculation tool for price calculations if the domain has one. Here prices are quoted directly.\nInspect the result of every write for errors.\nEscalate only after retry and alternative routes are exhausted.\nNever retry a tool explicitly reported unavailable for this session.\nFrozen Bayesian Tool Memory (final episode strict success, per episode key deduplication; includes publicly observed write/validation errors):\n{\"tool_error\": [{\"tool\": \"publish_verified_record\", \"error\": \"Publication endpoint unavailable; no publication was committed.\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}, {\"tool\": \"read_primary_record\", \"error\": \"Upstream request timed out.\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}], \"switch\": [{\"source\": \"publish_verified_record\", \"target\": \"prepare_alternate_publication\", \"n\": 4, \"successes\": 4, \"beta_mean\": 0.8333333333333334, \"prior\": \"Beta(1,1)\"}, {\"source\": \"read_primary_record\", \"target\": \"read_backup_record\", \"n\": 12, \"successes\": 4, \"beta_mean\": 0.35714285714285715, \"prior\": \"Beta(1,1)\"}]}"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "confirm_alternate_publication",
+            "description": "Confirm and commit an actual pending_publication_ref from prepare_alternate_publication in this task. Returns publication_id only after the actual publication. Duplicate publication is forbidden. Read back that ID.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "pending_publication_ref": {
+                  "type": "string",
+                  "description": "Actual uncommitted preparation receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "pending_publication_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "prepare_alternate_publication",
+            "description": "Prepare publication through an independent writer using exact source content and an actual authorized evidence_ref. Returns pending_publication_ref. Preparation does not publish; confirm_alternate_publication must receive this actual reference to commit. All writers share the one-publication limit.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Exact current source content."
+                },
+                "evidence_ref": {
+                  "type": "string",
+                  "description": "Actual authorized evidence receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "content",
+                "evidence_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "publish_verified_record",
+            "description": "Publish exactly the current record content using a primary evidence_ref or an evidence_ref issued by validate_record_granularity. Raw backup pending_ref is not accepted. Creates one non-idempotent publication; duplicate writes are forbidden. Returns publication_id. The caller must read it back to verify publication. This endpoint shares a provider with read_primary_record. An unavailable-endpoint failure confirms that this call committed no publication.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Exact current content."
+                },
+                "evidence_ref": {
+                  "type": "string",
+                  "description": "Actual authorized evidence receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "content",
+                "evidence_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_backup_record",
+            "description": "Read the authorized backup of the same record. Returns content and pending_ref and item rows. Its granularity has not been verified; pending_ref is not a write reference. validate_record_granularity checks its actual item-level coverage.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_primary_record",
+            "description": "Read the current item-level record. Returns content and evidence_ref accepted by publish_verified_record. Read-only; retry is permitted after timeout.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_published_record",
+            "description": "Read an actual publication_id returned by a previous publication in this task. Returns its record_id, content and active status.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "publication_id": {
+                  "type": "string",
+                  "description": "ID from the actual write receipt."
+                }
+              },
+              "required": [
+                "publication_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "validate_record_granularity",
+            "description": "Check the record, item-level coverage and current authority of an actual pending_ref issued by an authorized backup or archive read in this task. A read returns unverified data, not writing permission. Returns evidence_ref only after successful verification. A verification failure issues no writable reference.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "pending_ref": {
+                  "type": "string",
+                  "description": "Actual pending read receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "pending_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      ],
+      "sha256": "43641dded139089db935d4f557c20460ee2fadb4457289cb49a9dff309dff8f1",
+      "input_tokens": 2456,
+      "rendered_sha256": "6ae1eb2984874b5701b7049339b09f51a2707f4f865d425ab51a91733cbbdce5"
+    },
+    "M4R3": {
+      "advice": "Frozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nHistorical ACTUAL first-action completion and remaining simulated tool fee (includes that action and entire realized suffix):\n{\"confirm_alternate_publication\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"prepare_alternate_publication\": {\"support\": 4, \"completion\": 1.0, \"remaining_fee\": 3.0}, \"publish_verified_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"read_backup_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"read_primary_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"read_published_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"stop\": {\"support\": 8, \"completion\": 0.0, \"remaining_fee\": 0.0}, \"validate_record_granularity\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}}\nSuggested first action among supported entries, greatest observed completion then lowest fee on exact ties: prepare_alternate_publication",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are an autonomous AI assistant that executes tool-based workflows. Tools may occasionally fail or return unexpected data.\n\nTASK COMPLETION\n- The user query may describe multiple sub-tasks. You must complete ALL of them \u2014 do NOT skip any sub-tasks.\n- Every fact, data retrieval, or state change must come from a tool call. Never substitute a tool result with internal knowledge, and never report a step as completed unless you actually called the corresponding tool and received its result in this conversation.\n- Sub-tasks may be accomplishable through different tool combinations.\n\nFAULT HANDLING\n- When evaluating tool outputs, consider whether the returned data is coherent and usable for the next step \u2014 fields should be present, values should be semantically reasonable, and types should match what the workflow requires.\n- If you determine that a required step cannot be accomplished by any available tool or approach, stop the workflow and clearly report which step failed and why, rather than proceeding with incomplete results.\n\nFINAL ANSWER FORMAT\n- Be CONCISE and DIRECT. No emojis, markdown formatting (**, \u2705, etc.), or bullet points.\n- If SUCCESSFUL: State only essential facts and requested results (e.g., confirmation codes). Omit internal technical details.\n- If HALTED: State clearly that the task was aborted and the reason (e.g., \"Task aborted: the pricing tool returned corrupted data after retry and no other alternative approaches exist\"). Do not apologize excessively."
+        },
+        {
+          "role": "user",
+          "content": "For record REC-3401, publish exactly one copy of its current item-level content. Use an actual primary evidence receipt, or an authorized backup receipt after its granularity has been verified. Read back the actual publication and check that its record, content and active status match. Give a final response.\n\nTool prices (engineering units per advertised call, including failed calls): {\"confirm_alternate_publication\": \"1\", \"prepare_alternate_publication\": \"1\", \"publish_verified_record\": \"1\", \"read_backup_record\": \"1\", \"read_primary_record\": \"1\", \"read_published_record\": \"1\", \"validate_record_granularity\": \"1\"}. Public context: \"X1\". Tool call budget: 7 total, including the observed prefix. If unable to complete the task, start your final reply with 'Blocked:' and briefly explain."
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_1",
+              "type": "function",
+              "function": {
+                "name": "read_primary_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_1",
+          "name": "read_primary_record",
+          "content": "{\"error\": \"Upstream request timed out.\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_2",
+              "type": "function",
+              "function": {
+                "name": "read_backup_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_2",
+          "name": "read_backup_record",
+          "content": "{\"record_id\": \"REC-3401\", \"content\": \"Valve A: 12 units; Valve B: 8 units.\", \"pending_ref\": \"1bf8746651186bc66e2c4ef8\", \"items\": [{\"item\": \"Valve A\", \"units\": 12}, {\"item\": \"Valve B\", \"units\": 8}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_3",
+              "type": "function",
+              "function": {
+                "name": "validate_record_granularity",
+                "arguments": "{\"record_id\": \"REC-3401\", \"pending_ref\": \"1bf8746651186bc66e2c4ef8\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_3",
+          "name": "validate_record_granularity",
+          "content": "{\"record_id\": \"REC-3401\", \"evidence_ref\": \"2143291bb5381346922b77a3\", \"granularity\": \"item\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_4",
+              "type": "function",
+              "function": {
+                "name": "publish_verified_record",
+                "arguments": "{\"record_id\": \"REC-3401\", \"content\": \"Valve A: 12 units; Valve B: 8 units.\", \"evidence_ref\": \"2143291bb5381346922b77a3\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_4",
+          "name": "publish_verified_record",
+          "content": "{\"error\": \"Publication endpoint unavailable; no publication was committed.\"}"
+        },
+        {
+          "role": "user",
+          "content": "Recovery information:\nFrozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nHistorical ACTUAL first-action completion and remaining simulated tool fee (includes that action and entire realized suffix):\n{\"confirm_alternate_publication\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"prepare_alternate_publication\": {\"support\": 4, \"completion\": 1.0, \"remaining_fee\": 3.0}, \"publish_verified_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"read_backup_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"read_primary_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"read_published_record\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}, \"stop\": {\"support\": 8, \"completion\": 0.0, \"remaining_fee\": 0.0}, \"validate_record_granularity\": {\"support\": 0, \"completion\": null, \"remaining_fee\": null}}\nSuggested first action among supported entries, greatest observed completion then lowest fee on exact ties: prepare_alternate_publication"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "confirm_alternate_publication",
+            "description": "Confirm and commit an actual pending_publication_ref from prepare_alternate_publication in this task. Returns publication_id only after the actual publication. Duplicate publication is forbidden. Read back that ID.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "pending_publication_ref": {
+                  "type": "string",
+                  "description": "Actual uncommitted preparation receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "pending_publication_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "prepare_alternate_publication",
+            "description": "Prepare publication through an independent writer using exact source content and an actual authorized evidence_ref. Returns pending_publication_ref. Preparation does not publish; confirm_alternate_publication must receive this actual reference to commit. All writers share the one-publication limit.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Exact current source content."
+                },
+                "evidence_ref": {
+                  "type": "string",
+                  "description": "Actual authorized evidence receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "content",
+                "evidence_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "publish_verified_record",
+            "description": "Publish exactly the current record content using a primary evidence_ref or an evidence_ref issued by validate_record_granularity. Raw backup pending_ref is not accepted. Creates one non-idempotent publication; duplicate writes are forbidden. Returns publication_id. The caller must read it back to verify publication. This endpoint shares a provider with read_primary_record. An unavailable-endpoint failure confirms that this call committed no publication.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Exact current content."
+                },
+                "evidence_ref": {
+                  "type": "string",
+                  "description": "Actual authorized evidence receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "content",
+                "evidence_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_backup_record",
+            "description": "Read the authorized backup of the same record. Returns content and pending_ref and item rows. Its granularity has not been verified; pending_ref is not a write reference. validate_record_granularity checks its actual item-level coverage.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_primary_record",
+            "description": "Read the current item-level record. Returns content and evidence_ref accepted by publish_verified_record. Read-only; retry is permitted after timeout.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_published_record",
+            "description": "Read an actual publication_id returned by a previous publication in this task. Returns its record_id, content and active status.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "publication_id": {
+                  "type": "string",
+                  "description": "ID from the actual write receipt."
+                }
+              },
+              "required": [
+                "publication_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "validate_record_granularity",
+            "description": "Check the record, item-level coverage and current authority of an actual pending_ref issued by an authorized backup or archive read in this task. A read returns unverified data, not writing permission. Returns evidence_ref only after successful verification. A verification failure issues no writable reference.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "pending_ref": {
+                  "type": "string",
+                  "description": "Actual pending read receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "pending_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      ],
+      "sha256": "2933518c25b67dc3b3c2faab9c46509d43f28e9fe2b057344ded6a8861be380e",
+      "input_tokens": 2226,
+      "rendered_sha256": "2a3ceae79031b7f116e4d91e2141e2e5a0200e3d53364fc7f610665c6b8c5f21"
+    },
+    "M4R4": {
+      "advice": "Frozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nHistory-fitted HMM information only; anonymous statistical states are not named fault causes. No final-completion planner or forced action.\n{\"states\": 1, \"dynamic\": false, \"loglik\": -0.684234577501468, \"bic\": 18.76281570351894, \"candidate_bic\": [{\"states\": 1, \"dynamic\": false, \"bic\": 18.76281570351894}, {\"states\": 1, \"dynamic\": false, \"bic\": 18.76281570351894}, {\"states\": 2, \"dynamic\": false, \"bic\": 38.839905102952926}, {\"states\": 2, \"dynamic\": true, \"bic\": 44.91199569053346}], \"belief\": [1.0], \"next_call\": {\"confirm_alternate_publication\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"prepare_alternate_publication\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"publish_verified_record\": {\"p_next_receipt_ok\": 0.00819672131147541, \"observed_calls\": 12}, \"read_backup_record\": {\"p_next_receipt_ok\": 0.9918032786885246, \"observed_calls\": 12}, \"read_primary_record\": {\"p_next_receipt_ok\": 0.00819672131147541, \"observed_calls\": 12}, \"read_published_record\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"validate_record_granularity\": {\"p_next_receipt_ok\": 0.9918032786885246, \"observed_calls\": 12}}, \"clock\": \"one actual logged tool call and its receipt, including prefix; no automatic tails\", \"recommendation\": null, \"limitation\": \"Next-receipt probabilities are not final completion or remaining cost; no CPU reference planner transplanted.\"}",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are an autonomous AI assistant that executes tool-based workflows. Tools may occasionally fail or return unexpected data.\n\nTASK COMPLETION\n- The user query may describe multiple sub-tasks. You must complete ALL of them \u2014 do NOT skip any sub-tasks.\n- Every fact, data retrieval, or state change must come from a tool call. Never substitute a tool result with internal knowledge, and never report a step as completed unless you actually called the corresponding tool and received its result in this conversation.\n- Sub-tasks may be accomplishable through different tool combinations.\n\nFAULT HANDLING\n- When evaluating tool outputs, consider whether the returned data is coherent and usable for the next step \u2014 fields should be present, values should be semantically reasonable, and types should match what the workflow requires.\n- If you determine that a required step cannot be accomplished by any available tool or approach, stop the workflow and clearly report which step failed and why, rather than proceeding with incomplete results.\n\nFINAL ANSWER FORMAT\n- Be CONCISE and DIRECT. No emojis, markdown formatting (**, \u2705, etc.), or bullet points.\n- If SUCCESSFUL: State only essential facts and requested results (e.g., confirmation codes). Omit internal technical details.\n- If HALTED: State clearly that the task was aborted and the reason (e.g., \"Task aborted: the pricing tool returned corrupted data after retry and no other alternative approaches exist\"). Do not apologize excessively."
+        },
+        {
+          "role": "user",
+          "content": "For record REC-3401, publish exactly one copy of its current item-level content. Use an actual primary evidence receipt, or an authorized backup receipt after its granularity has been verified. Read back the actual publication and check that its record, content and active status match. Give a final response.\n\nTool prices (engineering units per advertised call, including failed calls): {\"confirm_alternate_publication\": \"1\", \"prepare_alternate_publication\": \"1\", \"publish_verified_record\": \"1\", \"read_backup_record\": \"1\", \"read_primary_record\": \"1\", \"read_published_record\": \"1\", \"validate_record_granularity\": \"1\"}. Public context: \"X1\". Tool call budget: 7 total, including the observed prefix. If unable to complete the task, start your final reply with 'Blocked:' and briefly explain."
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_1",
+              "type": "function",
+              "function": {
+                "name": "read_primary_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_1",
+          "name": "read_primary_record",
+          "content": "{\"error\": \"Upstream request timed out.\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_2",
+              "type": "function",
+              "function": {
+                "name": "read_backup_record",
+                "arguments": "{\"record_id\": \"REC-3401\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_2",
+          "name": "read_backup_record",
+          "content": "{\"record_id\": \"REC-3401\", \"content\": \"Valve A: 12 units; Valve B: 8 units.\", \"pending_ref\": \"1bf8746651186bc66e2c4ef8\", \"items\": [{\"item\": \"Valve A\", \"units\": 12}, {\"item\": \"Valve B\", \"units\": 8}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_3",
+              "type": "function",
+              "function": {
+                "name": "validate_record_granularity",
+                "arguments": "{\"record_id\": \"REC-3401\", \"pending_ref\": \"1bf8746651186bc66e2c4ef8\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_3",
+          "name": "validate_record_granularity",
+          "content": "{\"record_id\": \"REC-3401\", \"evidence_ref\": \"2143291bb5381346922b77a3\", \"granularity\": \"item\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "prefix_call_4",
+              "type": "function",
+              "function": {
+                "name": "publish_verified_record",
+                "arguments": "{\"record_id\": \"REC-3401\", \"content\": \"Valve A: 12 units; Valve B: 8 units.\", \"evidence_ref\": \"2143291bb5381346922b77a3\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "prefix_call_4",
+          "name": "publish_verified_record",
+          "content": "{\"error\": \"Publication endpoint unavailable; no publication was committed.\"}"
+        },
+        {
+          "role": "user",
+          "content": "Recovery information:\nFrozen shared training pool: 24 real Agent episodes, same seen task/checkpoints, randomized FIRST SUGGESTION (not actual action), original native continuation with suggestion remaining in conversation. Observational associations only; no causal action effects or independent-task guarantee. Unsupported entries are unknown. Use only actual receipts for arguments and independently execute all remaining obligations.\nHistory-fitted HMM information only; anonymous statistical states are not named fault causes. No final-completion planner or forced action.\n{\"states\": 1, \"dynamic\": false, \"loglik\": -0.684234577501468, \"bic\": 18.76281570351894, \"candidate_bic\": [{\"states\": 1, \"dynamic\": false, \"bic\": 18.76281570351894}, {\"states\": 1, \"dynamic\": false, \"bic\": 18.76281570351894}, {\"states\": 2, \"dynamic\": false, \"bic\": 38.839905102952926}, {\"states\": 2, \"dynamic\": true, \"bic\": 44.91199569053346}], \"belief\": [1.0], \"next_call\": {\"confirm_alternate_publication\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"prepare_alternate_publication\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"publish_verified_record\": {\"p_next_receipt_ok\": 0.00819672131147541, \"observed_calls\": 12}, \"read_backup_record\": {\"p_next_receipt_ok\": 0.9918032786885246, \"observed_calls\": 12}, \"read_primary_record\": {\"p_next_receipt_ok\": 0.00819672131147541, \"observed_calls\": 12}, \"read_published_record\": {\"p_next_receipt_ok\": 0.9761904761904763, \"observed_calls\": 4}, \"validate_record_granularity\": {\"p_next_receipt_ok\": 0.9918032786885246, \"observed_calls\": 12}}, \"clock\": \"one actual logged tool call and its receipt, including prefix; no automatic tails\", \"recommendation\": null, \"limitation\": \"Next-receipt probabilities are not final completion or remaining cost; no CPU reference planner transplanted.\"}"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "confirm_alternate_publication",
+            "description": "Confirm and commit an actual pending_publication_ref from prepare_alternate_publication in this task. Returns publication_id only after the actual publication. Duplicate publication is forbidden. Read back that ID.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "pending_publication_ref": {
+                  "type": "string",
+                  "description": "Actual uncommitted preparation receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "pending_publication_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "prepare_alternate_publication",
+            "description": "Prepare publication through an independent writer using exact source content and an actual authorized evidence_ref. Returns pending_publication_ref. Preparation does not publish; confirm_alternate_publication must receive this actual reference to commit. All writers share the one-publication limit.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Exact current source content."
+                },
+                "evidence_ref": {
+                  "type": "string",
+                  "description": "Actual authorized evidence receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "content",
+                "evidence_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "publish_verified_record",
+            "description": "Publish exactly the current record content using a primary evidence_ref or an evidence_ref issued by validate_record_granularity. Raw backup pending_ref is not accepted. Creates one non-idempotent publication; duplicate writes are forbidden. Returns publication_id. The caller must read it back to verify publication. This endpoint shares a provider with read_primary_record. An unavailable-endpoint failure confirms that this call committed no publication.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Exact current content."
+                },
+                "evidence_ref": {
+                  "type": "string",
+                  "description": "Actual authorized evidence receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "content",
+                "evidence_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_backup_record",
+            "description": "Read the authorized backup of the same record. Returns content and pending_ref and item rows. Its granularity has not been verified; pending_ref is not a write reference. validate_record_granularity checks its actual item-level coverage.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_primary_record",
+            "description": "Read the current item-level record. Returns content and evidence_ref accepted by publish_verified_record. Read-only; retry is permitted after timeout.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                }
+              },
+              "required": [
+                "record_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "read_published_record",
+            "description": "Read an actual publication_id returned by a previous publication in this task. Returns its record_id, content and active status.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "publication_id": {
+                  "type": "string",
+                  "description": "ID from the actual write receipt."
+                }
+              },
+              "required": [
+                "publication_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        {
+          "type": "function",
+          "function": {
+            "name": "validate_record_granularity",
+            "description": "Check the record, item-level coverage and current authority of an actual pending_ref issued by an authorized backup or archive read in this task. A read returns unverified data, not writing permission. Returns evidence_ref only after successful verification. A verification failure issues no writable reference.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "record_id": {
+                  "type": "string",
+                  "description": "Record authorized in the task."
+                },
+                "pending_ref": {
+                  "type": "string",
+                  "description": "Actual pending read receipt."
+                }
+              },
+              "required": [
+                "record_id",
+                "pending_ref"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      ],
+      "sha256": "e9c7ebb72c551f6863b8fd2e437e514c7480610e1887a939c03a6c8596c8b9fc",
+      "input_tokens": 2559,
+      "rendered_sha256": "cb8b5ed15a942d485ca10d3754edd6d8c05dece6aaf83d4e05e4fad2f0446a87"
+    }
+  },
+  "plan": [
+    [
+      452001,
+      "M3",
+      "R2"
+    ],
+    [
+      452001,
+      "M3",
+      "R3"
+    ],
+    [
+      452001,
+      "M3",
+      "R4"
+    ],
+    [
+      452001,
+      "M4",
+      "R2"
+    ],
+    [
+      452001,
+      "M4",
+      "R3"
+    ],
+    [
+      452001,
+      "M4",
+      "R4"
+    ],
+    [
+      452002,
+      "M4",
+      "R3"
+    ],
+    [
+      452002,
+      "M4",
+      "R4"
+    ],
+    [
+      452002,
+      "M4",
+      "R2"
+    ],
+    [
+      452002,
+      "M3",
+      "R3"
+    ],
+    [
+      452002,
+      "M3",
+      "R4"
+    ],
+    [
+      452002,
+      "M3",
+      "R2"
+    ],
+    [
+      452003,
+      "M3",
+      "R4"
+    ],
+    [
+      452003,
+      "M3",
+      "R2"
+    ],
+    [
+      452003,
+      "M3",
+      "R3"
+    ],
+    [
+      452003,
+      "M4",
+      "R4"
+    ],
+    [
+      452003,
+      "M4",
+      "R2"
+    ],
+    [
+      452003,
+      "M4",
+      "R3"
+    ],
+    [
+      452004,
+      "M4",
+      "R2"
+    ],
+    [
+      452004,
+      "M4",
+      "R3"
+    ],
+    [
+      452004,
+      "M4",
+      "R4"
+    ],
+    [
+      452004,
+      "M3",
+      "R2"
+    ],
+    [
+      452004,
+      "M3",
+      "R3"
+    ],
+    [
+      452004,
+      "M3",
+      "R4"
+    ],
+    [
+      452005,
+      "M3",
+      "R3"
+    ],
+    [
+      452005,
+      "M3",
+      "R4"
+    ],
+    [
+      452005,
+      "M3",
+      "R2"
+    ],
+    [
+      452005,
+      "M4",
+      "R3"
+    ],
+    [
+      452005,
+      "M4",
+      "R4"
+    ],
+    [
+      452005,
+      "M4",
+      "R2"
+    ],
+    [
+      452006,
+      "M4",
+      "R4"
+    ],
+    [
+      452006,
+      "M4",
+      "R2"
+    ],
+    [
+      452006,
+      "M4",
+      "R3"
+    ],
+    [
+      452006,
+      "M3",
+      "R4"
+    ],
+    [
+      452006,
+      "M3",
+      "R2"
+    ],
+    [
+      452006,
+      "M3",
+      "R3"
+    ],
+    [
+      452007,
+      "M3",
+      "R2"
+    ],
+    [
+      452007,
+      "M3",
+      "R3"
+    ],
+    [
+      452007,
+      "M3",
+      "R4"
+    ],
+    [
+      452007,
+      "M4",
+      "R2"
+    ],
+    [
+      452007,
+      "M4",
+      "R3"
+    ],
+    [
+      452007,
+      "M4",
+      "R4"
+    ],
+    [
+      452008,
+      "M4",
+      "R3"
+    ],
+    [
+      452008,
+      "M4",
+      "R4"
+    ],
+    [
+      452008,
+      "M4",
+      "R2"
+    ],
+    [
+      452008,
+      "M3",
+      "R3"
+    ],
+    [
+      452008,
+      "M3",
+      "R4"
+    ],
+    [
+      452008,
+      "M3",
+      "R2"
+    ],
+    [
+      452009,
+      "M3",
+      "R4"
+    ],
+    [
+      452009,
+      "M3",
+      "R2"
+    ],
+    [
+      452009,
+      "M3",
+      "R3"
+    ],
+    [
+      452009,
+      "M4",
+      "R4"
+    ],
+    [
+      452009,
+      "M4",
+      "R2"
+    ],
+    [
+      452009,
+      "M4",
+      "R3"
+    ],
+    [
+      452010,
+      "M4",
+      "R2"
+    ],
+    [
+      452010,
+      "M4",
+      "R3"
+    ],
+    [
+      452010,
+      "M4",
+      "R4"
+    ],
+    [
+      452010,
+      "M3",
+      "R2"
+    ],
+    [
+      452010,
+      "M3",
+      "R3"
+    ],
+    [
+      452010,
+      "M3",
+      "R4"
+    ]
+  ]
+}
