@@ -48,6 +48,19 @@ class HandCells(unittest.TestCase):
             values = evaluate(cell)
             close(self, values["opt"], values["opt_no_read"])
 
+    def test_single_vote_equals_read_first_sequence(self):
+        for cell in islice(ch.grid(), 5, 2916, 211):
+            for mass in cell.roots().values():
+                for actions in ((), (SWITCH,), (RETRY, SWITCH)):
+                    for end in (FINISH, STOP):
+                        close(self, ch.vote_value(cell, mass, 1, 1, actions, end),
+                              sequence_value(cell, mass, (READ,) + actions, end))
+
+    def test_vote_rule_never_beats_the_optimum(self):
+        for cell in islice(ch.grid(), 0, 2916, 151):
+            for mass in cell.roots().values():
+                self.assertFalse(better(ch.best_vote(cell, mass)[0], optimum(cell, mass, cell.left)))
+
     def test_sequence_enumeration(self):
         self.assertEqual(len(list(ch.sequences(3))), 2 * (1 + 3 + 9 + 27))
 

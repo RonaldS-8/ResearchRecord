@@ -92,5 +92,45 @@ def main(run_id):
                                               "fee_gap_rel_when_completion_tied")}, indent=1))
 
 
+def vote_row(line):
+    """Follow-up for competing explanation 3: per context, the better of the registered
+    fixed order and a k-read vote rule; compared with the public optimum."""
+    r = json.loads(line)
+    params = {k: (tuple(x) if isinstance(x, list) else x) for k, x in r["cell"].items()}
+    cell = ch.Cell(**params)
+    total, chosen = [0.0, 0.0], {}
+    for label, mass in cell.roots().items():
+        actions, end = r["fix_x_seq"][label]
+        fixed = ch.sequence_value(cell, mass, tuple(actions), end)
+        vote = ch.best_vote(cell, mass)
+        pick = vote if ch.better(vote[0], fixed) else (fixed, (0, 0, tuple(actions), end))
+        total = [total[0] + pick[0][0], total[1] + pick[0][1]]
+        chosen[label] = [pick[1][0], pick[1][1], list(pick[1][2]), pick[1][3]]
+    return {"cell": r["cell"], "headroom_pp": r["headroom_pp"],
+            "vote_headroom_pp": (r["opt"][0] - total[0]) * PP, "vote_rule": chosen}
+
+
+def followup(run_id):
+    out = ROOT / "results" / run_id
+    lines = (out / "cells.jsonl").read_text(encoding="utf-8").splitlines()
+    with ProcessPoolExecutor() as pool:
+        rows = list(pool.map(vote_row, lines, chunksize=16))
+    with open(out / "followup-vote.jsonl", "w", encoding="utf-8") as f:
+        for r in rows:
+            f.write(json.dumps(r) + "\n")
+    after = [r["vote_headroom_pp"] for r in rows]
+    report = {"experiment": "047", "followup": "competing explanation 3: k-read vote rule",
+              "commit": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
+                                       text=True).stdout.strip(),
+              "cells": len(rows), "headroom_pp_opt_minus_best_simple": describe(after),
+              "top_cells": sorted(rows, key=lambda r: -r["vote_headroom_pp"])[:5]}
+    text = json.dumps(report, indent=1)
+    (ROOT / "docs" / "evidence" / "047" / "followup-vote.json").write_text(text, encoding="utf-8")
+    print(json.dumps({k: report[k] for k in ("cells", "headroom_pp_opt_minus_best_simple")}, indent=1))
+
+
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "047-completion-headroom-01")
+    if len(sys.argv) > 2 and sys.argv[2] == "followup":
+        followup(sys.argv[1])
+    else:
+        main(sys.argv[1] if len(sys.argv) > 1 else "047-completion-headroom-01")

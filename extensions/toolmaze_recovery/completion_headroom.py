@@ -214,6 +214,43 @@ def evaluate(cell):
     }
 
 
+def vote_value(cell, mass, reads, need, actions, end):
+    """Follow-up rule (competing explanation 3): read back `reads` times, finish if at
+    least `need` say found, otherwise run a fixed order of writes, then `end`."""
+    fee = cell.read_fee * reads * sum(mass)
+    by_count = {0: mass}
+    for _ in range(reads):
+        nxt = {}
+        for count, m in by_count.items():
+            _, _, branches = step(cell, m, READ)
+            for obs, part in branches.items():
+                key = count + (obs == "found")
+                old = nxt.get(key, (0.0,) * len(STATES))
+                nxt[key] = tuple(a + b for a, b in zip(old, part))
+        by_count = nxt
+    completion = 0.0
+    for count, m in by_count.items():
+        if count >= need:
+            completion += finish(m)
+        else:
+            c, f = sequence_value(cell, m, actions, end)
+            completion, fee = completion + c, fee + f
+    return completion, fee
+
+
+def best_vote(cell, mass):
+    best = None
+    for reads in range(1, cell.left + 1):
+        for need in range(1, reads + 1):
+            for length in range(cell.left - reads + 1):
+                for actions in product((RETRY, SWITCH), repeat=length):
+                    for end in (FINISH, STOP):
+                        v = vote_value(cell, mass, reads, need, actions, end)
+                        if best is None or better(v, best[0]):
+                            best = (v, (reads, need, actions, end))
+    return best
+
+
 GRID = {
     "left": (3, 4, 6),
     "q_commit": (0.1, 0.3, 0.5),
