@@ -1,0 +1,14 @@
+{
+  "analysis_input_commit": "93997fd2",
+  "raw_indexed_file_entries_verified": 375,
+  "all_raw_hashes_unchanged": true,
+  "independent_replayed_episodes": 74,
+  "sdk_requests": 238,
+  "effect_analysis": "post-hoc descriptive only",
+  "files": {
+    "results/045-final-audit-01/no-leakage.log": "924bd3c14cd99f9ad8b2c2f44dfdd246670f4a0e1d2cf5d9f34e4a355588945f",
+    "results/045-final-audit-01/timelines.md": "65a14395fd20c6afcd992039569a4bee3166b78a12f70d0bd13d6ed33786007a",
+    "results/045-final-audit-01/metrics.json": "e2bda0516f30702f06f869ec5fd4e8e0c39f1a386d59d99287408efb2a20f752",
+    "results/045-final-audit-01/analysis-source.py": "f6fc57a497ef52a119c41aea3c26f93737cd0f4497a973672ff29e693662c9a0"
+  }
+}

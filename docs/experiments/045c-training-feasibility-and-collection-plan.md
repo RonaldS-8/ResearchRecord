@@ -55,3 +55,9 @@
 全部24回合独立重放评分一致；56个请求无SDK error，24条候选导出source_result_sha256与对应result一致。完成/日志及逐文件哈希元数据见docs/evidence/045c/completion-index.json；核验脚本与完整输出留results/045c-completion-verification-01，原始数据仍results/045c-training-01和045c-service-01。没有追加请求、补跑、拟合或五组对照；分析报告仍暂缓。
 
 用户建议后续长任务挂tmux，已确认/usr/bin/tmux可用；后续新批次使用独立命名tmux会话承载原有timeout/日志/清理流程，不动现有vllm会话。此次已经正常完成，不为切换会话重启或重跑采集。
+
+## 后续资格核验与集中分析完成
+
+24条候选在统计组运行前已逐ID、source_result_sha256、公共合同/检查点及实际事件终态复核，通过后冻结为R2/R3/R4相同来源池，产物及源哈希见evidence/045-stat/freeze.json。不能再把“无合法真实历史”作为当前阻断；现有限制是每动作支持小、M4实际writer重试n0、采集建议混杂、共享任务谱系，以及完整HMM恢复规划未适配。原始候选pending字段不覆写，资格审查由独立产物记录。
+
+训练内8/24完成，不作为方法评估：归档与备用prepare建议各4/4遵从且严格完成；主读建议4/4执行后均停止；STOP8/8执行；writer建议0/4执行。共20/24遵从，说明动作分配不能用建议分配替代。HMM拟合后两格选择k1/static；不将这些已见训练结果称泛化。集中报告reviews/045-real-agent-method-report.md与74回合时间线已完成。本阶段运行、来源检查、采集方案/预算和真实采集均已按授权交付；新家族与消融只是候选设计，未实施不冒称完成实验。

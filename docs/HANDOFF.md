@@ -1,3 +1,15 @@
+# 当前进度（2026-11-14）
+
+## Gate45 本轮运行、分析与文件交付完成
+
+50回合对照＋24真实训练采集，共238 SDK请求，独立重放/计量通过，无OOM/截断，GPU已释放。R0/R1：M3各4/5、M4各0/5；完整BTM适配R2与ACV R3：两格均5/5；HMM信念R4：M3 4/5、M4 0/5，BIC均选k1/static，完整恢复规划仍Not Ready。32/50完成；18失败主因16恢复决策、1逐字格式、1漏回读。R2/R3同源24条真实训练，前20评估不训练；分时/不同seed/提示增量/共享任务谱系限制方法因果与泛化结论。
+
+[正式报告](reviews/045-real-agent-method-report.md)、[74回合时间线](reviews/045-agent-timelines.md)、[计量](evidence/045/final-metrics.json)、[实验045](experiments/045-real-agent-method-comparison.md)。原始轨迹/拟合/冻结/独立核验留云端results/045*，分析results/045-final-audit-01。来源/运行提交2a7747b、daad0f3、a600b72；脚本scripts/analyze_gate45.py可复算；本轮未新增模型调用。旧044A-Obs本地改动及五份未跟踪Review保留。
+
+工程与交付Go；BTM保留强基线、ACV保留探索接口；HMM隐状态线No-Go；暂不开发自动修复Harness。建议后续另登记具体简单规则/静态与统计消融，识别统计是否有独立价值；不得将开发信号称新算法或跨任务验证。无后续GPU任务自动运行，等待用户科研判断。
+
+以下为历史记录（其中等待/暂停状态已由后续明确授权更新）。
+
 # 当前进度（2026-11-13）
 
 ## Gate44A-Obs：已批准4回合完成，恢复均失败
