@@ -1,0 +1,41 @@
+{
+  "base_commit": "4ac9a25d",
+  "m4_test_episodes": 25,
+  "m4_training_episodes": 12,
+  "raw_hash_entries_verified_unchanged": 375,
+  "model_calls": 0,
+  "new_collection": 0,
+  "service": [
+    {
+      "directory": "results/045-service-01",
+      "pid": "2613835",
+      "post_count": 63,
+      "running_two_or_more_samples": 0,
+      "first_cache_log": "(APIServer pid=2613835) INFO 11-14 00:38:49 [loggers.py:320] Engine 000: Avg prompt throughput: 141.5 tokens/s, Avg generation throughput: 29.5 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.1%, Prefix cache hit rate: 0.0%",
+      "prefix_caching_enabled": true,
+      "max_num_seqs_two": true
+    },
+    {
+      "directory": "results/045-stat-service-01",
+      "pid": "2828731",
+      "post_count": 119,
+      "running_two_or_more_samples": 0,
+      "first_cache_log": "(APIServer pid=2828731) INFO 11-14 10:56:13 [loggers.py:320] Engine 000: Avg prompt throughput: 197.7 tokens/s, Avg generation throughput: 30.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.8%, Prefix cache hit rate: 0.0%",
+      "prefix_caching_enabled": true,
+      "max_num_seqs_two": true
+    },
+    {
+      "directory": "results/045c-service-01",
+      "pid": "2818412",
+      "post_count": 56,
+      "running_two_or_more_samples": 0,
+      "first_cache_log": "(APIServer pid=2818412) INFO 11-14 10:16:22 [loggers.py:320] Engine 000: Avg prompt throughput: 146.4 tokens/s, Avg generation throughput: 22.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.1%, Prefix cache hit rate: 0.0%",
+      "prefix_caching_enabled": true,
+      "max_num_seqs_two": true
+    }
+  ],
+  "artifacts": {
+    "batch-hashes.json": "545bf223157ca8fef861500c1b0a5e975f107daeee2b9616a7edbb50021cd71a",
+    "m4-evidence.json": "309eedb61b817e5ee265f928b742bcb3bb9aac1031b5608cc4abdec1575b1269"
+  }
+}
