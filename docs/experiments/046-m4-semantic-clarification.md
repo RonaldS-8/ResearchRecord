@@ -29,7 +29,7 @@
 | --- | --- | --- |
 | 记录 | A：`REC-3401`，Valve A 12 / Valve B 8（原记录）<br>B：`REC-5172`，Pump C 30 / Pump D 5<br>C：`REC-6608`，Filter E 7 / Filter F 21 | 内容串按原格式生成 |
 | 任务措辞 | W0：原句<br>W1：改写，保留同样义务和"single copy"约束 | W1 原文见代码 `WORDINGS` |
-| 备用工具命名 | N0：`prepare/confirm_alternate_publication`（原名）<br>N1：`prepare/confirm_fallback_publication` | **注意：fallback 一词本身偏向"同一目标的后备路线"，可能起到部分澄清作用。** 命名效应单独报告；是否换成更中性的名字，请确认 |
+| 备用工具命名 | N0：`prepare/confirm_alternate_publication`（原名）<br>N1：`prepare/confirm_publication` | N1 只去掉 alternate 一词，不加入 fallback、retry 等暗示"同一目标"的词，也不使用失败回执里的 committed，避免命名本身起澄清作用。命名效应单独报告 |
 | 合同 | C0：原说明<br>C1：在 prepare 与 confirm 两条说明末尾各追加一句澄清 | 不在失败的 publish 说明里加"改用备用 writer"的指引，避免与阶段 2 的"关系说明"混在一起 |
 
 C1 追加的原文：

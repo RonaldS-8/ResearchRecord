@@ -31,7 +31,7 @@ WORDINGS = {
 }
 NAMINGS = {
     "N0": {},
-    "N1": {ALTWRITE: "prepare_fallback_publication", CONFIRM: "confirm_fallback_publication"},
+    "N1": {ALTWRITE: "prepare_publication", CONFIRM: "confirm_publication"},  # Neutral: drops "alternate".
 }
 CLARIFY = {  # Appended verbatim to the frozen descriptions; no pointer from the failing writer.
     ALTWRITE: (" This is another route to the task's single publication, not an additional copy: "
