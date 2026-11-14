@@ -144,7 +144,60 @@ def followup(run_id):
     print(json.dumps({k: report[k] for k in ("cells", "headroom_pp_opt_minus_best_simple")}, indent=1))
 
 
+def reread_row(line):
+    """Round-2 follow-up: per context, the better of FIX-V and a fixed order that
+    repeats an erroring read-back; only cells where the optimum beats FIX-V."""
+    r = json.loads(line)
+    params = {k: (tuple(x) if isinstance(x, list) else x) for k, x in r["cell"].items()}
+    cell = ch.Cell(**params)
+    total, chosen = [0.0, 0.0], {}
+    for label, mass in cell.roots().items():
+        reads, need, actions, end = r["fix_v_rule"][label]
+        actions = tuple(actions)
+        fixed = (ch.vote_value(cell, mass, reads, need, actions, end) if reads
+                 else ch.sequence_value(cell, mass, actions, end))
+        reread = ch.best_reread(cell, mass)
+        pick = reread if ch.better(reread[0], fixed) else (fixed, ("fix_v", reads, need, list(actions), end))
+        total = [total[0] + pick[0][0], total[1] + pick[0][1]]
+        chosen[label] = list(pick[1][:1]) + [list(x) if isinstance(x, tuple) else x for x in pick[1][1:]]
+    fee_gap = ((total[1] - r["opt"][1]) / total[1]
+               if abs(r["opt"][0] - total[0]) <= ch.TIE and total[1] > 0 else None)
+    return {"cell": r["cell"], "headroom_v_pp": r["headroom_v_pp"],
+            "headroom_vr_pp": (r["opt"][0] - total[0]) * PP, "fee_gap_rel": fee_gap, "rule": chosen}
+
+
+def followup_round_two(run_id):
+    out = ROOT / "results" / run_id
+    rows = [json.loads(l) for l in (out / "cells.jsonl").read_text(encoding="utf-8").splitlines()]
+    todo = [json.dumps(r) for r in rows if ch.better(tuple(r["opt"]), tuple(r["fix_v"]))]
+    with ProcessPoolExecutor() as pool:
+        done = list(pool.map(reread_row, todo, chunksize=8))
+    with open(out / "followup-reread.jsonl", "w", encoding="utf-8") as f:
+        for r in done:
+            f.write(json.dumps(r) + "\n")
+    # Cells where FIX-V already equals the optimum keep a zero gap on both dimensions.
+    after = [r["headroom_vr_pp"] for r in done] + [0.0] * (len(rows) - len(done))
+    fees = [r["fee_gap_rel"] for r in done if r["fee_gap_rel"] is not None]
+    fees += [0.0] * (len(rows) - len(done))
+    report = {"experiment": "047", "round": 2, "followup": "fixed order with erroring read-backs repeated",
+              "commit": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
+                                       text=True).stdout.strip(),
+              "cells": len(rows), "cells_where_opt_beat_fix_v": len(done),
+              "headroom_pp_opt_minus_best_simple": describe(after),
+              "fee_gap_rel_when_completion_tied": {"cells": len(fees), "median": statistics.median(fees),
+                                                   "p90": sorted(fees)[int(0.9 * (len(fees) - 1))],
+                                                   "max": max(fees), "share_ge_5pct": sum(g >= 0.05 for g in fees) / len(fees)},
+              "top_cells": sorted(done, key=lambda r: -r["headroom_vr_pp"])[:5]}
+    text = json.dumps(report, indent=1)
+    (ROOT / "docs" / "evidence" / "047" / "followup-reread-round2.json").write_text(text, encoding="utf-8")
+    print(json.dumps({k: report[k] for k in ("cells", "cells_where_opt_beat_fix_v", "headroom_pp_opt_minus_best_simple",
+                                             "fee_gap_rel_when_completion_tied")}, indent=1))
+
+
 if __name__ == "__main__":
+    if len(sys.argv) > 2 and sys.argv[2] == "followup2":
+        followup_round_two(sys.argv[1])
+        sys.exit()
     if len(sys.argv) > 2 and sys.argv[2] == "followup":
         followup(sys.argv[1])
     elif len(sys.argv) > 2 and sys.argv[2] == "round2":

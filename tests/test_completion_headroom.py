@@ -100,6 +100,17 @@ class RoundTwoMechanisms(unittest.TestCase):
         found = branches["found"]
         self.assertAlmostEqual(ch.finish(found), sum(found))
 
+    def test_reread_without_rereads_is_the_fixed_order(self):
+        for cell in islice(ch.grid(ch.GRID2), 7, 4608, 509):
+            for mass in cell.roots().values():
+                for seq in islice(ch.sequences(cell.left, cell.backup_calls), 0, None, 37):
+                    close(self, ch.reread_value(cell, mass, *seq, cell.left, 0), sequence_value(cell, mass, *seq))
+
+    def test_reread_rule_never_beats_the_optimum(self):
+        for cell in islice(ch.grid(ch.GRID2), 11, 4608, 613):
+            for mass in cell.roots().values():
+                self.assertFalse(better(ch.best_reread(cell, mass)[0], optimum(cell, mass, cell.left)))
+
     def test_vote_class_never_beats_the_optimum_in_round_two(self):
         for cell in islice(ch.grid(ch.GRID2), 0, 4608, 257):
             v = evaluate(cell, vote=True)

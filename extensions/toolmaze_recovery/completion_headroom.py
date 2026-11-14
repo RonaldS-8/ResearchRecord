@@ -233,6 +233,45 @@ def best_vote(cell, mass):
     return best
 
 
+def reread_value(cell, mass, actions, end, left, rereads, used=0):
+    """Round-2 follow-up rule: a fixed order of calls in which a read-back that returns
+    an error is repeated, at most `rereads` times, while the budget allows; calls that
+    no longer fit are skipped. A receipt or a found read-back declares completion."""
+    if mass is None or not actions:
+        return ((finish(mass) if end == FINISH and mass is not None else 0.0), 0.0)
+    action, rest = actions[0], actions[1:]
+    if left < cell.calls(action):
+        return reread_value(cell, mass, rest, end, left, rereads)
+    completion, fee, branches = step(cell, mass, action)
+    left -= cell.calls(action)
+    if action == READ:
+        completion += finish(branches["found"]) if "found" in branches else 0.0
+        parts = [(branches.get("missing"), rest, 0)]
+        if used < rereads and left >= 1:
+            parts.append((branches.get("error"), actions, used + 1))
+        else:
+            parts.append((branches.get("error"), rest, 0))
+    else:
+        parts = [(branches.get("fail"), rest, 0)]
+    for part, nxt, count in parts:
+        if part is not None:
+            c, f = reread_value(cell, part, nxt, end, left, rereads, count)
+            completion, fee = completion + c, fee + f
+    return completion, fee
+
+
+def best_reread(cell, mass, max_rereads=2):
+    best = None
+    for rereads in range(1, max_rereads + 1):
+        for actions, end in sequences(cell.left, cell.backup_calls):
+            if READ not in actions:
+                continue
+            v = reread_value(cell, mass, actions, end, cell.left, rereads)
+            if best is None or better(v, best[0]):
+                best = (v, (rereads, actions, end))
+    return best
+
+
 def evaluate(cell, vote=False):
     """All reference values of one cell; `vote` adds the round-2 simple rule class FIX-V."""
     roots = cell.roots()
