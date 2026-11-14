@@ -20,14 +20,20 @@ from extensions.toolmaze_recovery import completion_headroom as ch  # noqa: E402
 PP = 100.0
 
 
-def row(cell):
-    v = ch.evaluate(cell)
+def row(cell, vote=False):
+    v = ch.evaluate(cell, vote=vote)
     params = {k: (list(x) if isinstance(x, tuple) else x) for k, x in cell.__dict__.items()}
+    extra = {}
+    if vote:
+        extra = {"fix_v": list(v["fix_v"]),
+                 "fix_v_rule": {label: [r[0], r[1], list(r[2]), r[3]] for label, r in v["fix_v_rule"].items()},
+                 "headroom_v_pp": (v["opt"][0] - v["fix_v"][0]) * PP}
     return {
         "cell": params,
         **{k: list(v[k]) for k in ("oracle", "opt", "opt_no_read", "fix_x", "fix",
                                    "retry_then_switch", "read_first")},
         "fix_x_seq": {label: [list(seq[0]), seq[1]] for label, seq in v["fix_x_seq"].items()},
+        **extra,
         "headroom_pp": (v["opt"][0] - v["fix_x"][0]) * PP,
         "oracle_gap_pp": (v["oracle"][0] - v["opt"][0]) * PP,
         "naive_gap_pp": (v["opt"][0] - v["retry_then_switch"][0]) * PP,
@@ -45,33 +51,41 @@ def describe(values):
             "share_ge_10pp": sum(v >= 10 for v in values) / len(values)}
 
 
-def main(run_id):
-    cells = list(ch.grid())
+def row_v(cell):
+    return row(cell, vote=True)
+
+
+def main(run_id, round_two=False):
+    spec = ch.GRID2 if round_two else ch.GRID
+    cells = list(ch.grid(spec))
     with ProcessPoolExecutor() as pool:
-        rows = list(pool.map(row, cells, chunksize=16))
+        rows = list(pool.map(row_v if round_two else row, cells, chunksize=16))
     out = ROOT / "results" / run_id
     out.mkdir(parents=True, exist_ok=True)
     with open(out / "cells.jsonl", "w", encoding="utf-8") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")
 
-    headroom = [r["headroom_pp"] for r in rows]
+    primary = "headroom_v_pp" if round_two else "headroom_pp"
+    headroom = [r[primary] for r in rows]
     margins = {}
-    for key in ch.GRID:
+    for key in spec:
         groups = defaultdict(list)
         for r in rows:
-            groups[json.dumps(r["cell"][key])].append(r["headroom_pp"])
+            groups[json.dumps(r["cell"][key])].append(r[primary])
         margins[key] = {k: {"max": max(v), "mean": statistics.mean(v),
                             "share_ge_10pp": sum(x >= 10 for x in v) / len(v)} for k, v in groups.items()}
     fee = [r["fee_gap_rel"] for r in rows if r["fee_gap_rel"] is not None]
-    top = sorted(rows, key=lambda r: -r["headroom_pp"])[:10]
+    top = sorted(rows, key=lambda r: -r[primary])[:10]
     share10, worst = sum(h >= 10 for h in headroom) / len(headroom), max(headroom)
     verdict = ("headroom" if share10 >= 0.10 else "no_headroom" if worst < 5 else "local_headroom")
     commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
     summary = {
-        "experiment": "047", "run_id": run_id, "commit": commit, "python": platform.python_version(),
-        "cells": len(rows), "verdict": verdict,
-        "headroom_pp_opt_minus_fix_x": describe(headroom),
+        "experiment": "047", "round": 2 if round_two else 1, "run_id": run_id, "commit": commit,
+        "python": platform.python_version(), "cells": len(rows), "verdict": verdict,
+        "verdict_on": "opt_minus_fix_v" if round_two else "opt_minus_fix_x",
+        "headroom_pp_opt_minus_fix_x": describe([r["headroom_pp"] for r in rows]),
+        **({"headroom_pp_opt_minus_fix_v": describe(headroom)} if round_two else {}),
         "oracle_minus_opt_pp": describe([r["oracle_gap_pp"] for r in rows]),
         "opt_minus_retry_then_switch_pp": describe([r["naive_gap_pp"] for r in rows]),
         "opt_minus_read_first_pp": describe([r["read_first_gap_pp"] for r in rows]),
@@ -84,9 +98,10 @@ def main(run_id):
     evidence = ROOT / "docs" / "evidence" / "047"
     evidence.mkdir(parents=True, exist_ok=True)
     text = json.dumps(summary, indent=1)
-    (evidence / "summary.json").write_text(text, encoding="utf-8")
+    (evidence / ("summary-round2.json" if round_two else "summary.json")).write_text(text, encoding="utf-8")
     (out / "summary.json").write_text(text, encoding="utf-8")
-    print(json.dumps({k: summary[k] for k in ("cells", "verdict", "headroom_pp_opt_minus_fix_x",
+    print(json.dumps({k: summary[k] for k in ("cells", "verdict", "verdict_on", "headroom_pp_opt_minus_fix_x",
+                                              *(("headroom_pp_opt_minus_fix_v",) if round_two else ()),
                                               "oracle_minus_opt_pp", "opt_minus_retry_then_switch_pp",
                                               "opt_minus_read_first_pp", "read_back_value_pp",
                                               "fee_gap_rel_when_completion_tied")}, indent=1))
@@ -132,5 +147,7 @@ def followup(run_id):
 if __name__ == "__main__":
     if len(sys.argv) > 2 and sys.argv[2] == "followup":
         followup(sys.argv[1])
+    elif len(sys.argv) > 2 and sys.argv[2] == "round2":
+        main(sys.argv[1], round_two=True)
     else:
         main(sys.argv[1] if len(sys.argv) > 1 else "047-completion-headroom-01")

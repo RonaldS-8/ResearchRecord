@@ -3,7 +3,10 @@
 After a first write ends in an ambiguous failure, the hidden state is the number of
 committed publications n (0, 1, 2) and the writer status w (transient, primary down,
 shared backend down). Writing again after a silent commit makes n=2, which no later
-action can undo. A read-back is a paid, possibly noisy, explicit diagnosis.
+action can undo. A read-back is a paid, possibly noisy or failing, explicit diagnosis.
+Round 2 adds an unreliable backup writer, a backup route of several calls (prepare
+then confirm), failing read-backs and lagged (one-sided) read-back noise; the defaults
+reproduce round 1 exactly.
 
 Values are (strict completion probability, expected remaining fee), compared
 lexicographically with a 1e-9 completion tie. Floats are used for speed. Policies
@@ -15,6 +18,7 @@ from itertools import product
 
 RETRY, SWITCH, READ, FINISH, STOP = "retry", "switch", "read", "finish", "stop"
 CALLS = (RETRY, SWITCH, READ)
+WRITES = (RETRY, SWITCH)
 T, P, S = 0, 1, 2  # writer status
 STATES = tuple((n, w) for n in range(3) for w in (T, P, S))
 INDEX = {s: i for i, s in enumerate(STATES)}
@@ -32,15 +36,22 @@ class Cell:
     q_commit: float = 0.3          # P(the first ambiguous failure committed silently)
     split: tuple = (0.6, 0.3, 0.1)  # (T, P, S) among uncommitted first failures
     p_retry: float = 0.8           # P(a retry commits with a receipt | transient)
-    c_lost: float = 0.0            # P(a failed retry still committed | transient)
-    accuracy: float = 1.0          # read-back accuracy
+    c_lost: float = 0.0            # P(a failed write still committed | writer not down)
+    accuracy: float = 1.0          # P(found | committed); also P(missing | not) when symmetric
     read_fee: float = 0.5
     detail: str = "none"
     retry_fee: float = 1.0
     switch_fee: float = 2.0
+    p_switch: float = 1.0          # P(the backup route commits with a receipt | not shared)
+    backup_calls: int = 1          # calls the backup route needs (2: prepare then confirm)
+    read_fail: float = 0.0         # P(a read-back returns an error without state evidence)
+    read_noise: str = "symmetric"  # "lag": an uncommitted write is never read as found
 
     def fee(self, action):
         return {RETRY: self.retry_fee, SWITCH: self.switch_fee, READ: self.read_fee}[action]
+
+    def calls(self, action):
+        return self.backup_calls if action == SWITCH else 1
 
     def prior(self):
         """{category: (state, P(category))}."""
@@ -74,24 +85,34 @@ def step(cell, mass, action):
         if not weight:
             continue
         if action == READ:
-            found = cell.accuracy if n >= 1 else 1 - cell.accuracy
-            add("found", (n, w), weight * found)
-            add("missing", (n, w), weight * (1 - found))
-        elif action == RETRY and w == T:
-            if n == 0:
-                success += weight * cell.p_retry
-            add("fail", (min(n + 1, 2), w), weight * (1 - cell.p_retry) * cell.c_lost)
-            add("fail", (n, w), weight * (1 - cell.p_retry) * (1 - cell.c_lost))
-        elif action == SWITCH and w != S:
-            if n == 0:
-                success += weight
-        else:
+            add("error", (n, w), weight * cell.read_fail)
+            ok = weight * (1 - cell.read_fail)
+            if n >= 1:
+                found = cell.accuracy
+            else:
+                found = 0.0 if cell.read_noise == "lag" else 1 - cell.accuracy
+            add("found", (n, w), ok * found)
+            add("missing", (n, w), ok * (1 - found))
+            continue
+        works = (w == T) if action == RETRY else (w != S)
+        if not works:
             add("fail", (n, w), weight)
+            continue
+        rate = cell.p_retry if action == RETRY else cell.p_switch
+        if n == 0:
+            success += weight * rate
+        add("fail", (min(n + 1, 2), w), weight * (1 - rate) * cell.c_lost)
+        add("fail", (n, w), weight * (1 - rate) * (1 - cell.c_lost))
     return success, fee, {obs: tuple(m) for obs, m in branches.items()}
 
 
 def finish(mass):
     return sum(weight for (n, _), weight in zip(STATES, mass) if n == 1)
+
+
+def merge(*masses):
+    present = [m for m in masses if m is not None]
+    return tuple(map(sum, zip(*present))) if present else None
 
 
 def better(a, b):
@@ -111,26 +132,15 @@ def optimum(cell, mass, left, ban=(), cache=None):
     best = (0.0, 0.0)  # stop
     if FINISH not in ban and better((finish(mass), 0.0), best):
         best = (finish(mass), 0.0)
-    if left >= 1:
-        for action in CALLS:
-            if action in ban:
-                continue
-            completion, fee, branches = step(cell, mass, action)
-            if action == READ:
-                found = branches.get("found")
-                if found is not None:
-                    # A found read-back may still continue; the optimum decides.
-                    c, f = optimum(cell, found, left - 1, ban, cache)
-                    completion, fee = completion + c, fee + f
-                for obs in ("missing",):
-                    if obs in branches:
-                        c, f = optimum(cell, branches[obs], left - 1, ban, cache)
-                        completion, fee = completion + c, fee + f
-            elif "fail" in branches:
-                c, f = optimum(cell, branches["fail"], left - 1, ban, cache)
-                completion, fee = completion + c, fee + f
-            if better((completion, fee), best):
-                best = (completion, fee)
+    for action in CALLS:
+        if action in ban or left < cell.calls(action):
+            continue
+        completion, fee, branches = step(cell, mass, action)
+        for part in branches.values():  # every observation is its own information state
+            c, f = optimum(cell, part, left - cell.calls(action), ban, cache)
+            completion, fee = completion + c, fee + f
+        if better((completion, fee), best):
+            best = (completion, fee)
     cache[key] = (best[0] / total, best[1] / total)
     return best
 
@@ -142,9 +152,12 @@ def sequence_value(cell, mass, actions, end):
     for action in actions:
         c, f, branches = step(cell, mass, action)
         completion, fee = completion + c, fee + f
-        if action == READ and "found" in branches:
-            completion += finish(branches["found"])
-        mass = branches.get("missing" if action == READ else "fail")
+        if action == READ:
+            if "found" in branches:
+                completion += finish(branches["found"])
+            mass = merge(branches.get("missing"), branches.get("error"))
+        else:
+            mass = branches.get("fail")
         if mass is None:
             return completion, fee
     if end == FINISH:
@@ -152,11 +165,21 @@ def sequence_value(cell, mass, actions, end):
     return completion, fee
 
 
-def sequences(left):
-    for length in range(left + 1):
-        for actions in product(CALLS, repeat=length):
-            for end in (FINISH, STOP):
-                yield actions, end
+def orders(left, options, backup_calls=1):
+    """Every order of calls from `options` whose total calls fit in `left`."""
+    def grow(prefix, used):
+        yield prefix
+        for action in options:
+            need = backup_calls if action == SWITCH else 1
+            if used + need <= left:
+                yield from grow(prefix + (action,), used + need)
+    return grow((), 0)
+
+
+def sequences(left, backup_calls=1):
+    for actions in orders(left, CALLS, backup_calls):
+        for end in (FINISH, STOP):
+            yield actions, end
 
 
 def oracle(cell):
@@ -175,15 +198,50 @@ NAMED = {"retry_then_switch": ((RETRY, SWITCH), STOP),
          "read_first": ((READ, RETRY, SWITCH), STOP)}
 
 
-def evaluate(cell):
-    """All reference values of one cell."""
+def vote_value(cell, mass, reads, need, actions, end):
+    """Read back `reads` times, finish if at least `need` say found, otherwise run a
+    fixed order of writes, then `end`. A read-back error counts as not found."""
+    fee = cell.read_fee * reads * sum(mass)
+    by_count = {0: mass}
+    for _ in range(reads):
+        nxt = {}
+        for count, m in by_count.items():
+            _, _, branches = step(cell, m, READ)
+            for obs, part in branches.items():
+                key = count + (obs == "found")
+                nxt[key] = merge(nxt.get(key), part)
+        by_count = nxt
+    completion = 0.0
+    for count, m in by_count.items():
+        if count >= need:
+            completion += finish(m)
+        else:
+            c, f = sequence_value(cell, m, actions, end)
+            completion, fee = completion + c, fee + f
+    return completion, fee
+
+
+def best_vote(cell, mass):
+    best = None
+    for reads in range(1, cell.left + 1):
+        for need in range(1, reads + 1):
+            for actions in orders(cell.left - reads, WRITES, cell.backup_calls):
+                for end in (FINISH, STOP):
+                    v = vote_value(cell, mass, reads, need, actions, end)
+                    if best is None or better(v, best[0]):
+                        best = (v, (reads, need, actions, end))
+    return best
+
+
+def evaluate(cell, vote=False):
+    """All reference values of one cell; `vote` adds the round-2 simple rule class FIX-V."""
     roots = cell.roots()
     cache = {}
     opt = [optimum(cell, mass, cell.left, cache=cache) for mass in roots.values()]
     no_read = [optimum(cell, mass, cell.left, ban=(READ,)) for mass in roots.values()]
     per_label, pooled = [], None
     scores = {label: [] for label in roots}
-    for seq in sequences(cell.left):
+    for seq in sequences(cell.left, cell.backup_calls):
         values = {label: sequence_value(cell, mass, *seq) for label, mass in roots.items()}
         for label, v in values.items():
             scores[label].append((v, seq))
@@ -202,7 +260,7 @@ def evaluate(cell):
 
     named = {name: add([sequence_value(cell, mass, *seq) for mass in roots.values()])
              for name, seq in NAMED.items()}
-    return {
+    out = {
         "oracle": oracle(cell),
         "opt": add(opt),
         "opt_no_read": add(no_read),
@@ -212,43 +270,14 @@ def evaluate(cell):
         "fix_seq": pooled[1],
         **named,
     }
-
-
-def vote_value(cell, mass, reads, need, actions, end):
-    """Follow-up rule (competing explanation 3): read back `reads` times, finish if at
-    least `need` say found, otherwise run a fixed order of writes, then `end`."""
-    fee = cell.read_fee * reads * sum(mass)
-    by_count = {0: mass}
-    for _ in range(reads):
-        nxt = {}
-        for count, m in by_count.items():
-            _, _, branches = step(cell, m, READ)
-            for obs, part in branches.items():
-                key = count + (obs == "found")
-                old = nxt.get(key, (0.0,) * len(STATES))
-                nxt[key] = tuple(a + b for a, b in zip(old, part))
-        by_count = nxt
-    completion = 0.0
-    for count, m in by_count.items():
-        if count >= need:
-            completion += finish(m)
-        else:
-            c, f = sequence_value(cell, m, actions, end)
-            completion, fee = completion + c, fee + f
-    return completion, fee
-
-
-def best_vote(cell, mass):
-    best = None
-    for reads in range(1, cell.left + 1):
-        for need in range(1, reads + 1):
-            for length in range(cell.left - reads + 1):
-                for actions in product((RETRY, SWITCH), repeat=length):
-                    for end in (FINISH, STOP):
-                        v = vote_value(cell, mass, reads, need, actions, end)
-                        if best is None or better(v, best[0]):
-                            best = (v, (reads, need, actions, end))
-    return best
+    if vote:
+        picks = {}
+        for (label, mass), fixed in zip(roots.items(), per_label):
+            v = best_vote(cell, mass)
+            picks[label] = v if better(v[0], fixed[0]) else (fixed[0], (0, 0) + fixed[1])
+        out["fix_v"] = add([p[0] for p in picks.values()])
+        out["fix_v_rule"] = {label: p[1] for label, p in picks.items()}
+    return out
 
 
 GRID = {
@@ -262,8 +291,22 @@ GRID = {
     "detail": ("none", "weak", "strong"),
 }
 
+GRID2 = {
+    "left": (4, 6),
+    "q_commit": (0.1, 0.3, 0.5),
+    "split": ((0.6, 0.3, 0.1), (0.3, 0.5, 0.2), (0.2, 0.4, 0.4)),
+    "p_retry": (0.5, 0.8),
+    "c_lost": (0.0, 0.3),
+    "p_switch": (1.0, 0.7),
+    "backup_calls": (1, 2),
+    "accuracy": (1.0, 0.8),
+    "read_noise": ("symmetric", "lag"),
+    "read_fail": (0.0, 0.3),
+    "detail": ("none", "strong"),
+}
 
-def grid():
-    keys = tuple(GRID)
-    for values in product(*(GRID[k] for k in keys)):
+
+def grid(spec=GRID):
+    keys = tuple(spec)
+    for values in product(*(spec[k] for k in keys)):
         yield Cell(**dict(zip(keys, values)))

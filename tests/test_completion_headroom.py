@@ -65,6 +65,48 @@ class HandCells(unittest.TestCase):
         self.assertEqual(len(list(ch.sequences(3))), 2 * (1 + 3 + 9 + 27))
 
 
+class RoundTwoMechanisms(unittest.TestCase):
+    def test_unreliable_backup_makes_retry_worth_choosing(self):
+        # Transient writer only, one call left: a sure retry beats a coin-flip backup.
+        cell = Cell(left=1, q_commit=0.0, split=(1.0, 0.0, 0.0), p_retry=1.0, p_switch=0.5)
+        close(self, evaluate(cell)["opt"], (1.0, 1.0))
+        mass = cell.roots()["timeout"]
+        self.assertAlmostEqual(sequence_value(cell, mass, (SWITCH,), STOP)[0], 0.25)  # timeout half
+
+    def test_two_step_backup_needs_the_budget(self):
+        cell = Cell(left=1, q_commit=0.0, split=(0.0, 1.0, 0.0), backup_calls=2)
+        close(self, evaluate(cell)["opt"], (0.0, 0.0))  # primary down, backup unaffordable
+        close(self, evaluate(Cell(**{**cell.__dict__, "left": 2}))["opt"], (1.0, 2.0))
+        self.assertTrue(all(sum(2 if a == SWITCH else 1 for a in seq) <= 3
+                            for seq, _ in ch.sequences(3, backup_calls=2)))
+
+    def test_failing_backup_can_commit_silently(self):
+        cell = Cell(left=4, q_commit=0.0, split=(0.0, 1.0, 0.0), p_switch=0.0, c_lost=1.0)
+        mass = cell.roots()["timeout"]
+        # The backup always commits without a receipt: a second switch duplicates it.
+        self.assertAlmostEqual(sequence_value(cell, mass, (SWITCH,), FINISH)[0], 0.5)
+        self.assertAlmostEqual(sequence_value(cell, mass, (SWITCH, SWITCH), FINISH)[0], 0.0)
+
+    def test_failed_read_back_carries_no_evidence(self):
+        for cell in islice(ch.grid(ch.GRID2), 3, 4608, 331):
+            cell = Cell(**{**cell.__dict__, "read_fail": 1.0})
+            values = evaluate(cell)
+            close(self, values["opt"], values["opt_no_read"])
+
+    def test_lagged_found_is_conclusive(self):
+        cell = Cell(left=3, q_commit=0.5, split=(1.0, 0.0, 0.0), accuracy=0.6, read_noise="lag")
+        mass = cell.roots()["timeout"]
+        _, _, branches = ch.step(cell, mass, READ)
+        found = branches["found"]
+        self.assertAlmostEqual(ch.finish(found), sum(found))
+
+    def test_vote_class_never_beats_the_optimum_in_round_two(self):
+        for cell in islice(ch.grid(ch.GRID2), 0, 4608, 257):
+            v = evaluate(cell, vote=True)
+            self.assertFalse(better(v["fix_v"], v["opt"]), cell)
+            self.assertFalse(better(v["fix_x"], v["fix_v"]), cell)
+
+
 class Invariants(unittest.TestCase):
     def test_reference_order_on_a_grid_sample(self):
         for cell in islice(ch.grid(), 0, 2916, 37):
