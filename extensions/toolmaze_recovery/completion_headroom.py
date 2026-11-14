@@ -260,9 +260,10 @@ def reread_value(cell, mass, actions, end, left, rereads, used=0):
     return completion, fee
 
 
-def best_reread(cell, mass, max_rereads=2):
+def best_reread(cell, mass, max_rereads=None):
+    """Best re-read rule; by default an erroring read-back may be repeated while the budget allows."""
     best = None
-    for rereads in range(1, max_rereads + 1):
+    for rereads in range(1, (cell.left - 1 if max_rereads is None else max_rereads) + 1):
         for actions, end in sequences(cell.left, cell.backup_calls):
             if READ not in actions:
                 continue
