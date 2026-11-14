@@ -1,7 +1,7 @@
-"""Experiment 047: evaluate the registered grid and write per-cell values and a summary.
+"""Experiment 048: evaluate the registered grid and write per-cell values and a summary.
 
 Usage: python scripts/run_completion_headroom.py <run_id>
-Writes results/<run_id>/cells.jsonl (not in Git) and docs/evidence/047/summary.json.
+Writes results/<run_id>/cells.jsonl (not in Git) and docs/evidence/048/summary.json.
 """
 from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor
@@ -81,7 +81,7 @@ def main(run_id, round_two=False):
     verdict = ("headroom" if share10 >= 0.10 else "no_headroom" if worst < 5 else "local_headroom")
     commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
     summary = {
-        "experiment": "047", "round": 2 if round_two else 1, "run_id": run_id, "commit": commit,
+        "experiment": "048", "round": 2 if round_two else 1, "run_id": run_id, "commit": commit,
         "python": platform.python_version(), "cells": len(rows), "verdict": verdict,
         "verdict_on": "opt_minus_fix_v" if round_two else "opt_minus_fix_x",
         "headroom_pp_opt_minus_fix_x": describe([r["headroom_pp"] for r in rows]),
@@ -95,7 +95,7 @@ def main(run_id, round_two=False):
         "margins_by_parameter": margins,
         "top_cells": top,
     }
-    evidence = ROOT / "docs" / "evidence" / "047"
+    evidence = ROOT / "docs" / "evidence" / "048"
     evidence.mkdir(parents=True, exist_ok=True)
     text = json.dumps(summary, indent=1)
     (evidence / ("summary-round2.json" if round_two else "summary.json")).write_text(text, encoding="utf-8")
@@ -134,13 +134,13 @@ def followup(run_id):
         for r in rows:
             f.write(json.dumps(r) + "\n")
     after = [r["vote_headroom_pp"] for r in rows]
-    report = {"experiment": "047", "followup": "competing explanation 3: k-read vote rule",
+    report = {"experiment": "048", "followup": "competing explanation 3: k-read vote rule",
               "commit": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
                                        text=True).stdout.strip(),
               "cells": len(rows), "headroom_pp_opt_minus_best_simple": describe(after),
               "top_cells": sorted(rows, key=lambda r: -r["vote_headroom_pp"])[:5]}
     text = json.dumps(report, indent=1)
-    (ROOT / "docs" / "evidence" / "047" / "followup-vote.json").write_text(text, encoding="utf-8")
+    (ROOT / "docs" / "evidence" / "048" / "followup-vote.json").write_text(text, encoding="utf-8")
     print(json.dumps({k: report[k] for k in ("cells", "headroom_pp_opt_minus_best_simple")}, indent=1))
 
 
@@ -179,7 +179,7 @@ def followup_round_two(run_id):
     after = [r["headroom_vr_pp"] for r in done] + [0.0] * (len(rows) - len(done))
     fees = [r["fee_gap_rel"] for r in done if r["fee_gap_rel"] is not None]
     fees += [0.0] * (len(rows) - len(done))
-    report = {"experiment": "047", "round": 2, "followup": "fixed order with erroring read-backs repeated",
+    report = {"experiment": "048", "round": 2, "followup": "fixed order with erroring read-backs repeated",
               "commit": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
                                        text=True).stdout.strip(),
               "cells": len(rows), "cells_where_opt_beat_fix_v": len(done),
@@ -189,7 +189,7 @@ def followup_round_two(run_id):
                                                    "max": max(fees), "share_ge_5pct": sum(g >= 0.05 for g in fees) / len(fees)},
               "top_cells": sorted(done, key=lambda r: -r["headroom_vr_pp"])[:5]}
     text = json.dumps(report, indent=1)
-    (ROOT / "docs" / "evidence" / "047" / "followup-reread-round2.json").write_text(text, encoding="utf-8")
+    (ROOT / "docs" / "evidence" / "048" / "followup-reread-round2.json").write_text(text, encoding="utf-8")
     print(json.dumps({k: report[k] for k in ("cells", "cells_where_opt_beat_fix_v", "headroom_pp_opt_minus_best_simple",
                                              "fee_gap_rel_when_completion_tied")}, indent=1))
 
@@ -203,4 +203,4 @@ if __name__ == "__main__":
     elif len(sys.argv) > 2 and sys.argv[2] == "round2":
         main(sys.argv[1], round_two=True)
     else:
-        main(sys.argv[1] if len(sys.argv) > 1 else "047-completion-headroom-01")
+        main(sys.argv[1] if len(sys.argv) > 1 else "048-completion-headroom-01")

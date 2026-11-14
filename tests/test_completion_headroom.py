@@ -1,4 +1,4 @@
-"""Experiment 047: hand-checked cells and invariants of the completion-headroom model."""
+"""Experiment 048: hand-checked cells and invariants of the completion-headroom model."""
 from itertools import islice
 import unittest
 

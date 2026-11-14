@@ -1,4 +1,4 @@
-"""Experiment 047: completion-rate headroom when a write may have committed silently.
+"""Experiment 048: completion-rate headroom when a write may have committed silently.
 
 After a first write ends in an ambiguous failure, the hidden state is the number of
 committed publications n (0, 1, 2) and the writer status w (transient, primary down,
