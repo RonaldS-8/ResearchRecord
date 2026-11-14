@@ -47,3 +47,11 @@
 服务启动至关闭12小时硬限，原36小时总窗口从Gate45首次服务启动计算，不重置；启动前核对已用时间与剩余额度。服务异常或采集异常保留失败且不替补，finally退出专用服务。新增五组对照仍未批准，不因本采集授权自动启动。
 
 启动CPU验收：云端全仓203/203通过（results/045c-preparation-01/all-cpu.log），包含新增两个采集测试及24个建议条件的完整工具列表/消息检查、无tool_choice、原样错误实参拒绝、原观察与防泄漏回归。本地模型tokenizer离线冻结24份精确初始请求成功；没有CPU假模型训练。仅新增日志适配，不改任务、评分、价格或模型。运行前再次确认原窗口剩余至少12小时；脚本按首次Gate45服务PID文件时间检查，防止重置36小时预算。
+
+## 采集正常结束及退出核验（2026-11-14）
+
+源码daad0f37，24回合/56次SDK请求完成，非中断；completed.json为collection_complete_not_fitted，无stopped.json。用户怀疑OOM后复查：完整vLLM日志无OOM/OutOfMemoryError/out of memory匹配；10:24:37收到SIGTERM并完成退出，与脚本EXIT清理逻辑一致。服务启动10:15:55、采集完成10:24:37、GPU清理完成10:24:38，均为Asia/Singapore，服务约8分43秒，GPU恢复464MiB。退出中的resource_tracker semaphore警告及force killing EngineCore记录保留，不能误报为CUDA OOM。
+
+全部24回合独立重放评分一致；56个请求无SDK error，24条候选导出source_result_sha256与对应result一致。完成/日志及逐文件哈希元数据见docs/evidence/045c/completion-index.json；核验脚本与完整输出留results/045c-completion-verification-01，原始数据仍results/045c-training-01和045c-service-01。没有追加请求、补跑、拟合或五组对照；分析报告仍暂缓。
+
+用户建议后续长任务挂tmux，已确认/usr/bin/tmux可用；后续新批次使用独立命名tmux会话承载原有timeout/日志/清理流程，不动现有vllm会话。此次已经正常完成，不为切换会话重启或重跑采集。

@@ -1,0 +1,274 @@
+{
+  "source_commit": "daad0f37e69da22a97758e26d68b5d3742cbfffb",
+  "run_root": "/home/ubuntu/Song/Agent/results/045c-training-01",
+  "completion": {
+    "episodes": 24,
+    "status": "collection_complete_not_fitted"
+  },
+  "sdk_requests": 56,
+  "episode_verification": [
+    {
+      "id": "1-M3-1",
+      "requests": 5,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "1-M3-2",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "1-M3-3",
+      "requests": 2,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "1-M4-1",
+      "requests": 4,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "1-M4-2",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "1-M4-3",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "2-M4-1",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "2-M4-2",
+      "requests": 4,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "2-M4-3",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "2-M3-1",
+      "requests": 2,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "2-M3-2",
+      "requests": 5,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "2-M3-3",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "3-M3-1",
+      "requests": 5,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "3-M3-2",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "3-M3-3",
+      "requests": 2,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "3-M4-1",
+      "requests": 4,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "3-M4-2",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "3-M4-3",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "4-M4-1",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "4-M4-2",
+      "requests": 4,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "4-M4-3",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "4-M3-1",
+      "requests": 2,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "4-M3-2",
+      "requests": 5,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    },
+    {
+      "id": "4-M3-3",
+      "requests": 1,
+      "independent_replay": "pass",
+      "candidate_export_hash": "pass"
+    }
+  ],
+  "oom_log_matches": [],
+  "shutdown_evidence": "vllm.log: 10:24:37 SIGTERM, then shutdown complete; run_gate45c.sh EXIT cleanup sends SIGTERM after collector returns",
+  "service_started_at": "2026-11-14T10:15:55.141176+08:00",
+  "collection_completed_at": "2026-11-14T10:24:37.266466+08:00",
+  "gpu_cleanup_at": "2026-11-14T10:24:38.281463+08:00",
+  "raw_files_sha256": {
+    "results/045c-training-01/1-M3-1/config.json": "23a0939d06cb2ef66a8b09d9adbb0b609197fd16f8478f9e4adcb94e427f5c5c",
+    "results/045c-training-01/1-M3-1/requests.jsonl": "9a56506b50b2dcca8c75e0692fae2f393645c17db160a39b4305b7fbb5e5167c",
+    "results/045c-training-01/1-M3-1/result.json": "8028f844241357c9f0160e6f00e7565c1471e1b61855bf84f5341ab1f14cd7af",
+    "results/045c-training-01/1-M3-1/timeline.md": "b20abed2b2b796a1a5902e615d089e8fa49e87a24df9f559533319975c339e45",
+    "results/045c-training-01/1-M3-2/config.json": "c5e9296b30a269d82cabe3644ff90f0ffa2f079f443f9bcc5be9cc3c61864f12",
+    "results/045c-training-01/1-M3-2/requests.jsonl": "e707ba45d166ca46e26213db89d11a76707f9ba86abda9764981382f676b7e49",
+    "results/045c-training-01/1-M3-2/result.json": "eec8f4d5d586726ec70436961a1aa2e48460a397272939c05c33fc8436836f63",
+    "results/045c-training-01/1-M3-2/timeline.md": "aeb55eb389e1f08831ab07446b29d2b006c1915022b88325b6044d9f0be77c25",
+    "results/045c-training-01/1-M3-3/config.json": "aefddb7628b7f06b6e23f27036442f145ace99fa7fadbe43a7c82442fbd83357",
+    "results/045c-training-01/1-M3-3/requests.jsonl": "964adae0403301b48111a3e35affb78b6eefaae426346168ef099be088e963fb",
+    "results/045c-training-01/1-M3-3/result.json": "2b2a6af83307d7fecc2e294fcca48be40359c1bce35d68af4161c24319e00943",
+    "results/045c-training-01/1-M3-3/timeline.md": "865f8bb5d33cb619d8c6e76ef81f2846b6bfea14556b8a37827c35e42034e45c",
+    "results/045c-training-01/1-M4-1/config.json": "f4cf06089ca4631e5c4e77d4c2a7d8275f8a3c69c4e236615bba246ff962dce6",
+    "results/045c-training-01/1-M4-1/requests.jsonl": "073d7e406d566c46e438cab0b320e6d0117581939b1d89aa8d315575a241f0fb",
+    "results/045c-training-01/1-M4-1/result.json": "1f647fa369949de66d7ba4492020aa1ca92811f1c6578f512f1ed6bfd9f39143",
+    "results/045c-training-01/1-M4-1/timeline.md": "b0c0f99bcd94501811ddb3a4529bc7356f0bca1e1b5582e33619416abb152579",
+    "results/045c-training-01/1-M4-2/config.json": "a14db0d830c3c06233b2cbe6cb9ce3ea35fe6f5818292fe8974b40f549fa7f3c",
+    "results/045c-training-01/1-M4-2/requests.jsonl": "43eeb8d304f82ae54bf5f9babe9bbce2309fc65a0aaaff6fd7eb3579c3507cdb",
+    "results/045c-training-01/1-M4-2/result.json": "5aaa2e0db2afd359269996c64c90b3de270653a90fe757c0a6f93e7e27dfc9e7",
+    "results/045c-training-01/1-M4-2/timeline.md": "6beed56d46c41c0b852cea48ffb72f1fee530e151d02c840ce4ef7a6d6328831",
+    "results/045c-training-01/1-M4-3/config.json": "a6ff05929d28929c10d27e2107ccf2ba0f090937666f79af0f58b6f4ded8ce4e",
+    "results/045c-training-01/1-M4-3/requests.jsonl": "2fb468bca3c442c345299608cb51db003ecc68bb816cd6cd94c9dc5e232b5a83",
+    "results/045c-training-01/1-M4-3/result.json": "815c0617e8b437f27406ff02f296c507dd82211aa86386fd3f30cf45dd2ebefc",
+    "results/045c-training-01/1-M4-3/timeline.md": "ef70615ac9aa38ba630d9dcc1de5184c4d8878b16f12b7bcbb291410b410d4d7",
+    "results/045c-training-01/2-M3-1/config.json": "e7f892562cb5a9208171d15c45abd45dc71bb4f4e28112ac388953471584e5a9",
+    "results/045c-training-01/2-M3-1/requests.jsonl": "4387e016e9df4628532e1fccb19695802c60710b89a1f526b85132c9764dfd47",
+    "results/045c-training-01/2-M3-1/result.json": "5c74d3e62cd7ffb7c7a61f18c46adb3020b149b40686eb20b16bcee35bb82fc1",
+    "results/045c-training-01/2-M3-1/timeline.md": "fd538de56fb2ae20381fd6fd63be95aefe6e0da6e2a0d30fae45dbed3fdcc0cd",
+    "results/045c-training-01/2-M3-2/config.json": "f69a28476a9bf814884091a51dcede76e363510f98b34c247ae1ce2c4e9afcc7",
+    "results/045c-training-01/2-M3-2/requests.jsonl": "b01322c7ecbf2934cc7092d7cecd3a763c86d6f489f51287c41b0e3e58b61755",
+    "results/045c-training-01/2-M3-2/result.json": "7ebff5074ce5d829d72f2210c13fb8633538ced0cdd2bb95c03f96c934d013d5",
+    "results/045c-training-01/2-M3-2/timeline.md": "a4c5dc61ecd1a9aeee9cb69937330cea7860868298fde95aa80ded4ba8c5fdd0",
+    "results/045c-training-01/2-M3-3/config.json": "4a252ce1e86e845813e3795bfd5cf3b8014602697119d9d515d4f742880d0193",
+    "results/045c-training-01/2-M3-3/requests.jsonl": "b4f953506881968aed2a43a0d6cb8360a19bc10ebac6455fcc7d1720468207c6",
+    "results/045c-training-01/2-M3-3/result.json": "01601b50fafd08bfd81a87e23a9e65a6617d037cd49f440396e2d1bccde80e65",
+    "results/045c-training-01/2-M3-3/timeline.md": "982e479bd89f04e6a3036d14e747442cf35c6c0ad6c6623fd7398499e16ff03f",
+    "results/045c-training-01/2-M4-1/config.json": "44d4794168a521e196011939f7ce21aa2ac3c2d7abf1ea3cc3296fd61d5f0691",
+    "results/045c-training-01/2-M4-1/requests.jsonl": "ed158e01e6b4e7a55e6f227a5658f5bccf25b943439d8c6da951826a630e2e16",
+    "results/045c-training-01/2-M4-1/result.json": "215a4e40abb589f4508b05dfc16d85e4d0cb8863a18bca084c21dd02f7580f61",
+    "results/045c-training-01/2-M4-1/timeline.md": "aa3a17f4ba21abbd3e2509e9cf3c0492205b45951a1315be4519999f7296aa70",
+    "results/045c-training-01/2-M4-2/config.json": "08eabefe18b25629dcd6026f4c69f86497261a90e43f50c46cd427f0a8ba5fcd",
+    "results/045c-training-01/2-M4-2/requests.jsonl": "e0b9aa7d606134c39268d36b47512fd379ad4c0ebc64a3656cacff2533d7cad6",
+    "results/045c-training-01/2-M4-2/result.json": "fbafe80cc87cd633a7376d5be3a25ac42ef30848da7f379e34e768442c2291f9",
+    "results/045c-training-01/2-M4-2/timeline.md": "8d0a63b924901eb4e414619577d097c04b3fcffd337d327a1ceb97f125566df7",
+    "results/045c-training-01/2-M4-3/config.json": "99705becf34b7752d9aa4e790ecaf9d3ba8b301dc71118387d47d8371aa32472",
+    "results/045c-training-01/2-M4-3/requests.jsonl": "ce8c51e775461ef4a78dd0d520c725ce9ef1d9b168abc8fc413916e2908cafd8",
+    "results/045c-training-01/2-M4-3/result.json": "8c2327a62c4ca3e32d6c1788aa3ede9db024717e582d6bdf532c2d581973e924",
+    "results/045c-training-01/2-M4-3/timeline.md": "10c655dc559532200f87ecc611d282be1d057fa62650e3b1285928b0ad419c5e",
+    "results/045c-training-01/3-M3-1/config.json": "2c0297866dc1cddd7b7ec203588d73c73d06e43cb6934d8ff2f56dab282e9e6c",
+    "results/045c-training-01/3-M3-1/requests.jsonl": "7db036c61875f79126429605a47300ec24f58379ed2f71500e8a967d01065cb0",
+    "results/045c-training-01/3-M3-1/result.json": "f0c631d39a2f7e92c34d7efc0dca4f9e48ba7a6f118ba7c341bd049cfa7b3a63",
+    "results/045c-training-01/3-M3-1/timeline.md": "453a76b73e163e92c036295d23e1098c16325b276e2963a360a9f8f6a8d83bb3",
+    "results/045c-training-01/3-M3-2/config.json": "8c944ab21edf05b3b909e6e7a4cd21260d838d3cb3460a55aac6f68c870443ca",
+    "results/045c-training-01/3-M3-2/requests.jsonl": "d5fcb129f0795a2f3f9f41347db2c81dd8536833feb2cb5e2d0b920d72081099",
+    "results/045c-training-01/3-M3-2/result.json": "41d44441499731930de0b7ac449e98dfd294908f7b9ea2ecc5f86676c36daa72",
+    "results/045c-training-01/3-M3-2/timeline.md": "8e18d0b0fd753ddc769632d6462d556c1d2fd6cb97238249d2443188ba5bd434",
+    "results/045c-training-01/3-M3-3/config.json": "4681442a223cb369038e9a15b18cf510834e8dfe95fed00ca11af19f79bcc048",
+    "results/045c-training-01/3-M3-3/requests.jsonl": "a9024ab2a03b9c8abecebae26840c5a3bc64f15ff9a19241219eaadecf7c672f",
+    "results/045c-training-01/3-M3-3/result.json": "a838deab7682260e825f8d579c629715796a9186e59d349c9597452647449214",
+    "results/045c-training-01/3-M3-3/timeline.md": "e5630ec109c7ea38d64692037253f846b97d37b11a51a0ff3eecfe093a64dd94",
+    "results/045c-training-01/3-M4-1/config.json": "d265a37ca446eac266eab42932b032830d9e8f291d9a501eea35fa8ee2992c0f",
+    "results/045c-training-01/3-M4-1/requests.jsonl": "fd76abc2796eca216632a94db020a633ee4ac16fec0e0d4020ae4f88c9d84b14",
+    "results/045c-training-01/3-M4-1/result.json": "2281cfac3eeaad0eb5ed1a1f91baf9801bfb2290dfe56b22ca3d629dd14cca0d",
+    "results/045c-training-01/3-M4-1/timeline.md": "1b16c5d4c1efcf3cb34ed9bea75b0c54f69aa94ff9bd5ac4456d47eb90c89953",
+    "results/045c-training-01/3-M4-2/config.json": "449df2d0161f9fb029bb40d86e406ae7048a727477703876c060f55a1150e14b",
+    "results/045c-training-01/3-M4-2/requests.jsonl": "3f2acf234543bec80eed47292541d8fd53390d806b3c03653cf6316c1f1c81ac",
+    "results/045c-training-01/3-M4-2/result.json": "c02d77e151115dd5c6b0f9fd94f94cfe96bda3445519a8d8b3b1670aa330ac4d",
+    "results/045c-training-01/3-M4-2/timeline.md": "798b0de1bcd1dc1dd6fcf82f37464238a696c942ffc744a9d370723956debc83",
+    "results/045c-training-01/3-M4-3/config.json": "8c37fb240169f7954fe52a117ee825d7e6e139bcb9218f03299f5834df6600df",
+    "results/045c-training-01/3-M4-3/requests.jsonl": "dce8f8663c355deb0b94714fcecca6f61ba666aba76c66dc6e88fa8e0ba93b20",
+    "results/045c-training-01/3-M4-3/result.json": "f4ac08ef7d2d964aacbab38f19f52b0b6ef4137e6171738308eafda4646fe989",
+    "results/045c-training-01/3-M4-3/timeline.md": "ca1d558ba67faee7c0b2a1ee148dfb849e7791413ac7f8fb8be7d5c03b8b57db",
+    "results/045c-training-01/4-M3-1/config.json": "dce689f75ff2b1216b57ba455166c83b9905b8112b97a7843bd9b3182ef7c4e9",
+    "results/045c-training-01/4-M3-1/requests.jsonl": "2a25c0b6ad83ed46654d4c499955422d2e985db0cb5befee5fe5ff252d7b9d67",
+    "results/045c-training-01/4-M3-1/result.json": "6f2dcb6564267125e01e4d1d9921bb55476b3d08bfb897bdc1bcd12fb41cedb0",
+    "results/045c-training-01/4-M3-1/timeline.md": "68f04db40ffe6f0b6ab17072de4d699a9352b8d618abb599a313bfcb46b038f0",
+    "results/045c-training-01/4-M3-2/config.json": "83d04647df1c8e33cc56b00cafb689bcd541788459ac4883049c11013c09013e",
+    "results/045c-training-01/4-M3-2/requests.jsonl": "1cdcaea1b1eb012fdf07ee667470ff25f8ad7e2bdfb607550da2ed83ab21d8d2",
+    "results/045c-training-01/4-M3-2/result.json": "fdb61e6a30bc0ea6587392ecaa549ca92274f72520f00d3fac5916d9526d51e9",
+    "results/045c-training-01/4-M3-2/timeline.md": "3de2d024471b466fb37fcfd399d8e6722fabfbdd1cf17180db9ed11c1d56e23f",
+    "results/045c-training-01/4-M3-3/config.json": "5fa2e94cfa441070828ad884f01dfb0280ec16b0e19d6d13f2643ac4f18ce001",
+    "results/045c-training-01/4-M3-3/requests.jsonl": "7f9c7d90f0244c59daa48183aa3cd0c20480756aa4890a3773187aa19dd94fab",
+    "results/045c-training-01/4-M3-3/result.json": "317a9744c161d78216019c39b516779c965324831c765da33bb3f5d9efd6c1d1",
+    "results/045c-training-01/4-M3-3/timeline.md": "d8310c1ce8935a10719a29fa02bd40d2dc31e667ab361befafd3053b1de79d38",
+    "results/045c-training-01/4-M4-1/config.json": "065b63ba17060c4330c0f10394efa143166f8cdf728fd92018fbe160dcc6c1a5",
+    "results/045c-training-01/4-M4-1/requests.jsonl": "a440e66c634fe1b004839e782af268e4f9a1536eac37e3b3f84e8bffa1d0487b",
+    "results/045c-training-01/4-M4-1/result.json": "e40f7376c8710fb0d33512940e884ed43bf0a729471597fd2e3fcbeb2f973e6b",
+    "results/045c-training-01/4-M4-1/timeline.md": "6129b71e3497538f24a2f5e04564a4d6597945b0bb8cf3276bbdfffa6125e897",
+    "results/045c-training-01/4-M4-2/config.json": "3112ee1f992ea7108d62cb7f7e1f27974822833fae7aab5becea97eb151a2ac6",
+    "results/045c-training-01/4-M4-2/requests.jsonl": "026de836167270b49aaff1cd1061e5d3eab72bf7111cce88d2f243c2d6d12f14",
+    "results/045c-training-01/4-M4-2/result.json": "b18a1ab5bcef09811d70728aac9a08c8f87655ed03a552cff73c37ae9574b177",
+    "results/045c-training-01/4-M4-2/timeline.md": "c6336daf30fe9df999d4583861da2807c62c4ee1422d2342427198c420a65df4",
+    "results/045c-training-01/4-M4-3/config.json": "b68551f9b760fe7ee659f1bcdb85adfb1d57a8bbb268f3edda635edbbb381393",
+    "results/045c-training-01/4-M4-3/requests.jsonl": "4a6f4372ad576b363ea1de9ce89fc27dc3d1556c19f4082dd8a9ad8c55306b2f",
+    "results/045c-training-01/4-M4-3/result.json": "027ac4b18e5c77b573e80472ebfa54a5b5ee544aaff50fa6c756a6abadc9f137",
+    "results/045c-training-01/4-M4-3/timeline.md": "d307c39d32f41e12c717f22b6fb31e9d43d4148def788f5b630ae16bca68e126",
+    "results/045c-training-01/completed.json": "88e0c4817a9b865265612e610847c4ba38c265d9129119d15335293c3c9328ab",
+    "results/045c-training-01/freeze.json": "2e66994a776edca41083121ed649ea9351c0f44decb894c1a8f0abcd0f0b42a0",
+    "results/045c-training-01/progress.json": "c45f6e120d39f7f0f6c90ea2147957ac4c07003c0dc6d5882e4abd273132ccff",
+    "results/045c-training-01/public-training-candidates.jsonl": "5b4b420249edf04942494333aaff6e56cf6d5db1b1c50a25de1e4c3fdf84790d",
+    "results/045c-training-01/source-commit.txt": "53e510603fbc747caceb692425ecc0e69db50a7f2004b900ecba1aa3dbdb72a4",
+    "results/045c-service-01/gpu-after.txt": "6a14591b94300353261a78417c314d593065e4ea24e49676d0bafd18555a2d71",
+    "results/045c-service-01/gpu-before.txt": "8cd1c67fc7e9467bb3523a6f67a8726af88d3dfcf9bb6f9427085eb1390fe99e",
+    "results/045c-service-01/models.json": "6cd3bf62899b97d1944f9bc95436ba6647ab7e689c8b4c902b6d5ed46f3c1382",
+    "results/045c-service-01/service.pid": "03250ec82dc0ea7e1b71142b80fb9d30efda6c7458b1d10802c70f4e24d334a8",
+    "results/045c-service-01/source-commit.txt": "53e510603fbc747caceb692425ecc0e69db50a7f2004b900ecba1aa3dbdb72a4",
+    "results/045c-service-01/supervisor.log": "f8e587bed2e0f2ee09cd8aab11e81950e75910882c517b6c5aff85968b87a790",
+    "results/045c-service-01/vllm.log": "6b30eed82472e92ba07f234672823e1c9cb17098a51a127b5c29a893ec035ee4",
+    "results/045c-dispatch-01/dispatch.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/045c-preparation-01/all-cpu.log": "21f96d8bb585257881115a28b62624e2eac0aa755ea6b0b9540369af816c22fd"
+  },
+  "interpretation_scope": "completion/integrity/exit verification only; no behavioral efficacy report",
+  "model_calls_added": 0
+}
