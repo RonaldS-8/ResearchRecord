@@ -1,0 +1,2386 @@
+[
+  {
+    "episode": "047-api-01/01-M3",
+    "q": 1,
+    "started_utc": "2026-11-14T15:44:55.514844+00:00",
+    "created": 1794671095,
+    "request_sha256": "ba0102ee2077e555c5e1e83cafa0516d98a5c1cd431c67a5ff4913ad859dc7a5",
+    "response_sha256": "3391f3839170eef9a6751a0aaf38573d7b56f0e4b703f323578216ab996437d2",
+    "message_sha256": "541458890eee4ef9cdd174301dde748efbd3b27763b0c758e79698e12e27a9f3",
+    "reasoning_sha256": "b5d33ded4c578f8bab973f0addbfa473995d26a64f7613aa95ef8651e84c42d6",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 55,
+      "prompt_tokens": 1718,
+      "total_tokens": 1773,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 20,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 55
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 0,
+        "image_tokens": null,
+        "text_tokens": 1718
+      }
+    },
+    "usage_cost_cny": "0.0003876",
+    "seconds": 1.2529654300305992
+  },
+  {
+    "episode": "047-api-01/01-M3",
+    "q": 2,
+    "started_utc": "2026-11-14T15:44:56.771133+00:00",
+    "created": 1794671096,
+    "request_sha256": "682a90206c50cdc91bac7da039f6309b3a2a2e93ba6492810617c4309de0518e",
+    "response_sha256": "b47f3ae51f5f72062a496d546eba4669d84d0bb79d5a9c5bc0e6c25812110269",
+    "message_sha256": "36bd05ddfa979ed7671ea10dcfd16b76f3d4e270e58739efba3026cfb4ec5234",
+    "reasoning_sha256": "82a3c5e76ebfbbbf2b81699b1c89d6c3f1ca1c0e0d138f539c59893fe05dd4e4",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 92,
+      "prompt_tokens": 1880,
+      "total_tokens": 1972,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 22,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 92
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1536,
+        "image_tokens": null,
+        "text_tokens": 1880
+      }
+    },
+    "usage_cost_cny": "0.00020384",
+    "seconds": 1.444964971859008
+  },
+  {
+    "episode": "047-api-01/01-M3",
+    "q": 3,
+    "started_utc": "2026-11-14T15:44:58.218291+00:00",
+    "created": 1794671098,
+    "request_sha256": "65ba0b7a890313a557bb73bc446d1739d5baf60254848ea0fe03a5153b4aadd5",
+    "response_sha256": "60bdc4b77495c5e6de663d9563ae35124460320c92fa17425286842896172f75",
+    "message_sha256": "ce73d589e1e7d9f362b049eaa94049b43339e70f1af91830cbbb90aa43d5fa8e",
+    "reasoning_sha256": "8bb946df4008900e3bad238319de6fbba35e072cb012da63c3b9d5f9a6c16c0b",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 120,
+      "prompt_tokens": 2035,
+      "total_tokens": 2155,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 24,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 120
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1536,
+        "image_tokens": null,
+        "text_tokens": 2035
+      }
+    },
+    "usage_cost_cny": "0.00025724",
+    "seconds": 1.2220291688572615
+  },
+  {
+    "episode": "047-api-01/01-M3",
+    "q": 4,
+    "started_utc": "2026-11-14T15:44:59.442537+00:00",
+    "created": 1794671099,
+    "request_sha256": "85796064565605e6328b85b28782da459db99978a2b6a61ff0664b4847c3d018",
+    "response_sha256": "f1aed0ca9f4b24d371aac1b6dd3090802431f0203a5eb4c26458a320459bc832",
+    "message_sha256": "8bdb11ad5fc9c9371069260245a6d128cda43560e87ae5459d31c57f44ed7f4d",
+    "reasoning_sha256": "26c377f1c96329c8e93793993c262c1a5ee06d73455283328dda013214d2bc55",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 72,
+      "prompt_tokens": 2198,
+      "total_tokens": 2270,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 22,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 72
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2198
+      }
+    },
+    "usage_cost_cny": "0.00019",
+    "seconds": 1.0385674790013582
+  },
+  {
+    "episode": "047-api-01/01-M3",
+    "q": 5,
+    "started_utc": "2026-11-14T15:45:00.483471+00:00",
+    "created": 1794671100,
+    "request_sha256": "53c39ca13fe16af8f931ea2eb8a8290d37a984ad4ddac994c23d66c28c1bebb8",
+    "response_sha256": "04d435ec421855647d1d3b6d1cde496f5304bf0b2a545b38100877189f339eef",
+    "message_sha256": "bb470837c1076f36ad1616ac7761d88930f97ac5335b6d1f8f86f77142313ce0",
+    "reasoning_sha256": "67a531c058c49750aef2753a586eebae36707b52f773d614a9581658abb5b2c9",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 134,
+      "prompt_tokens": 2351,
+      "total_tokens": 2485,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 66,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 134
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2351
+      }
+    },
+    "usage_cost_cny": "0.0002702",
+    "seconds": 1.4790833301376551
+  },
+  {
+    "episode": "047-api-01/01-M4",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:01.977567+00:00",
+    "created": 1794671102,
+    "request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+    "response_sha256": "afebbfaa189733e97d82d59cf58977bcc6ba2bf7978c0504bdb556da5f2950a4",
+    "message_sha256": "dd493fd2b0929d5ada99133bf67a9bfa4cb2a6886f45b0b05dd4ec17140c35a4",
+    "reasoning_sha256": "01b16c3901ed647b880ac6d6b05ae2b43889ebfb337404d21c83e33c55370dc4",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 126,
+      "prompt_tokens": 2102,
+      "total_tokens": 2228,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 28,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 126
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 0,
+        "image_tokens": null,
+        "text_tokens": 2102
+      }
+    },
+    "usage_cost_cny": "0.0005212",
+    "seconds": 1.4222806461621076
+  },
+  {
+    "episode": "047-api-01/01-M4",
+    "q": 2,
+    "started_utc": "2026-11-14T15:45:03.402456+00:00",
+    "created": 1794671103,
+    "request_sha256": "9d4492a2e852ada40e74174607d517f77450856a26d61682e8f0826719d66e26",
+    "response_sha256": "b1e47a928ad07ae4ca5b0285a4f97503e4d28b09c64414c80617abced23c42a8",
+    "message_sha256": "aa761b90737bdefb72638b5701b73d537f7a6f30fe74a0d3219aa50526d8b763",
+    "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 62,
+      "prompt_tokens": 2258,
+      "total_tokens": 2320,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 27,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 62
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2258
+      }
+    },
+    "usage_cost_cny": "0.000194",
+    "seconds": 1.0354240930173546
+  },
+  {
+    "episode": "047-api-01/01-M4",
+    "q": 3,
+    "started_utc": "2026-11-14T15:45:04.440257+00:00",
+    "created": 1794671104,
+    "request_sha256": "16f738ffa1bf9712af65eff99448499dcc2872077994d19655647ad1a56bf5b1",
+    "response_sha256": "e7f7d230ec87f2d2de5b9799aaa380368739bec418fa59709f0c7e0bcbf64bc6",
+    "message_sha256": "495242e02d2d0e591a79070bf64186bc646bbacbc068814886f93f9b828a7678",
+    "reasoning_sha256": "22a35ff77e52c25ea4d320615efaef304ec93d8581782e34c73b8f5770be42a3",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 123,
+      "prompt_tokens": 2347,
+      "total_tokens": 2470,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 25,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 123
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2347
+      }
+    },
+    "usage_cost_cny": "0.00021964",
+    "seconds": 1.183851334033534
+  },
+  {
+    "episode": "047-api-01/01-M4",
+    "q": 4,
+    "started_utc": "2026-11-14T15:45:05.625857+00:00",
+    "created": 1794671105,
+    "request_sha256": "75fa3351731cbbbc205431f6a441c59fce27e6e8c0f8cdef562feb058f126bcb",
+    "response_sha256": "9ee9a034da69acf0a490a2dc5e42cb80512351b75472b412632823566941ac62",
+    "message_sha256": "83011885e950e174c32290d13f129ed17784399f0427a6547474c0cd7aa0d2e1",
+    "reasoning_sha256": "395564f30c5c5c5bd3ca84a61b649b9495fda750d58092729a23d00c4a5a6e92",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 234,
+      "prompt_tokens": 2500,
+      "total_tokens": 2734,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 136,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 234
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2500
+      }
+    },
+    "usage_cost_cny": "0.00033904",
+    "seconds": 2.623528067022562
+  },
+  {
+    "episode": "047-api-01/02-M3",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:08.259971+00:00",
+    "created": 1794671108,
+    "request_sha256": "ba0102ee2077e555c5e1e83cafa0516d98a5c1cd431c67a5ff4913ad859dc7a5",
+    "response_sha256": "fba83ba7c17a19c8df66acbb37d113f26855e4751a6ac390c9aa3eeb2e62bd05",
+    "message_sha256": "d17362df362c0743901f257da484b1244befc454d3285fe6d739200a0ea68f74",
+    "reasoning_sha256": "46b90a61dd72aef146514c4636d58b68e14097a76219e7ec3f2e78390bbcfc50",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 65,
+      "prompt_tokens": 1718,
+      "total_tokens": 1783,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 30,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 65
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1536,
+        "image_tokens": null,
+        "text_tokens": 1718
+      }
+    },
+    "usage_cost_cny": "0.00014984",
+    "seconds": 1.2963184609543532
+  },
+  {
+    "episode": "047-api-01/02-M3",
+    "q": 2,
+    "started_utc": "2026-11-14T15:45:09.557700+00:00",
+    "created": 1794671109,
+    "request_sha256": "53ea03c1abc2375e2c4bb3ca511dbec58d7a4931ea2fad8ce1e5a6fe9d8a21ac",
+    "response_sha256": "05f6cf7d42d9260a16212c2f8845f328f919c7d6fa4cf3bce1dfec1ed831056a",
+    "message_sha256": "e952ee054d60d7bec50533e474c909bc4715e64711a5bd6846c57d3b0bf56aaa",
+    "reasoning_sha256": "a35088fef429c12a15511b331e16b3ef2c2fda6fce21c19034d9c6fa3a9a54af",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 88,
+      "prompt_tokens": 1890,
+      "total_tokens": 1978,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 18,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 88
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1536,
+        "image_tokens": null,
+        "text_tokens": 1890
+      }
+    },
+    "usage_cost_cny": "0.00020264",
+    "seconds": 1.042836541077122
+  },
+  {
+    "episode": "047-api-01/02-M3",
+    "q": 3,
+    "started_utc": "2026-11-14T15:45:10.601991+00:00",
+    "created": 1794671110,
+    "request_sha256": "9a33169726cb622dd89dbc3d7949e8acffe1718d99432a1de0497df60f5473a1",
+    "response_sha256": "25d2d37f5acdac37a9b0055d4431dc669c97fe64a4d0a9c0d433e57630c339db",
+    "message_sha256": "0511f8a6d9c1336e77e6c93a4060e246d75d063dfba175896ad5e8dd0537465c",
+    "reasoning_sha256": "cc700944c4b3a5398eebd06c47a4bbf29650665a79f776381c213eb811265555",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 166,
+      "prompt_tokens": 2041,
+      "total_tokens": 2207,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 70,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 166
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1536,
+        "image_tokens": null,
+        "text_tokens": 2041
+      }
+    },
+    "usage_cost_cny": "0.00029524",
+    "seconds": 1.7662393699865788
+  },
+  {
+    "episode": "047-api-01/02-M3",
+    "q": 4,
+    "started_utc": "2026-11-14T15:45:12.369673+00:00",
+    "created": 1794671112,
+    "request_sha256": "8e75094e2e01b0e7579b73f919e862800a974a05925c9d30f964e584ebed8d88",
+    "response_sha256": "d7fc4ddda0c0c9e00fc7241d79e9f8e523e9d1e4e29b120d2e7ff5d2dd28e846",
+    "message_sha256": "dfc5bd2ea1793b6b6a158a447362ff1c8e353c622b9e5747123d77d5906e791e",
+    "reasoning_sha256": "92425484649d147664ce082a89923e61580eb7bb5d79affb66f39a099ccac6a1",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 103,
+      "prompt_tokens": 2250,
+      "total_tokens": 2353,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 53,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 103
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2250
+      }
+    },
+    "usage_cost_cny": "0.0002252",
+    "seconds": 1.4694684939458966
+  },
+  {
+    "episode": "047-api-01/02-M3",
+    "q": 5,
+    "started_utc": "2026-11-14T15:45:13.840895+00:00",
+    "created": 1794671113,
+    "request_sha256": "5160ff3fda796110369a4d9400958d14b7ce18feb55ee9cb9dc00490a21999b2",
+    "response_sha256": "899437f38a4c9c90b328b08d3714a2b1262e3f247cc4aa885657b42ff5f5e819",
+    "message_sha256": "9b5b1492fac8dd25c7ba36e73feca3fa521807e5cfc60b9966415d0e7c3c9c53",
+    "reasoning_sha256": "935fd91bc82c805a58930a422c031c0d53af4564a241d08753988dff65d558e2",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 170,
+      "prompt_tokens": 2434,
+      "total_tokens": 2604,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 90,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 170
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2434
+      }
+    },
+    "usage_cost_cny": "0.00027464",
+    "seconds": 1.876539797987789
+  },
+  {
+    "episode": "047-api-01/02-M4",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:15.726730+00:00",
+    "created": 1794671115,
+    "request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+    "response_sha256": "9d9a6e67ad509826a78bfd6d5fae1fc044529a62eb7394128361281389b6c18a",
+    "message_sha256": "1e12051b83eb5867e1ac93c1b3ee2b1d46bbe5b1a899c8e28b815739dba220e5",
+    "reasoning_sha256": "3b2e4adafe5d27e92999b4fec900f015238a995e3ffaa2eade08ab7f1aefdea8",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 134,
+      "prompt_tokens": 2102,
+      "total_tokens": 2236,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 36,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 134
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2102
+      }
+    },
+    "usage_cost_cny": "0.0002204",
+    "seconds": 1.5553369030822068
+  },
+  {
+    "episode": "047-api-01/02-M4",
+    "q": 2,
+    "started_utc": "2026-11-14T15:45:17.283701+00:00",
+    "created": 1794671117,
+    "request_sha256": "1120ee00300e58cb933b6ae1189efa1125807afa6fc6d9fab7db4faaf0ee2ca0",
+    "response_sha256": "6916d27dfd4bcc6fef6549fc1452cbbd2cae1520bd9f3fa3b68fa4d56031f8c5",
+    "message_sha256": "7c79c039a1f2989af69023312964b1658d64f317241dccff56796689104bb31d",
+    "reasoning_sha256": "d4009d931c062a194d6072b04f9b2c047984b167b9b7c7e36b81b8796a2bd6f7",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 66,
+      "prompt_tokens": 2266,
+      "total_tokens": 2332,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 31,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 66
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2266
+      }
+    },
+    "usage_cost_cny": "0.0001988",
+    "seconds": 1.1592064620926976
+  },
+  {
+    "episode": "047-api-01/02-M4",
+    "q": 3,
+    "started_utc": "2026-11-14T15:45:18.444345+00:00",
+    "created": 1794671118,
+    "request_sha256": "a7c9ff85f6a52ab0bf76a757ba3eb8df63bcf162db1122ccb679792c7a15a5a5",
+    "response_sha256": "0f724c56783c3dc1768f7ce4be12179a91400972b21243145249ea0633b11c44",
+    "message_sha256": "4eb82a72e8f85b96b6b655a2d83bb2f0a4f80abdb1735d55a61da1e40d5308bd",
+    "reasoning_sha256": "0eb4255734337cc6bc5c01e641d0be1e9a127084f808137ef400276998392724",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 129,
+      "prompt_tokens": 2359,
+      "total_tokens": 2488,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 31,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 129
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2359
+      }
+    },
+    "usage_cost_cny": "0.00022684",
+    "seconds": 1.2932403709273785
+  },
+  {
+    "episode": "047-api-01/02-M4",
+    "q": 4,
+    "started_utc": "2026-11-14T15:45:19.740028+00:00",
+    "created": 1794671119,
+    "request_sha256": "cb917bb960ff04ebd4bd029b51ec5c1829db63174a2087d397d1c00a9f2c877f",
+    "response_sha256": "7c1c2b441990086f9e0080bad3fe1b6117499da0492e8319eecb9c3dc67d916c",
+    "message_sha256": "b5dda778f52fc3193896d5492d8dc2a23e8f0a213710972c30b01a59af55ce7e",
+    "reasoning_sha256": "4428a848f93e37ec9abfdf00a8fe7358fd9d235b0820971b475fc6d1e3c406a9",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 283,
+      "prompt_tokens": 2518,
+      "total_tokens": 2801,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 213,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 283
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2518
+      }
+    },
+    "usage_cost_cny": "0.00038184",
+    "seconds": 3.442766255000606
+  },
+  {
+    "episode": "047-api-01/03-M3",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:23.196593+00:00",
+    "created": 1794671123,
+    "request_sha256": "ba0102ee2077e555c5e1e83cafa0516d98a5c1cd431c67a5ff4913ad859dc7a5",
+    "response_sha256": "63f2d3e1f4b41a71a0acd8236fff49025e51db11744a36cdbffecbc3189a954f",
+    "message_sha256": "fd2fa9a1746bfec1f0374c8d4af807d146a5d2903e6aa437e4f7732d748ce109",
+    "reasoning_sha256": "b0f0a07388f1b3fd646f4ecaf51aca3bf6bae604c8e9fb64c36c4c740bb0dcb4",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 65,
+      "prompt_tokens": 1718,
+      "total_tokens": 1783,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 30,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 65
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1536,
+        "image_tokens": null,
+        "text_tokens": 1718
+      }
+    },
+    "usage_cost_cny": "0.00014984",
+    "seconds": 1.116577466018498
+  },
+  {
+    "episode": "047-api-01/03-M3",
+    "q": 2,
+    "started_utc": "2026-11-14T15:45:24.314676+00:00",
+    "created": 1794671124,
+    "request_sha256": "6f2d31cdeee7f6873ba813660d774c6294fc85d2dfb962dd91390eafdf2bb219",
+    "response_sha256": "6ffd05a2c039bea8c06ca40d139fbf8dd31ce1d316039b5afd9f508fe1917bed",
+    "message_sha256": "b5beaa731d3b44d246fac925ba33116de693e7fbc60fd0f74d6a4b134014f2c4",
+    "reasoning_sha256": "2dba3218a5125f0400228bb6621bd5bb183c301b16d732b044be1cfd0aa2a1f2",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 85,
+      "prompt_tokens": 1890,
+      "total_tokens": 1975,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 15,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 85
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1536,
+        "image_tokens": null,
+        "text_tokens": 1890
+      }
+    },
+    "usage_cost_cny": "0.00020024",
+    "seconds": 1.1392401978373528
+  },
+  {
+    "episode": "047-api-01/03-M3",
+    "q": 3,
+    "started_utc": "2026-11-14T15:45:25.456168+00:00",
+    "created": 1794671125,
+    "request_sha256": "18c5bb1fdeeb2a7e9e04697d792e365d13cdca0ea0e3c04e6c6c2f46f0cce8f2",
+    "response_sha256": "334da72b065c67a6a52b9187509933514020a041952222072902a3afc25efc55",
+    "message_sha256": "c12502f0c2c43e3815f0134f0944d5b1515cd9757ecd355d7baa4d314602e89f",
+    "reasoning_sha256": "632790f92d4c606e8a768fe3fd7a7dbefce2e3d1c70ed84ecc4e5a0d599f9b17",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 157,
+      "prompt_tokens": 2038,
+      "total_tokens": 2195,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 61,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 157
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1536,
+        "image_tokens": null,
+        "text_tokens": 2038
+      }
+    },
+    "usage_cost_cny": "0.00028744",
+    "seconds": 1.7503226869739592
+  },
+  {
+    "episode": "047-api-01/03-M3",
+    "q": 4,
+    "started_utc": "2026-11-14T15:45:27.208757+00:00",
+    "created": 1794671127,
+    "request_sha256": "f1c4d68523cb3bd5849a8390e3747d0f6bee0969ad6d6678307556b574a0083c",
+    "response_sha256": "a95713355608259d8779a545996598533a30401e56ad62d7d3344c4db55b04d1",
+    "message_sha256": "d7b988d58b3032da82ac24359ee91dbf1c69539aaeeb265f4ad412bbcdd9afc6",
+    "reasoning_sha256": "74f5aa029217e1aa35f97f5d7baf0e9635965d7f709f777b94f56ae58b197ed9",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 77,
+      "prompt_tokens": 2238,
+      "total_tokens": 2315,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 27,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 77
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2238
+      }
+    },
+    "usage_cost_cny": "0.000202",
+    "seconds": 1.055963221937418
+  },
+  {
+    "episode": "047-api-01/03-M3",
+    "q": 5,
+    "started_utc": "2026-11-14T15:45:28.267116+00:00",
+    "created": 1794671128,
+    "request_sha256": "6f1e411a302d83d1ec8a97132ab6124ec4799fd85e0dcdd41ec2222051a61e63",
+    "response_sha256": "9f884c46152d1a0f2ec270bac55bdbc0448f6e73195eabb14f233440074b14fd",
+    "message_sha256": "ecd662e56dbb481892486e197ae0c870707c9e4d794df0cfc4948f714844092d",
+    "reasoning_sha256": "1115a245deb7649442c884b86f85c292b82b0a4352a4eaa751454913262a8837",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 156,
+      "prompt_tokens": 2396,
+      "total_tokens": 2552,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 77,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 156
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2396
+      }
+    },
+    "usage_cost_cny": "0.0002968",
+    "seconds": 1.7051476070191711
+  },
+  {
+    "episode": "047-api-01/03-M4",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:29.987140+00:00",
+    "created": 1794671130,
+    "request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+    "response_sha256": "4104a5308adf72db425dcd02fe60aaabe39a15ba54cbb816c1fe305583f718e1",
+    "message_sha256": "dd493fd2b0929d5ada99133bf67a9bfa4cb2a6886f45b0b05dd4ec17140c35a4",
+    "reasoning_sha256": "01b16c3901ed647b880ac6d6b05ae2b43889ebfb337404d21c83e33c55370dc4",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 126,
+      "prompt_tokens": 2102,
+      "total_tokens": 2228,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 28,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 126
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2102
+      }
+    },
+    "usage_cost_cny": "0.000214",
+    "seconds": 1.3421537161339074
+  },
+  {
+    "episode": "047-api-01/03-M4",
+    "q": 2,
+    "started_utc": "2026-11-14T15:45:31.331780+00:00",
+    "created": 1794671131,
+    "request_sha256": "ad34d19dd610c1121332ffc5a2e6ec0ba1ed527f904971a613a7517b5e21fc77",
+    "response_sha256": "906aae568b13a1fd54fdd0d47e27b301312274a46e1e7857c76489218aeb4e16",
+    "message_sha256": "aa761b90737bdefb72638b5701b73d537f7a6f30fe74a0d3219aa50526d8b763",
+    "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 62,
+      "prompt_tokens": 2258,
+      "total_tokens": 2320,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 27,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 62
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2258
+      }
+    },
+    "usage_cost_cny": "0.000194",
+    "seconds": 1.025206248043105
+  },
+  {
+    "episode": "047-api-01/03-M4",
+    "q": 3,
+    "started_utc": "2026-11-14T15:45:32.359262+00:00",
+    "created": 1794671132,
+    "request_sha256": "cb65fc661832700c1940ae95ab909fa245a32c5d6b34f16f7bec3ea211833400",
+    "response_sha256": "07c37d07eed3ead7c3d1a3d2d7e46b49ce115c2c6056730c5978cc1ccf024cd5",
+    "message_sha256": "fc42f72ec52fb620a10639be32aecbc0c683c35302d69dee152ce8f5e920b618",
+    "reasoning_sha256": "897065f798c0d7b5db0d9c6388b64809d13e01b1317fc5533fad737066392c00",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 122,
+      "prompt_tokens": 2347,
+      "total_tokens": 2469,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 24,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 122
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2347
+      }
+    },
+    "usage_cost_cny": "0.00021884",
+    "seconds": 1.275867311982438
+  },
+  {
+    "episode": "047-api-01/03-M4",
+    "q": 4,
+    "started_utc": "2026-11-14T15:45:33.637702+00:00",
+    "created": 1794671133,
+    "request_sha256": "63668008a0390f18fc5d2af59a1051644e53acb3983d7e3f3763a9f631e6f563",
+    "response_sha256": "657fd38fc70d48de73f310833313b61b388bb0e2f70a548f04ddc7ebc8a57128",
+    "message_sha256": "f0eaa256eb9f1fb351f80389fb949d7602f969b7898305a9733dc9a530d64fec",
+    "reasoning_sha256": "859a913742cbeb0752a56b3222f15c08aaa5b4e44c01dca051cc9897323a199c",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 370,
+      "prompt_tokens": 2499,
+      "total_tokens": 2869,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 324,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 370
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2499
+      }
+    },
+    "usage_cost_cny": "0.00044764",
+    "seconds": 4.085454799933359
+  },
+  {
+    "episode": "047-api-01/04-M4",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:37.737305+00:00",
+    "created": 1794671137,
+    "request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+    "response_sha256": "92588ed01dd12356c9e3f112bc45545c3dd9cd5dd10110052b259394ad891a30",
+    "message_sha256": "dd493fd2b0929d5ada99133bf67a9bfa4cb2a6886f45b0b05dd4ec17140c35a4",
+    "reasoning_sha256": "01b16c3901ed647b880ac6d6b05ae2b43889ebfb337404d21c83e33c55370dc4",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 126,
+      "prompt_tokens": 2102,
+      "total_tokens": 2228,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 28,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 126
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2102
+      }
+    },
+    "usage_cost_cny": "0.000214",
+    "seconds": 1.664741403190419
+  },
+  {
+    "episode": "047-api-01/04-M4",
+    "q": 2,
+    "started_utc": "2026-11-14T15:45:39.404540+00:00",
+    "created": 1794671139,
+    "request_sha256": "9bd05e9f0a40c341249875e5221c24f0af5e1d8c09b950f17b63cd86e3cf3e99",
+    "response_sha256": "d7e6fb3c860f33ed191de79e1c22a98f85d35e91e1c327e5f6bb16c64187a45d",
+    "message_sha256": "aa761b90737bdefb72638b5701b73d537f7a6f30fe74a0d3219aa50526d8b763",
+    "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 62,
+      "prompt_tokens": 2258,
+      "total_tokens": 2320,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 27,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 62
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2258
+      }
+    },
+    "usage_cost_cny": "0.00015304",
+    "seconds": 1.0717227179557085
+  },
+  {
+    "episode": "047-api-01/04-M4",
+    "q": 3,
+    "started_utc": "2026-11-14T15:45:40.478634+00:00",
+    "created": 1794671140,
+    "request_sha256": "90e9b15d8ec98522b74a73a267746cf022b95b245a033751940899eaafc04c3a",
+    "response_sha256": "34d1f2c31be85ca07aa69fcedbba44242b7b57a06d0c567901dd02949fc46d2f",
+    "message_sha256": "afbcccae431c201423117c0125f0ccfedeea1210f45db048c82475e4d5c89768",
+    "reasoning_sha256": "726eb7d826df1fa6959890f64853511e3c9b53cc24d9ec71b0c1c80c44476da7",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 124,
+      "prompt_tokens": 2347,
+      "total_tokens": 2471,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 26,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 124
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2347
+      }
+    },
+    "usage_cost_cny": "0.00022044",
+    "seconds": 1.1571689769625664
+  },
+  {
+    "episode": "047-api-01/04-M4",
+    "q": 4,
+    "started_utc": "2026-11-14T15:45:41.639262+00:00",
+    "created": 1794671141,
+    "request_sha256": "18b10a454efb1b47ca0190ed9972924fdec24344348e5d701aa17da72bb994ec",
+    "response_sha256": "8803a1e136d70e6c0a6f77eb303365b8627afcda2d3c0685042030fd6792bce1",
+    "message_sha256": "2a4623d0034652f565bd80631fc178297f892e02ffce0de9a46876f50900881a",
+    "reasoning_sha256": "c080469a9c02ada1f36b8c19bb14d552bbdc3e1141092617f365be4f76479a8e",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 155,
+      "prompt_tokens": 2501,
+      "total_tokens": 2656,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 57,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 155
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2501
+      }
+    },
+    "usage_cost_cny": "0.00027604",
+    "seconds": 1.6976015099789947
+  },
+  {
+    "episode": "047-api-01/05-M4",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:43.377720+00:00",
+    "created": 1794671143,
+    "request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+    "response_sha256": "38d25513b779188e3ca1c793eb52a666c022c03dc0432bcb03d8c1f186a9ec6a",
+    "message_sha256": "36eb497d328cb845073fe40bd1dfca5d384a1dbf87c6c7e8722e1b577b2ffa50",
+    "reasoning_sha256": "362e22c92f57cf78ec9aad1422fb3e4ebd3b560acc9f44c2f9bc7c73b42d5e9d",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 128,
+      "prompt_tokens": 2102,
+      "total_tokens": 2230,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 30,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 128
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2102
+      }
+    },
+    "usage_cost_cny": "0.0002156",
+    "seconds": 1.9128823271021247
+  },
+  {
+    "episode": "047-api-01/05-M4",
+    "q": 2,
+    "started_utc": "2026-11-14T15:45:45.293067+00:00",
+    "created": 1794671145,
+    "request_sha256": "95e6925bf37cc481f88f17a57c833bf2f37d5a1b06982bcd15ef98cc2ffe4f71",
+    "response_sha256": "3063be97dd9451273a1b80d9eb6115d960dad4aa3862c32324a9ead064a9f605",
+    "message_sha256": "7c79c039a1f2989af69023312964b1658d64f317241dccff56796689104bb31d",
+    "reasoning_sha256": "d4009d931c062a194d6072b04f9b2c047984b167b9b7c7e36b81b8796a2bd6f7",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 66,
+      "prompt_tokens": 2260,
+      "total_tokens": 2326,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 31,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 66
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2260
+      }
+    },
+    "usage_cost_cny": "0.0001976",
+    "seconds": 0.9663357129320502
+  },
+  {
+    "episode": "047-api-01/05-M4",
+    "q": 3,
+    "started_utc": "2026-11-14T15:45:46.261832+00:00",
+    "created": 1794671146,
+    "request_sha256": "761333c3d05e83eabc85313bcc8776566f192fbe5678121ce0ca4eedba9dac3b",
+    "response_sha256": "1c12236fd6a4a88aadfb267e7c64e82e9300c5692709845cda605f985c18277f",
+    "message_sha256": "065f8b516c0597f8f21844914df0a846c77e8336a3f3578d945ded31df8d349b",
+    "reasoning_sha256": "763d2ba2c5d944f6b0dc5034a5cc12766dccd0dd3313b3a76d57b86aa051d5dd",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 128,
+      "prompt_tokens": 2353,
+      "total_tokens": 2481,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 30,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 128
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2353
+      }
+    },
+    "usage_cost_cny": "0.00022484",
+    "seconds": 1.4235322170425206
+  },
+  {
+    "episode": "047-api-01/05-M4",
+    "q": 4,
+    "started_utc": "2026-11-14T15:45:47.687871+00:00",
+    "created": 1794671147,
+    "request_sha256": "6ad460ac2ec8c123b0b6b2355dfb70291d1d9fd0b2c47b57752fc83bff09ecb7",
+    "response_sha256": "e4b98681ae4da4e8068f503afd0108534ed2e9fdd4c0c831b6900eb4a68a6079",
+    "message_sha256": "9784e9e0d07297e95ca2decc082e89bfec2272e1d9ef3730c709221a17287d1c",
+    "reasoning_sha256": "727f820881b293e951ce4749b16f6e77dfafcd0350f29be6668eee5948a00a97",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 171,
+      "prompt_tokens": 2511,
+      "total_tokens": 2682,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 73,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 171
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2511
+      }
+    },
+    "usage_cost_cny": "0.00029084",
+    "seconds": 1.8709029860328883
+  },
+  {
+    "episode": "047-api-01/06-M4",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:49.574786+00:00",
+    "created": 1794671149,
+    "request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+    "response_sha256": "9fc2090517ffb11e8146d431cb02deae56c42cee45fe10b96dbe40d1dfde75d4",
+    "message_sha256": "1e12051b83eb5867e1ac93c1b3ee2b1d46bbe5b1a899c8e28b815739dba220e5",
+    "reasoning_sha256": "3b2e4adafe5d27e92999b4fec900f015238a995e3ffaa2eade08ab7f1aefdea8",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 134,
+      "prompt_tokens": 2102,
+      "total_tokens": 2236,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 36,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 134
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2102
+      }
+    },
+    "usage_cost_cny": "0.0002204",
+    "seconds": 1.7166813178919256
+  },
+  {
+    "episode": "047-api-01/06-M4",
+    "q": 2,
+    "started_utc": "2026-11-14T15:45:51.293932+00:00",
+    "created": 1794671151,
+    "request_sha256": "d4350315ca5cd9f5e46b2f3bad4e440e1be9b5748a374fc3bac28124513e7e1b",
+    "response_sha256": "565b4c8467257ba83e1fe65e09a41a5e03c3907adf2c3dff071be62fa06338ef",
+    "message_sha256": "7c79c039a1f2989af69023312964b1658d64f317241dccff56796689104bb31d",
+    "reasoning_sha256": "d4009d931c062a194d6072b04f9b2c047984b167b9b7c7e36b81b8796a2bd6f7",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 66,
+      "prompt_tokens": 2266,
+      "total_tokens": 2332,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 31,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 66
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2266
+      }
+    },
+    "usage_cost_cny": "0.00015784",
+    "seconds": 1.285418784013018
+  },
+  {
+    "episode": "047-api-01/06-M4",
+    "q": 3,
+    "started_utc": "2026-11-14T15:45:52.581634+00:00",
+    "created": 1794671152,
+    "request_sha256": "49b3b584b0f811401e64debfebf90a93950fadbd84e0ae5bbbfd2fdb778952b7",
+    "response_sha256": "806111cf7512c312d3ab926d98f66de15b26e66ab2452da34de9ed90dd489476",
+    "message_sha256": "b7cd0c3ae27fb6bea313803889fec9153109a88e4346098dbda9943ced4d192e",
+    "reasoning_sha256": "a8d926fbc280f611c938ab1456b14c2e4c81232169803c80fc0ba6884d2438a4",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 120,
+      "prompt_tokens": 2359,
+      "total_tokens": 2479,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 22,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 120
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2359
+      }
+    },
+    "usage_cost_cny": "0.00021964",
+    "seconds": 1.6825861749239266
+  },
+  {
+    "episode": "047-api-01/06-M4",
+    "q": 4,
+    "started_utc": "2026-11-14T15:45:54.266785+00:00",
+    "created": 1794671154,
+    "request_sha256": "09af7e11d92258e593a7ed8585e6ebbdcfd9e65fc10d714fe0fffae78ccadc92",
+    "response_sha256": "ef556abae8e65328b2e379deca8dd9052e92d7ace6b6d18eb06ec12628a3d54a",
+    "message_sha256": "28abee361044be64dfda523fc5b7c8661b8fb0bb9a895f517c60727541f6881a",
+    "reasoning_sha256": "c0b2b3bf225e8c354691129d9b3e91378613f2dcc151ccb0fd7d498eb08650eb",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 166,
+      "prompt_tokens": 2509,
+      "total_tokens": 2675,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 68,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 166
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2509
+      }
+    },
+    "usage_cost_cny": "0.00028644",
+    "seconds": 2.003448131028563
+  },
+  {
+    "episode": "047-api-01/07-M4",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:56.286247+00:00",
+    "created": 1794671156,
+    "request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+    "response_sha256": "d041873484cfb43dbc144dd3e14b594f9556070ec976ff249e19b302f2d61015",
+    "message_sha256": "8aaf2dc58b932cc6f9a0e25fc6c13e6852b83fbc0dda37f4e6d2954a8ad83fa9",
+    "reasoning_sha256": "3794bf8cd8ff19d0b09c20068ee5d867a7988848205ddcf5c77cc134b8d24227",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 121,
+      "prompt_tokens": 2102,
+      "total_tokens": 2223,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 23,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 121
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2102
+      }
+    },
+    "usage_cost_cny": "0.00021",
+    "seconds": 1.324770743958652
+  },
+  {
+    "episode": "047-api-01/07-M4",
+    "q": 2,
+    "started_utc": "2026-11-14T15:45:57.613479+00:00",
+    "created": 1794671157,
+    "request_sha256": "2ec82749f0a1ece279173767786eaf015fa74d37d8fb48af80dbda3fbe656243",
+    "response_sha256": "6e2a78803099fe1ce347000d649598427f4c3cc0e64904cec46e8a548f37b44b",
+    "message_sha256": "aa761b90737bdefb72638b5701b73d537f7a6f30fe74a0d3219aa50526d8b763",
+    "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 62,
+      "prompt_tokens": 2253,
+      "total_tokens": 2315,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 27,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 62
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2253
+      }
+    },
+    "usage_cost_cny": "0.000193",
+    "seconds": 1.1646358401048928
+  },
+  {
+    "episode": "047-api-01/07-M4",
+    "q": 3,
+    "started_utc": "2026-11-14T15:45:58.780437+00:00",
+    "created": 1794671158,
+    "request_sha256": "c0ba6ff847ffe6c51754e49a391c8fd9b241f105e10346a13aa1d9b81fb927a8",
+    "response_sha256": "7a248653a9f094f8e25615410a7974d1ffb79079803c39ce95607c10f84a9440",
+    "message_sha256": "fc42f72ec52fb620a10639be32aecbc0c683c35302d69dee152ce8f5e920b618",
+    "reasoning_sha256": "897065f798c0d7b5db0d9c6388b64809d13e01b1317fc5533fad737066392c00",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 122,
+      "prompt_tokens": 2342,
+      "total_tokens": 2464,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 24,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 122
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2342
+      }
+    },
+    "usage_cost_cny": "0.00021784",
+    "seconds": 1.2630536239594221
+  },
+  {
+    "episode": "047-api-01/07-M4",
+    "q": 4,
+    "started_utc": "2026-11-14T15:46:00.046052+00:00",
+    "created": 1794671160,
+    "request_sha256": "be9ec3475aca23461427f1d0f901b298024ef52f39320005f31728de6480db69",
+    "response_sha256": "243c35c61b1475e4b85a7513bdd1052958310485e818b0c873d8bab155d2585b",
+    "message_sha256": "2a4623d0034652f565bd80631fc178297f892e02ffce0de9a46876f50900881a",
+    "reasoning_sha256": "c080469a9c02ada1f36b8c19bb14d552bbdc3e1141092617f365be4f76479a8e",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 155,
+      "prompt_tokens": 2494,
+      "total_tokens": 2649,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 57,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 155
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2494
+      }
+    },
+    "usage_cost_cny": "0.00027464",
+    "seconds": 1.6109740098472685
+  },
+  {
+    "episode": "047-api-01/08-M4",
+    "q": 1,
+    "started_utc": "2026-11-14T15:46:01.674400+00:00",
+    "created": 1794671161,
+    "request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+    "response_sha256": "5c51075a4d3423eeb96bce736db86e24ebc4cc8ef84a19e66acc2ea970cc92b7",
+    "message_sha256": "790e2d63a29476fc1fafd0280464fea0f74b9181900c17b3f6984a7850baec54",
+    "reasoning_sha256": "33c3a711686a14d7287ce4bfa82ef3097738545eab0820af1402ca671ce02698",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 134,
+      "prompt_tokens": 2102,
+      "total_tokens": 2236,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 36,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 134
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2102
+      }
+    },
+    "usage_cost_cny": "0.0002204",
+    "seconds": 1.4387899420689791
+  },
+  {
+    "episode": "047-api-01/08-M4",
+    "q": 2,
+    "started_utc": "2026-11-14T15:46:03.115620+00:00",
+    "created": 1794671163,
+    "request_sha256": "f3751d0f998f6931b2d2e3e497e7e6cebef044cc330ddbaf9ee6995f3f886d4c",
+    "response_sha256": "6e2ee40cd9c9eb2976c539ca3f3f371c68ae27405ab7e3e2383080e74eb0e760",
+    "message_sha256": "aa761b90737bdefb72638b5701b73d537f7a6f30fe74a0d3219aa50526d8b763",
+    "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 62,
+      "prompt_tokens": 2266,
+      "total_tokens": 2328,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 27,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 62
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2266
+      }
+    },
+    "usage_cost_cny": "0.0001956",
+    "seconds": 0.8147031059488654
+  },
+  {
+    "episode": "047-api-01/08-M4",
+    "q": 3,
+    "started_utc": "2026-11-14T15:46:03.932611+00:00",
+    "created": 1794671163,
+    "request_sha256": "c9c18a13297494780b55262f82c064e5342da42831cf4759337ab81799c6c7e5",
+    "response_sha256": "63d5b115a0c395520fcf6c698738686fe49e2eec450c40faaf5a839f21332adb",
+    "message_sha256": "14a857c974c0f4aab1ab54f7cfa4459c3e9289248927d24b42e6ff2e34c73287",
+    "reasoning_sha256": "293a5e677cd513b1e0a4c73ae8d7216ef808449abe438ab91065648ae06b9990",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 138,
+      "prompt_tokens": 2355,
+      "total_tokens": 2493,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 40,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 138
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2355
+      }
+    },
+    "usage_cost_cny": "0.00023324",
+    "seconds": 1.4011378569994122
+  },
+  {
+    "episode": "047-api-01/08-M4",
+    "q": 4,
+    "started_utc": "2026-11-14T15:46:05.336419+00:00",
+    "created": 1794671165,
+    "request_sha256": "e8c528492e87c494beea46e12f45e905c5ba1b034049be5d9342ffd026d83bb1",
+    "response_sha256": "d6ba2585f64ada6463419aeb75f7adf702714da193ef70cbd6654abf9684ab58",
+    "message_sha256": "9784e9e0d07297e95ca2decc082e89bfec2272e1d9ef3730c709221a17287d1c",
+    "reasoning_sha256": "727f820881b293e951ce4749b16f6e77dfafcd0350f29be6668eee5948a00a97",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 171,
+      "prompt_tokens": 2523,
+      "total_tokens": 2694,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 73,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 171
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2523
+      }
+    },
+    "usage_cost_cny": "0.00029324",
+    "seconds": 2.482909538084641
+  },
+  {
+    "episode": "047-api-01/09-M4",
+    "q": 1,
+    "started_utc": "2026-11-14T15:46:07.835414+00:00",
+    "created": 1794671167,
+    "request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+    "response_sha256": "e69d3248621c78f69217c5b2a93a9750e9f4952ac91583a9055198c7c2b779cc",
+    "message_sha256": "06be158314846505c90642ae1e15cc63943a4f7c44adbf7655854d7249a1c969",
+    "reasoning_sha256": "036af85581abc02afd90534182566b061ad2e6c3581b72cbda98cb52c49dbd13",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 139,
+      "prompt_tokens": 2102,
+      "total_tokens": 2241,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 41,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 139
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2102
+      }
+    },
+    "usage_cost_cny": "0.0002244",
+    "seconds": 1.5977866349276155
+  },
+  {
+    "episode": "047-api-01/09-M4",
+    "q": 2,
+    "started_utc": "2026-11-14T15:46:09.435626+00:00",
+    "created": 1794671169,
+    "request_sha256": "7eb5f383721d6bef7c52c734d1831205c56854231106132c147dd2472542f4b0",
+    "response_sha256": "b453e048ae7a8d4b90be0781ded208eb2d66baa17ca07523caa2415654092e60",
+    "message_sha256": "aa761b90737bdefb72638b5701b73d537f7a6f30fe74a0d3219aa50526d8b763",
+    "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 62,
+      "prompt_tokens": 2271,
+      "total_tokens": 2333,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 27,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 62
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2271
+      }
+    },
+    "usage_cost_cny": "0.0001966",
+    "seconds": 1.0202793600037694
+  },
+  {
+    "episode": "047-api-01/09-M4",
+    "q": 3,
+    "started_utc": "2026-11-14T15:46:10.458177+00:00",
+    "created": 1794671170,
+    "request_sha256": "683ab3fcbca991591ba69b4ff39ccc183ec64c7d89bc070f41cef43b074b040a",
+    "response_sha256": "6a8f71a9e36455b671925d75b5c90ca8aa178073dd8062df2c11b10deecc78b2",
+    "message_sha256": "cee91f2f1bba2a1353ad17957682a7b081d9ea4244215f7762e0bc96fbec13a1",
+    "reasoning_sha256": "bc70e1a1a531c373c11e44d39a56eade7f35967d14178f1002c2e210890ac8fc",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 140,
+      "prompt_tokens": 2360,
+      "total_tokens": 2500,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 42,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 140
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2360
+      }
+    },
+    "usage_cost_cny": "0.00023584",
+    "seconds": 1.4973258669488132
+  },
+  {
+    "episode": "047-api-01/09-M4",
+    "q": 4,
+    "started_utc": "2026-11-14T15:46:11.958082+00:00",
+    "created": 1794671172,
+    "request_sha256": "a9fad8f5bd9b862eb366fefb16975c83f178d3fc10ad22b14093b6803f4cf87f",
+    "response_sha256": "c1d05f66ab61b79c58e5cae81c30725d441ae86ed1e3466783a31491da5dabba",
+    "message_sha256": "39b9ba89f612d52af7092541dfb467b6ea90b02c436eba91bcd1d850133b7441",
+    "reasoning_sha256": "bcac846a32fe06e57cdb8f17d49e316f1a8086a8380bc5fce58312538318e309",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 168,
+      "prompt_tokens": 2530,
+      "total_tokens": 2698,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 70,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 168
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2530
+      }
+    },
+    "usage_cost_cny": "0.00029224",
+    "seconds": 1.8994648400694132
+  },
+  {
+    "episode": "047-api-01/10-M4",
+    "q": 1,
+    "started_utc": "2026-11-14T15:46:13.873628+00:00",
+    "created": 1794671174,
+    "request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+    "response_sha256": "b038b5d7baea0012734abcdd37c38d20abef00f0cb5b3615b47622d8a66ea965",
+    "message_sha256": "e9aab045f60324ba55b23f08db4ba9c670e8b115aaad554c56947942497e6627",
+    "reasoning_sha256": "542a7fcc32a11614eeb4823b0268e95446f2982436224d6bde75999a624a4c33",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 135,
+      "prompt_tokens": 2102,
+      "total_tokens": 2237,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 37,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 135
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2102
+      }
+    },
+    "usage_cost_cny": "0.0002212",
+    "seconds": 1.5075460688676685
+  },
+  {
+    "episode": "047-api-01/10-M4",
+    "q": 2,
+    "started_utc": "2026-11-14T15:46:15.383604+00:00",
+    "created": 1794671175,
+    "request_sha256": "dc8b554043209655853a65ceac67bc3dd6fbb93e24ab3a24bb58eeb491c0be0b",
+    "response_sha256": "2f1ef7f1938b9664d09e0faa29c075d05229fdbac645cdaada3487d986af68e6",
+    "message_sha256": "7c79c039a1f2989af69023312964b1658d64f317241dccff56796689104bb31d",
+    "reasoning_sha256": "d4009d931c062a194d6072b04f9b2c047984b167b9b7c7e36b81b8796a2bd6f7",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 66,
+      "prompt_tokens": 2267,
+      "total_tokens": 2333,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 31,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 66
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 1920,
+        "image_tokens": null,
+        "text_tokens": 2267
+      }
+    },
+    "usage_cost_cny": "0.000199",
+    "seconds": 1.0218128140550107
+  },
+  {
+    "episode": "047-api-01/10-M4",
+    "q": 3,
+    "started_utc": "2026-11-14T15:46:16.407742+00:00",
+    "created": 1794671176,
+    "request_sha256": "7f1bb6ce1fd616e5e18ab0811c6374dd50603e83e7e6d270728026af317f0ad1",
+    "response_sha256": "9e40d82a191a3c22ceacbfcdcc592b1ccaaf4edc06316cbf9bffebc61be1e708",
+    "message_sha256": "c42b9eeb2817341db8f965c7068a9672234863a9961372889e3030eecd970c87",
+    "reasoning_sha256": "21962ebfc5147a5896b671d5e9b17d0edcfdc152568d2057232d991ad1c0c57d",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 184,
+      "prompt_tokens": 2360,
+      "total_tokens": 2544,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 86,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 184
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2360
+      }
+    },
+    "usage_cost_cny": "0.00027104",
+    "seconds": 1.9488816079683602
+  },
+  {
+    "episode": "047-api-01/10-M4",
+    "q": 4,
+    "started_utc": "2026-11-14T15:46:18.359169+00:00",
+    "created": 1794671178,
+    "request_sha256": "f42b937d6615b1f80e215708faae4ec59b9ad93815bf34a38a9c07b5278fea1c",
+    "response_sha256": "82af33ca7aa9c777e942d2f159803970d0758b5ebb2bc1261c0cf4ff62cce2d5",
+    "message_sha256": "e17281bacf20af6e1b1fb2c3a7afbea3675da7f6e125a7d344362df109de907e",
+    "reasoning_sha256": "8695e4b2ddcf792358f53409f253f75559d78c38199cad282a079c8e760d1c70",
+    "reasoning_field": "reasoning_content",
+    "usage": {
+      "completion_tokens": 152,
+      "prompt_tokens": 2574,
+      "total_tokens": 2726,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 54,
+        "rejected_prediction_tokens": null,
+        "text_tokens": 152
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cache_write_tokens": null,
+        "cached_tokens": 2176,
+        "image_tokens": null,
+        "text_tokens": 2574
+      }
+    },
+    "usage_cost_cny": "0.00028824",
+    "seconds": 1.615500935120508
+  },
+  {
+    "episode": "046-real-agent-01/01-BW0N1-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:18.237942+00:00",
+    "created": 1794671118,
+    "request_sha256": "958dc9e9042278f3cbc9a725f1108e9a6cadfe22f6f3f46fdde57b951b70bd81",
+    "response_sha256": "ba1b114f355872a91c5fe81b5f47d1a8ee31caf205382807a5c4c3542cde932e",
+    "message_sha256": "8277d27f7181bdc7020d0e693c4df1246336ac9e341d6af3df5e813d371c432a",
+    "reasoning_sha256": "6ef27dd2930cbe2d0530616e252f139cace01827e7d85a997f54d756919d98e2",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1123,
+      "prompt_tokens": 1899,
+      "total_tokens": 3022,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1103,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 14.704654843080789
+  },
+  {
+    "episode": "046-real-agent-01/02-BW0N1-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:32.954868+00:00",
+    "created": 1794671132,
+    "request_sha256": "9a5f0e54d44ef51887ea1a81efa5dea3f200278328c60c0c6fc82d5ffe9fba32",
+    "response_sha256": "fc29e6020f9f52851fad9cc5a36dba012014e98825a9cfab45a7fe12f2aa1621",
+    "message_sha256": "4139e080dfcb8ed047af12717c6604c2897e9431af4a527f58111f68872eb3f2",
+    "reasoning_sha256": "8b69ab6612113d572534ff1b9bb808d8652f3e77ef528df8c4b515b8a94130fe",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1035,
+      "prompt_tokens": 1952,
+      "total_tokens": 2987,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1012,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 14.160746132023633
+  },
+  {
+    "episode": "046-real-agent-01/03-AW1N0-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:47.126889+00:00",
+    "created": 1794671147,
+    "request_sha256": "e715d91b97030eedb96358e91d03243a799a9bb025e6cd5ca62a3ab325145853",
+    "response_sha256": "5c7ba4c65772ecb5ba19fc216507b971a9114f25c34865435da5b5bf15aed7ee",
+    "message_sha256": "57f52e15f6ce4ec6a5a057964a26a4a8c790019e38edbfb11df1a4e434f4753a",
+    "reasoning_sha256": "bbe90437f1500c400a7224b06b46000503e6b24bf62725e18eecbcba43142b52",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 902,
+      "prompt_tokens": 1965,
+      "total_tokens": 2867,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 873,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 11.478239672025666
+  },
+  {
+    "episode": "046-real-agent-01/04-AW1N0-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:45:58.616600+00:00",
+    "created": 1794671158,
+    "request_sha256": "ca3052c58f2fd90d5935f397d99aa1756c68f0327e6f8368fd1a316446ec83a8",
+    "response_sha256": "fff5fc63d55c6aba32264b3345c40a6d7968b6c885f17bd9256382ba2e0e2c0d",
+    "message_sha256": "f16fdb8be1e34a8c9450ab06a7dcb96db47146bfdfaf0aa8480fdb392b90526f",
+    "reasoning_sha256": "cdb38cca8725bd53325353f827796e637ba1651ab0722266e77ed0f0486b698a",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1085,
+      "prompt_tokens": 1912,
+      "total_tokens": 2997,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1055,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 13.782181825023144
+  },
+  {
+    "episode": "046-real-agent-01/05-CW1N1-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:46:12.410898+00:00",
+    "created": 1794671172,
+    "request_sha256": "0f9c5b138da4c86d034720ec445f5a08015cc26db66f381106d4850ff562f539",
+    "response_sha256": "bd12250c156d395bdbf0b296d07c42a031c225a409c538d73814a22b5c61a1c7",
+    "message_sha256": "94b2c89bfaa820be001399a61f5958118758444b23b8cf823b8d863f7775618c",
+    "reasoning_sha256": "40cea853c58731d476ffe28a7d7979733e3bff1c8d794818f23da93904a260a0",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1069,
+      "prompt_tokens": 1896,
+      "total_tokens": 2965,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1038,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 13.665532869985327
+  },
+  {
+    "episode": "046-real-agent-01/06-CW1N1-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:46:26.088815+00:00",
+    "created": 1794671186,
+    "request_sha256": "cde47d7b31d2a2f13428f1207d8031fe038d3c0937fd4f60df5075256313150e",
+    "response_sha256": "d6b07ca6e75f0ca664ffab5b883845d314803141b0e16cebd5bc27c5e0cf16ae",
+    "message_sha256": "7299cce0ae370f645f77b0e6d1fbe453bf7d4f0e67fb8a1ca04717cd6c2b3df0",
+    "reasoning_sha256": "02ff2e8a101d29b6e3ddd537ea6b8f11633869ee56528e7878075d68f4ec16d8",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 861,
+      "prompt_tokens": 1949,
+      "total_tokens": 2810,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 834,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 11.056944949086756
+  },
+  {
+    "episode": "046-real-agent-01/07-AW1N1-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:46:37.157821+00:00",
+    "created": 1794671197,
+    "request_sha256": "aa77907f93b8fd52d222252da1e21c0e884fb8436df4d468313a781cf0e4eccf",
+    "response_sha256": "e8c72c9f667996a602150724ef566734f4f9c2e17eaca84c8139fbe3170a28e3",
+    "message_sha256": "54ba57649d676161a594c646640e67cc79caf3905999ce8c4a48aa1b348753ce",
+    "reasoning_sha256": "ba7f8e34ab6bae646618b2b6fe25b3ab0137b3c8fd8ef7b8a7958d5e1cb6ec24",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1262,
+      "prompt_tokens": 1953,
+      "total_tokens": 3215,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1234,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 16.446301098912954
+  },
+  {
+    "episode": "046-real-agent-01/08-AW1N1-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:46:53.615917+00:00",
+    "created": 1794671213,
+    "request_sha256": "434f6a9de672be61d1a9ec6d59288a7558f2c460b3f8f4a7831ea843897d650a",
+    "response_sha256": "11b45fd3a7682c292d186a4628e128b93af7a73e2a35c661e9053c3124ea2680",
+    "message_sha256": "299860930e3080d5675272644c9db58db7b0eb8cb812b0f7f012bdee4d33b36c",
+    "reasoning_sha256": "9c140a268a8474878583422a61e1efc05674c82d18c0b8fdb62f7d88e7c86299",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 929,
+      "prompt_tokens": 1900,
+      "total_tokens": 2829,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 910,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 12.427084633149207
+  },
+  {
+    "episode": "046-real-agent-01/09-BW1N0-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:47:06.054914+00:00",
+    "created": 1794671226,
+    "request_sha256": "ab641d81e9cbd35ff3be73b60446548eb3764dc7c63d4ab36eb116806d012274",
+    "response_sha256": "a349b64a3d6dea93082e9edf1bd0da98ebed71728ba3d5a07fd1f9e33a016270",
+    "message_sha256": "ac65082e14b885709469b55799fd0188e9a34c9f851f0c9b063a92e7cdef604c",
+    "reasoning_sha256": "af51f1ec0ddb932b8ebebc6295310637d63d6844e91ebe294d83a2908880c82a",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 847,
+      "prompt_tokens": 1912,
+      "total_tokens": 2759,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 827,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 12.596696845954284
+  },
+  {
+    "episode": "046-real-agent-01/10-BW1N0-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:47:18.663996+00:00",
+    "created": 1794671238,
+    "request_sha256": "565b17813971543ba882f5829a1fa880dd7acfcb3806b7213001110db80c5e87",
+    "response_sha256": "6d9ef9be86f3fafe62de7518fa10950dba308cf323d2455c4bc99c0345a98b9f",
+    "message_sha256": "4b2c376fc4c381dd0efe1f9ff79d2be0a07bbb157c00a1fd7cdef967b38d9e8d",
+    "reasoning_sha256": "b0f73734609474ae29e478969910db80c5f81e6ca8ec53ca12c83e0384a695a6",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1471,
+      "prompt_tokens": 1965,
+      "total_tokens": 3436,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1443,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 20.12852377211675
+  },
+  {
+    "episode": "046-real-agent-01/11-AW0N0-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:47:38.804798+00:00",
+    "created": 1794671258,
+    "request_sha256": "4275e692e72ba76921ceee639e1696f61fc99362621b5ce9a34ab02fd79ce2b9",
+    "response_sha256": "981005b5c3da4392a90c06c618a0a70eed7f38080294486c53ed115aeaaa5a1e",
+    "message_sha256": "93786c7c02d5e18ddac8d22694049048a1abec35ff298a738d9bd4641ca5673c",
+    "reasoning_sha256": "c071746d46dcc5459665433140fa33481d2b7daff76a0a9e7d415408fbd12867",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 840,
+      "prompt_tokens": 1964,
+      "total_tokens": 2804,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 805,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 12.336484281113371
+  },
+  {
+    "episode": "046-real-agent-01/12-AW0N0-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:47:51.153697+00:00",
+    "created": 1794671271,
+    "request_sha256": "977eefc03a57bd1c3ff9c95cf9e350f13ad2c86c4c358f80337a2b207786d14f",
+    "response_sha256": "2568a730db9ab8d342f3538c2e083c97746c860890ac5b156ff6ed1b9b01d851",
+    "message_sha256": "64e6b76b799f3f3fb8b4372a32eda38e7bbf0415788b8f32285f05961a4ff84b",
+    "reasoning_sha256": "ee025fc1cdeab52ef8247421c3cce97700bd418d3a9f84cd0e2bf02dc223495f",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 926,
+      "prompt_tokens": 1911,
+      "total_tokens": 2837,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 899,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 12.622132302960381
+  },
+  {
+    "episode": "046-real-agent-01/13-BW1N1-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:48:03.788613+00:00",
+    "created": 1794671283,
+    "request_sha256": "fb290f1841967288e9d7ea16b409bfb09469f673e2c4d5ab711b0b82d04248f0",
+    "response_sha256": "54499c1994b5d0cead428269b38f420da6c46d8e08d608305182bdb94e74aa56",
+    "message_sha256": "9725850ca6e5d4c29b6c5b35918ac59296f3f3a6b818f81bc9dec657042c5692",
+    "reasoning_sha256": "6cdb250a2029fb504a0668fbe3f890f1c70fbf69a59346e73c336fdfb0e16539",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1280,
+      "prompt_tokens": 1900,
+      "total_tokens": 3180,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1260,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 17.397228230023757
+  },
+  {
+    "episode": "046-real-agent-01/14-BW1N1-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:48:21.198435+00:00",
+    "created": 1794671301,
+    "request_sha256": "d0c92dee90aa79b6f8d52ebacc6e1fc7571995932b50ada98a9722fa7b999fab",
+    "response_sha256": "64ab7fe4789ab7d2dbcc50b3aa26ac3f8cfbe58ddc3b8e9fc54ad8772ddc0d48",
+    "message_sha256": "33ac86301056ad644a6616c160d49d71c2f7d85e4b911906a9d2d897113ec782",
+    "reasoning_sha256": "7782af9c0d6a8e0c68931137b299940c56e925b208877f0ac912f9b099ad5e81",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1132,
+      "prompt_tokens": 1953,
+      "total_tokens": 3085,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1100,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 16.726650144904852
+  },
+  {
+    "episode": "046-real-agent-01/15-AW0N1-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:48:37.943476+00:00",
+    "created": 1794671317,
+    "request_sha256": "82c95c4180713f5044916a88b7a279bdd4489cc0f138c2862303b963b8b005d1",
+    "response_sha256": "6667db24cf5915ad183edb666050c1bc7e148f84addd203a8c09f1b6bd7d6b78",
+    "message_sha256": "d4968e76ad1ccc0e97d1d5f07ec10e6fe981b2b68ed5173ae74ace8bded84a49",
+    "reasoning_sha256": "18902643577d149ef327456f6e7c9c1c4d2c4d74dae80eaf6f475a2439d5e01f",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 860,
+      "prompt_tokens": 1952,
+      "total_tokens": 2812,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 829,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 12.637525730067864
+  },
+  {
+    "episode": "046-real-agent-01/16-AW0N1-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:48:50.598241+00:00",
+    "created": 1794671330,
+    "request_sha256": "3826ec184166fd0f431bf6b5997bfe6a5344786031b204c5053925a1d88ce308",
+    "response_sha256": "2d0448fa2c14caaad3c120991be68ad758481f219fda35a10fd3e0898b322577",
+    "message_sha256": "b30eeb03fc5b338344302b09a5065046475ea21ca09e70b172554647cce57c21",
+    "reasoning_sha256": "e55d3ad8d6cfd0277164edfcfa213bce9c6d5f2061650e161895967ff8c504b3",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 836,
+      "prompt_tokens": 1899,
+      "total_tokens": 2735,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 822,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 11.439799085026607
+  },
+  {
+    "episode": "046-real-agent-01/17-CW0N1-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:49:02.050900+00:00",
+    "created": 1794671342,
+    "request_sha256": "cb529193149d1d3939e0cfd23f13601339c60aecfad677a43b97f1ea609c1752",
+    "response_sha256": "0014dfea5d4acc13548e5bda889cc78b215b5583396ce244ae783939e56f9493",
+    "message_sha256": "b126883ba4d8540928c6ecaa231af5a29001f5a7324d1e0937e9986ab37cef8c",
+    "reasoning_sha256": "195b6aabad1a60f3d6171df0295a0c500c61e2c908b56579fbfe461d2d61bfec",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 632,
+      "prompt_tokens": 1895,
+      "total_tokens": 2527,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 618,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 8.702271609799936
+  },
+  {
+    "episode": "046-real-agent-01/18-CW0N1-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:49:10.769719+00:00",
+    "created": 1794671350,
+    "request_sha256": "ed8931c4b83965d22730e0d2bdf91e7bf9a2eca1efd12adf5eaa0cb982c54189",
+    "response_sha256": "e0f44f8c2cf1002cb604ab7ff1cb64842f22b6b87d62f9dda0c4e976d0e2b536",
+    "message_sha256": "cf1ffdf71f76531d5d5e15ff9ac3a12237c1445f47abbb5ce2ba57971f58fdd2",
+    "reasoning_sha256": "b705141a9d98480b8378d316599589232f6388d0b95ccfcc580cbd67827e8227",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 900,
+      "prompt_tokens": 1948,
+      "total_tokens": 2848,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 879,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 12.805260554887354
+  },
+  {
+    "episode": "046-real-agent-01/19-CW0N0-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:49:23.592347+00:00",
+    "created": 1794671363,
+    "request_sha256": "087bd70a014d0815cc596964c6c4fcf5791ee033821938dd5cc04e4f56ad47a5",
+    "response_sha256": "1666217873262cc07067b8a40f7baf2912bbf980291eb74063a4ea89618adea7",
+    "message_sha256": "269d01a7bb915d3c0bcbf13086d1c651d63a5acd7b22eb9a0647508909323a08",
+    "reasoning_sha256": "7eb74fecb1199e068887c70961dadcad22abea7eba3772fe9325b045a3c27a48",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1540,
+      "prompt_tokens": 1960,
+      "total_tokens": 3500,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1512,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 21.59977250196971
+  },
+  {
+    "episode": "046-real-agent-01/20-CW0N0-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:49:45.206657+00:00",
+    "created": 1794671385,
+    "request_sha256": "493440b70c5b6dd2fdefe873c35d4675631e5fcc7fe5496ec9e62c85b2c0109e",
+    "response_sha256": "7797bb9da1f04eff103ccf622bbc4ab8818c640a40d5a9d8e5a48812fd93f312",
+    "message_sha256": "5d783f009fc8157f01b3c6032a072c9d1b0a92dcde64499d0fe91abb63f72fc5",
+    "reasoning_sha256": "e5733aba691bc8e40fbd147316fc5319e42998067819c0dff86f6a13221606d7",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1017,
+      "prompt_tokens": 1907,
+      "total_tokens": 2924,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 993,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 14.378126905998215
+  },
+  {
+    "episode": "046-real-agent-01/21-BW0N0-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:49:59.600752+00:00",
+    "created": 1794671399,
+    "request_sha256": "9c8e95311217ea352f52a26c95cc42afb65993c47ec3b6a812df48c8c59bc555",
+    "response_sha256": "7dc202f6e0f938403681dfdf7d29382cde0c9f338f193ba611b6aac8f61beb63",
+    "message_sha256": "909260c71ad5efdb54e6721c98fe022a7f037ad56b085c0bae9663ec3510598b",
+    "reasoning_sha256": "6aca3811f24d67a6cb9753f161298ba656f101b55323c86b2b6779006c1b0bcb",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 898,
+      "prompt_tokens": 1911,
+      "total_tokens": 2809,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 870,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 12.536867786897346
+  },
+  {
+    "episode": "046-real-agent-01/22-BW0N0-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:50:12.151356+00:00",
+    "created": 1794671412,
+    "request_sha256": "af199d1d8d0db4991ab76e057e4ffe8371ff961b29684f8bf01f56488c4587ff",
+    "response_sha256": "0755c936f19b307a610cac8a8fa279ccadfbf91e4f2daeb3795a99893fc48030",
+    "message_sha256": "6ac4281a83bb7204aa508f37f47f7d8e03475e64b9ec036789d017dd29106878",
+    "reasoning_sha256": "03cc6507a7e970e13740245dc635482cefa37b13b340f7e5e932aa6d560403f7",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1271,
+      "prompt_tokens": 1964,
+      "total_tokens": 3235,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1239,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 16.37523731100373
+  },
+  {
+    "episode": "046-real-agent-01/23-CW1N0-C1",
+    "q": 1,
+    "started_utc": "2026-11-14T15:50:28.544468+00:00",
+    "created": 1794671428,
+    "request_sha256": "d76e12c5c72595ebd5d6ad281f4ce2dffbef9a4cb4fef6f75c84f324525fb5e5",
+    "response_sha256": "b7cba0a292e0664a436c871ddafa652f57e14a56901689e6a7c46b8aa1c03ed5",
+    "message_sha256": "5d7580560b32b80bfd3dd1acf2fc920c5e94b7bfe211993cf83a8e87380503ab",
+    "reasoning_sha256": "07989366230e98b8b67dbb0b4650025d7af2d913aad19213ccef5e6265ebc35c",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1232,
+      "prompt_tokens": 1961,
+      "total_tokens": 3193,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1197,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 17.508219473063946
+  },
+  {
+    "episode": "046-real-agent-01/24-CW1N0-C0",
+    "q": 1,
+    "started_utc": "2026-11-14T15:50:46.071188+00:00",
+    "created": 1794671446,
+    "request_sha256": "7b102c18504315ae5e59b5edd38e56f6e6ba5592ebb88a1a4e1e191175235d62",
+    "response_sha256": "98f3b083d5c85ef951dcd3778e2ef956fa060295d6cdd4d1d5f549191229d44a",
+    "message_sha256": "89bf5022e230c2cd6bff9b639d090fe0e3bf2e07416bbb2aa1819f9aa5455493",
+    "reasoning_sha256": "c3f5f879cbff1d5674c339b4bfbb608a225e7049a6c9ab5052cbcc17187c8a8e",
+    "reasoning_field": "reasoning",
+    "usage": {
+      "completion_tokens": 1042,
+      "prompt_tokens": 1908,
+      "total_tokens": 2950,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 1012,
+        "rejected_prediction_tokens": null,
+        "text_tokens": null
+      },
+      "prompt_tokens_details": null
+    },
+    "usage_cost_cny": null,
+    "seconds": 14.12707086908631
+  }
+]

@@ -1,0 +1,1913 @@
+{
+  "episodes": [
+    {
+      "id": "047-api-01/01-M3",
+      "checkpoint": "M3",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": true,
+      "obligations": true,
+      "protocol": "pass",
+      "calls": 4,
+      "illegal": 0,
+      "binding_accepted": 4,
+      "sdk": 5,
+      "prefix_fee": "3",
+      "suffix_fee": "6",
+      "tool_sequence": [
+        "read_archive_record",
+        "validate_record_granularity",
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "read_archive_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "validate_record_granularity",
+          "arguments": {
+            "record_id": "REC-3401",
+            "pending_ref": "394c539eb1f6aeda27d6a358"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "f73327f01badc3274dd6e691"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_published_record",
+          "arguments": {
+            "publication_id": "53f1b41bb146efd8181901a5"
+          }
+        },
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 10182,
+      "output_tokens": 473,
+      "cached_input_tokens": 6912,
+      "reasoning_tokens": 154,
+      "cost_cny": 0.00130888,
+      "model_seconds": 6.437610379885882,
+      "wall_seconds": 6.450953274965286,
+      "first_request_sha256": "ba0102ee2077e555c5e1e83cafa0516d98a5c1cd431c67a5ff4913ad859dc7a5",
+      "first_message_sha256": "541458890eee4ef9cdd174301dde748efbd3b27763b0c758e79698e12e27a9f3",
+      "action_trajectory_sha256": "9aefebef1a851b4acc3034df7125d2e4205c80203374e391eba02212a8326569",
+      "attempt_trajectory_sha256": "e1d31e72fa1cb3680ac94a81b102f54784c21a1abd4c5de524b7595bd6b755c3",
+      "answer": "Publication successful. Publication ID: 53f1b41bb146efd8181901a5. Read-back verification confirms record_id=REC-3401, content=\"Valve A: 12 units; Valve B: 8 units.\", status=active."
+    },
+    {
+      "id": "047-api-01/01-M4",
+      "checkpoint": "M4",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 3,
+      "illegal": 0,
+      "binding_accepted": 3,
+      "sdk": 4,
+      "prefix_fee": "4",
+      "suffix_fee": "3",
+      "tool_sequence": [
+        "publish_verified_record",
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_primary_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        }
+      ],
+      "budget_rejections": 1,
+      "input_tokens": 9207,
+      "output_tokens": 545,
+      "cached_input_tokens": 6272,
+      "reasoning_tokens": 216,
+      "cost_cny": 0.00127388,
+      "model_seconds": 6.265084140235558,
+      "wall_seconds": 6.274862302001566,
+      "first_request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+      "first_message_sha256": "dd493fd2b0929d5ada99133bf67a9bfa4cb2a6886f45b0b05dd4ec17140c35a4",
+      "action_trajectory_sha256": "4da5105abcbbbd3b73b7133381be34aac738b63069494cd64772258ecbd54663",
+      "attempt_trajectory_sha256": "5643fc93dfaa383db9ae3b3c7966ec1258e077c58c10ada7705b1595c7384f4c",
+      "answer": null
+    },
+    {
+      "id": "047-api-01/02-M3",
+      "checkpoint": "M3",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": true,
+      "obligations": true,
+      "protocol": "pass",
+      "calls": 4,
+      "illegal": 0,
+      "binding_accepted": 4,
+      "sdk": 5,
+      "prefix_fee": "3",
+      "suffix_fee": "6",
+      "tool_sequence": [
+        "read_archive_record",
+        "validate_record_granularity",
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "read_archive_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "validate_record_granularity",
+          "arguments": {
+            "record_id": "REC-3401",
+            "pending_ref": "394c539eb1f6aeda27d6a358"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "f73327f01badc3274dd6e691"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_published_record",
+          "arguments": {
+            "publication_id": "53f1b41bb146efd8181901a5"
+          }
+        },
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 10333,
+      "output_tokens": 592,
+      "cached_input_tokens": 8704,
+      "reasoning_tokens": 261,
+      "cost_cny": 0.00114756,
+      "model_seconds": 7.45140266395174,
+      "wall_seconds": 7.459407476009801,
+      "first_request_sha256": "ba0102ee2077e555c5e1e83cafa0516d98a5c1cd431c67a5ff4913ad859dc7a5",
+      "first_message_sha256": "d17362df362c0743901f257da484b1244befc454d3285fe6d739200a0ea68f74",
+      "action_trajectory_sha256": "9aefebef1a851b4acc3034df7125d2e4205c80203374e391eba02212a8326569",
+      "attempt_trajectory_sha256": "e1d31e72fa1cb3680ac94a81b102f54784c21a1abd4c5de524b7595bd6b755c3",
+      "answer": "Record REC-3401 has been successfully published with publication_id 53f1b41bb146efd8181901a5. Verification confirms:\n- record_id: REC-3401\n- content: \"Valve A: 12 units; Valve B: 8 units.\"\n- status: active"
+    },
+    {
+      "id": "047-api-01/02-M4",
+      "checkpoint": "M4",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 3,
+      "illegal": 0,
+      "binding_accepted": 3,
+      "sdk": 4,
+      "prefix_fee": "4",
+      "suffix_fee": "3",
+      "tool_sequence": [
+        "publish_verified_record",
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_primary_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 9245,
+      "output_tokens": 612,
+      "cached_input_tokens": 8192,
+      "reasoning_tokens": 311,
+      "cost_cny": 0.00102788,
+      "model_seconds": 7.450549991102889,
+      "wall_seconds": 7.459012690000236,
+      "first_request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+      "first_message_sha256": "1e12051b83eb5867e1ac93c1b3ee2b1d46bbe5b1a899c8e28b815739dba220e5",
+      "action_trajectory_sha256": "01bbf605ff5c4327b8c6a6267c297361d33c069d551e52480006b2c9a2a2af3e",
+      "attempt_trajectory_sha256": "1f09b3c4556dd8c25928b9309a92822c1484273073f0a666fab1ff96794a7e0f",
+      "answer": "Blocked: The publish_verified_record endpoint returned \"unavailable\" errors on multiple attempts, preventing the publication from being committed. The read_primary_record endpoint also timed out, so no primary evidence_ref could be obtained. Despite having a valid evidence_ref from the validated backup record, the publication could not be completed due to persistent endpoint unavailability."
+    },
+    {
+      "id": "047-api-01/03-M3",
+      "checkpoint": "M3",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": true,
+      "obligations": true,
+      "protocol": "pass",
+      "calls": 4,
+      "illegal": 0,
+      "binding_accepted": 4,
+      "sdk": 5,
+      "prefix_fee": "3",
+      "suffix_fee": "6",
+      "tool_sequence": [
+        "read_archive_record",
+        "validate_record_granularity",
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "read_archive_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "validate_record_granularity",
+          "arguments": {
+            "record_id": "REC-3401",
+            "pending_ref": "394c539eb1f6aeda27d6a358"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "f73327f01badc3274dd6e691"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_published_record",
+          "arguments": {
+            "publication_id": "53f1b41bb146efd8181901a5"
+          }
+        },
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 10280,
+      "output_tokens": 540,
+      "cached_input_tokens": 8448,
+      "reasoning_tokens": 210,
+      "cost_cny": 0.0011363200000000001,
+      "model_seconds": 6.767251179786399,
+      "wall_seconds": 6.778701233910397,
+      "first_request_sha256": "ba0102ee2077e555c5e1e83cafa0516d98a5c1cd431c67a5ff4913ad859dc7a5",
+      "first_message_sha256": "fd2fa9a1746bfec1f0374c8d4af807d146a5d2903e6aa437e4f7732d748ce109",
+      "action_trajectory_sha256": "9aefebef1a851b4acc3034df7125d2e4205c80203374e391eba02212a8326569",
+      "attempt_trajectory_sha256": "e1d31e72fa1cb3680ac94a81b102f54784c21a1abd4c5de524b7595bd6b755c3",
+      "answer": "Record REC-3401 has been successfully published with publication_id 53f1b41bb146efd8181901a5. The read-back confirms: record_id is REC-3401, content is \"Valve A: 12 units; Valve B: 8 units.\", and status is active."
+    },
+    {
+      "id": "047-api-01/03-M4",
+      "checkpoint": "M4",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 3,
+      "illegal": 0,
+      "binding_accepted": 3,
+      "sdk": 4,
+      "prefix_fee": "4",
+      "suffix_fee": "3",
+      "tool_sequence": [
+        "publish_verified_record",
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_primary_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 9206,
+      "output_tokens": 680,
+      "cached_input_tokens": 8192,
+      "reasoning_tokens": 403,
+      "cost_cny": 0.00107448,
+      "model_seconds": 7.728682076092809,
+      "wall_seconds": 7.739048585994169,
+      "first_request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+      "first_message_sha256": "dd493fd2b0929d5ada99133bf67a9bfa4cb2a6886f45b0b05dd4ec17140c35a4",
+      "action_trajectory_sha256": "01bbf605ff5c4327b8c6a6267c297361d33c069d551e52480006b2c9a2a2af3e",
+      "attempt_trajectory_sha256": "1f09b3c4556dd8c25928b9309a92822c1484273073f0a666fab1ff96794a7e0f",
+      "answer": "Blocked: The publication endpoint for publish_verified_record returned \"unavailable\" errors on multiple attempts, preventing the publication from being committed. After exhausting the tool call budget of 7, the task could not be completed."
+    },
+    {
+      "id": "047-api-01/04-M4",
+      "checkpoint": "M4",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 3,
+      "illegal": 0,
+      "binding_accepted": 3,
+      "sdk": 4,
+      "prefix_fee": "4",
+      "suffix_fee": "3",
+      "tool_sequence": [
+        "publish_verified_record",
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_primary_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        }
+      ],
+      "budget_rejections": 1,
+      "input_tokens": 9208,
+      "output_tokens": 467,
+      "cached_input_tokens": 8448,
+      "reasoning_tokens": 138,
+      "cost_cny": 0.00086352,
+      "model_seconds": 5.591234608087689,
+      "wall_seconds": 5.628412107937038,
+      "first_request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+      "first_message_sha256": "dd493fd2b0929d5ada99133bf67a9bfa4cb2a6886f45b0b05dd4ec17140c35a4",
+      "action_trajectory_sha256": "4da5105abcbbbd3b73b7133381be34aac738b63069494cd64772258ecbd54663",
+      "attempt_trajectory_sha256": "5643fc93dfaa383db9ae3b3c7966ec1258e077c58c10ada7705b1595c7384f4c",
+      "answer": null
+    },
+    {
+      "id": "047-api-01/05-M4",
+      "checkpoint": "M4",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 3,
+      "illegal": 0,
+      "binding_accepted": 3,
+      "sdk": 4,
+      "prefix_fee": "4",
+      "suffix_fee": "3",
+      "tool_sequence": [
+        "publish_verified_record",
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_primary_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        }
+      ],
+      "budget_rejections": 1,
+      "input_tokens": 9226,
+      "output_tokens": 493,
+      "cached_input_tokens": 8192,
+      "reasoning_tokens": 164,
+      "cost_cny": 0.00092888,
+      "model_seconds": 6.173653243109584,
+      "wall_seconds": 6.1851554568856955,
+      "first_request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+      "first_message_sha256": "36eb497d328cb845073fe40bd1dfca5d384a1dbf87c6c7e8722e1b577b2ffa50",
+      "action_trajectory_sha256": "4da5105abcbbbd3b73b7133381be34aac738b63069494cd64772258ecbd54663",
+      "attempt_trajectory_sha256": "5643fc93dfaa383db9ae3b3c7966ec1258e077c58c10ada7705b1595c7384f4c",
+      "answer": null
+    },
+    {
+      "id": "047-api-01/06-M4",
+      "checkpoint": "M4",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 3,
+      "illegal": 0,
+      "binding_accepted": 3,
+      "sdk": 4,
+      "prefix_fee": "4",
+      "suffix_fee": "3",
+      "tool_sequence": [
+        "publish_verified_record",
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_primary_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        }
+      ],
+      "budget_rejections": 1,
+      "input_tokens": 9236,
+      "output_tokens": 486,
+      "cached_input_tokens": 8448,
+      "reasoning_tokens": 157,
+      "cost_cny": 0.00088432,
+      "model_seconds": 6.688134407857433,
+      "wall_seconds": 6.699464295990765,
+      "first_request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+      "first_message_sha256": "1e12051b83eb5867e1ac93c1b3ee2b1d46bbe5b1a899c8e28b815739dba220e5",
+      "action_trajectory_sha256": "4da5105abcbbbd3b73b7133381be34aac738b63069494cd64772258ecbd54663",
+      "attempt_trajectory_sha256": "5643fc93dfaa383db9ae3b3c7966ec1258e077c58c10ada7705b1595c7384f4c",
+      "answer": null
+    },
+    {
+      "id": "047-api-01/07-M4",
+      "checkpoint": "M4",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 3,
+      "illegal": 0,
+      "binding_accepted": 3,
+      "sdk": 4,
+      "prefix_fee": "4",
+      "suffix_fee": "3",
+      "tool_sequence": [
+        "publish_verified_record",
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_primary_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        }
+      ],
+      "budget_rejections": 1,
+      "input_tokens": 9191,
+      "output_tokens": 460,
+      "cached_input_tokens": 8192,
+      "reasoning_tokens": 131,
+      "cost_cny": 0.0008954799999999999,
+      "model_seconds": 5.363434217870235,
+      "wall_seconds": 5.376023248070851,
+      "first_request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+      "first_message_sha256": "8aaf2dc58b932cc6f9a0e25fc6c13e6852b83fbc0dda37f4e6d2954a8ad83fa9",
+      "action_trajectory_sha256": "4da5105abcbbbd3b73b7133381be34aac738b63069494cd64772258ecbd54663",
+      "attempt_trajectory_sha256": "5643fc93dfaa383db9ae3b3c7966ec1258e077c58c10ada7705b1595c7384f4c",
+      "answer": null
+    },
+    {
+      "id": "047-api-01/08-M4",
+      "checkpoint": "M4",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 3,
+      "illegal": 0,
+      "binding_accepted": 3,
+      "sdk": 4,
+      "prefix_fee": "4",
+      "suffix_fee": "3",
+      "tool_sequence": [
+        "publish_verified_record",
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_primary_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        }
+      ],
+      "budget_rejections": 1,
+      "input_tokens": 9246,
+      "output_tokens": 505,
+      "cached_input_tokens": 8192,
+      "reasoning_tokens": 176,
+      "cost_cny": 0.0009424800000000001,
+      "model_seconds": 6.137540443101898,
+      "wall_seconds": 6.148973488016054,
+      "first_request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+      "first_message_sha256": "790e2d63a29476fc1fafd0280464fea0f74b9181900c17b3f6984a7850baec54",
+      "action_trajectory_sha256": "4da5105abcbbbd3b73b7133381be34aac738b63069494cd64772258ecbd54663",
+      "attempt_trajectory_sha256": "5643fc93dfaa383db9ae3b3c7966ec1258e077c58c10ada7705b1595c7384f4c",
+      "answer": null
+    },
+    {
+      "id": "047-api-01/09-M4",
+      "checkpoint": "M4",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 3,
+      "illegal": 0,
+      "binding_accepted": 3,
+      "sdk": 4,
+      "prefix_fee": "4",
+      "suffix_fee": "3",
+      "tool_sequence": [
+        "publish_verified_record",
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_primary_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        }
+      ],
+      "budget_rejections": 1,
+      "input_tokens": 9263,
+      "output_tokens": 509,
+      "cached_input_tokens": 8192,
+      "reasoning_tokens": 180,
+      "cost_cny": 0.0009490799999999999,
+      "model_seconds": 6.014856701949611,
+      "wall_seconds": 6.026227846974507,
+      "first_request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+      "first_message_sha256": "06be158314846505c90642ae1e15cc63943a4f7c44adbf7655854d7249a1c969",
+      "action_trajectory_sha256": "4da5105abcbbbd3b73b7133381be34aac738b63069494cd64772258ecbd54663",
+      "attempt_trajectory_sha256": "5643fc93dfaa383db9ae3b3c7966ec1258e077c58c10ada7705b1595c7384f4c",
+      "answer": null
+    },
+    {
+      "id": "047-api-01/10-M4",
+      "checkpoint": "M4",
+      "variant": null,
+      "contract": "original",
+      "blind_id": null,
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 3,
+      "illegal": 0,
+      "binding_accepted": 3,
+      "sdk": 4,
+      "prefix_fee": "4",
+      "suffix_fee": "3",
+      "tool_sequence": [
+        "publish_verified_record",
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "model_actions": [
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "read_primary_record",
+          "arguments": {
+            "record_id": "REC-3401"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        },
+        {
+          "type": "tool_call",
+          "tool": "publish_verified_record",
+          "arguments": {
+            "record_id": "REC-3401",
+            "content": "Valve A: 12 units; Valve B: 8 units.",
+            "evidence_ref": "2143291bb5381346922b77a3"
+          }
+        }
+      ],
+      "budget_rejections": 1,
+      "input_tokens": 9303,
+      "output_tokens": 537,
+      "cached_input_tokens": 8192,
+      "reasoning_tokens": 208,
+      "cost_cny": 0.00097948,
+      "model_seconds": 6.0937414260115474,
+      "wall_seconds": 6.106527587864548,
+      "first_request_sha256": "5deaf3f95395e96e5119efe47b9b70dc9b9917da6bd31b9a194679d303f4baec",
+      "first_message_sha256": "e9aab045f60324ba55b23f08db4ba9c670e8b115aaad554c56947942497e6627",
+      "action_trajectory_sha256": "4da5105abcbbbd3b73b7133381be34aac738b63069494cd64772258ecbd54663",
+      "attempt_trajectory_sha256": "5643fc93dfaa383db9ae3b3c7966ec1258e077c58c10ada7705b1595c7384f4c",
+      "answer": null
+    },
+    {
+      "id": "046-real-agent-01/01-BW0N1-C0",
+      "checkpoint": "M4",
+      "variant": "BW0N1",
+      "contract": "C0",
+      "blind_id": "K08",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1899,
+      "output_tokens": 1123,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1103,
+      "cost_cny": null,
+      "model_seconds": 14.704654843080789,
+      "wall_seconds": 14.712588503956795,
+      "first_request_sha256": "958dc9e9042278f3cbc9a725f1108e9a6cadfe22f6f3f46fdde57b951b70bd81",
+      "first_message_sha256": "8277d27f7181bdc7020d0e693c4df1246336ac9e341d6af3df5e813d371c432a",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record failed with \"Publication endpoint unavailable; no publication was committed\""
+    },
+    {
+      "id": "046-real-agent-01/02-BW0N1-C1",
+      "checkpoint": "M4",
+      "variant": "BW0N1",
+      "contract": "C1",
+      "blind_id": "K18",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1952,
+      "output_tokens": 1035,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1012,
+      "cost_cny": null,
+      "model_seconds": 14.160746132023633,
+      "wall_seconds": 14.16974950185977,
+      "first_request_sha256": "9a5f0e54d44ef51887ea1a81efa5dea3f200278328c60c0c6fc82d5ffe9fba32",
+      "first_message_sha256": "4139e080dfcb8ed047af12717c6604c2897e9431af4a527f58111f68872eb3f2",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: Publication endpoint unavailable; no publication was committed after retry and no alternative approaches exist within budget."
+    },
+    {
+      "id": "046-real-agent-01/03-AW1N0-C1",
+      "checkpoint": "M4",
+      "variant": "AW1N0",
+      "contract": "C1",
+      "blind_id": "K20",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1965,
+      "output_tokens": 902,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 873,
+      "cost_cny": null,
+      "model_seconds": 11.478239672025666,
+      "wall_seconds": 11.48607399687171,
+      "first_request_sha256": "e715d91b97030eedb96358e91d03243a799a9bb025e6cd5ca62a3ab325145853",
+      "first_message_sha256": "57f52e15f6ce4ec6a5a057964a26a4a8c790019e38edbfb11df1a4e434f4753a",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record returned 'Publication endpoint unavailable; no publication was committed' after retry and no alternative approaches exist within budget."
+    },
+    {
+      "id": "046-real-agent-01/04-AW1N0-C0",
+      "checkpoint": "M4",
+      "variant": "AW1N0",
+      "contract": "C0",
+      "blind_id": "K10",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1912,
+      "output_tokens": 1085,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1055,
+      "cost_cny": null,
+      "model_seconds": 13.782181825023144,
+      "wall_seconds": 13.790228099096566,
+      "first_request_sha256": "ca3052c58f2fd90d5935f397d99aa1756c68f0327e6f8368fd1a316446ec83a8",
+      "first_message_sha256": "f16fdb8be1e34a8c9450ab06a7dcb96db47146bfdfaf0aa8480fdb392b90526f",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record failed with \"Publication endpoint unavailable; no publication was committed\" and no alternative tools available to publish the record."
+    },
+    {
+      "id": "046-real-agent-01/05-CW1N1-C0",
+      "checkpoint": "M4",
+      "variant": "CW1N1",
+      "contract": "C0",
+      "blind_id": "K22",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1896,
+      "output_tokens": 1069,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1038,
+      "cost_cny": null,
+      "model_seconds": 13.665532869985327,
+      "wall_seconds": 13.674048509914428,
+      "first_request_sha256": "0f9c5b138da4c86d034720ec445f5a08015cc26db66f381106d4850ff562f539",
+      "first_message_sha256": "94b2c89bfaa820be001399a61f5958118758444b23b8cf823b8d863f7775618c",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: The publish_verified_record call failed with \"Publication endpoint unavailable; no publication was committed.\" No alternative tools exist to publish the record."
+    },
+    {
+      "id": "046-real-agent-01/06-CW1N1-C1",
+      "checkpoint": "M4",
+      "variant": "CW1N1",
+      "contract": "C1",
+      "blind_id": "K01",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1949,
+      "output_tokens": 861,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 834,
+      "cost_cny": null,
+      "model_seconds": 11.056944949086756,
+      "wall_seconds": 11.065158538054675,
+      "first_request_sha256": "cde47d7b31d2a2f13428f1207d8031fe038d3c0937fd4f60df5075256313150e",
+      "first_message_sha256": "7299cce0ae370f645f77b0e6d1fbe453bf7d4f0e67fb8a1ca04717cd6c2b3df0",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record returned \"Publication endpoint unavailable; no publication was committed\" after retry and no alternative approaches exist."
+    },
+    {
+      "id": "046-real-agent-01/07-AW1N1-C1",
+      "checkpoint": "M4",
+      "variant": "AW1N1",
+      "contract": "C1",
+      "blind_id": "K24",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1953,
+      "output_tokens": 1262,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1234,
+      "cost_cny": null,
+      "model_seconds": 16.446301098912954,
+      "wall_seconds": 16.454590201145038,
+      "first_request_sha256": "aa77907f93b8fd52d222252da1e21c0e884fb8436df4d468313a781cf0e4eccf",
+      "first_message_sha256": "54ba57649d676161a594c646640e67cc79caf3905999ce8c4a48aa1b348753ce",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record returned 'Publication endpoint unavailable; no publication was committed' after retry and no other alternative approaches exist."
+    },
+    {
+      "id": "046-real-agent-01/08-AW1N1-C0",
+      "checkpoint": "M4",
+      "variant": "AW1N1",
+      "contract": "C0",
+      "blind_id": "K05",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1900,
+      "output_tokens": 929,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 910,
+      "cost_cny": null,
+      "model_seconds": 12.427084633149207,
+      "wall_seconds": 12.435218088096008,
+      "first_request_sha256": "434f6a9de672be61d1a9ec6d59288a7558f2c460b3f8f4a7831ea843897d650a",
+      "first_message_sha256": "299860930e3080d5675272644c9db58db7b0eb8cb812b0f7f012bdee4d33b36c",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record failed with endpoint unavailable; no publication committed to verify."
+    },
+    {
+      "id": "046-real-agent-01/09-BW1N0-C0",
+      "checkpoint": "M4",
+      "variant": "BW1N0",
+      "contract": "C0",
+      "blind_id": "K16",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1912,
+      "output_tokens": 847,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 827,
+      "cost_cny": null,
+      "model_seconds": 12.596696845954284,
+      "wall_seconds": 12.604907311033458,
+      "first_request_sha256": "ab641d81e9cbd35ff3be73b60446548eb3764dc7c63d4ab36eb116806d012274",
+      "first_message_sha256": "ac65082e14b885709469b55799fd0188e9a34c9f851f0c9b063a92e7cdef604c",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record failed with \"Publication endpoint unavailable; no publication was committed\""
+    },
+    {
+      "id": "046-real-agent-01/10-BW1N0-C1",
+      "checkpoint": "M4",
+      "variant": "BW1N0",
+      "contract": "C1",
+      "blind_id": "K12",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1965,
+      "output_tokens": 1471,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1443,
+      "cost_cny": null,
+      "model_seconds": 20.12852377211675,
+      "wall_seconds": 20.136965011944994,
+      "first_request_sha256": "565b17813971543ba882f5829a1fa880dd7acfcb3806b7213001110db80c5e87",
+      "first_message_sha256": "4b2c376fc4c381dd0efe1f9ff79d2be0a07bbb157c00a1fd7cdef967b38d9e8d",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record returned 'Publication endpoint unavailable; no publication was committed' and no alternative tools to publish the record."
+    },
+    {
+      "id": "046-real-agent-01/11-AW0N0-C1",
+      "checkpoint": "M4",
+      "variant": "AW0N0",
+      "contract": "C1",
+      "blind_id": "K09",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1964,
+      "output_tokens": 840,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 805,
+      "cost_cny": null,
+      "model_seconds": 12.336484281113371,
+      "wall_seconds": 12.344985066913068,
+      "first_request_sha256": "4275e692e72ba76921ceee639e1696f61fc99362621b5ce9a34ab02fd79ce2b9",
+      "first_message_sha256": "93786c7c02d5e18ddac8d22694049048a1abec35ff298a738d9bd4641ca5673c",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nTask aborted: the publish_verified_record call returned \"Publication endpoint unavailable; no publication was committed\" after retry and no alternative publication paths exist within the tool budget."
+    },
+    {
+      "id": "046-real-agent-01/12-AW0N0-C0",
+      "checkpoint": "M4",
+      "variant": "AW0N0",
+      "contract": "C0",
+      "blind_id": "K17",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1911,
+      "output_tokens": 926,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 899,
+      "cost_cny": null,
+      "model_seconds": 12.622132302960381,
+      "wall_seconds": 12.630391495069489,
+      "first_request_sha256": "977eefc03a57bd1c3ff9c95cf9e350f13ad2c86c4c358f80337a2b207786d14f",
+      "first_message_sha256": "64e6b76b799f3f3fb8b4372a32eda38e7bbf0415788b8f32285f05961a4ff84b",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record returned \"Publication endpoint unavailable; no publication was committed\" after retry and no alternative approaches exist."
+    },
+    {
+      "id": "046-real-agent-01/13-BW1N1-C0",
+      "checkpoint": "M4",
+      "variant": "BW1N1",
+      "contract": "C0",
+      "blind_id": "K14",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1900,
+      "output_tokens": 1280,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1260,
+      "cost_cny": null,
+      "model_seconds": 17.397228230023757,
+      "wall_seconds": 17.406023981049657,
+      "first_request_sha256": "fb290f1841967288e9d7ea16b409bfb09469f673e2c4d5ab711b0b82d04248f0",
+      "first_message_sha256": "9725850ca6e5d4c29b6c5b35918ac59296f3f3a6b818f81bc9dec657042c5692",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record failed with 'Publication endpoint unavailable; no publication was committed'"
+    },
+    {
+      "id": "046-real-agent-01/14-BW1N1-C1",
+      "checkpoint": "M4",
+      "variant": "BW1N1",
+      "contract": "C1",
+      "blind_id": "K21",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1953,
+      "output_tokens": 1132,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1100,
+      "cost_cny": null,
+      "model_seconds": 16.726650144904852,
+      "wall_seconds": 16.737961806124076,
+      "first_request_sha256": "d0c92dee90aa79b6f8d52ebacc6e1fc7571995932b50ada98a9722fa7b999fab",
+      "first_message_sha256": "33ac86301056ad644a6616c160d49d71c2f7d85e4b911906a9d2d897113ec782",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: The publish_verified_record call failed with \"Publication endpoint unavailable; no publication was committed\" and no alternative tools exist to publish the record."
+    },
+    {
+      "id": "046-real-agent-01/15-AW0N1-C1",
+      "checkpoint": "M4",
+      "variant": "AW0N1",
+      "contract": "C1",
+      "blind_id": "K13",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1952,
+      "output_tokens": 860,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 829,
+      "cost_cny": null,
+      "model_seconds": 12.637525730067864,
+      "wall_seconds": 12.650431331945583,
+      "first_request_sha256": "82c95c4180713f5044916a88b7a279bdd4489cc0f138c2862303b963b8b005d1",
+      "first_message_sha256": "d4968e76ad1ccc0e97d1d5f07ec10e6fe981b2b68ed5173ae74ace8bded84a49",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record returned 'Publication endpoint unavailable; no publication was committed' after retry and no alternative publication paths exist within tool budget."
+    },
+    {
+      "id": "046-real-agent-01/16-AW0N1-C0",
+      "checkpoint": "M4",
+      "variant": "AW0N1",
+      "contract": "C0",
+      "blind_id": "K04",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1899,
+      "output_tokens": 836,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 822,
+      "cost_cny": null,
+      "model_seconds": 11.439799085026607,
+      "wall_seconds": 11.448274417081848,
+      "first_request_sha256": "3826ec184166fd0f431bf6b5997bfe6a5344786031b204c5053925a1d88ce308",
+      "first_message_sha256": "b30eeb03fc5b338344302b09a5065046475ea21ca09e70b172554647cce57c21",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: Publication endpoint unavailable; no publication was committed."
+    },
+    {
+      "id": "046-real-agent-01/17-CW0N1-C0",
+      "checkpoint": "M4",
+      "variant": "CW0N1",
+      "contract": "C0",
+      "blind_id": "K23",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1895,
+      "output_tokens": 632,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 618,
+      "cost_cny": null,
+      "model_seconds": 8.702271609799936,
+      "wall_seconds": 8.711894253036007,
+      "first_request_sha256": "cb529193149d1d3939e0cfd23f13601339c60aecfad677a43b97f1ea609c1752",
+      "first_message_sha256": "b126883ba4d8540928c6ecaa231af5a29001f5a7324d1e0937e9986ab37cef8c",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: Publication endpoint unavailable; no publication was committed."
+    },
+    {
+      "id": "046-real-agent-01/18-CW0N1-C1",
+      "checkpoint": "M4",
+      "variant": "CW0N1",
+      "contract": "C1",
+      "blind_id": "K02",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1948,
+      "output_tokens": 900,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 879,
+      "cost_cny": null,
+      "model_seconds": 12.805260554887354,
+      "wall_seconds": 12.817089112941176,
+      "first_request_sha256": "ed8931c4b83965d22730e0d2bdf91e7bf9a2eca1efd12adf5eaa0cb982c54189",
+      "first_message_sha256": "cf1ffdf71f76531d5d5e15ff9ac3a12237c1445f47abbb5ce2ba57971f58fdd2",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: Publication endpoint unavailable; no publication was committed after retry and no alternative approaches exist."
+    },
+    {
+      "id": "046-real-agent-01/19-CW0N0-C1",
+      "checkpoint": "M4",
+      "variant": "CW0N0",
+      "contract": "C1",
+      "blind_id": "K19",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1960,
+      "output_tokens": 1540,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1512,
+      "cost_cny": null,
+      "model_seconds": 21.59977250196971,
+      "wall_seconds": 21.611456606071442,
+      "first_request_sha256": "087bd70a014d0815cc596964c6c4fcf5791ee033821938dd5cc04e4f56ad47a5",
+      "first_message_sha256": "269d01a7bb915d3c0bcbf13086d1c651d63a5acd7b22eb9a0647508909323a08",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record returned 'Publication endpoint unavailable; no publication was committed' after retry and no other alternative approaches exist."
+    },
+    {
+      "id": "046-real-agent-01/20-CW0N0-C0",
+      "checkpoint": "M4",
+      "variant": "CW0N0",
+      "contract": "C0",
+      "blind_id": "K03",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1907,
+      "output_tokens": 1017,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 993,
+      "cost_cny": null,
+      "model_seconds": 14.378126905998215,
+      "wall_seconds": 14.387281266972423,
+      "first_request_sha256": "493440b70c5b6dd2fdefe873c35d4675631e5fcc7fe5496ec9e62c85b2c0109e",
+      "first_message_sha256": "5d783f009fc8157f01b3c6032a072c9d1b0a92dcde64499d0fe91abb63f72fc5",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record returned 'Publication endpoint unavailable' and no alternative tools exist to commit the publication."
+    },
+    {
+      "id": "046-real-agent-01/21-BW0N0-C0",
+      "checkpoint": "M4",
+      "variant": "BW0N0",
+      "contract": "C0",
+      "blind_id": "K15",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1911,
+      "output_tokens": 898,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 870,
+      "cost_cny": null,
+      "model_seconds": 12.536867786897346,
+      "wall_seconds": 12.548131194896996,
+      "first_request_sha256": "9c8e95311217ea352f52a26c95cc42afb65993c47ec3b6a812df48c8c59bc555",
+      "first_message_sha256": "909260c71ad5efdb54e6721c98fe022a7f037ad56b085c0bae9663ec3510598b",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record returned \"Publication endpoint unavailable; no publication was committed\" after retry and no other alternative approaches exist."
+    },
+    {
+      "id": "046-real-agent-01/22-BW0N0-C1",
+      "checkpoint": "M4",
+      "variant": "BW0N0",
+      "contract": "C1",
+      "blind_id": "K07",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1964,
+      "output_tokens": 1271,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1239,
+      "cost_cny": null,
+      "model_seconds": 16.37523731100373,
+      "wall_seconds": 16.385981713887304,
+      "first_request_sha256": "af199d1d8d0db4991ab76e057e4ffe8371ff961b29684f8bf01f56488c4587ff",
+      "first_message_sha256": "6ac4281a83bb7204aa508f37f47f7d8e03475e64b9ec036789d017dd29106878",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: The publish_verified_record call failed with \"Publication endpoint unavailable; no publication was committed.\" after verification and no alternative tools exist to proceed."
+    },
+    {
+      "id": "046-real-agent-01/23-CW1N0-C1",
+      "checkpoint": "M4",
+      "variant": "CW1N0",
+      "contract": "C1",
+      "blind_id": "K11",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1961,
+      "output_tokens": 1232,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1197,
+      "cost_cny": null,
+      "model_seconds": 17.508219473063946,
+      "wall_seconds": 17.52091014292091,
+      "first_request_sha256": "d76e12c5c72595ebd5d6ad281f4ce2dffbef9a4cb4fef6f75c84f324525fb5e5",
+      "first_message_sha256": "5d7580560b32b80bfd3dd1acf2fc920c5e94b7bfe211993cf83a8e87380503ab",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record returned \"Publication endpoint unavailable; no publication was committed\" after validating evidence_ref, and no alternative publication paths exist within the tool budget."
+    },
+    {
+      "id": "046-real-agent-01/24-CW1N0-C0",
+      "checkpoint": "M4",
+      "variant": "CW1N0",
+      "contract": "C0",
+      "blind_id": "K06",
+      "strict": false,
+      "obligations": false,
+      "protocol": "pass",
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 1,
+      "prefix_fee": "4",
+      "suffix_fee": "0",
+      "tool_sequence": [],
+      "model_actions": [
+        {
+          "type": "final_answer",
+          "tool": null,
+          "arguments": null
+        }
+      ],
+      "budget_rejections": 0,
+      "input_tokens": 1908,
+      "output_tokens": 1042,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 1012,
+      "cost_cny": null,
+      "model_seconds": 14.12707086908631,
+      "wall_seconds": 14.139472697861493,
+      "first_request_sha256": "7b102c18504315ae5e59b5edd38e56f6e6ba5592ebb88a1a4e1e191175235d62",
+      "first_message_sha256": "89bf5022e230c2cd6bff9b639d090fe0e3bf2e07416bbb2aa1819f9aa5455493",
+      "action_trajectory_sha256": "dfcde654c895f168a380e9aa8511dcc21737be1ee60e68c858330c9f8d2531cc",
+      "attempt_trajectory_sha256": "c654dd2ad2709297c432028a3251777ea9f9d37f5b70047ea3bbcdce48b13b62",
+      "answer": "\n\nBlocked: publish_verified_record failed with \"Publication endpoint unavailable; no publication was committed\" and no alternative paths exist to complete the task."
+    }
+  ],
+  "groups": [
+    {
+      "run": "047-api-01",
+      "checkpoint": "M3",
+      "contract": "original",
+      "n": 3,
+      "strict": 3,
+      "obligations": 3,
+      "calls": 12,
+      "illegal": 0,
+      "binding_accepted": 12,
+      "sdk": 15,
+      "input_tokens": 30795,
+      "output_tokens": 1605,
+      "cached_input_tokens": 24064,
+      "reasoning_tokens": 625,
+      "model_seconds": 20.65626422362402,
+      "wall_seconds": 20.689061984885484,
+      "budget_rejections": 0,
+      "cost_cny": 0.00359276,
+      "suffix_fee": "18",
+      "prefix_fee": "9",
+      "unique_first_request": 1,
+      "unique_first_message": 3,
+      "unique_action_trajectory": 1,
+      "unique_attempt_trajectory": 1,
+      "unique_tool_sequences": 1
+    },
+    {
+      "run": "047-api-01",
+      "checkpoint": "M4",
+      "contract": "original",
+      "n": 10,
+      "strict": 0,
+      "obligations": 0,
+      "calls": 30,
+      "illegal": 0,
+      "binding_accepted": 30,
+      "sdk": 40,
+      "input_tokens": 92331,
+      "output_tokens": 5294,
+      "cached_input_tokens": 80512,
+      "reasoning_tokens": 2084,
+      "model_seconds": 63.506911255419254,
+      "wall_seconds": 63.64370760973543,
+      "budget_rejections": 8,
+      "cost_cny": 0.00981948,
+      "suffix_fee": "30",
+      "prefix_fee": "40",
+      "unique_first_request": 1,
+      "unique_first_message": 7,
+      "unique_action_trajectory": 2,
+      "unique_attempt_trajectory": 2,
+      "unique_tool_sequences": 1
+    },
+    {
+      "run": "046-real-agent-01",
+      "checkpoint": "M4",
+      "contract": "C0",
+      "n": 12,
+      "strict": 0,
+      "obligations": 0,
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 12,
+      "input_tokens": 22850,
+      "output_tokens": 11684,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 11407,
+      "model_seconds": 158.3796478069853,
+      "wall_seconds": 158.48845981806517,
+      "budget_rejections": 0,
+      "cost_cny": null,
+      "suffix_fee": "0",
+      "prefix_fee": "48",
+      "unique_first_request": 12,
+      "unique_first_message": 12,
+      "unique_action_trajectory": 1,
+      "unique_attempt_trajectory": 1,
+      "unique_tool_sequences": 1
+    },
+    {
+      "run": "046-real-agent-01",
+      "checkpoint": "M4",
+      "contract": "C1",
+      "n": 12,
+      "strict": 0,
+      "obligations": 0,
+      "calls": 0,
+      "illegal": 0,
+      "binding_accepted": 0,
+      "sdk": 12,
+      "input_tokens": 23486,
+      "output_tokens": 13306,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 12957,
+      "model_seconds": 183.25990562117659,
+      "wall_seconds": 183.38135303067975,
+      "budget_rejections": 0,
+      "cost_cny": null,
+      "suffix_fee": "0",
+      "prefix_fee": "48",
+      "unique_first_request": 12,
+      "unique_first_message": 12,
+      "unique_action_trajectory": 1,
+      "unique_attempt_trajectory": 1,
+      "unique_tool_sequences": 1
+    }
+  ]
+}

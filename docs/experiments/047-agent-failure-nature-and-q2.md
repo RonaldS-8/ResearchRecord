@@ -31,3 +31,9 @@ Gate46类型一/二原判据和安全条件原样沿用，不事后改。先将�
 端：main f4b2bbf，有既有044a文档及5份旧审计未提交，保留；model.env用户新建，单独忽略。云：main f4b2bbfd干净。最初SSH沙箱/自动审批Bad Request阻断，用户授权后恢复。云GitHub fetch主机密钥失败，使用本地已核验提交的git bundle进入隔离worktree，不改变主机信任配置。云端 Gate46 原8项CPU通过（0.613秒），不是模型成功；完整独立验收、哈希冻结和真实批次待后续记录。
 
 参考：官方[模型/价格](https://help.aliyun.com/zh/model-studio/qwen3-7-flash)、[Chat参数](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions/)、[思考预算](https://help.aliyun.com/zh/model-studio/deep-thinking/)，查阅2026-11-14；用户端点及账户实际可用性另以协议请求核验。
+
+## 完成与核验（2026-11-15归档）
+
+运行锁d6b5db4，216项CPU通过；首轮夹具/假客户端采样失败保留。API固定用户CN端点和快照，先2回合协议通过后按冻结规则推进：M3三次同轨迹停跑，M4两种终止行为扩至10上限，共13回合/55请求，strict M3=3/3、M4=0/10。实际工具序列各仅1种，不把重复当独立任务；usage成本0.01341224CNY（自动缓存按实际usage），无未结算请求，无额外收费功能。Gate46全部24条件/24请求完成，C0/C1均0/12，零后缀工具调用。总37回合独立实际参数重放/scorer一致；旧Gate45共375条索引SHA不变。
+
+首次遮蔽条件编码7af3d55先固定后关联：Gate46 A17/unknown7；API10失败主因unknown，8个预算外调用提议另列；B参数/纯格式0，满足正确理解前提的C主因未证实。没有格式诊断替代strict。最终建议Inconclusive，当前找新的真实Agent场景，暂不开发恢复决策算法，不修改Q2或旧结论。末4个Gate46请求与另一训练进程重叠，是延迟/运行混杂，不能声称全程独占；无OOM或请求错误、不重跑。详见[选题报告](../reviews/047-failure-nature-and-q2-decision.md)和[合同报告](../reviews/046-contract-clarity-acceptance-and-results.md)。云端临时密钥副本已删除，本地model.env保留且不入Git。原始轨迹留云端，派生计量/摘录/哈希进evidence/047。
