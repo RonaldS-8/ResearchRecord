@@ -157,6 +157,8 @@ def observe(agent, factory, scorer, output, *, seed, api=False, budget=None, ren
         result = run_episode(agent, session, request_limit=12, scorer=scorer)
     finally:
         agent.client = original_client
+    if (result.get('answer') or '').startswith(('Error:', 'Error during execution:')) and not errors:
+        errors.append('NativeProtocolError')
     # Replay only actual raw arguments; never repair them or supply missing continuation.
     replay = factory()
     for event in session.events[prefix:]:

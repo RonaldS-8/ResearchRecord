@@ -38,6 +38,7 @@ class Gate47Tests(unittest.TestCase):
     def test_native_raw_parameters_replayed_without_repair(self):
         with TemporaryDirectory() as d:
             agent, requests = client_agent(alternate_plan('BW0N1'))
+            agent.temperature, agent.max_tokens, agent.request_timeout = 0, 6144, 120
             # Fake helper lacks finish_reason; real SDK protocol validation requires it.
             original = agent.client.chat.completions.create
             def backend(**kwargs):
