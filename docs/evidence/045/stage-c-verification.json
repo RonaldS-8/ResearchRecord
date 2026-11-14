@@ -1,0 +1,23 @@
+{
+  "source_commit": "e66294b6",
+  "inventory_path": "results/045-stage-c-feasibility-01/source-inventory.json",
+  "inventory_sha256": "ec4c7219bd624454e672bf58d1efd20f377cfcf0cb37bc4d547fc9b3eaeaf668",
+  "config_count": 94,
+  "classification_counts": {
+    "other_contract_or_unclassified_not_authorized": 56,
+    "CPU_protocol_excluded": 6,
+    "real_Agent_development_evaluation_excluded": 24,
+    "fake_SDK_excluded": 8
+  },
+  "checks": {
+    "inventory_hashes": true,
+    "AB_raw_hashes": true,
+    "AB_complete": true,
+    "training_pool_unchanged": true
+  },
+  "AB_raw_files_verified": 93,
+  "approved_eligible_training_manifest_count": 0,
+  "scope_limit": "config inventory is not exhaustive episode discovery; missing provenance is not proof no usable history exists",
+  "model_calls_added": 0,
+  "fitted_models_added": 0
+}
