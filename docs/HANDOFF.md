@@ -167,3 +167,7 @@ Gate 9 单任务 MVP 已验收。Gate 10 移除了对 Gate 7 的直接依赖，�
 ### Gate45-C 检查与方案提交完成
 
 94份来源config与93个A/B原始证据哈希复核通过；24份真实开发评估/8假SDK/6CPU协议排除，其余56不自动授权。合格训练manifest仍0、无新增模型调用/拟合。见experiments/045c-training-feasibility-and-collection-plan.md及evidence/045/stage-c-verification.json。已提交24回合/12小时待审批采集候选、消融与家族设计；当前仅阶段C准备完成，采集/五组对照未运行，A/B行为报告暂缓。新采集须用户单独批准并冻结精确提示等启动材料，不能将建议分配当实际动作随机化或将同任务新引用称为结构独立。
+
+### Gate45-C采集已获明确授权，启动准备通过
+
+用户“授权启动”批准045c方案24回合、12小时硬限；原36小时窗口不重置。全仓203项CPU通过，24份精确公共提示/工具/随机建议分配冻结docs/evidence/045c/freeze.json。运行入口scripts/run_gate45c.sh，结果results/045c-training-01，服务results/045c-service-01。无强制首动作/参数代办；仅候选训练导出，未拟合方法，不自动启动五组对照。若stopped.json存在保留失败不替补，后续先核验终态/来源资格再考虑拟合。

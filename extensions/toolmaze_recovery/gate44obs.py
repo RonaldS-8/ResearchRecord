@@ -34,10 +34,17 @@ def check_frozen(mechanism, arm, agent, session):
     return messages
 
 
-def observe(agent, mechanism, arm, output, render, *, evidence_kind, deadline=None, seed=SEED, run_id=RUN_ID):
+def observe(agent, mechanism, arm, output, render, *, evidence_kind, deadline=None, seed=SEED, run_id=RUN_ID, collection_session=None, collection_advice=None):
     """Same entry for fake SDK tests and approved real SDK; render is offline tokenizer."""
-    session = restored(mechanism)
-    check_frozen(mechanism, arm, agent, session)
+    session = collection_session if collection_session is not None else restored(mechanism)
+    if collection_session is None:
+        check_frozen(mechanism, arm, agent, session)
+        advice = treatment(arm, session.view(), empty_training())
+    else:
+        if run_id != '045c-training-01' or not isinstance(collection_advice, str):
+            raise ValueError('Unregistered collection override')
+        initialize(agent, session)
+        advice = collection_advice
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     (output / 'config.json').write_text(json.dumps({'run_id': run_id, 'model': MODEL, 'revision': MODEL_REVISION,
@@ -97,7 +104,7 @@ def observe(agent, mechanism, arm, output, render, *, evidence_kind, deadline=No
     agent.client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
     start = perf_counter()
     try:
-        result = run_episode(AdviceAgent(agent, treatment(arm, session.view(), empty_training())), session, scorer=evaluate)
+        result = run_episode(AdviceAgent(agent, advice), session, scorer=evaluate)
     except Exception as exc:
         result = {**evaluate(session, None), 'error': repr(exc), 'history': agent.get_conversation_history()}
     finally:
