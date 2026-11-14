@@ -1,0 +1,288 @@
+{
+ "commit": "d04415b854972579c247d5dbacd831d6d0888a2b",
+ "uncommitted_changes": false,
+ "round": "d1",
+ "cell": "thin-M3-8",
+ "seeds": "6030:6045",
+ "python": "3.14.7 | packaged by Anaconda, Inc. | (main, Aug 14 2026, 10:12:46) [MSC v.1942 64 bit (AMD64)]",
+ "platform": "Windows-11-10.0.26200-SP0",
+ "command": "D:\\users\\018574\\Research\\extensions\\toolmaze_recovery\\belief_rounds.py --out results/043a-r-02-corrected --round d1 --cell thin-M3-8 --seeds 6030:6045",
+ "result": {
+  "0.1": {
+   "public_optimum": [
+    "1",
+    "53/10",
+    5.3
+   ],
+   "blind_optimum_no_history": [
+    "1",
+    "169/30",
+    5.6333
+   ],
+   "seeds": 15,
+   "auto_k_counts": {
+    "300": {},
+    "3000": {}
+   },
+   "by_size": {
+    "300": {
+     "acv_strict": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 12,
+      "mean_completion": 0.87778,
+      "mean_fee": 5.26,
+      "wrong_first_action": 0.3333,
+      "materially_wrong_first_action": 0.1778,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.12222,
+      "completion_estimate_error": 0.12222,
+      "fee_estimate_bias": -0.3547
+     },
+     "acv_tol0.05": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 12,
+      "mean_completion": 0.87778,
+      "mean_fee": 5.26,
+      "wrong_first_action": 0.3333,
+      "materially_wrong_first_action": 0.1778,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.12222,
+      "completion_estimate_error": 0.12222,
+      "fee_estimate_bias": -0.3547
+     },
+     "acv_untried": {
+      "optimal_seeds": 3,
+      "material_regret_seeds": 5,
+      "mean_completion": 1.0,
+      "mean_fee": 5.5511,
+      "wrong_first_action": 0.3333,
+      "materially_wrong_first_action": 0.1778,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": -0.6458
+     },
+     "acv_within0.01_untried": {
+      "optimal_seeds": 3,
+      "material_regret_seeds": 5,
+      "mean_completion": 1.0,
+      "mean_fee": 5.5511,
+      "wrong_first_action": 0.3333,
+      "materially_wrong_first_action": 0.1778,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": -0.6458
+     },
+     "pooled_within0.01": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 14,
+      "mean_completion": 0.92889,
+      "mean_fee": 6.4044,
+      "wrong_first_action": 0.5333,
+      "materially_wrong_first_action": 0.3778,
+      "model_rejected_seeds": 6,
+      "completion_estimate_bias": 0.02589,
+      "completion_estimate_error": 0.02593,
+      "fee_estimate_bias": -2.165
+     },
+     "belief3_strict": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 5,
+      "mean_completion": 1.0,
+      "mean_fee": 5.5511,
+      "wrong_first_action": 0.3333,
+      "materially_wrong_first_action": 0.2889,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": -0.1979
+     },
+     "belief3_within0.01": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 9,
+      "mean_completion": 1.0,
+      "mean_fee": 5.7044,
+      "wrong_first_action": 0.1778,
+      "materially_wrong_first_action": 0.1556,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": -2e-05,
+      "completion_estimate_error": 2e-05,
+      "fee_estimate_bias": -0.6335
+     },
+     "belief3_priced0.01": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 7,
+      "mean_completion": 1.0,
+      "mean_fee": 5.6622,
+      "wrong_first_action": 0.2,
+      "materially_wrong_first_action": 0.1778,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": -0.5751
+     },
+     "belief3_priced0.05": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 7,
+      "mean_completion": 1.0,
+      "mean_fee": 5.6844,
+      "wrong_first_action": 0.1778,
+      "materially_wrong_first_action": 0.1556,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": -1e-05,
+      "completion_estimate_error": 1e-05,
+      "fee_estimate_bias": -0.6105
+     },
+     "belief3bic_within0.01": {
+      "optimal_seeds": 1,
+      "material_regret_seeds": 13,
+      "mean_completion": 0.96889,
+      "mean_fee": 6.4156,
+      "wrong_first_action": 0.4444,
+      "materially_wrong_first_action": 0.3556,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.03107,
+      "completion_estimate_error": 0.0311,
+      "fee_estimate_bias": -1.2963
+     }
+    },
+    "3000": {
+     "acv_strict": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 7,
+      "mean_completion": 0.94667,
+      "mean_fee": 5.4,
+      "wrong_first_action": 0.2889,
+      "materially_wrong_first_action": 0.1333,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.05333,
+      "completion_estimate_error": 0.05333,
+      "fee_estimate_bias": -0.1152
+     },
+     "acv_tol0.05": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 7,
+      "mean_completion": 0.94667,
+      "mean_fee": 5.4,
+      "wrong_first_action": 0.2889,
+      "materially_wrong_first_action": 0.1333,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.05333,
+      "completion_estimate_error": 0.05333,
+      "fee_estimate_bias": -0.1152
+     },
+     "acv_untried": {
+      "optimal_seeds": 1,
+      "material_regret_seeds": 7,
+      "mean_completion": 1.0,
+      "mean_fee": 5.56,
+      "wrong_first_action": 0.2889,
+      "materially_wrong_first_action": 0.1333,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": -0.2752
+     },
+     "acv_within0.01_untried": {
+      "optimal_seeds": 1,
+      "material_regret_seeds": 7,
+      "mean_completion": 1.0,
+      "mean_fee": 5.56,
+      "wrong_first_action": 0.2889,
+      "materially_wrong_first_action": 0.1333,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": -0.2752
+     },
+     "pooled_within0.01": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 7,
+      "mean_completion": 0.94667,
+      "mean_fee": 5.4,
+      "wrong_first_action": 0.2889,
+      "materially_wrong_first_action": 0.1333,
+      "model_rejected_seeds": 15
+     },
+     "belief3_strict": {
+      "optimal_seeds": 0,
+      "material_regret_seeds": 0,
+      "mean_completion": 1.0,
+      "mean_fee": 5.3422,
+      "wrong_first_action": 0.0889,
+      "materially_wrong_first_action": 0.0,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": 0.0326
+     },
+     "belief3_within0.01": {
+      "optimal_seeds": 1,
+      "material_regret_seeds": 1,
+      "mean_completion": 1.0,
+      "mean_fee": 5.4289,
+      "wrong_first_action": 0.0444,
+      "materially_wrong_first_action": 0.0222,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": -0.1517
+     },
+     "belief3_priced0.01": {
+      "optimal_seeds": 2,
+      "material_regret_seeds": 0,
+      "mean_completion": 1.0,
+      "mean_fee": 5.38,
+      "wrong_first_action": 0.0222,
+      "materially_wrong_first_action": 0.0,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": -0.1012
+     },
+     "belief3_priced0.05": {
+      "optimal_seeds": 2,
+      "material_regret_seeds": 1,
+      "mean_completion": 1.0,
+      "mean_fee": 5.42,
+      "wrong_first_action": 0.0444,
+      "materially_wrong_first_action": 0.0222,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": -0.1426
+     },
+     "belief3bic_within0.01": {
+      "optimal_seeds": 1,
+      "material_regret_seeds": 6,
+      "mean_completion": 1.0,
+      "mean_fee": 5.66,
+      "wrong_first_action": 0.2889,
+      "materially_wrong_first_action": 0.1333,
+      "model_rejected_seeds": 0,
+      "completion_estimate_bias": 0.0,
+      "completion_estimate_error": 0.0,
+      "fee_estimate_bias": -0.3651
+     }
+    }
+   },
+   "likelihood_fix_audit": {
+    "300": {
+     "exact_changes_restart": 1,
+     "exact_changes_states": 0,
+     "exact_changes_structure": 0,
+     "free_states_1": 6,
+     "free_states_2": 9
+    },
+    "3000": {
+     "exact_changes_restart": 0,
+     "exact_changes_states": 0,
+     "exact_changes_structure": 0,
+     "free_states_2": 8,
+     "free_states_3": 7
+    }
+   }
+  }
+ }
+}
