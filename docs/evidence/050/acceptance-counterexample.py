@@ -3,10 +3,13 @@ import ast
 from fractions import Fraction
 import json
 from pathlib import Path
+import subprocess
 
 root = Path(__file__).resolve().parents[3]
 source = root / 'extensions/toolmaze_recovery/gate50.py'
-tree = ast.parse(source.read_text())
+tree = ast.parse(subprocess.check_output(
+    ['git', 'show', 'd6a873aed468310422a6f7a1f6f8289f918eb445:extensions/toolmaze_recovery/gate50.py'],
+    cwd=root, text=True))
 functions = [n for n in tree.body if isinstance(n, ast.FunctionDef)
              and n.name in {'wilson', 'summarize'}]
 namespace = {'ARMS': ('R0', 'BTM', 'BTM_NR', 'H'), 'WORLDS': ('C', 'T', 'P'), 'F': Fraction}

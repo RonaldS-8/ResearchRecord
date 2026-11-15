@@ -158,6 +158,33 @@ class AnalysisTests(unittest.TestCase):
         self.assertGreater(high, 0.15)
         self.assertEqual(s["arms"]["BTM"]["by_world"]["C"]["k"], 4)
 
+    def test_execution_contaminated_budget_failures_cannot_trigger_go(self):
+        rows = self.rows(0, duplicate=False)
+        for row in rows:
+            if not row["strict_success"]:
+                row.update(budget_exhausted=True, illegal_calls=1)
+        s = g.summarize(rows)
+        btm = s["arms"]["BTM"]
+        self.assertEqual(btm["budget_failures"], 10)  # Raw observations retained.
+        self.assertEqual(btm["execution_contaminated_failures"], 10)
+        self.assertEqual(btm["mechanism_budget_failures"], 0)
+        self.assertEqual(s["btm_failure_share_duplicate_or_budget"], 0)
+        self.assertEqual(s["verdict"], "inconclusive")
+        for row in rows:
+            row["illegal_calls"] = 0
+        self.assertEqual(g.summarize(rows)["verdict"], "go")
+
+    def test_mixed_duplicate_failures_use_all_failures_as_denominator(self):
+        rows = self.rows(0)
+        failures = [r for r in rows if r["arm"] == "BTM" and not r["strict_success"]]
+        for row in failures[:6]:
+            row["illegal_calls"] = 1
+        s = g.summarize(rows)
+        self.assertEqual(s["arms"]["BTM"]["duplicate_failures"], 10)
+        self.assertEqual(s["arms"]["BTM"]["mechanism_duplicate_failures"], 4)
+        self.assertEqual(s["btm_failure_share_duplicate_or_budget"], 0.4)
+        self.assertEqual(s["verdict"], "inconclusive")
+
 
 class RunnerTests(unittest.TestCase):
     def test_lookup_then_verify_succeeds_in_committed_world_through_native_loop(self):

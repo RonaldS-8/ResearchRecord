@@ -345,6 +345,10 @@ def summarize(results, *, resamples=2000, seed=500050):
     for a in ARMS:
         rows = [r for w in WORLDS for r in cells[a, w]]
         failures = [r for r in rows if not r["strict_success"]]
+        # Conservative mechanism evidence: retain all failures in the denominator,
+        # but do not attribute execution-contaminated episodes to recovery decisions.
+        # This is an operational lower bound, not a causal label for illegal calls.
+        clean_failures = [r for r in failures if r["illegal_calls"] == 0]
         usage = [u for r in rows for u in r["raw_usage"] if u]
         arms[a] = {
             "strict_weighted": weighted(a),
@@ -354,6 +358,10 @@ def summarize(results, *, resamples=2000, seed=500050):
             "failures": len(failures),
             "duplicate_failures": sum(r["publications"] >= 2 for r in failures),
             "budget_failures": sum(r["publications"] < 2 and r["budget_exhausted"] for r in failures),
+            "execution_contaminated_failures": len(failures) - len(clean_failures),
+            "mechanism_duplicate_failures": sum(r["publications"] >= 2 for r in clean_failures),
+            "mechanism_budget_failures": sum(r["publications"] < 2 and r["budget_exhausted"]
+                                             for r in clean_failures),
             "illegal_calls": sum(r["illegal_calls"] for r in rows),
             "lookups_per_episode": sum(r["lookups"] for r in rows) / len(rows),
             "suffix_execution_fee": sum(float(F(r["suffix_execution_fee"])) for r in rows) / len(rows),
@@ -364,7 +372,7 @@ def summarize(results, *, resamples=2000, seed=500050):
     diffs = sorted(weighted("H", rng) - weighted("BTM", rng) for _ in range(resamples))
     diff = arms["H"]["strict_weighted"] - arms["BTM"]["strict_weighted"]
     btm = arms["BTM"]
-    mechanism = (btm["duplicate_failures"] + btm["budget_failures"]) / btm["failures"] if btm["failures"] else 0.0
+    mechanism = (btm["mechanism_duplicate_failures"] + btm["mechanism_budget_failures"]) / btm["failures"] if btm["failures"] else 0.0
     if arms["H"]["strict_weighted"] < 0.8:
         verdict = "invalid_hint_not_executed"
     elif diff >= 0.10 and mechanism >= 0.5:
