@@ -28,6 +28,7 @@ toolmaze_audit_report.json
 # Local credentials and editor files
 .env
 .env.*
+model.env
 !.env.example
 *.pem
 .DS_Store

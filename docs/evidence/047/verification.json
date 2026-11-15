@@ -1,0 +1,57 @@
+{
+  "old_gate45_entries": 375,
+  "old_gate45_changed": [],
+  "gpu_service_shutdown": "normal supervisor SIGTERM; engine teardown, no OOM",
+  "new_raw_files": 158,
+  "support_files": {
+    "results/047-cpu-acceptance-01/gate46-tests.log": "8bb5d0009f8b7135c645b01dbe561a53ed394de0378e1b4b255fca09052405e4",
+    "results/047-cpu-acceptance-02/tests-with-fixtures.log": "8a182b21415ac5ab912acf32a596f754619711aa07247607c0ce8cbccb876144",
+    "results/047-cpu-acceptance-02/acceptance.json": "265ff5f7fcd21a34c562673bf73d5ed8db65d385f1c578723eb13c69c3eb5f55",
+    "results/047-cpu-acceptance-02/tests.log": "60f7d4870550abe1cd5a781f0897834fcd8cf1d34fe164c0be14e15c1e9b7292",
+    "results/047-cpu-acceptance-02/freeze/payloads.json": "1da99a849dfa217826d3cb33358813a30349c2febec2099836ae4b859356d51d",
+    "results/047-cpu-acceptance-02/freeze/freeze.json": "b84c4ccf918102812ab43cf5884b84ec67c32781b86d5e14d2dc6951d9ff0bfe",
+    "results/046-service-01/supervisor.log": "f8e587bed2e0f2ee09cd8aab11e81950e75910882c517b6c5aff85968b87a790",
+    "results/046-service-01/launch-args.txt": "e77966938c028971b3e50d76544f7dc49d7ea23c4a894adb11ceefcf165c92f0",
+    "results/046-service-01/vllm.log": "c19d956b33643a1af9f2f1ee772c8b3616a6b2c1738d4b9c5394f220942668b6",
+    "results/046-service-01/service.pid": "6e4f80e8cc9f8e3badc1a2fb57f7fca6c691c45b07a4eb2841a4e0d954c4300b",
+    "results/046-service-01/models.json": "06fd27283346865b01fef0e607dbdacb75622a7917a2d5b65222f4de83f3056e",
+    "results/046-service-01/source-commit.txt": "bbb9765d1b4f0be5c8d34077e1293b953f9b04604344d6a9163a06b74b776ebb",
+    "results/046-service-01/gpu-before.txt": "152e5f29d8f113b9ad1762f49e718e552211f002bfd7f80bad92c0c60f901668",
+    "results/046-service-01/gpu-after.txt": "bb9ada68c4b6e38d11e2751d281c6a085becf942c8b4ee98c0f5efc23a1aa491",
+    "results/047-api-service-01/supervisor.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "results/047-api-service-01/source-commit.txt": "bbb9765d1b4f0be5c8d34077e1293b953f9b04604344d6a9163a06b74b776ebb"
+  },
+  "shared_gpu_overlap": {
+    "other_pid": 3046473,
+    "other_process_start_utc": "2026-11-14T15:50:07.160000+00:00",
+    "affected_requests": [
+      {
+        "condition": "21-BW0N0-C0",
+        "q": 1,
+        "started_utc": "2026-11-14T15:49:59.600752+00:00",
+        "finished_utc": "2026-11-14T15:50:12.144119+00:00"
+      },
+      {
+        "condition": "22-BW0N0-C1",
+        "q": 1,
+        "started_utc": "2026-11-14T15:50:12.151356+00:00",
+        "finished_utc": "2026-11-14T15:50:28.532673+00:00"
+      },
+      {
+        "condition": "23-CW1N0-C1",
+        "q": 1,
+        "started_utc": "2026-11-14T15:50:28.544468+00:00",
+        "finished_utc": "2026-11-14T15:50:46.059352+00:00"
+      },
+      {
+        "condition": "24-CW1N0-C0",
+        "q": 1,
+        "started_utc": "2026-11-14T15:50:46.071188+00:00",
+        "finished_utc": "2026-11-14T15:51:00.204780+00:00"
+      }
+    ],
+    "claim_limit": "No exclusive-GPU or fair wall-time comparison for affected requests; no reruns"
+  },
+  "temporary_cloud_credential_removed": true,
+  "credential_scan": "No API key in API result/service artifacts"
+}

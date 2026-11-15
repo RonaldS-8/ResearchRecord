@@ -1,3 +1,9 @@
+# Gate47 · 已完成，选题筛选Inconclusive（2026-11-15）
+
+Gate46来源9324eff，运行锁d6b5db4，独立分支gate47-audit，未合并PR/main。216项CPU通过。真实API13回合/55请求，M3 3/3、M4 0/10，usage成本0.01341224CNY；Gate46既定24条件/24请求，C0/C1均0/12。37回合真实参数独立重放/评分一致，旧Gate45共375条SHA未变；本轮原始轨迹留云端results/{047-api-01,046-real-agent-01}/，派生证据docs/evidence/047。
+
+[选题报告](reviews/047-failure-nature-and-q2-decision.md)、[Gate46合同报告与24回合表](reviews/046-contract-clarity-acceptance-and-results.md)。4B A17/unknown7，API M4主因unknown（8次预算外提议另列），无参数/纯格式损失，无足够证据确认正确理解合同后的C类主因。C1没有纠正；不能推出Q2不存在、强API普遍恢复困难或新算法必要。当前优先寻找新的真实Agent场景，暂不优化HMM/ACV/BTM或改Harness；任何后续实验另登记。末4个Gate46请求有共享GPU混杂，不补跑、不据此比较延迟。API临时云密钥已删，本地model.env保留，旧文件/无关改动保留。以下为历史交接记录。
+
 # Gate45-R 归因复核完成（2026-11-14）
 
 基准4ac9a25，25个M4测试+12个M4训练原始推理/行为逐回合证据、全部238请求哈希/批次审计见[45-R报告](reviews/045r-independent-attribution-audit.md)及evidence/045r/。本轮0模型/GPU调用，原375索引条目哈希未变，原计量与冻结合同不改。六项外审质疑已按用户原文逐项回应；初始SSH重置已恢复。

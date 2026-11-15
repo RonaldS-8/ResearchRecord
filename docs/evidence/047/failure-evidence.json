@@ -1,0 +1,1102 @@
+[
+  {
+    "id": "047-api-01/01-M4",
+    "blind_id": null,
+    "manifestation": "retry_read_retry_exhaustion",
+    "legal_alternative_identified": "U",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 151,
+        "quote": "The publication endpoint was unavailable, which means no publication was committed. I need to retry the publish_verified_record call. Let me try again.",
+        "reasoning_sha256": "01b16c3901ed647b880ac6d6b05ae2b43889ebfb337404d21c83e33c55370dc4"
+      },
+      {
+        "q": 2,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 140,
+        "quote": "The publication endpoint keeps failing. Let me try reading the primary record again to see if it's available now, and then retry publishing.",
+        "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13"
+      },
+      {
+        "q": 3,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 126,
+        "quote": "The primary record read is timing out. Let me try the publish again with the same evidence_ref since it was already validated.",
+        "reasoning_sha256": "22a35ff77e52c25ea4d320615efaef304ec93d8581782e34c73b8f5770be42a3"
+      },
+      {
+        "q": 4,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 532,
+        "quote": "The publication endpoint keeps returning \"unavailable\" errors. This seems to be a persistent issue. Let me check if I have any remaining budget and try one more time, or consider if there's an alternative approach.\n\nI've used:\n1. read_backup_record (1)\n2. validate_record_granularity (1)\n3. publish_verified_record (1) - failed\n4. publish_verified_record (1) - failed\n5. read_primary_record (1) - timeout\n6. publish_verified_record (1) - failed\n\nThat's 6 calls. I have 1 call left. Let me try once more with publish_verified_record.",
+        "reasoning_sha256": "395564f30c5c5c5bd3ca84a61b649b9495fda750d58092729a23d00c4a5a6e92"
+      }
+    ],
+    "secondary": "E budget miscount and unexecuted over-budget proposal"
+  },
+  {
+    "id": "047-api-01/02-M4",
+    "blind_id": null,
+    "manifestation": "retry_read_retry_exhaustion",
+    "legal_alternative_identified": "U",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 197,
+        "quote": "The publication endpoint was unavailable, which means no publication was committed. I need to retry the publication. Let me try again with the same parameters since the evidence_ref is still valid.",
+        "reasoning_sha256": "3b2e4adafe5d27e92999b4fec900f015238a995e3ffaa2eade08ab7f1aefdea8"
+      },
+      {
+        "q": 2,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 159,
+        "quote": "The publication endpoint keeps failing. Let me try reading the primary record again to see if it's available now, and then use its evidence_ref for publishing.",
+        "reasoning_sha256": "d4009d931c062a194d6072b04f9b2c047984b167b9b7c7e36b81b8796a2bd6f7"
+      },
+      {
+        "q": 3,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 167,
+        "quote": "The primary record endpoint is timing out. Let me try the publication again - maybe the backup evidence_ref is still valid and the publication endpoint might work now.",
+        "reasoning_sha256": "0eb4255734337cc6bc5c01e641d0be1e9a127084f808137ef400276998392724"
+      },
+      {
+        "q": 4,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 700,
+        "quote": "The publication endpoint keeps returning \"unavailable\" errors. This seems to be a persistent issue. Let me check if I have any remaining budget and try one more time. I've used:\n1. read_primary_record (timeout) - 1 call\n2. read_backup_record - 1 call\n3. validate_record_granularity - 1 call\n4. publish_verified_record (failed) - 1 call\n5. publish_verified_record (failed) - 1 call\n6. read_primary_record (timeout) - 1 call\n\nThat's 7 calls already, which is the budget limit. But wait, the task says \"Tool call budget: 7 total, including the observed prefix.\" So I may have already exceeded the budget.\n\nActually, let me recount. The \"observed prefix\" might refer to some initial call that was made be",
+        "reasoning_sha256": "4428a848f93e37ec9abfdf00a8fe7358fd9d235b0820971b475fc6d1e3c406a9"
+      }
+    ],
+    "secondary": "B retry/read/retry; motive U"
+  },
+  {
+    "id": "047-api-01/03-M4",
+    "blind_id": null,
+    "manifestation": "retry_read_retry_exhaustion",
+    "legal_alternative_identified": "U",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 151,
+        "quote": "The publication endpoint was unavailable, which means no publication was committed. I need to retry the publish_verified_record call. Let me try again.",
+        "reasoning_sha256": "01b16c3901ed647b880ac6d6b05ae2b43889ebfb337404d21c83e33c55370dc4"
+      },
+      {
+        "q": 2,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 140,
+        "quote": "The publication endpoint keeps failing. Let me try reading the primary record again to see if it's available now, and then retry publishing.",
+        "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13"
+      },
+      {
+        "q": 3,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 121,
+        "quote": "The primary record is timing out. Let me try the publish again with the same evidence_ref since it was already validated.",
+        "reasoning_sha256": "897065f798c0d7b5db0d9c6388b64809d13e01b1317fc5533fad737066392c00"
+      },
+      {
+        "q": 4,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 700,
+        "quote": "The publication endpoint keeps returning \"unavailable\" errors. This seems to be a persistent issue. Let me try one more time, and if it fails again, I'll need to report the task as blocked.\n\nActually, let me check - I've used 6 tool calls so far:\n1. read_primary_record (timeout)\n2. read_backup_record\n3. validate_record_granularity\n4. publish_verified_record (failed)\n5. publish_verified_record (failed)\n6. read_primary_record (timeout)\n7. publish_verified_record (failed)\n\nThat's 7 calls already. The budget is 7 total. I'm at the limit. But wait, let me count again:\n1. read_primary_record - call 1\n2. read_backup_record - call 2\n3. validate_record_granularity - call 3\n4. publish_verified_record ",
+        "reasoning_sha256": "859a913742cbeb0752a56b3222f15c08aaa5b4e44c01dca051cc9897323a199c"
+      }
+    ],
+    "secondary": "B retry/read/retry; motive U"
+  },
+  {
+    "id": "047-api-01/04-M4",
+    "blind_id": null,
+    "manifestation": "retry_read_retry_exhaustion",
+    "legal_alternative_identified": "U",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 151,
+        "quote": "The publication endpoint was unavailable, which means no publication was committed. I need to retry the publish_verified_record call. Let me try again.",
+        "reasoning_sha256": "01b16c3901ed647b880ac6d6b05ae2b43889ebfb337404d21c83e33c55370dc4"
+      },
+      {
+        "q": 2,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 140,
+        "quote": "The publication endpoint keeps failing. Let me try reading the primary record again to see if it's available now, and then retry publishing.",
+        "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13"
+      },
+      {
+        "q": 3,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 132,
+        "quote": "The primary record is timing out. Let me try the publish again since I already have a valid evidence_ref from the backup validation.",
+        "reasoning_sha256": "726eb7d826df1fa6959890f64853511e3c9b53cc24d9ec71b0c1c80c44476da7"
+      },
+      {
+        "q": 4,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 249,
+        "quote": "The publication endpoint keeps returning \"unavailable\" errors. I've used 6 tool calls so far (read_backup_record, validate_record_granularity, publish_verified_record x3, read_primary_record). I have 1 call left. Let me try one more time to publish.",
+        "reasoning_sha256": "c080469a9c02ada1f36b8c19bb14d552bbdc3e1141092617f365be4f76479a8e"
+      }
+    ],
+    "secondary": "E budget miscount and unexecuted over-budget proposal"
+  },
+  {
+    "id": "047-api-01/05-M4",
+    "blind_id": null,
+    "manifestation": "retry_read_retry_exhaustion",
+    "legal_alternative_identified": "U",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 173,
+        "quote": "The publication endpoint was unavailable, so no publication was committed. I need to retry the publish_verified_record call since the error confirms no publication was made.",
+        "reasoning_sha256": "362e22c92f57cf78ec9aad1422fb3e4ebd3b560acc9f44c2f9bc7c73b42d5e9d"
+      },
+      {
+        "q": 2,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 159,
+        "quote": "The publication endpoint keeps failing. Let me try reading the primary record again to see if it's available now, and then use its evidence_ref for publishing.",
+        "reasoning_sha256": "d4009d931c062a194d6072b04f9b2c047984b167b9b7c7e36b81b8796a2bd6f7"
+      },
+      {
+        "q": 3,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 151,
+        "quote": "The primary record read is timing out. Let me try the publish again with the same evidence_ref since the backup was validated and the content is known.",
+        "reasoning_sha256": "763d2ba2c5d944f6b0dc5034a5cc12766dccd0dd3313b3a76d57b86aa051d5dd"
+      },
+      {
+        "q": 4,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 313,
+        "quote": "The publication endpoint keeps returning \"unavailable\" errors. I've used 6 tool calls so far (read_backup_record, validate_record_granularity, publish_verified_record x3, read_primary_record). I have 1 call left. Let me try one more time to publish, and if it fails again, I'll need to report the task as blocked.",
+        "reasoning_sha256": "727f820881b293e951ce4749b16f6e77dfafcd0350f29be6668eee5948a00a97"
+      }
+    ],
+    "secondary": "E budget miscount and unexecuted over-budget proposal"
+  },
+  {
+    "id": "047-api-01/06-M4",
+    "blind_id": null,
+    "manifestation": "retry_read_retry_exhaustion",
+    "legal_alternative_identified": "U",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 197,
+        "quote": "The publication endpoint was unavailable, which means no publication was committed. I need to retry the publication. Let me try again with the same parameters since the evidence_ref is still valid.",
+        "reasoning_sha256": "3b2e4adafe5d27e92999b4fec900f015238a995e3ffaa2eade08ab7f1aefdea8"
+      },
+      {
+        "q": 2,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 159,
+        "quote": "The publication endpoint keeps failing. Let me try reading the primary record again to see if it's available now, and then use its evidence_ref for publishing.",
+        "reasoning_sha256": "d4009d931c062a194d6072b04f9b2c047984b167b9b7c7e36b81b8796a2bd6f7"
+      },
+      {
+        "q": 3,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 110,
+        "quote": "The primary record endpoint is timing out. Let me try the publication again - maybe it will succeed this time.",
+        "reasoning_sha256": "a8d926fbc280f611c938ab1456b14c2e4c81232169803c80fc0ba6884d2438a4"
+      },
+      {
+        "q": 4,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 290,
+        "quote": "The publication endpoint keeps failing. I've used 6 tool calls so far (read_backup_record, validate_record_granularity, publish_verified_record x3, read_primary_record). I have 1 call left. Let me try one more time to publish, and if it fails again, I'll need to report the task as blocked.",
+        "reasoning_sha256": "c0b2b3bf225e8c354691129d9b3e91378613f2dcc151ccb0fd7d498eb08650eb"
+      }
+    ],
+    "secondary": "E budget miscount and unexecuted over-budget proposal"
+  },
+  {
+    "id": "047-api-01/07-M4",
+    "blind_id": null,
+    "manifestation": "retry_read_retry_exhaustion",
+    "legal_alternative_identified": "U",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 133,
+        "quote": "The publication endpoint was unavailable, which means no publication was committed. I need to retry the publish_verified_record call.",
+        "reasoning_sha256": "3794bf8cd8ff19d0b09c20068ee5d867a7988848205ddcf5c77cc134b8d24227"
+      },
+      {
+        "q": 2,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 140,
+        "quote": "The publication endpoint keeps failing. Let me try reading the primary record again to see if it's available now, and then retry publishing.",
+        "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13"
+      },
+      {
+        "q": 3,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 121,
+        "quote": "The primary record is timing out. Let me try the publish again with the same evidence_ref since it was already validated.",
+        "reasoning_sha256": "897065f798c0d7b5db0d9c6388b64809d13e01b1317fc5533fad737066392c00"
+      },
+      {
+        "q": 4,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 249,
+        "quote": "The publication endpoint keeps returning \"unavailable\" errors. I've used 6 tool calls so far (read_backup_record, validate_record_granularity, publish_verified_record x3, read_primary_record). I have 1 call left. Let me try one more time to publish.",
+        "reasoning_sha256": "c080469a9c02ada1f36b8c19bb14d552bbdc3e1141092617f365be4f76479a8e"
+      }
+    ],
+    "secondary": "E budget miscount and unexecuted over-budget proposal"
+  },
+  {
+    "id": "047-api-01/08-M4",
+    "blind_id": null,
+    "manifestation": "retry_read_retry_exhaustion",
+    "legal_alternative_identified": "U",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 205,
+        "quote": "The publication endpoint was unavailable, which means no publication was committed. I need to retry the publish_verified_record call since the error indicates it committed no publication. Let me try again.",
+        "reasoning_sha256": "33c3a711686a14d7287ce4bfa82ef3097738545eab0820af1402ca671ce02698"
+      },
+      {
+        "q": 2,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 140,
+        "quote": "The publication endpoint keeps failing. Let me try reading the primary record again to see if it's available now, and then retry publishing.",
+        "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13"
+      },
+      {
+        "q": 3,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 204,
+        "quote": "The primary record endpoint is timing out. Let me try the publish again with the same evidence_ref since it was already validated. The backup read and validation succeeded, so I have a valid evidence_ref.",
+        "reasoning_sha256": "293a5e677cd513b1e0a4c73ae8d7216ef808449abe438ab91065648ae06b9990"
+      },
+      {
+        "q": 4,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 313,
+        "quote": "The publication endpoint keeps returning \"unavailable\" errors. I've used 6 tool calls so far (read_backup_record, validate_record_granularity, publish_verified_record x3, read_primary_record). I have 1 call left. Let me try one more time to publish, and if it fails again, I'll need to report the task as blocked.",
+        "reasoning_sha256": "727f820881b293e951ce4749b16f6e77dfafcd0350f29be6668eee5948a00a97"
+      }
+    ],
+    "secondary": "E budget miscount and unexecuted over-budget proposal"
+  },
+  {
+    "id": "047-api-01/09-M4",
+    "blind_id": null,
+    "manifestation": "retry_read_retry_exhaustion",
+    "legal_alternative_identified": "U",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 226,
+        "quote": "The publication endpoint was unavailable, which means no publication was committed. I need to retry the publish_verified_record call since the error confirms no publication was made.\n\nLet me try again with the same parameters.",
+        "reasoning_sha256": "036af85581abc02afd90534182566b061ad2e6c3581b72cbda98cb52c49dbd13"
+      },
+      {
+        "q": 2,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 140,
+        "quote": "The publication endpoint keeps failing. Let me try reading the primary record again to see if it's available now, and then retry publishing.",
+        "reasoning_sha256": "b46aee3aa2625cce22bd4b20d1f07db14c4e49fa9381273d8992a7eab1559a13"
+      },
+      {
+        "q": 3,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 211,
+        "quote": "The primary record is timing out. Let me try the publish again since I already have a valid evidence_ref from the backup validation. The error message says \"no publication was committed\" which means I can retry.",
+        "reasoning_sha256": "bc70e1a1a531c373c11e44d39a56eade7f35967d14178f1002c2e210890ac8fc"
+      },
+      {
+        "q": 4,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 303,
+        "quote": "The publication endpoint keeps returning \"unavailable\" errors. I've used 5 tool calls so far (read_backup_record, validate_record_granularity, publish_verified_record x3). I have 2 more calls remaining. Let me try one more time to publish, and if it fails again, I'll need to report the task as blocked.",
+        "reasoning_sha256": "bcac846a32fe06e57cdb8f17d49e316f1a8086a8380bc5fce58312538318e309"
+      }
+    ],
+    "secondary": "E budget miscount and unexecuted over-budget proposal"
+  },
+  {
+    "id": "047-api-01/10-M4",
+    "blind_id": null,
+    "manifestation": "retry_read_retry_exhaustion",
+    "legal_alternative_identified": "U",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 205,
+        "quote": "The publication endpoint was unavailable, which confirms that no publication was committed. I need to retry the publication. Let me try again with the same parameters since the evidence_ref is still valid.",
+        "reasoning_sha256": "542a7fcc32a11614eeb4823b0268e95446f2982436224d6bde75999a624a4c33"
+      },
+      {
+        "q": 2,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 159,
+        "quote": "The publication endpoint keeps failing. Let me try reading the primary record again to see if it's available now, and then use its evidence_ref for publishing.",
+        "reasoning_sha256": "d4009d931c062a194d6072b04f9b2c047984b167b9b7c7e36b81b8796a2bd6f7"
+      },
+      {
+        "q": 3,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 458,
+        "quote": "The primary record endpoint is timing out. Let me try the publication again - maybe the backup evidence_ref still works, or perhaps I need to use a different approach. Since the publish_verified_record endpoint shares a provider with read_primary_record, and read_primary_record is timing out, it's possible the publication endpoint will also fail.\n\nLet me try one more time with publish_verified_record using the same evidence_ref from the validated backup.",
+        "reasoning_sha256": "21962ebfc5147a5896b671d5e9b17d0edcfdc152568d2057232d991ad1c0c57d"
+      },
+      {
+        "q": 4,
+        "field": "reasoning_content",
+        "start": 0,
+        "end": 244,
+        "quote": "The publication endpoint keeps failing. I've used 6 tool calls so far (read_backup_record, validate_record_granularity, publish_verified_record x3, read_primary_record). I have 1 call left. Let me try one more time with publish_verified_record.",
+        "reasoning_sha256": "8695e4b2ddcf792358f53409f253f75559d78c38199cad282a079c8e760d1c70"
+      }
+    ],
+    "secondary": "E budget miscount and unexecuted over-budget proposal"
+  },
+  {
+    "id": "046-real-agent-01/01-BW0N1-C0",
+    "blind_id": "K08",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 3879,
+        "end": 3922,
+        "quote": "the user's task is to publish, not prepare.",
+        "reasoning_sha256": "6ef27dd2930cbe2d0530616e252f139cace01827e7d85a997f54d756919d98e2"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/02-BW0N1-C1",
+    "blind_id": "K18",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 4375,
+        "end": 4431,
+        "quote": "prepare_publication is for preparing but not publishing.",
+        "reasoning_sha256": "8b69ab6612113d572534ff1b9bb808d8652f3e77ef528df8c4b515b8a94130fe"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/03-AW1N0-C1",
+    "blind_id": "K20",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 2016,
+        "end": 2105,
+        "quote": "But the user wants a single publication, and the publish_verified_record is the main way.",
+        "reasoning_sha256": "bbe90437f1500c400a7224b06b46000503e6b24bf62725e18eecbcba43142b52"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/04-AW1N0-C0",
+    "blind_id": "K10",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 3654,
+        "end": 3721,
+        "quote": "But the user wants to publish the current record, not an alternate.",
+        "reasoning_sha256": "cdb38cca8725bd53325353f827796e637ba1651ab0722266e77ed0f0486b698a"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/05-CW1N1-C0",
+    "blind_id": "K22",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 2137,
+        "end": 2184,
+        "quote": "But the user's task is to publish, not prepare.",
+        "reasoning_sha256": "40cea853c58731d476ffe28a7d7979733e3bff1c8d794818f23da93904a260a0"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/06-CW1N1-C1",
+    "blind_id": "K01",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 2269,
+        "end": 2317,
+        "quote": "So the intended path is publish_verified_record.",
+        "reasoning_sha256": "02ff2e8a101d29b6e3ddd537ea6b8f11633869ee56528e7878075d68f4ec16d8"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/07-AW1N1-C1",
+    "blind_id": "K24",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 5064,
+        "end": 5121,
+        "quote": "the task requires publishing via publish_verified_record.",
+        "reasoning_sha256": "ba7f8e34ab6bae646618b2b6fe25b3ab0137b3c8fd8ef7b8a7958d5e1cb6ec24"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/08-AW1N1-C0",
+    "blind_id": "K05",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "U: no named prepare in available text",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 3489,
+        "end": 3537,
+        "quote": "there's no alternative path to get a publication",
+        "reasoning_sha256": "9c140a268a8474878583422a61e1efc05674c82d18c0b8fdb62f7d88e7c86299"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/09-BW1N0-C0",
+    "blind_id": "K16",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "U: no named prepare in available text",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 1691,
+        "end": 1748,
+        "quote": "Since the publish failed, there's no publication to read.",
+        "reasoning_sha256": "af51f1ec0ddb932b8ebebc6295310637d63d6844e91ebe294d83a2908880c82a"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/10-BW1N0-C1",
+    "blind_id": "K12",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 2633,
+        "end": 2674,
+        "quote": "but those are for alternate publications.",
+        "reasoning_sha256": "b0f73734609474ae29e478969910db80c5f81e6ca8ec53ca12c83e0384a695a6"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/11-AW0N0-C1",
+    "blind_id": "K09",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 2962,
+        "end": 2997,
+        "quote": "But the user wants exactly one copy",
+        "reasoning_sha256": "c071746d46dcc5459665433140fa33481d2b7daff76a0a9e7d415408fbd12867"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/12-AW0N0-C0",
+    "blind_id": "K17",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 2421,
+        "end": 2488,
+        "quote": "but the user wants to publish the current record, not an alternate.",
+        "reasoning_sha256": "ee025fc1cdeab52ef8247421c3cce97700bd418d3a9f84cd0e2bf02dc223495f"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/13-BW1N1-C0",
+    "blind_id": "K14",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 3722,
+        "end": 3830,
+        "quote": "But the user's task says \"publish a single copy\", so maybe they want to use publish_verified_record directly",
+        "reasoning_sha256": "6cdb250a2029fb504a0668fbe3f890f1c70fbf69a59346e73c336fdfb0e16539"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/14-BW1N1-C1",
+    "blind_id": "K21",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 2677,
+        "end": 2760,
+        "quote": "But the user wants to publish via publish_verified_record, not prepare_publication.",
+        "reasoning_sha256": "7782af9c0d6a8e0c68931137b299940c56e925b208877f0ac912f9b099ad5e81"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/15-AW0N1-C1",
+    "blind_id": "K13",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 3150,
+        "end": 3243,
+        "quote": "the other tools like prepare_publication and confirm_publication might not be applicable here",
+        "reasoning_sha256": "18902643577d149ef327456f6e7c9c1c4d2c4d74dae80eaf6f475a2439d5e01f"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/16-AW0N1-C0",
+    "blind_id": "K04",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "U: no named prepare in available text",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 3773,
+        "end": 3810,
+        "quote": "There's no other tool to handle this.",
+        "reasoning_sha256": "e55d3ad8d6cfd0277164edfcfa213bce9c6d5f2061650e161895967ff8c504b3"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/17-CW0N1-C0",
+    "blind_id": "K23",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "U: no named prepare in available text",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 1898,
+        "end": 1938,
+        "quote": "There's no alternative tool to fix this.",
+        "reasoning_sha256": "195b6aabad1a60f3d6171df0295a0c500c61e2c908b56579fbfe461d2d61bfec"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/18-CW0N1-C1",
+    "blind_id": "K02",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "U: no named prepare in available text",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 3851,
+        "end": 3882,
+        "quote": "there's no other tool to do it.",
+        "reasoning_sha256": "b705141a9d98480b8378d316599589232f6388d0b95ccfcc580cbd67827e8227"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/19-CW0N0-C1",
+    "blind_id": "K19",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 5049,
+        "end": 5135,
+        "quote": "the other tools are for alternate publications, which might not be the right path here",
+        "reasoning_sha256": "7eb74fecb1199e068887c70961dadcad22abea7eba3772fe9325b045a3c27a48"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/20-CW0N0-C0",
+    "blind_id": "K03",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "U: no named prepare in available text",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 3836,
+        "end": 3880,
+        "quote": "There's no other tool to publish the record.",
+        "reasoning_sha256": "e5733aba691bc8e40fbd147316fc5319e42998067819c0dff86f6a13221606d7"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/21-BW0N0-C0",
+    "blind_id": "K15",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 3619,
+        "end": 3675,
+        "quote": "but the task is to publish the record, not an alternate.",
+        "reasoning_sha256": "6aca3811f24d67a6cb9753f161298ba656f101b55323c86b2b6779006c1b0bcb"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/22-BW0N0-C1",
+    "blind_id": "K07",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 3831,
+        "end": 3886,
+        "quote": "So the intended path is through publish_verified_record",
+        "reasoning_sha256": "03cc6507a7e970e13740245dc635482cefa37b13b340f7e5e932aa6d560403f7"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/23-CW1N0-C1",
+    "blind_id": "K11",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "E: tool names noticed; legality not necessarily understood",
+    "alternative_satisfies_task": "E: excluded or misread",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "A",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 2705,
+        "end": 2800,
+        "quote": "But the user wants a single publication, so maybe the publish_verified_record is the right path",
+        "reasoning_sha256": "07989366230e98b8b67dbb0b4650025d7af2d913aad19213ccef5e6265ebc35c"
+      }
+    ]
+  },
+  {
+    "id": "046-real-agent-01/24-CW1N0-C0",
+    "blind_id": "K06",
+    "manifestation": "premature_stop",
+    "legal_alternative_identified": "U: no named prepare in available text",
+    "alternative_satisfies_task": "U",
+    "feedback_no_commit_understood": "E",
+    "selected_suffix_can_complete": false,
+    "initial_budget_feasible_better_path": "B: CPU verified prepare-confirm-readback, 3 calls",
+    "primary": "unknown",
+    "execution_semantic_error": false,
+    "format_error": false,
+    "recovery_decision_C_under_correct_understanding": "U",
+    "reasoning_is_causal_proof": false,
+    "sources": [
+      {
+        "q": 1,
+        "field": "reasoning",
+        "start": 2093,
+        "end": 2152,
+        "quote": "the tools available don't have a retry mechanism mentioned.",
+        "reasoning_sha256": "c3f5f879cbff1d5674c339b4bfbb608a225e7049a6c9ab5052cbcc17187c8a8e"
+      }
+    ]
+  }
+]

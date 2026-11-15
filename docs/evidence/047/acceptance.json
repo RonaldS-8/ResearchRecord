@@ -1,0 +1,17 @@
+{
+  "source_commit": "d6b5db4b8b486d468c954a8ce0acdf1d7998028c",
+  "tests": 216,
+  "passed": true,
+  "conditions": 24,
+  "token_range": [
+    1895,
+    1965
+  ],
+  "frozen_core_diff": "empty",
+  "files": {
+    "tests-with-fixtures.log": "8a182b21415ac5ab912acf32a596f754619711aa07247607c0ce8cbccb876144",
+    "tests.log": "60f7d4870550abe1cd5a781f0897834fcd8cf1d34fe164c0be14e15c1e9b7292",
+    "freeze/payloads.json": "1da99a849dfa217826d3cb33358813a30349c2febec2099836ae4b859356d51d",
+    "freeze/freeze.json": "b84c4ccf918102812ab43cf5884b84ec67c32781b86d5e14d2dc6951d9ff0bfe"
+  }
+}
