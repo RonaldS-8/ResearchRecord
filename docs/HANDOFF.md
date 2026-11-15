@@ -1,3 +1,7 @@
+# Gate50 GPU已提交运行（2026-11-15 20:15 新加坡时间）
+
+用户授权修正冲突后，提交2af1a6b锁定保守机制份额：含非法调用失败不进入机制分子、全部失败分母和原始计数保留。云端干净工作树 /tmp/gate50-2af1a6b，16项Gate50与5项防泄漏通过，脚本前置16项再次通过；三世界4836字节前缀SHA一致。模型revision与3.10.12/0.31.0/3.42.0核验通过，实际vLLM日志确认prefix caching关闭。专用tmux gate50-120运行原脚本120回合，首回合协议及真实实参独立重放通过；尚未完成，不下研究结论。路径与验收日志SHA见[evidence/050/launch.json](evidence/050/launch.json)。原有tmux未改动，GPU启动前空闲。以下保留初次阻断记录。
+
 # Gate50 独立验收阻断（2026-11-15）
 
 固定 lost-receipt d6a873a，独立记录分支 gate50-acceptance，未改冻结实现。SSH连续四次超时，未启动GPU、未取得云端状态。源码发现参数错误排除要求与 summarize 机制份额计数不一致；AST合成反例已复现，非Agent结果。本地完整测试导入缺yaml，云端CPU和防泄漏未复验。详见[验收报告](reviews/050-implementation-acceptance.md)。恢复连接并处理口径问题后再执行已授权120回合，不覆盖或补样。

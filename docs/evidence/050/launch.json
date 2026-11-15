@@ -1,0 +1,31 @@
+{
+  "status": "running; not final results",
+  "source_commit": "2af1a6b502690b35c537f6a4706772685ba73b5d",
+  "submitted_at_utc": "2026-11-15T12:15:18Z",
+  "cloud_checkout": "/tmp/gate50-2af1a6b",
+  "tmux": "gate50-120",
+  "command": "bash scripts/run_gate50.sh",
+  "plan_episodes": 120,
+  "prefix_caching": false,
+  "runtime": {"python": "3.10.12", "vllm": "0.31.0", "openai": "3.42.0"},
+  "model": "Qwen3-4B-Thinking-2507",
+  "revision": "768f209d9ea81521153ed38c47d515654e938aea",
+  "acceptance": {
+    "gate50_tests": 16,
+    "no_leakage_tests": 5,
+    "script_prelaunch_gate50_tests": 16,
+    "public_prefix_bytes": 4836,
+    "all_worlds_public_prefix_sha256": "d95b4bd509ec88b676d2c612be5cc2d1b9873b7abd3645318d9e50c321d89bdf",
+    "first_episode_protocol": "pass; actual-argument independent replay passed"
+  },
+  "cloud_archives": {
+    "acceptance": "/home/ubuntu/Song/Agent/results/050-acceptance-01",
+    "service": "/home/ubuntu/Song/Agent/results/050-service-01",
+    "episodes": "/home/ubuntu/Song/Agent/results/050-lost-receipt-01"
+  },
+  "acceptance_file_sha256": {
+    "preflight.json": "0a4cc76dd34013dec59d822b0ce88e2d606c845c335f9c6b7342a15fb08aefa7",
+    "gate50-tests.txt": "2e933aaf79dda005b4cfb4ec9d1f0c17c74ae601aa74af97a1ef9dce4c9a5947",
+    "no-leakage-tests.txt": "0926822b3951a1d7d76a0c21084a6b5ccd399f20557da09c3d1fec79d4e8cdd4"
+  }
+}
