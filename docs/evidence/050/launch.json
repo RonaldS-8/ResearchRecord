@@ -1,5 +1,5 @@
 {
-  "status": "running; not final results",
+  "status": "completed; exit code 0; 120/120 independently replayed",
   "source_commit": "2af1a6b502690b35c537f6a4706772685ba73b5d",
   "submitted_at_utc": "2026-11-15T12:15:18Z",
   "cloud_checkout": "/tmp/gate50-2af1a6b",
