@@ -1,3 +1,7 @@
+# Gate50 独立验收阻断（2026-11-15）
+
+固定 lost-receipt d6a873a，独立记录分支 gate50-acceptance，未改冻结实现。SSH连续四次超时，未启动GPU、未取得云端状态。源码发现参数错误排除要求与 summarize 机制份额计数不一致；AST合成反例已复现，非Agent结果。本地完整测试导入缺yaml，云端CPU和防泄漏未复验。详见[验收报告](reviews/050-implementation-acceptance.md)。恢复连接并处理口径问题后再执行已授权120回合，不覆盖或补样。
+
 # 实验 050 · 丢回执场景下 BTM 是否失效：CPU 准备完成，待 GPU 运行（2026-11-15）
 
 分支 `lost-receipt`（基于 gate47-audit）。Q2 方法线已提议止损（completion-headroom 分支 049 文档），本实验是给导师讨论的备选方向筛查，不改研究问题。新检查点 M5：发布超时，可能已提交但回执丢失，三个隐藏世界共用同一前缀。四组提示：R0、BTM（均匀信念）、BTM 去掉重试句、人工知情提示 H。CPU 参照：类 BTM 顺序 0.667，先查询再切换 1.000。14 项新测试和 9 个变异检查全部通过。判据与运行方法见 [实验 050](experiments/050-lost-receipt-btm-check.md)；GPU 用 `bash scripts/run_gate50.sh`，`test_no_leakage.py` 需在云端跑。

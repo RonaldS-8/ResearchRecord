@@ -1,5 +1,7 @@
 # 实验 050 · 丢回执场景下 BTM 是否失效（探索性筛查）
 
+> 2026-11-15 独立验收更新（不改以下冻结登记）：审阅固定提交 d6a873a，发现第5节参数失败排除与 summarize 的机制计数不一致；云端 SSH 四次超时。本轮未启动 GPU，云端 CPU/防泄漏尚未复验。见[验收报告](../reviews/050-implementation-acceptance.md)。
+
 2026-11-15 登记。分支 `lost-receipt`，基于 `gate47-audit`（346f635）。状态：**预登记，探索性**。只做 CPU 准备，GPU 运行由用户执行。
 
 本实验不改 AGENTS.md 的研究问题。Q2 方法线的止损结论见 `completion-headroom` 分支的 `docs/reviews/049-q2-stop-loss-decision.md`。本实验只为和导师讨论“以 BTM 的不足为切入点”这一备选方向提供证据。结果无论正负都保留。
