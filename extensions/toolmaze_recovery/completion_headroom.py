@@ -350,3 +350,42 @@ def grid(spec=GRID):
     keys = tuple(spec)
     for values in product(*(spec[k] for k in keys)):
         yield Cell(**dict(zip(keys, values)))
+
+
+def candidates(left, backup_calls=1):
+    """Round-3 rule family: every FIX-V candidate, in a fixed order that depends only
+    on the public budget and backup route length."""
+    out = [("seq", actions, end) for actions, end in sequences(left, backup_calls)]
+    for reads in range(1, left + 1):
+        for need in range(1, reads + 1):
+            for actions in orders(left - reads, WRITES, backup_calls):
+                for end in (FINISH, STOP):
+                    out.append(("vote", reads, need, actions, end))
+    return out
+
+
+def rule_value(cell, mass, rule):
+    if rule[0] == "seq":
+        return sequence_value(cell, mass, rule[1], rule[2])
+    return vote_value(cell, mass, *rule[1:])
+
+
+def candidate_values(cell):
+    """({label: (completions, fees)} over candidates(cell.left, cell.backup_calls), OPT)."""
+    rules = candidates(cell.left, cell.backup_calls)
+    out, cache, opt = {}, {}, (0.0, 0.0)
+    for label, mass in cell.roots().items():
+        values = [rule_value(cell, mass, r) for r in rules]
+        out[label] = ([v[0] for v in values], [v[1] for v in values])
+        c, f = optimum(cell, mass, cell.left, cache=cache)
+        opt = (opt[0] + c, opt[1] + f)
+    return out, opt
+
+
+def select(sums, count):
+    """Index of the best rule from (completions, fees) summed over `count` cells:
+    highest completion, ties within count*TIE broken by lower fee."""
+    completions, fees = sums
+    top = max(completions)
+    tie = TIE * count
+    return min((i for i, c in enumerate(completions) if c >= top - tie), key=lambda i: (fees[i], i))

@@ -141,5 +141,52 @@ class Invariants(unittest.TestCase):
         self.assertAlmostEqual(optimum(cell, mass, 0)[1], 0.0)
 
 
+class RuleTransfer(unittest.TestCase):
+    """Round 3: frozen rule tables keyed by public features only."""
+
+    def setUp(self):
+        import importlib.util
+        from pathlib import Path
+        path = Path(__file__).resolve().parents[1] / "scripts" / "run_rule_transfer.py"
+        spec = importlib.util.spec_from_file_location("run_rule_transfer", path)
+        self.rt = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.rt)
+        self.cells = [Cell(left=4, q_commit=0.3, read_fail=0.3, accuracy=0.8, p_switch=0.7),
+                      Cell(left=4, q_commit=0.5, split=(0.2, 0.4, 0.4), c_lost=0.3, backup_calls=2),
+                      Cell(left=4, q_commit=0.1, detail="strong", read_noise="lag")]
+        self.rows = [self.rt.compute(c) for c in self.cells]
+        self.table = self.rt.Table(self.cells, self.rows, ("left", "backup_calls"))
+
+    def test_single_cell_selection_reproduces_fix_v(self):
+        for i, cell in enumerate(self.cells):
+            gap = self.table.gaps(self.table.choose([i]), [i])[0][0]
+            v = evaluate(cell, vote=True)
+            self.assertAlmostEqual(gap, (v["opt"][0] - v["fix_v"][0]) * 100, places=7)
+
+    def test_rule_key_is_public_only(self):
+        rules = self.table.choose(range(3))
+        self.assertEqual({k[:2] for k in rules}, {(4, 1), (4, 2)})
+        self.assertEqual({k[2] for k in rules}, {"timeout", "error"})
+
+    def test_frozen_rule_never_beats_optimum(self):
+        rules = self.table.choose([0, 1])  # covers both public groups, as every registered split does
+        for gap, _ in self.table.gaps(rules, range(3)):
+            self.assertGreaterEqual(gap, -1e-7)
+
+    def test_select_breaks_completion_ties_by_fee(self):
+        self.assertEqual(ch.select(([0.5, 0.5 + 1e-12, 0.4], [2.0, 1.0, 0.1]), 1), 1)
+        self.assertEqual(ch.select(([0.5, 0.6], [0.1, 9.0]), 1), 1)
+        self.assertEqual(ch.select(([0.5 + 1e-12, 0.5], [2.0, 1.0]), 1), 1)
+
+    def test_vote_rules_are_in_the_family(self):
+        # Noisy read-backs: a k-read vote beats every fixed order by about 12 points.
+        cell = Cell(left=6, q_commit=0.5, accuracy=0.7, read_fee=0.1)
+        table = self.rt.Table([cell], [self.rt.compute(cell)], ("left", "backup_calls"))
+        v = evaluate(cell, vote=True)
+        self.assertGreater(v["fix_v"][0] - v["fix_x"][0], 0.1)
+        self.assertAlmostEqual(table.gaps(table.choose([0]), [0])[0][0],
+                               (v["opt"][0] - v["fix_v"][0]) * 100, places=7)
+
+
 if __name__ == "__main__":
     unittest.main()
