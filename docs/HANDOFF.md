@@ -1,3 +1,19 @@
+# Gate50 完成并独立验收（2026-11-15）
+
+源码2af1a6b，120回合/396请求，退出0，120次独立实参重放一致，非法调用0，GPU服务已清理。R0三世界均0/10；BTM和BTM_NR均C 0/10、T/P各10/10；H各10/10。BTM两组C失败均真实重复发布，没有预算耗尽；删除重试句未改变完成率，不能将损失只归因于强制重试。登记判据Go（H−BTM=33.33pp、机制份额1）；仅支持继续探索提交状态不确定与先查再写指导，不证明新算法或历史训练BTM局限。报告[050结果](reviews/050-lost-receipt-results.md)、[120回合表](reviews/050-agent-timelines.md)，摘要/派生计量/归档SHA索引在evidence/050，原始大文件留云端results/050-*。未新增实验，未合并PR。
+
+# Gate50 GPU已提交运行（2026-11-15 20:15 新加坡时间）
+
+用户授权修正冲突后，提交2af1a6b锁定保守机制份额：含非法调用失败不进入机制分子、全部失败分母和原始计数保留。云端干净工作树 /tmp/gate50-2af1a6b，16项Gate50与5项防泄漏通过，脚本前置16项再次通过；三世界4836字节前缀SHA一致。模型revision与3.10.12/0.31.0/3.42.0核验通过，实际vLLM日志确认prefix caching关闭。专用tmux gate50-120运行原脚本120回合，首回合协议及真实实参独立重放通过；尚未完成，不下研究结论。路径与验收日志SHA见[evidence/050/launch.json](evidence/050/launch.json)。原有tmux未改动，GPU启动前空闲。以下保留初次阻断记录。
+
+# Gate50 独立验收阻断（2026-11-15）
+
+固定 lost-receipt d6a873a，独立记录分支 gate50-acceptance，未改冻结实现。SSH连续四次超时，未启动GPU、未取得云端状态。源码发现参数错误排除要求与 summarize 机制份额计数不一致；AST合成反例已复现，非Agent结果。本地完整测试导入缺yaml，云端CPU和防泄漏未复验。详见[验收报告](reviews/050-implementation-acceptance.md)。恢复连接并处理口径问题后再执行已授权120回合，不覆盖或补样。
+
+# 实验 050 · 丢回执场景下 BTM 是否失效：CPU 准备完成，待 GPU 运行（2026-11-15）
+
+分支 `lost-receipt`（基于 gate47-audit）。Q2 方法线已提议止损（completion-headroom 分支 049 文档），本实验是给导师讨论的备选方向筛查，不改研究问题。新检查点 M5：发布超时，可能已提交但回执丢失，三个隐藏世界共用同一前缀。四组提示：R0、BTM（均匀信念）、BTM 去掉重试句、人工知情提示 H。CPU 参照：类 BTM 顺序 0.667，先查询再切换 1.000。14 项新测试和 9 个变异检查全部通过。判据与运行方法见 [实验 050](experiments/050-lost-receipt-btm-check.md)；GPU 用 `bash scripts/run_gate50.sh`，`test_no_leakage.py` 需在云端跑。
+
 # 实验 048 第三轮与实验 051（2026-11-15，CPU）
 
 规则冻结后迁移有余量（20.8% 测试格 ≥10 个百分点），049 止损建议暂停；051 在 50 条历史下 Go，收益主要来自估计故障机制。汇总与分支整理见[阶段报告 052](reviews/052-status-report-and-route-discovery.md)。

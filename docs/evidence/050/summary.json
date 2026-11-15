@@ -1,0 +1,178 @@
+{
+ "experiment": "050",
+ "run": "050-lost-receipt-01",
+ "source_commit": "2af1a6b502690b35c537f6a4706772685ba73b5d",
+ "arms": {
+  "R0": {
+   "strict_weighted": 0.0,
+   "by_world": {
+    "C": {
+     "k": 0,
+     "n": 10,
+     "wilson95": [
+      -2.7755575615628914e-17,
+      0.2775401687666166
+     ]
+    },
+    "T": {
+     "k": 0,
+     "n": 10,
+     "wilson95": [
+      -2.7755575615628914e-17,
+      0.2775401687666166
+     ]
+    },
+    "P": {
+     "k": 0,
+     "n": 10,
+     "wilson95": [
+      -2.7755575615628914e-17,
+      0.2775401687666166
+     ]
+    }
+   },
+   "failures": 30,
+   "duplicate_failures": 0,
+   "budget_failures": 0,
+   "execution_contaminated_failures": 0,
+   "mechanism_duplicate_failures": 0,
+   "mechanism_budget_failures": 0,
+   "illegal_calls": 0,
+   "lookups_per_episode": 0.0,
+   "suffix_execution_fee": 0.0,
+   "suffix_diagnostic_fee": 0.0,
+   "prompt_tokens_per_episode": 1518.0,
+   "completion_tokens_per_episode": 878.3
+  },
+  "BTM": {
+   "strict_weighted": 0.6666666666666666,
+   "by_world": {
+    "C": {
+     "k": 0,
+     "n": 10,
+     "wilson95": [
+      -2.7755575615628914e-17,
+      0.2775401687666166
+     ]
+    },
+    "T": {
+     "k": 10,
+     "n": 10,
+     "wilson95": [
+      0.7224598312333834,
+      1.0
+     ]
+    },
+    "P": {
+     "k": 10,
+     "n": 10,
+     "wilson95": [
+      0.7224598312333834,
+      1.0
+     ]
+    }
+   },
+   "failures": 10,
+   "duplicate_failures": 10,
+   "budget_failures": 0,
+   "execution_contaminated_failures": 0,
+   "mechanism_duplicate_failures": 10,
+   "mechanism_budget_failures": 0,
+   "illegal_calls": 0,
+   "lookups_per_episode": 0.0,
+   "suffix_execution_fee": 2.8666666666666667,
+   "suffix_diagnostic_fee": 0.0,
+   "prompt_tokens_per_episode": 11958.1,
+   "completion_tokens_per_episode": 2403.0666666666666
+  },
+  "BTM_NR": {
+   "strict_weighted": 0.6666666666666666,
+   "by_world": {
+    "C": {
+     "k": 0,
+     "n": 10,
+     "wilson95": [
+      -2.7755575615628914e-17,
+      0.2775401687666166
+     ]
+    },
+    "T": {
+     "k": 10,
+     "n": 10,
+     "wilson95": [
+      0.7224598312333834,
+      1.0
+     ]
+    },
+    "P": {
+     "k": 10,
+     "n": 10,
+     "wilson95": [
+      0.7224598312333834,
+      1.0
+     ]
+    }
+   },
+   "failures": 10,
+   "duplicate_failures": 10,
+   "budget_failures": 0,
+   "execution_contaminated_failures": 0,
+   "mechanism_duplicate_failures": 10,
+   "mechanism_budget_failures": 0,
+   "illegal_calls": 0,
+   "lookups_per_episode": 0.0,
+   "suffix_execution_fee": 3.0,
+   "suffix_diagnostic_fee": 0.0,
+   "prompt_tokens_per_episode": 10903.966666666667,
+   "completion_tokens_per_episode": 1866.9666666666667
+  },
+  "H": {
+   "strict_weighted": 1.0,
+   "by_world": {
+    "C": {
+     "k": 10,
+     "n": 10,
+     "wilson95": [
+      0.7224598312333834,
+      1.0
+     ]
+    },
+    "T": {
+     "k": 10,
+     "n": 10,
+     "wilson95": [
+      0.7224598312333834,
+      1.0
+     ]
+    },
+    "P": {
+     "k": 10,
+     "n": 10,
+     "wilson95": [
+      0.7224598312333834,
+      1.0
+     ]
+    }
+   },
+   "failures": 0,
+   "duplicate_failures": 0,
+   "budget_failures": 0,
+   "execution_contaminated_failures": 0,
+   "mechanism_duplicate_failures": 0,
+   "mechanism_budget_failures": 0,
+   "illegal_calls": 0,
+   "lookups_per_episode": 1.0,
+   "suffix_execution_fee": 2.3333333333333335,
+   "suffix_diagnostic_fee": 1.0,
+   "prompt_tokens_per_episode": 11531.433333333332,
+   "completion_tokens_per_episode": 2051.0333333333333
+  }
+ },
+ "h_minus_btm": 0.33333333333333337,
+ "h_minus_btm_bootstrap95": [
+  0.33333333333333337,
+  0.33333333333333337
+ ],
+ "btm_failure_share_duplicate_or_budget": 1.0,
+ "verdict": "go"
+}

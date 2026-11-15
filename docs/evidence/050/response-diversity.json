@@ -1,0 +1,46 @@
+{
+  "R0": {
+    "C": {
+      "first_response_distinct_excluding_ids": 10
+    },
+    "T": {
+      "first_response_distinct_excluding_ids": 10
+    },
+    "P": {
+      "first_response_distinct_excluding_ids": 10
+    }
+  },
+  "BTM": {
+    "C": {
+      "first_response_distinct_excluding_ids": 10
+    },
+    "T": {
+      "first_response_distinct_excluding_ids": 10
+    },
+    "P": {
+      "first_response_distinct_excluding_ids": 10
+    }
+  },
+  "BTM_NR": {
+    "C": {
+      "first_response_distinct_excluding_ids": 10
+    },
+    "T": {
+      "first_response_distinct_excluding_ids": 10
+    },
+    "P": {
+      "first_response_distinct_excluding_ids": 10
+    }
+  },
+  "H": {
+    "C": {
+      "first_response_distinct_excluding_ids": 10
+    },
+    "T": {
+      "first_response_distinct_excluding_ids": 10
+    },
+    "P": {
+      "first_response_distinct_excluding_ids": 10
+    }
+  }
+}
