@@ -1,3 +1,7 @@
+# 实验 050 · 丢回执场景下 BTM 是否失效：CPU 准备完成，待 GPU 运行（2026-11-15）
+
+分支 `lost-receipt`（基于 gate47-audit）。Q2 方法线已提议止损（completion-headroom 分支 049 文档），本实验是给导师讨论的备选方向筛查，不改研究问题。新检查点 M5：发布超时，可能已提交但回执丢失，三个隐藏世界共用同一前缀。四组提示：R0、BTM（均匀信念）、BTM 去掉重试句、人工知情提示 H。CPU 参照：类 BTM 顺序 0.667，先查询再切换 1.000。14 项新测试和 9 个变异检查全部通过。判据与运行方法见 [实验 050](experiments/050-lost-receipt-btm-check.md)；GPU 用 `bash scripts/run_gate50.sh`，`test_no_leakage.py` 需在云端跑。
+
 # Gate47 · 已完成，选题筛选Inconclusive（2026-11-15）
 
 Gate46来源9324eff，运行锁d6b5db4，独立分支gate47-audit，未合并PR/main。216项CPU通过。真实API13回合/55请求，M3 3/3、M4 0/10，usage成本0.01341224CNY；Gate46既定24条件/24请求，C0/C1均0/12。37回合真实参数独立重放/评分一致，旧Gate45共375条SHA未变；本轮原始轨迹留云端results/{047-api-01,046-real-agent-01}/，派生证据docs/evidence/047。
