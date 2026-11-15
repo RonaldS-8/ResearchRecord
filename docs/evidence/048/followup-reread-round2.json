@@ -1,0 +1,266 @@
+{
+ "experiment": "047",
+ "round": 2,
+ "followup": "fixed order with erroring read-backs repeated",
+ "commit": "2f9b2e2adda7fb68e5f6fa2dd5e29b2422f13c88",
+ "cells": 4608,
+ "cells_where_opt_beat_fix_v": 2871,
+ "headroom_pp_opt_minus_best_simple": {
+  "min": -2.220446049250313e-14,
+  "median": 0.0,
+  "p90": 1.5848591989439997,
+  "max": 5.672173304000017,
+  "share_ge_5pp": 0.0028211805555555555,
+  "share_ge_10pp": 0.0
+ },
+ "fee_gap_rel_when_completion_tied": {
+  "cells": 3102,
+  "median": 0.0,
+  "p90": 0.028783382789317503,
+  "max": 0.3444486628487207,
+  "share_ge_5pct": 0.08671824629271438
+ },
+ "top_cells": [
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.5,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 1,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "headroom_v_pp": 5.672173304000017,
+   "headroom_vr_pp": 5.672173304000017,
+   "fee_gap_rel": null,
+   "rule": {
+    "timeout": [
+     "fix_v",
+     4,
+     2,
+     [
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     "fix_v",
+     4,
+     2,
+     [
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   }
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.5,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.8,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 1,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "headroom_v_pp": 5.672173304000017,
+   "headroom_vr_pp": 5.672173304000017,
+   "fee_gap_rel": null,
+   "rule": {
+    "timeout": [
+     "fix_v",
+     4,
+     2,
+     [
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     "fix_v",
+     4,
+     2,
+     [
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   }
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.5,
+    "split": [
+     0.3,
+     0.5,
+     0.2
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 1,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "headroom_v_pp": 5.705356048000009,
+   "headroom_vr_pp": 5.645793215999994,
+   "fee_gap_rel": null,
+   "rule": {
+    "timeout": [
+     1,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     1,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   }
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.5,
+    "split": [
+     0.3,
+     0.5,
+     0.2
+    ],
+    "p_retry": 0.8,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 1,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "headroom_v_pp": 5.705356048000009,
+   "headroom_vr_pp": 5.645793215999994,
+   "fee_gap_rel": null,
+   "rule": {
+    "timeout": [
+     1,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     1,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   }
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.3,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.3,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 2,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "headroom_v_pp": 5.452955995200015,
+   "headroom_vr_pp": 5.452955995200015,
+   "fee_gap_rel": null,
+   "rule": {
+    "timeout": [
+     "fix_v",
+     4,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     "fix_v",
+     4,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ]
+   }
+  }
+ ]
+}
