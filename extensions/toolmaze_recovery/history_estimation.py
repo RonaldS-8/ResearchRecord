@@ -1,4 +1,4 @@
-"""Experiment 050: logged history from a behaviour policy, a likelihood over the
+"""Experiment 051: logged history from a behaviour policy, a likelihood over the
 GRID2 hypothesis set, and plug-in planning evaluated in the true scenario.
 
 A history episode holds only public content: the first-failure detail label, the

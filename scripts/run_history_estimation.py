@@ -1,8 +1,8 @@
-"""Experiment 050: history-estimated planning (M) versus the frozen rule table (FR),
+"""Experiment 051: history-estimated planning (M) versus the frozen rule table (FR),
 the empirical first action (EMP) and the history-selected rule (HR, hybrid).
 
 Usage: python scripts/run_history_estimation.py <run_id>
-Writes docs/evidence/050/summary.json and results/<run_id>/cells.jsonl.
+Writes docs/evidence/051/summary.json and results/<run_id>/cells.jsonl.
 """
 from concurrent.futures import ProcessPoolExecutor
 import json
@@ -108,7 +108,7 @@ def main(run_id):
         for r in per_cell:
             f.write(json.dumps(r) + "\n")
 
-    report = {"experiment": "050", "run_id": run_id,
+    report = {"experiment": "051", "run_id": run_id,
               "commit": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
                                        text=True).stdout.strip(),
               "python": platform.python_version(), "cells": len(CELLS), "reps": REPS, "by_n": {}}
@@ -140,7 +140,7 @@ def main(run_id):
             "per_split": per_split,
             "verdict" + (" (primary)" if n == PRIMARY_N else ""): verdict}
     text = json.dumps(report, indent=1)
-    evidence = ROOT / "docs" / "evidence" / "050"
+    evidence = ROOT / "docs" / "evidence" / "051"
     evidence.mkdir(parents=True, exist_ok=True)
     (evidence / "summary.json").write_text(text, encoding="utf-8")
     (out / "summary.json").write_text(text, encoding="utf-8")

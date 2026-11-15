@@ -1,4 +1,4 @@
-"""Experiment 050: behaviour logs, likelihood and plug-in planning."""
+"""Experiment 051: behaviour logs, likelihood and plug-in planning."""
 import unittest
 
 from extensions.toolmaze_recovery import completion_headroom as ch
