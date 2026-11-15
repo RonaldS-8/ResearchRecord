@@ -1,0 +1,1245 @@
+{
+ "experiment": "047",
+ "round": 2,
+ "run_id": "047-completion-headroom-02",
+ "commit": "9f2da2689b6d7a90673819f690d15908f9e2ca12",
+ "python": "3.14.7",
+ "cells": 4608,
+ "verdict": "local_headroom",
+ "verdict_on": "opt_minus_fix_v",
+ "headroom_pp_opt_minus_fix_x": {
+  "min": -2.220446049250313e-14,
+  "median": 0.048600000000009747,
+  "p90": 4.323167999999999,
+  "max": 13.213439999999999,
+  "share_ge_5pp": 0.07508680555555555,
+  "share_ge_10pp": 0.013671875
+ },
+ "headroom_pp_opt_minus_fix_v": {
+  "min": -2.220446049250313e-14,
+  "median": 1.1102230246251565e-14,
+  "p90": 2.7217481359999907,
+  "max": 7.176445296000001,
+  "share_ge_5pp": 0.006727430555555556,
+  "share_ge_10pp": 0.0
+ },
+ "oracle_minus_opt_pp": {
+  "min": -1.1102230246251565e-14,
+  "median": 2.195900000000006,
+  "p90": 9.625000000000005,
+  "max": 23.781576000000005,
+  "share_ge_5pp": 0.296875,
+  "share_ge_10pp": 0.0876736111111111
+ },
+ "opt_minus_retry_then_switch_pp": {
+  "min": 1.6252319999999876,
+  "median": 31.082552103999994,
+  "p90": 52.25000000000001,
+  "max": 61.73325500000002,
+  "share_ge_5pp": 0.9891493055555556,
+  "share_ge_10pp": 0.8973524305555556
+ },
+ "opt_minus_read_first_pp": {
+  "min": -1.1102230246251565e-14,
+  "median": 11.339999999999995,
+  "p90": 20.22112699999998,
+  "max": 29.50081635827999,
+  "share_ge_5pp": 0.7790798611111112,
+  "share_ge_10pp": 0.572265625
+ },
+ "read_back_value_pp": {
+  "min": 0.0,
+  "median": 14.100000000000001,
+  "p90": 30.362823903999992,
+  "max": 44.99999999999999,
+  "share_ge_5pp": 0.9266493055555556,
+  "share_ge_10pp": 0.6521267361111112
+ },
+ "fee_gap_rel_when_completion_tied": {
+  "cells": 2234,
+  "median": 0.0,
+  "max": 0.41195601567395906
+ },
+ "margins_by_parameter": {
+  "left": {
+   "4": {
+    "max": 6.867000000000001,
+    "mean": 0.8304388065,
+    "share_ge_10pp": 0.0
+   },
+   "6": {
+    "max": 7.176445296000001,
+    "mean": 0.7895843029016282,
+    "share_ge_10pp": 0.0
+   }
+  },
+  "q_commit": {
+   "0.1": {
+    "max": 4.533281647999998,
+    "mean": 0.42663132092341116,
+    "share_ge_10pp": 0.0
+   },
+   "0.3": {
+    "max": 7.176445296000001,
+    "mean": 0.9035947507818798,
+    "share_ge_10pp": 0.0
+   },
+   "0.5": {
+    "max": 6.867000000000001,
+    "mean": 1.0998085923971515,
+    "share_ge_10pp": 0.0
+   }
+  },
+  "split": {
+   "[0.6, 0.3, 0.1]": {
+    "max": 7.176445296000001,
+    "mean": 0.9214287327600854,
+    "share_ge_10pp": 0.0
+   },
+   "[0.3, 0.5, 0.2]": {
+    "max": 6.773510463999999,
+    "mean": 0.7970799064914479,
+    "share_ge_10pp": 0.0
+   },
+   "[0.2, 0.4, 0.4]": {
+    "max": 5.619458431999991,
+    "mean": 0.7115260248509089,
+    "share_ge_10pp": 0.0
+   }
+  },
+  "p_retry": {
+   "0.5": {
+    "max": 7.176445296000001,
+    "mean": 0.793109710203987,
+    "share_ge_10pp": 0.0
+   },
+   "0.8": {
+    "max": 6.867000000000001,
+    "mean": 0.8269133991976412,
+    "share_ge_10pp": 0.0
+   }
+  },
+  "c_lost": {
+   "0.0": {
+    "max": 7.176445296000001,
+    "mean": 0.7965703477866665,
+    "share_ge_10pp": 0.0
+   },
+   "0.3": {
+    "max": 5.569130280000001,
+    "mean": 0.8234527616149617,
+    "share_ge_10pp": 0.0
+   }
+  },
+  "p_switch": {
+   "1.0": {
+    "max": 5.2734528000000225,
+    "mean": 0.39297323787840244,
+    "share_ge_10pp": 0.0
+   },
+   "0.7": {
+    "max": 7.176445296000001,
+    "mean": 1.2270498715232256,
+    "share_ge_10pp": 0.0
+   }
+  },
+  "backup_calls": {
+   "1": {
+    "max": 5.705356048000009,
+    "mean": 0.7886379361611494,
+    "share_ge_10pp": 0.0
+   },
+   "2": {
+    "max": 7.176445296000001,
+    "mean": 0.8313851732404787,
+    "share_ge_10pp": 0.0
+   }
+  },
+  "accuracy": {
+   "1.0": {
+    "max": 6.867000000000001,
+    "mean": 0.6436569443994441,
+    "share_ge_10pp": 0.0
+   },
+   "0.8": {
+    "max": 7.176445296000001,
+    "mean": 0.9763661650021841,
+    "share_ge_10pp": 0.0
+   }
+  },
+  "read_noise": {
+   "\"symmetric\"": {
+    "max": 7.176445296000001,
+    "mean": 1.1396303732629691,
+    "share_ge_10pp": 0.0
+   },
+   "\"lag\"": {
+    "max": 6.867000000000001,
+    "mean": 0.4803927361386591,
+    "share_ge_10pp": 0.0
+   }
+  },
+  "read_fail": {
+   "0.0": {
+    "max": 4.927999999999999,
+    "mean": 0.24649124826878535,
+    "share_ge_10pp": 0.0
+   },
+   "0.3": {
+    "max": 7.176445296000001,
+    "mean": 1.3735318611328429,
+    "share_ge_10pp": 0.0
+   }
+  },
+  "detail": {
+   "\"none\"": {
+    "max": 7.176445296000001,
+    "mean": 0.8873618093853956,
+    "share_ge_10pp": 0.0
+   },
+   "\"strong\"": {
+    "max": 4.319105258880008,
+    "mean": 0.7326613000162325,
+    "share_ge_10pp": 0.0
+   }
+  }
+ },
+ "top_cells": [
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.3,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 2,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "oracle": [
+    0.9177675,
+    1.410675
+   ],
+   "opt": [
+    0.75499645296,
+    3.2121832639999996
+   ],
+   "opt_no_read": [
+    0.6210899999999999,
+    3.0054
+   ],
+   "fix_x": [
+    0.683232,
+    2.5855200000000003
+   ],
+   "fix": [
+    0.683232,
+    2.5855200000000003
+   ],
+   "retry_then_switch": [
+    0.504,
+    2.2800000000000002
+   ],
+   "read_first": [
+    0.60144,
+    2.2088
+   ],
+   "fix_x_seq": {
+    "timeout": [
+     [
+      "read",
+      "retry",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     [
+      "read",
+      "retry",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "fix_v": [
+    0.683232,
+    2.58552
+   ],
+   "fix_v_rule": {
+    "timeout": [
+     1,
+     1,
+     [
+      "retry",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     1,
+     1,
+     [
+      "retry",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "headroom_v_pp": 7.176445296000001,
+   "headroom_pp": 7.176445296000001,
+   "oracle_gap_pp": 16.277104704,
+   "naive_gap_pp": 25.099645295999995,
+   "read_first_gap_pp": 15.355645295999999,
+   "read_value_pp": 13.390645296000002,
+   "fee_gap_rel": null
+  },
+  {
+   "cell": {
+    "left": 4,
+    "q_commit": 0.5,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.8,
+    "c_lost": 0.0,
+    "accuracy": 1.0,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 2,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "oracle": [
+    0.9360200000000001,
+    0.7644
+   ],
+   "opt": [
+    0.85217,
+    1.6505
+   ],
+   "opt_no_read": [
+    0.5,
+    0.0
+   ],
+   "fix_x": [
+    0.7835,
+    1.9149999999999998
+   ],
+   "fix": [
+    0.7835,
+    1.9149999999999998
+   ],
+   "retry_then_switch": [
+    0.387,
+    1.72
+   ],
+   "read_first": [
+    0.737,
+    1.73
+   ],
+   "fix_x_seq": {
+    "timeout": [
+     [
+      "read",
+      "read",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     [
+      "read",
+      "read",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "fix_v": [
+    0.7835,
+    1.9149999999999998
+   ],
+   "fix_v_rule": {
+    "timeout": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "headroom_v_pp": 6.867000000000001,
+   "headroom_pp": 6.867000000000001,
+   "oracle_gap_pp": 8.385000000000009,
+   "naive_gap_pp": 46.516999999999996,
+   "read_first_gap_pp": 11.517,
+   "read_value_pp": 35.217,
+   "fee_gap_rel": null
+  },
+  {
+   "cell": {
+    "left": 4,
+    "q_commit": 0.5,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.8,
+    "c_lost": 0.0,
+    "accuracy": 1.0,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 2,
+    "read_fail": 0.3,
+    "read_noise": "lag"
+   },
+   "oracle": [
+    0.9360200000000001,
+    0.7644
+   ],
+   "opt": [
+    0.85217,
+    1.6505
+   ],
+   "opt_no_read": [
+    0.5,
+    0.0
+   ],
+   "fix_x": [
+    0.7835,
+    1.9149999999999998
+   ],
+   "fix": [
+    0.7835,
+    1.9149999999999998
+   ],
+   "retry_then_switch": [
+    0.387,
+    1.72
+   ],
+   "read_first": [
+    0.737,
+    1.73
+   ],
+   "fix_x_seq": {
+    "timeout": [
+     [
+      "read",
+      "read",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     [
+      "read",
+      "read",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "fix_v": [
+    0.7835,
+    1.9149999999999998
+   ],
+   "fix_v_rule": {
+    "timeout": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "headroom_v_pp": 6.867000000000001,
+   "headroom_pp": 6.867000000000001,
+   "oracle_gap_pp": 8.385000000000009,
+   "naive_gap_pp": 46.516999999999996,
+   "read_first_gap_pp": 11.517,
+   "read_value_pp": 35.217,
+   "fee_gap_rel": null
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.3,
+    "split": [
+     0.3,
+     0.5,
+     0.2
+    ],
+    "p_retry": 0.8,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 2,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "oracle": [
+    0.8505365599999999,
+    1.2354832
+   ],
+   "opt": [
+    0.6917824646399999,
+    3.2044788959999995
+   ],
+   "opt_no_read": [
+    0.55298,
+    3.2308000000000003
+   ],
+   "fix_x": [
+    0.6240473599999999,
+    2.5090416
+   ],
+   "fix": [
+    0.6240473599999999,
+    2.5090416
+   ],
+   "retry_then_switch": [
+    0.4424,
+    2.184
+   ],
+   "read_first": [
+    0.548464,
+    2.20184
+   ],
+   "fix_x_seq": {
+    "timeout": [
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "fix_v": [
+    0.6240473599999999,
+    2.5090416
+   ],
+   "fix_v_rule": {
+    "timeout": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "headroom_v_pp": 6.773510463999999,
+   "headroom_pp": 6.773510463999999,
+   "oracle_gap_pp": 15.875409535999996,
+   "naive_gap_pp": 24.93824646399999,
+   "read_first_gap_pp": 14.331846463999998,
+   "read_value_pp": 13.88024646399999,
+   "fee_gap_rel": null
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.3,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.8,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 2,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "oracle": [
+    0.9243031199999999,
+    1.1087664
+   ],
+   "opt": [
+    0.7639768741439998,
+    2.9679589759999994
+   ],
+   "opt_no_read": [
+    0.6210899999999999,
+    3.0054
+   ],
+   "fix_x": [
+    0.6894204,
+    2.200824
+   ],
+   "fix": [
+    0.6894204,
+    2.200824
+   ],
+   "retry_then_switch": [
+    0.5418000000000001,
+    1.8479999999999999
+   ],
+   "read_first": [
+    0.633948,
+    1.91288
+   ],
+   "fix_x_seq": {
+    "timeout": [
+     [
+      "read",
+      "retry",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     [
+      "read",
+      "retry",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "fix_v": [
+    0.6971737343999999,
+    3.0242519039999998
+   ],
+   "fix_v_rule": {
+    "timeout": [
+     3,
+     2,
+     [
+      "retry",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     3,
+     2,
+     [
+      "retry",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "headroom_v_pp": 6.680313974399999,
+   "headroom_pp": 7.45564741439998,
+   "oracle_gap_pp": 16.032624585600008,
+   "naive_gap_pp": 22.21768741439998,
+   "read_first_gap_pp": 13.00288741439999,
+   "read_value_pp": 14.288687414399991,
+   "fee_gap_rel": null
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.3,
+    "split": [
+     0.3,
+     0.5,
+     0.2
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 2,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "oracle": [
+    0.84726875,
+    1.3864375
+   ],
+   "opt": [
+    0.68931298336,
+    3.292094144
+   ],
+   "opt_no_read": [
+    0.55298,
+    3.2308000000000003
+   ],
+   "fix_x": [
+    0.6240473599999999,
+    2.5090416
+   ],
+   "fix": [
+    0.6240473599999999,
+    2.5090416
+   ],
+   "retry_then_switch": [
+    0.42349999999999993,
+    2.49
+   ],
+   "read_first": [
+    0.53221,
+    2.3894
+   ],
+   "fix_x_seq": {
+    "timeout": [
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "fix_v": [
+    0.6240473599999999,
+    2.5090416
+   ],
+   "fix_v_rule": {
+    "timeout": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "headroom_v_pp": 6.5265623360000085,
+   "headroom_pp": 6.5265623360000085,
+   "oracle_gap_pp": 15.795576663999999,
+   "naive_gap_pp": 26.58129833600001,
+   "read_first_gap_pp": 15.710298336000006,
+   "read_value_pp": 13.633298336,
+   "fee_gap_rel": null
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.5,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.8,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 2,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "oracle": [
+    0.9459308,
+    0.791976
+   ],
+   "opt": [
+    0.779682488512,
+    2.724272888
+   ],
+   "opt_no_read": [
+    0.5,
+    0.0
+   ],
+   "fix_x": [
+    0.7147782,
+    2.089932
+   ],
+   "fix": [
+    0.7147782,
+    2.089932
+   ],
+   "retry_then_switch": [
+    0.387,
+    1.72
+   ],
+   "read_first": [
+    0.6128199999999999,
+    1.6851999999999998
+   ],
+   "fix_x_seq": {
+    "timeout": [
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "fix_v": [
+    0.7147782,
+    2.089932
+   ],
+   "fix_v_rule": {
+    "timeout": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "headroom_v_pp": 6.490428851199992,
+   "headroom_pp": 6.490428851199992,
+   "oracle_gap_pp": 16.624831148800002,
+   "naive_gap_pp": 39.26824885119999,
+   "read_first_gap_pp": 16.686248851200002,
+   "read_value_pp": 27.968248851199995,
+   "fee_gap_rel": null
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.5,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 2,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "oracle": [
+    0.9412625,
+    1.007625
+   ],
+   "opt": [
+    0.7730897243199999,
+    2.834981528
+   ],
+   "opt_no_read": [
+    0.5,
+    0.0
+   ],
+   "fix_x": [
+    0.7147782,
+    2.089932
+   ],
+   "fix": [
+    0.7147782,
+    2.089932
+   ],
+   "retry_then_switch": [
+    0.36,
+    2.2
+   ],
+   "read_first": [
+    0.5895999999999999,
+    1.972
+   ],
+   "fix_x_seq": {
+    "timeout": [
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "fix_v": [
+    0.7147782,
+    2.089932
+   ],
+   "fix_v_rule": {
+    "timeout": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     0,
+     0,
+     [
+      "read",
+      "read",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "headroom_v_pp": 5.831152431999986,
+   "headroom_pp": 5.831152431999986,
+   "oracle_gap_pp": 16.817277568000012,
+   "naive_gap_pp": 41.30897243199999,
+   "read_first_gap_pp": 18.348972432,
+   "read_value_pp": 27.30897243199999,
+   "fee_gap_rel": null
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.5,
+    "split": [
+     0.3,
+     0.5,
+     0.2
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 1,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "oracle": [
+    0.8997084,
+    1.142024
+   ],
+   "opt": [
+    0.7819448161599999,
+    3.281027699199999
+   ],
+   "opt_no_read": [
+    0.5,
+    0.0
+   ],
+   "fix_x": [
+    0.7061109791999999,
+    2.2656336319999997
+   ],
+   "fix": [
+    0.7061109791999999,
+    2.2656336319999997
+   ],
+   "retry_then_switch": [
+    0.3025,
+    2.35
+   ],
+   "read_first": [
+    0.5401499999999999,
+    2.101
+   ],
+   "fix_x_seq": {
+    "timeout": [
+     [
+      "read",
+      "read",
+      "read",
+      "switch",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     [
+      "read",
+      "read",
+      "read",
+      "switch",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "fix_v": [
+    0.7248912556799998,
+    3.5973883647999996
+   ],
+   "fix_v_rule": {
+    "timeout": [
+     4,
+     2,
+     [
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     4,
+     2,
+     [
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "headroom_v_pp": 5.705356048000009,
+   "headroom_pp": 7.583383696000001,
+   "oracle_gap_pp": 11.776358384000007,
+   "naive_gap_pp": 47.94448161599999,
+   "read_first_gap_pp": 24.179481615999997,
+   "read_value_pp": 28.19448161599999,
+   "fee_gap_rel": null
+  },
+  {
+   "cell": {
+    "left": 6,
+    "q_commit": 0.5,
+    "split": [
+     0.3,
+     0.5,
+     0.2
+    ],
+    "p_retry": 0.8,
+    "c_lost": 0.0,
+    "accuracy": 0.8,
+    "read_fee": 0.5,
+    "detail": "none",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0,
+    "p_switch": 0.7,
+    "backup_calls": 1,
+    "read_fail": 0.3,
+    "read_noise": "symmetric"
+   },
+   "oracle": [
+    0.8998081499999999,
+    0.901253
+   ],
+   "opt": [
+    0.7819448161599999,
+    3.281027699199999
+   ],
+   "opt_no_read": [
+    0.5,
+    0.0
+   ],
+   "fix_x": [
+    0.7061109791999999,
+    2.2656336319999997
+   ],
+   "fix": [
+    0.7061109791999999,
+    2.2656336319999997
+   ],
+   "retry_then_switch": [
+    0.31599999999999995,
+    1.96
+   ],
+   "read_first": [
+    0.5517599999999999,
+    1.8916
+   ],
+   "fix_x_seq": {
+    "timeout": [
+     [
+      "read",
+      "read",
+      "read",
+      "switch",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     [
+      "read",
+      "read",
+      "read",
+      "switch",
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "fix_v": [
+    0.7248912556799998,
+    3.5973883647999996
+   ],
+   "fix_v_rule": {
+    "timeout": [
+     4,
+     2,
+     [
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     4,
+     2,
+     [
+      "switch",
+      "switch"
+     ],
+     "finish"
+    ]
+   },
+   "headroom_v_pp": 5.705356048000009,
+   "headroom_pp": 7.583383696000001,
+   "oracle_gap_pp": 11.786333384000002,
+   "naive_gap_pp": 46.594481615999996,
+   "read_first_gap_pp": 23.018481615999995,
+   "read_value_pp": 28.19448161599999,
+   "fee_gap_rel": null
+  }
+ ]
+}

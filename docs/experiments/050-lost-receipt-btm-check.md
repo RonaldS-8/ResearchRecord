@@ -10,7 +10,7 @@
 
 2026-11-15 登记。分支 `lost-receipt`，基于 `gate47-audit`（346f635）。状态：**预登记，探索性**。只做 CPU 准备，GPU 运行由用户执行。
 
-本实验不改 AGENTS.md 的研究问题。Q2 方法线的止损结论见 `completion-headroom` 分支的 `docs/reviews/049-q2-stop-loss-decision.md`。本实验只为和导师讨论“以 BTM 的不足为切入点”这一备选方向提供证据。结果无论正负都保留。
+本实验不改 AGENTS.md 的研究问题。Q2 方法线的止损结论见 `docs/reviews/049-q2-stop-loss-decision.md`（原在 `completion-headroom` 分支，已合入 main；048 第三轮后该止损建议已暂停，见 `docs/reviews/052-status-report-and-route-discovery.md`）。本实验只为和导师讨论“以 BTM 的不足为切入点”这一备选方向提供证据。结果无论正负都保留。
 
 ## 1. 问题
 

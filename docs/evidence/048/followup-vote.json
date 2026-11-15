@@ -1,0 +1,206 @@
+{
+ "experiment": "047",
+ "followup": "competing explanation 3: k-read vote rule",
+ "commit": "ba8959478a0f47ca3358b731779b7d68aea7ea54",
+ "cells": 2916,
+ "headroom_pp_opt_minus_best_simple": {
+  "min": -1.1102230246251565e-14,
+  "median": 0.0,
+  "p90": 0.0,
+  "max": 1.1102230246251565e-14,
+  "share_ge_5pp": 0.0,
+  "share_ge_10pp": 0.0
+ },
+ "top_cells": [
+  {
+   "cell": {
+    "left": 3,
+    "q_commit": 0.1,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.0,
+    "accuracy": 0.9,
+    "read_fee": 0.1,
+    "detail": "weak",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0
+   },
+   "headroom_pp": 4.769999999999996,
+   "vote_headroom_pp": 1.1102230246251565e-14,
+   "vote_rule": {
+    "timeout": [
+     2,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     2,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ]
+   }
+  },
+  {
+   "cell": {
+    "left": 3,
+    "q_commit": 0.1,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.0,
+    "accuracy": 0.9,
+    "read_fee": 0.5,
+    "detail": "weak",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0
+   },
+   "headroom_pp": 4.769999999999996,
+   "vote_headroom_pp": 1.1102230246251565e-14,
+   "vote_rule": {
+    "timeout": [
+     2,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     2,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ]
+   }
+  },
+  {
+   "cell": {
+    "left": 3,
+    "q_commit": 0.1,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.0,
+    "accuracy": 0.9,
+    "read_fee": 1.0,
+    "detail": "weak",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0
+   },
+   "headroom_pp": 4.769999999999996,
+   "vote_headroom_pp": 1.1102230246251565e-14,
+   "vote_rule": {
+    "timeout": [
+     2,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     2,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ]
+   }
+  },
+  {
+   "cell": {
+    "left": 3,
+    "q_commit": 0.1,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.3,
+    "accuracy": 0.9,
+    "read_fee": 0.1,
+    "detail": "weak",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0
+   },
+   "headroom_pp": 4.769999999999996,
+   "vote_headroom_pp": 1.1102230246251565e-14,
+   "vote_rule": {
+    "timeout": [
+     2,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     2,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ]
+   }
+  },
+  {
+   "cell": {
+    "left": 3,
+    "q_commit": 0.1,
+    "split": [
+     0.6,
+     0.3,
+     0.1
+    ],
+    "p_retry": 0.5,
+    "c_lost": 0.3,
+    "accuracy": 0.9,
+    "read_fee": 0.5,
+    "detail": "weak",
+    "retry_fee": 1.0,
+    "switch_fee": 2.0
+   },
+   "headroom_pp": 4.769999999999996,
+   "vote_headroom_pp": 1.1102230246251565e-14,
+   "vote_rule": {
+    "timeout": [
+     2,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ],
+    "error": [
+     2,
+     2,
+     [
+      "switch"
+     ],
+     "finish"
+    ]
+   }
+  }
+ ]
+}

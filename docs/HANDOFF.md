@@ -14,11 +14,19 @@
 
 分支 `lost-receipt`（基于 gate47-audit）。Q2 方法线已提议止损（completion-headroom 分支 049 文档），本实验是给导师讨论的备选方向筛查，不改研究问题。新检查点 M5：发布超时，可能已提交但回执丢失，三个隐藏世界共用同一前缀。四组提示：R0、BTM（均匀信念）、BTM 去掉重试句、人工知情提示 H。CPU 参照：类 BTM 顺序 0.667，先查询再切换 1.000。14 项新测试和 9 个变异检查全部通过。判据与运行方法见 [实验 050](experiments/050-lost-receipt-btm-check.md)；GPU 用 `bash scripts/run_gate50.sh`，`test_no_leakage.py` 需在云端跑。
 
+# 实验 048 第三轮与实验 051（2026-11-15，CPU）
+
+规则冻结后迁移有余量（20.8% 测试格 ≥10 个百分点），049 止损建议暂停；051 在 50 条历史下 Go，收益主要来自估计故障机制。汇总与分支整理见[阶段报告 052](reviews/052-status-report-and-route-discovery.md)。
+
 # Gate47 · 已完成，选题筛选Inconclusive（2026-11-15）
 
 Gate46来源9324eff，运行锁d6b5db4，独立分支gate47-audit，未合并PR/main。216项CPU通过。真实API13回合/55请求，M3 3/3、M4 0/10，usage成本0.01341224CNY；Gate46既定24条件/24请求，C0/C1均0/12。37回合真实参数独立重放/评分一致，旧Gate45共375条SHA未变；本轮原始轨迹留云端results/{047-api-01,046-real-agent-01}/，派生证据docs/evidence/047。
 
 [选题报告](reviews/047-failure-nature-and-q2-decision.md)、[Gate46合同报告与24回合表](reviews/046-contract-clarity-acceptance-and-results.md)。4B A17/unknown7，API M4主因unknown（8次预算外提议另列），无参数/纯格式损失，无足够证据确认正确理解合同后的C类主因。C1没有纠正；不能推出Q2不存在、强API普遍恢复困难或新算法必要。当前优先寻找新的真实Agent场景，暂不优化HMM/ACV/BTM或改Harness；任何后续实验另登记。末4个Gate46请求有共享GPU混杂，不补跑、不据此比较延迟。API临时云密钥已删，本地model.env保留，旧文件/无关改动保留。以下为历史交接记录。
+
+# 阶段 0（实验 048，原编号 047）完成率余量：简单规则接近最优（2026-11-15）
+
+分支 `completion-headroom`，仅 CPU；编号因与 Gate47 冲突由 047 改为 048。第一轮 2916 格：OPT − 逐上下文固定顺序最大 12.7 个百分点，加“回读 k 次投票”后全为 0。第二轮 4608 格加入备用不可靠、两步备用、回读失败与延迟噪声：登记主比较最大 7.2（局部余量），加“报错重读”后最大 5.7、无 ≥10 的格；完成率持平时少数格费用可省 5%–34%。不回读规则比最优低中位 28–31 个百分点，差距在“读不读”而非“怎么读”。见[实验 048](experiments/048-completion-headroom.md)。
 
 # Gate45-R 归因复核完成（2026-11-14）
 
