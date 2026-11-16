@@ -22,10 +22,23 @@ K = 20
 COMPLEXITY = "c3"
 SAMPLING = {"temperature": 0.6, "top_p": 0.95, "top_k": 20, "max_tokens": 8192, "timeout": 600}
 SEED = 550001
+CONTEXT = 32768  # --max-model-len of the shared ToolMaze vLLM launcher
+
+
+def output_cap(messages):
+    """Conservative max_tokens so prompt + output never exceed the context (3 chars per token, 512 margin)."""
+    return max(1024, min(SAMPLING["max_tokens"], CONTEXT - len(json.dumps(messages)) // 3 - 512))
 SYSTEM = "You help a tool-using agent recover after a route of tool calls has failed."
 
 
-def card(contract):
+def card(contract, compact=False):
+    """Public contract text. `compact` (the long tool list in P) drops parameter descriptions."""
+    if compact:
+        opt = [p for p in contract["params"] if p not in contract["required"]]
+        return (f"- {contract['name']}: {' '.join(contract['description'].split())[:200]}\n"
+                f"  required: {', '.join(contract['required']) or 'none'}"
+                + (f"; optional: {', '.join(opt)}" if opt else "")
+                + f"\n  returns: {', '.join(contract['outputs'])}")
     params = contract["params"]
     req = [p for p in contract["required"]]
     opt = [p for p in params if p not in req]
@@ -58,7 +71,7 @@ def judge_messages(q, contracts, candidates):
 
 def propose_messages(q, contracts):
     tools = [t for t in q["pool"] if t not in set(q["failed"])]
-    user = (_head(q, contracts) + "\n\nAvailable tools:\n" + "\n".join(card(contracts[t]) for t in tools)
+    user = (_head(q, contracts) + "\n\nAvailable tools:\n" + "\n".join(card(contracts[t], compact=True) for t in tools)
             + "\n\nPropose up to 3 replacement routes that complete the same part of the task as the failed "
               "route, using only the available tools in the order they should run, best first. "
               'Answer with JSON only: {"routes": [["tool_a", "tool_b"], ["tool_c"]]}')
@@ -106,7 +119,7 @@ def observe(client, model, q, arm, contracts):
     try:
         response = client.chat.completions.create(
             model=model, messages=messages, temperature=SAMPLING["temperature"], top_p=SAMPLING["top_p"],
-            max_tokens=SAMPLING["max_tokens"], seed=SEED, timeout=SAMPLING["timeout"],
+            max_tokens=output_cap(messages), seed=SEED, timeout=SAMPLING["timeout"],
             extra_body={"top_k": SAMPLING["top_k"]})
     except Exception as e:  # recorded, never retried or replaced
         return {"id": q["id"], "arm": arm, "routes": None, "error": f"{type(e).__name__}: {e}", "prompt_sha256": digest}
