@@ -48,19 +48,22 @@ def load_contracts(mask_names=False):
     """Agent-visible contract per tool. Forbidden metadata is dropped here and never returned."""
     raw = [t for f in FILES for t in yaml.safe_load((DEFS / f"{f}.yaml").read_text(encoding="utf-8"))["tools"]]
     alias = {t["name"]: f"T{i:04d}" for i, t in enumerate(sorted(raw, key=lambda t: t["name"]))}
+    def mask(text):
+        if not mask_names:
+            return text
+        return re.sub(r"[a-z][a-z0-9_]+", lambda m: alias.get(m.group(0), m.group(0)), text)
+
     out = {}
     for t in raw:
         spec = t["paradigms"]["function_call"]["spec"]
         mcp = t["paradigms"]["mcp"]
         name = alias[t["name"]] if mask_names else t["name"]
-        desc = f"{spec.get('description', '')} {mcp.get('prompt_description', '')}"
-        if mask_names:
-            desc = desc.replace(t["name"], name)
+        desc = mask(f"{spec.get('description', '')} {mcp.get('prompt_description', '')}")
         props = spec["parameters"].get("properties", {})
         out[t["name"]] = {
             "name": name,
             "description": desc,
-            "params": {p: {"description": v.get("description", ""), "enum": bool(v.get("enum"))}
+            "params": {p: {"description": mask(v.get("description", "")), "enum": bool(v.get("enum"))}
                        for p, v in props.items()},
             "required": list(spec["parameters"].get("required", [])),
             "outputs": list(mcp.get("output_schema", {})),
@@ -129,7 +132,13 @@ class Deriver:
             self._match[key] = self._score(param, info, field)
         return self._match[key]
 
+    def obj(self, tool):
+        """Pseudo-field for a tool's whole result; fills params whose description names that tool."""
+        return "@" + self.c[tool]["name"]
+
     def _score(self, param, info, field):
+        if field.startswith("@"):
+            return 1.0 if re.search(rf"\b{re.escape(field[1:])}\b", info["description"]) else 0.0
         if param == field:
             return 1.0
         a, b = set(tokens(param)), set(tokens(field))
@@ -179,7 +188,8 @@ class Deriver:
 
     # -- chain search
     def chains(self, inputs, context, avoid=()):
-        frontier = [((t,), set(inputs) | set(self.c[t]["outputs"])) for t in self.c if self.satisfied(t, inputs)]
+        frontier = [((t,), set(inputs) | set(self.c[t]["outputs"]) | {self.obj(t)})
+                    for t in self.c if self.satisfied(t, inputs)]
         out = []
         for depth in range(1, MAX_DEPTH + 1):
             frontier.sort(key=lambda x: -(self.cos(sum((self.bag[t] for t in x[0]), Counter()), context)
@@ -191,16 +201,17 @@ class Deriver:
             nxt = []
             for chain, avail in frontier:
                 have = self.filled(avail)
-                prev = self.filled(self.c[chain[-1]]["outputs"])
+                prev = self.filled(list(self.c[chain[-1]]["outputs"]) + [self.obj(chain[-1])])
                 cand = {k for k, _ in prev} - set(chain)
                 for t in cand:
                     req = self.c[t]["required"]
                     if all((t, p) in have or self.c[t]["params"][p]["enum"] for p in req):
-                        nxt.append((chain + (t,), avail | set(self.c[t]["outputs"])))
+                        nxt.append((chain + (t,), avail | set(self.c[t]["outputs"]) | {self.obj(t)}))
             frontier = nxt
         return out
 
-    def rank(self, failed, inputs, arm, k=5):
+    def rank(self, failed, inputs, arm, k=5, chains=None):
+        """Rank candidate routes; pass `chains` to reuse one search across arms."""
         term = self.c[failed[-1]]
         if arm == "B0":
             ref = set(tokens(term["name"]))
@@ -213,7 +224,7 @@ class Deriver:
             return [c for s, c in sorted(scored, key=lambda x: (-x[0], x[1])) if s > 0][:k]
         context = sum((self.bag[t] for t in failed), Counter())
         scored = []
-        for chain in self.chains(inputs, context, avoid=failed):
+        for chain in (chains if chains is not None else self.chains(inputs, context, avoid=failed)):
             if chain == failed:
                 continue
             outs = self.c[chain[-1]]["outputs"]
@@ -238,6 +249,14 @@ class Deriver:
                 seen.add(c)
                 ranked.append(c)
         return ranked[:k]
+
+    def candidates(self, failed, inputs, k=20):
+        """Union of the B1 and D rankings from one chain search: the list a judge chooses from."""
+        context = sum((self.bag[t] for t in failed), Counter())
+        found = self.chains(inputs, context, avoid=failed)
+        b1 = self.rank(failed, inputs, "B1", k=k, chains=found)
+        dd = self.rank(failed, inputs, "D", k=k, chains=found)
+        return list(dict.fromkeys(x for pair in zip(b1 + [None] * k, dd + [None] * k) for x in pair if x))[:k]
 
 
 # ---------------------------------------------------------------- evaluation
@@ -304,7 +323,8 @@ def task_queries(data_dir, pool="visible", complexities=("c2", "c3")):
                 failed, gold = segs[i], segs[1 - i]
                 before = paths[i][: paths[i].index(failed[0])]
                 inputs = sorted(set(t.get("user_input") or {}) | {o for x in before for o in contracts[x]["outputs"]})
-                yield {"task": t["task_id"], "c": c, "kind": kinds.get(frozenset(segs), "unmapped"),
+                query = (t.get("user_input") or {}).get("query") or t.get("task_description", "")
+                yield {"task": t["task_id"], "c": c, "kind": kinds.get(frozenset(segs), "unmapped"), "query": query,
                        "failed_path": paths[i], "failed": failed, "gold": [gold], "inputs": inputs,
                        "pool": sorted(shown)}
 
