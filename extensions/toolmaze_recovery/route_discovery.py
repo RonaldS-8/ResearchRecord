@@ -6,7 +6,9 @@ evaluator side of this module (`load_groups`, `hit`).
 """
 from __future__ import annotations
 
+import argparse
 import hashlib
+import json
 import math
 import re
 from collections import Counter
@@ -267,6 +269,65 @@ def summarize(rows):
     return out
 
 
+# ---------------------------------------------------------------- native tasks (environment side)
+POOLS = ("visible", "domain")
+
+
+def tool_domains():
+    """Environment-side metadata used only to build distractor pools; never passed to the deriver."""
+    raw = [t for f in FILES for t in yaml.safe_load((DEFS / f"{f}.yaml").read_text(encoding="utf-8"))["tools"]]
+    return {t["name"]: t.get("domain") for t in raw}
+
+
+def task_queries(data_dir, pool="visible", complexities=("c2", "c3")):
+    """One query per (two-path task, failed segment), from the P0 file of each base task.
+
+    `visible`: the tools ToolMaze's sandbox shows the agent (every tool on the task's valid paths).
+    `domain`: those plus every tool of the task's domains and General, as distractors.
+    Inputs are the task's user_input fields plus outputs of tools before the segment on the failed path.
+    """
+    contracts = load_contracts()
+    dom = tool_domains() if pool == "domain" else {}
+    kinds = {frozenset(g["paths"]): g["kind"] for g in load_groups()}
+    for c in complexities:
+        for f in sorted((Path(data_dir) / "perturbed_tasks" / c).glob("*_P0.json")):
+            t = json.loads(f.read_text(encoding="utf-8"))
+            paths = [tuple(vp.get("tools", [])) for vp in t["valid_paths"]]
+            if len(paths) != 2:
+                continue
+            shown = {s["tool_name"] for vp in t["valid_paths"] for s in vp.get("execution_trace", []) if s.get("tool_name")}
+            if pool == "domain":
+                doms = set(t.get("domains") or []) | {"General"}
+                shown |= {k for k, d in dom.items() if d in doms}
+            segs = [tuple(x for x in p if x not in set(q)) for p, q in (paths, paths[::-1])]
+            for i in (0, 1):
+                failed, gold = segs[i], segs[1 - i]
+                before = paths[i][: paths[i].index(failed[0])]
+                inputs = sorted(set(t.get("user_input") or {}) | {o for x in before for o in contracts[x]["outputs"]})
+                yield {"task": t["task_id"], "c": c, "kind": kinds.get(frozenset(segs), "unmapped"),
+                       "failed_path": paths[i], "failed": failed, "gold": [gold], "inputs": inputs,
+                       "pool": sorted(shown)}
+
+
+def evaluate_tasks(data_dir, pool="visible", params=None):
+    """Rank candidates inside each task's pool. `set_difference` checks the rule
+    'alternate = shown tools not on the failed path' at the tool-set level."""
+    contracts = load_contracts()
+    subs = substitutes()
+    rows = []
+    for q in task_queries(data_dir, pool):
+        d = Deriver({k: v for k, v in contracts.items() if k in set(q["pool"])}, params)
+        sd = set(q["pool"]) - set(q["failed_path"]) == set(q["gold"][0])
+        for arm in ARMS:
+            ranked = d.rank(q["failed"], q["inputs"], arm, k=5)
+            pos = next((i + 1 for i, c in enumerate(ranked) if any(hit(c, g, subs) for g in q["gold"])), None)
+            rows.append({"task": q["task"], "c": q["c"], "kind": q["kind"], "arm": arm, "pool": len(q["pool"]),
+                         "failed": list(q["failed"]), "rank": pos, "set_difference": sd,
+                         "false_top3": sum(not any(hit(c, g, subs) for g in q["gold"]) for c in ranked[:3]),
+                         "top3": [list(c) for c in ranked[:3]]})
+    return rows
+
+
 def verdict(summary):
     d = summary["D"]
     r3, m2m = d["recall@3"], d["by_kind"].get("many_to_many", {}).get("recall@3", 0.0)
@@ -279,3 +340,32 @@ def verdict(summary):
     b1 = summary.get("B1")
     no_increment = bool(b1) and (r3 - b1["recall@3"] < 0.05) and d["false_top3"] >= b1["false_top3"]
     return {"verdict": v, "obligation_matching_no_increment": no_increment}
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description="Experiment 054 route recovery")
+    ap.add_argument("--split", choices=("dev", "test"), help="group-level registered split (full catalog)")
+    ap.add_argument("--tasks", help="ToolMaze data dir for task-level evaluation (exploratory)")
+    ap.add_argument("--pool", choices=POOLS, default="visible")
+    ap.add_argument("--out", required=True)
+    a = ap.parse_args(argv)
+    if a.tasks:
+        rows = evaluate_tasks(a.tasks, a.pool)
+        summary = {}
+        for c in sorted({r["c"] for r in rows}):
+            sub = [r for r in rows if r["c"] == c]
+            summary[c] = {"pool_median": sorted(r["pool"] for r in sub)[len(sub) // 2],
+                          "set_difference": sum(r["set_difference"] for r in sub if r["arm"] == "D") / (len(sub) // len(ARMS)),
+                          **summarize(sub)}
+        result = {"mode": "tasks", "pool": a.pool, "summary": summary}
+    else:
+        dev, test = split(load_groups())
+        rows = evaluate(dev if a.split == "dev" else test)
+        summary = summarize(rows)
+        result = {"mode": "groups", "split": a.split, "summary": summary, **verdict(summary)}
+    Path(a.out).write_text(json.dumps({**result, "rows": rows}, indent=1), encoding="utf-8")
+    print(json.dumps(result["summary"], indent=1))
+
+
+if __name__ == "__main__":
+    main()

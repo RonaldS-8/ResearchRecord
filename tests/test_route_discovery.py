@@ -82,5 +82,49 @@ class DeriverTests(unittest.TestCase):
         self.assertFalse(r.verdict(s(0.85, 0.7, b3=0.82, fd=0.5, fb=1))["obligation_matching_no_increment"])
 
 
+class NativeTaskTests(unittest.TestCase):
+    """Task-level evaluation on a synthetic ToolMaze-shaped task (real data stays outside the repo)."""
+
+    @classmethod
+    def setUpClass(cls):
+        import json
+        import tempfile
+        from pathlib import Path
+        g = next(g for g in r.load_groups() if g["kind"] == "one_to_one")
+        cls.x, cls.y = g["paths"][0][0], g["paths"][1][0]
+        cls.a = next(t for t in r.load_contracts() if t not in (cls.x, cls.y))
+        cls.tmp = tempfile.TemporaryDirectory()
+        d = Path(cls.tmp.name) / "perturbed_tasks" / "c2"
+        d.mkdir(parents=True)
+        paths = [[cls.a, cls.x], [cls.a, cls.y]]
+        task = {"task_id": "C2_task_999", "domains": ["Travel"], "user_input": {"query": "q", "city": "Paris"},
+                "valid_paths": [{"tools": p, "execution_trace": [{"tool_name": t} for t in p]} for p in paths]}
+        (d / "C2_task_999_P0.json").write_text(json.dumps(task), encoding="utf-8")
+        (d / "C2_task_999_P2.json").write_text(json.dumps(task), encoding="utf-8")
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
+
+    def test_visible_pool_is_the_union_of_paths_and_set_difference_recovers_gold(self):
+        qs = list(r.task_queries(self.tmp.name, "visible"))
+        self.assertEqual(len(qs), 2)  # P0 only, one query per failed segment
+        for q in qs:
+            self.assertEqual(set(q["pool"]), {self.a, self.x, self.y})
+            self.assertIn("city", q["inputs"])
+        rows = r.evaluate_tasks(self.tmp.name, "visible")
+        self.assertTrue(all(row["set_difference"] for row in rows))
+
+    def test_domain_pool_adds_distractors_without_exposing_domains(self):
+        dom = r.tool_domains()
+        q = next(r.task_queries(self.tmp.name, "domain"))
+        self.assertTrue({self.a, self.x, self.y} <= set(q["pool"]))
+        self.assertTrue(all(dom[t] in ("Travel", "General") for t in set(q["pool"]) - {self.a, self.x, self.y}))
+        self.assertGreater(len(q["pool"]), 3)
+        self.assertNotIn("domain", inspect.getsource(r.Deriver))
+        rows = r.evaluate_tasks(self.tmp.name, "domain")
+        self.assertFalse(any(row["set_difference"] for row in rows))
+
+
 if __name__ == "__main__":
     unittest.main()
