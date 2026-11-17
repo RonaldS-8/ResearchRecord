@@ -1,0 +1,95 @@
+{
+  "checks_passed": true,
+  "requests": 400,
+  "queries": 200,
+  "summary": {
+    "dev": {
+      "n": 98,
+      "candidate_ceiling": 0.6938775510204082,
+      "B1@1": 0.3469387755102041,
+      "B1@3": 0.5816326530612245,
+      "L_unusable": 0.22448979591836735,
+      "L_errors": 0.0,
+      "L@1": 0.336734693877551,
+      "L@3": 0.42857142857142855,
+      "P_unusable": 0.0,
+      "P_errors": 0.0,
+      "P@1": 0.30612244897959184,
+      "P@3": 0.336734693877551
+    },
+    "test": {
+      "n": 102,
+      "candidate_ceiling": 0.7647058823529411,
+      "B1@1": 0.18627450980392157,
+      "B1@3": 0.38235294117647056,
+      "L_unusable": 0.22549019607843138,
+      "L_errors": 0.0,
+      "L@1": 0.4411764705882353,
+      "L@3": 0.47058823529411764,
+      "P_unusable": 0.0,
+      "P_errors": 0.0,
+      "P@1": 0.35294117647058826,
+      "P@3": 0.4019607843137255
+    }
+  },
+  "tokens": {
+    "dev": {
+      "L": {
+        "requests": 98,
+        "usage_present": 98,
+        "prompt_tokens": 235733,
+        "completion_tokens": 671164,
+        "total_tokens": 906897,
+        "reasoning_tokens": 670129
+      },
+      "P": {
+        "requests": 98,
+        "usage_present": 98,
+        "prompt_tokens": 778218,
+        "completion_tokens": 519879,
+        "total_tokens": 1298097,
+        "reasoning_tokens": 515357
+      }
+    },
+    "test": {
+      "L": {
+        "requests": 102,
+        "usage_present": 102,
+        "prompt_tokens": 211585,
+        "completion_tokens": 720784,
+        "total_tokens": 932369,
+        "reasoning_tokens": 719728
+      },
+      "P": {
+        "requests": 102,
+        "usage_present": 102,
+        "prompt_tokens": 895151,
+        "completion_tokens": 540412,
+        "total_tokens": 1435563,
+        "reasoning_tokens": 535566
+      }
+    }
+  },
+  "finish_reasons": {
+    "L": {
+      "stop": 155,
+      "length": 45
+    },
+    "P": {
+      "stop": 200
+    }
+  },
+  "errors": [],
+  "verdict": "inconclusive",
+  "best_gain_over_rule": 0.08823529411764708,
+  "http_completion_statuses": {
+    "200": 400
+  },
+  "exit_code": "0",
+  "raw_sha256": {
+    "responses.jsonl": "fabcaf2a2523449c28665d6075695964962fcd94872c46a2b1aba18ec99430fa",
+    "freeze.json": "d504ced27705d54bd5111c647d92b821114a4f8b33af79dd7956e0eeca554622",
+    "summary.json": "48b10cee3e74792e875ae638c78ca9ac2da45915d76b03ad15fd1b1495dba835"
+  },
+  "source_data_hashes_unchanged": true
+}
