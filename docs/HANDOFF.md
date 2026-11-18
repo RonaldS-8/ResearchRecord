@@ -1,3 +1,7 @@
+# Gate060八回合完成并复核（2026-11-18）
+
+运行1bcfad5，8回合/33请求退出0，12前置测试通过，SDK无错误/截断。独立实参重放和8例评分通过，原始哈希不变。原局部业务7/8、严格1/8；发现与规则建议均2/2、0/2。7例少预留后查询；018-ReAct虽实际预留指定银色但无推荐来源证据，原业务判0，语义边界保留。[审查](reviews/060-agent-route-smoke-review.md)、[实验060](experiments/060-agent-route-smoke.md)。输入/输出175742/35372 Token，Agent工具25、验收16另列，计量尚缺内部调用/reset细分。完整推理与日志留云端060三个目录。当前发现增量Inconclusive，不扩32；无后续模型运行。保留方向，下一轮优先更可信完整剩余义务与强规则/完整BTM对照，不追加CPU Gate。
+
 # Gate059 CPU完成，060真实Agent八回合已提交运行（2026-11-18）
 
 用户批准实施并要求尽快LLM。059适配器/无泄漏10项通过，106工具调用、0模型；[审查](reviews/059-dynamic-evidence-results.md)报告动态信息Go，但M=强动态规则、记忆=同检查缓存，正常重搜也5调用无冗余优势。不再追加CPU Gate。060[冻结协议](experiments/060-agent-route-smoke.md)与原生VLLMAgent入口1bcfad5，在LabServer独立tmux gate060-smoke运行；12项前置测试通过，结果results/060-agent-route-smoke-01、服务060-service-01。最多8回合，不扩32；BTM仅结构参照，统计支持0/unknown。当前模型终态须查completed/summary/exit-code，不以提交启动当完成。
