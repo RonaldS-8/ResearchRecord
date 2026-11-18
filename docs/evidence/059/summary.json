@@ -1,0 +1,341 @@
+{
+  "candidates": [
+    {
+      "mode": "native",
+      "state": "fresh",
+      "route": "macro",
+      "B0": "unknown",
+      "B1": "accept",
+      "M": "reject",
+      "dynamic_rule": "reject",
+      "success_only": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1
+        },
+        "candidate": {
+          "plugin_execute_entries": 8,
+          "tool_calls": 5,
+          "execution_seconds": 0.00043581798672676086
+        }
+      }
+    },
+    {
+      "mode": "native",
+      "state": "fresh",
+      "route": "expanded",
+      "B0": "unknown",
+      "B1": "accept",
+      "M": "accept",
+      "dynamic_rule": "accept",
+      "success_only": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1
+        },
+        "candidate": {
+          "plugin_execute_entries": 7,
+          "tool_calls": 7,
+          "execution_seconds": 0.00048613129183650017
+        }
+      }
+    },
+    {
+      "mode": "native",
+      "state": "prior_hold8",
+      "route": "macro",
+      "B0": "reject",
+      "B1": "reject",
+      "M": "reject",
+      "dynamic_rule": "reject",
+      "success_only": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.0002635163255035877
+        },
+        "candidate": {
+          "plugin_execute_entries": 8,
+          "tool_calls": 5,
+          "execution_seconds": 0.00031324662268161774
+        }
+      }
+    },
+    {
+      "mode": "native",
+      "state": "prior_hold8",
+      "route": "expanded",
+      "B0": "reject",
+      "B1": "reject",
+      "M": "reject",
+      "dynamic_rule": "reject",
+      "success_only": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.0002417885698378086
+        },
+        "candidate": {
+          "plugin_execute_entries": 7,
+          "tool_calls": 7,
+          "execution_seconds": 0.0003621145151555538
+        }
+      }
+    },
+    {
+      "mode": "reservation_projection_v1",
+      "state": "fresh",
+      "route": "macro",
+      "B0": "unknown",
+      "B1": "accept",
+      "M": "accept",
+      "dynamic_rule": "accept",
+      "success_only": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1
+        },
+        "candidate": {
+          "plugin_execute_entries": 8,
+          "tool_calls": 5,
+          "execution_seconds": 0.0005201003514230251
+        }
+      }
+    },
+    {
+      "mode": "reservation_projection_v1",
+      "state": "fresh",
+      "route": "expanded",
+      "B0": "unknown",
+      "B1": "accept",
+      "M": "accept",
+      "dynamic_rule": "accept",
+      "success_only": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1
+        },
+        "candidate": {
+          "plugin_execute_entries": 7,
+          "tool_calls": 7,
+          "execution_seconds": 0.0005154930986464024
+        }
+      }
+    },
+    {
+      "mode": "reservation_projection_v1",
+      "state": "prior_hold8",
+      "route": "macro",
+      "B0": "reject",
+      "B1": "reject",
+      "M": "reject",
+      "dynamic_rule": "reject",
+      "success_only": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.00026739854365587234
+        },
+        "candidate": {
+          "plugin_execute_entries": 8,
+          "tool_calls": 5,
+          "execution_seconds": 0.0004958752542734146
+        }
+      }
+    },
+    {
+      "mode": "reservation_projection_v1",
+      "state": "prior_hold8",
+      "route": "expanded",
+      "B0": "reject",
+      "B1": "reject",
+      "M": "reject",
+      "dynamic_rule": "reject",
+      "success_only": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.00029720086604356766
+        },
+        "candidate": {
+          "plugin_execute_entries": 7,
+          "tool_calls": 7,
+          "execution_seconds": 0.0004892605356872082
+        }
+      }
+    }
+  ],
+  "reuse": [
+    {
+      "state": "fresh",
+      "policy": "rediscover",
+      "decision": "accept",
+      "verified": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1
+        },
+        "reuse": {
+          "memory_reads": 0,
+          "candidate_scans": 1,
+          "plugin_execute_entries": 8,
+          "tool_calls": 5,
+          "execution_seconds": 0.0005681449547410011
+        }
+      }
+    },
+    {
+      "state": "fresh",
+      "policy": "success_cache",
+      "decision": "accept",
+      "verified": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1
+        },
+        "reuse": {
+          "memory_reads": 1,
+          "candidate_scans": 0,
+          "plugin_execute_entries": 8,
+          "tool_calls": 5,
+          "execution_seconds": 0.0005278484895825386
+        }
+      }
+    },
+    {
+      "state": "fresh",
+      "policy": "checked_cache",
+      "decision": "accept",
+      "verified": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1
+        },
+        "reuse": {
+          "memory_reads": 1,
+          "candidate_scans": 0,
+          "applicability_checks": 1,
+          "plugin_execute_entries": 8,
+          "tool_calls": 5,
+          "execution_seconds": 0.0005246731452643871
+        }
+      }
+    },
+    {
+      "state": "fresh",
+      "policy": "evidence_memory",
+      "decision": "accept",
+      "verified": "accept",
+      "costs": {
+        "preparation": {
+          "context_resets": 1
+        },
+        "reuse": {
+          "memory_reads": 1,
+          "candidate_scans": 0,
+          "applicability_checks": 1,
+          "plugin_execute_entries": 8,
+          "tool_calls": 5,
+          "execution_seconds": 0.0005645402707159519
+        }
+      }
+    },
+    {
+      "state": "prior_hold8",
+      "policy": "rediscover",
+      "decision": "reject",
+      "verified": "reject",
+      "costs": {
+        "preparation": {
+          "context_resets": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.0002646930515766144
+        },
+        "reuse": {
+          "memory_reads": 0,
+          "candidate_scans": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.00020027300342917442
+        }
+      }
+    },
+    {
+      "state": "prior_hold8",
+      "policy": "success_cache",
+      "decision": "accept",
+      "verified": "reject",
+      "costs": {
+        "preparation": {
+          "context_resets": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.0002621780149638653
+        },
+        "reuse": {
+          "memory_reads": 1,
+          "candidate_scans": 0,
+          "plugin_execute_entries": 8,
+          "tool_calls": 5,
+          "execution_seconds": 0.0004853736609220505
+        }
+      }
+    },
+    {
+      "state": "prior_hold8",
+      "policy": "checked_cache",
+      "decision": "reject",
+      "verified": "reject",
+      "costs": {
+        "preparation": {
+          "context_resets": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.0002665165811777115
+        },
+        "reuse": {
+          "memory_reads": 1,
+          "candidate_scans": 0,
+          "applicability_checks": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.0002147359773516655
+        }
+      }
+    },
+    {
+      "state": "prior_hold8",
+      "policy": "evidence_memory",
+      "decision": "reject",
+      "verified": "reject",
+      "costs": {
+        "preparation": {
+          "context_resets": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.000243297778069973
+        },
+        "reuse": {
+          "memory_reads": 1,
+          "candidate_scans": 0,
+          "applicability_checks": 1,
+          "plugin_execute_entries": 3,
+          "tool_calls": 3,
+          "execution_seconds": 0.00018464215099811554
+        }
+      }
+    }
+  ],
+  "total_tool_calls": 106,
+  "model_requests": 0,
+  "raw_sha256": "896b39984af10bb101d2fb69b636042a02faefb1e6cf9786bd3268e6cc658f37"
+}

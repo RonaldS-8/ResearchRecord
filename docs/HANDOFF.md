@@ -1,3 +1,7 @@
+# Gate059 CPU完成，060真实Agent八回合已提交运行（2026-11-18）
+
+用户批准实施并要求尽快LLM。059适配器/无泄漏10项通过，106工具调用、0模型；[审查](reviews/059-dynamic-evidence-results.md)报告动态信息Go，但M=强动态规则、记忆=同检查缓存，正常重搜也5调用无冗余优势。不再追加CPU Gate。060[冻结协议](experiments/060-agent-route-smoke.md)与原生VLLMAgent入口1bcfad5，在LabServer独立tmux gate060-smoke运行；12项前置测试通过，结果results/060-agent-route-smoke-01、服务060-service-01。最多8回合，不扩32；BTM仅结构参照，统计支持0/unknown。当前模型终态须查completed/summary/exit-code，不以提交启动当完成。
+
 # Gate059实施前方案已提交（2026-11-18，待批准）
 
 基于d916949，[ADR-0034](adr/0034-observable-reservation-projection.md)拟仅通过独立库存查询历史投影修复顶层hold_best可见效果，保留原生对照及重复调用非幂等语义；不建数据库。[实验059](experiments/059-dynamic-execution-evidence.md)登记两路线动态证据与带同检查缓存对照，[审查/Agent建议](reviews/059-preimplementation-review.md)。遵用户059A第4项先审批后实施；当前无修复代码、无新CPU或模型实验结果，不视为059完成。获批后最后一轮CPU，若可信有动态信息增量优先Agent，不再扩CPU Gate。054–058及AGENTS冻结不改。
