@@ -163,8 +163,13 @@ def main():
 
     chain, notes, predictions = derive(
         view, lambda prompt: graph.classify_edge(MODEL, prompt), select, prefix)
+    rule_chain, rule_notes, _ = derive(
+        view, lambda _: {"edge_type": "strong-edge"},
+        lambda _task, _target, _field, providers, *_docs:
+        providers[0] if len(providers) == 1 else None, prefix)
     evidence, confirmed = verify_shadow(view, chain, factory)
     (out / "build.json").write_text(json.dumps(dict(chain=chain, notes=notes, predictions=predictions,
+                                                   rule_chain=rule_chain, rule_notes=rule_notes,
                                                    evidence=evidence, confirmed=confirmed,
                                                    seconds=time.monotonic() - started), indent=2))
     if not chain:
@@ -175,11 +180,16 @@ def main():
               "confirm_alternate_publication using the new preparation receipt. "
               "Use read_published_record with the confirmation's publication ID. "
               "That is one publication.")
-    automatic = "Candidate continuation: " + " → ".join(chain) + ". " + " ".join(notes)
-    arms = {"native": None, "rule": RULE, "manual": RULE + "\n" + manual,
-            "graph": RULE + "\n" + automatic}
+    def guidance(route, bindings):
+        if not route:
+            return RULE
+        return RULE + "\nCandidate continuation: " + " → ".join(route) + ". " + " ".join(bindings)
+
+    automatic = guidance(chain, notes)
+    arms = {"native": None, "rule": guidance(rule_chain, rule_notes), "manual": RULE + "\n" + manual,
+            "graph": automatic}
     if confirmed:
-        arms["verified_graph"] = RULE + "\n" + automatic + (
+        arms["verified_graph"] = automatic + (
             " In a reset copy of this checkpoint, the chain completed one publication and "
             "read back the matching active record. Use new receipts from this run.")
     render = tokenizer_renderer(args.model_path)
