@@ -1,20 +1,9 @@
-# Agent 项目
+# LLM Agent 工具故障恢复
 
-当前研究问题（Q2）是，工具故障已被发现但状态不完全可观测时，Agent 如何权衡信息获取价值、恢复收益与执行成本，选择显式诊断、重试、切换或停止？研究定义见 [AGENTS.md](AGENTS.md)，阶段进展见 [HANDOFF](docs/HANDOFF.md)。
+本硕士课题研究工具失败后，Agent 如何依据公开工具合同、已执行步骤和实时反馈，发现可执行的多步替代路径，并验证用户剩余任务是否完成。
 
-本地目录：`/Users/ronald/Research/Learning/Agent/Master_thesis`
+优先推进替代路径发现与执行验证。旧方向已积累故障诊断、成本估计和真实轨迹，但复杂决策相对强规则的独立收益仍不清楚。新方向能分别检验路径发现、参数绑定和业务完成，目前仍缺跨任务的端到端增益证据。
 
-云端目录：`LabServer:/home/ubuntu/Song/Agent`
+当前以 In-N-Out 的参数依赖方法作为复现入口。公开样本上的复现尚未完成。ToolAtlas 暂作论文参照。
 
-两者是同一个项目根目录，内部目录名与相对路径一致。代码开发和实验运行遵循 `AGENTS.md`：运行在云端，本地用于阅读、讲解、计划与版本同步。
-
-- `benchmarks/ToolMaze/`：ToolMaze 源码、配置和模型服务启动脚本。
-- `benchmarks/CostBench/`：CostBench 源码；其中 `env/` 是源码目录，不是虚拟环境。
-- `scripts/`：项目级维护脚本；原 `audit.py` 整理为 `audit_toolmaze.py`，原 `tmp.py` 整理为 `download_toolmaze_data.py`。从云端项目根目录调用。
-- `docs/`：同步和配置说明。
-
-模型权重、数据、虚拟环境、缓存、实验结果和日志只保留在云端，根目录 `.gitignore` 防止它们进入版本管理。代码文件中使用的云端权重路径无需改成本地路径。
-
-2026-11-02 按用户要求移除项目内原有 Git 元数据，改为一个覆盖整个项目的新仓库；旧提交历史不在新仓库中。两端保留同一套新提交历史，不再将两个 benchmark 当作嵌套仓库。
-
-操作说明见 [本地与云端版本同步](docs/version-control.md)、[目录管理](docs/directory-layout.md) 和 [ADR 决策记录](docs/adr/README.md)，本次 ToolMaze 修改见 [模型配置说明](docs/toolmaze-local-vllm.md)。
+[研究主线](https://github.com/RonaldS-8/ResearchRecord/blob/research/route-recovery/docs/CURRENT.md) · [旧方向归档](https://github.com/RonaldS-8/ResearchRecord/blob/research/route-recovery/docs/archive/README.md) · [复现实验与结果](https://github.com/RonaldS-8/ResearchRecord/blob/codex/2_010-method-reproduction/docs/reviews/2_010-method-reproduction-audit.md)
