@@ -1,0 +1,1202 @@
+{
+  "historical_2_009_files_sha256_verified": 78,
+  "historical_request_proposals": {
+    "045-real-agent-01/450001-M4-R0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "b187d44ec3cfc7d837759ed46cd2a457f6d6de57b5be8b82d332d6aec1160fc3"
+    },
+    "045-real-agent-01/450001-M4-R1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "8bce4f6edc539e708c7cb644a172202e8d4409439755c22be728147041f85c89"
+    },
+    "045-real-agent-01/450002-M4-R0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "87e93ed526b0ab11c9f127050d20f5bec3cabd79df0fbf4ec2d7a1bc161bc2db"
+    },
+    "045-real-agent-01/450002-M4-R1/requests.jsonl": {
+      "requests": 2,
+      "proposed_actions": [
+        [
+          "read_primary_record"
+        ],
+        []
+      ],
+      "sha256": "e7d8ddf767ee6be47cfc999a9cad0587d66f49afc6186d933143731b865e2ad3"
+    },
+    "045-real-agent-01/450003-M4-R0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "148b04caee2b67417e0245c0085a62bfb84b9b9602a86dbd9704b45f2fcbc811"
+    },
+    "045-real-agent-01/450003-M4-R1/requests.jsonl": {
+      "requests": 2,
+      "proposed_actions": [
+        [
+          "read_primary_record"
+        ],
+        []
+      ],
+      "sha256": "d564b2d7576c3ecfc80ecb23d376c869e0795ffb4904ed9c787687d386a878b5"
+    },
+    "045-real-agent-01/450004-M4-R0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "ae4c488741cab80793bb21fdb6bcbf3205409c5a6d6708cff6b6a9ff1c62beac"
+    },
+    "045-real-agent-01/450004-M4-R1/requests.jsonl": {
+      "requests": 2,
+      "proposed_actions": [
+        [
+          "read_primary_record"
+        ],
+        []
+      ],
+      "sha256": "6baf8f1fa90700febbe70dd89f1b2e207ba719984809f272e0fe522bd706819d"
+    },
+    "045-real-agent-01/450005-M4-R0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "e056e4df76249aea4e1a718921d6402d5c919f51f07ddc38a81dd44e5473dacd"
+    },
+    "045-real-agent-01/450005-M4-R1/requests.jsonl": {
+      "requests": 2,
+      "proposed_actions": [
+        [
+          "read_primary_record"
+        ],
+        []
+      ],
+      "sha256": "b38025f7c7b3096c902ab51a3afe5326c34daa08bd6e0452d0545a627ac96464"
+    },
+    "045-stat-01/452001-M4-R2/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "prepare_alternate_publication"
+        ],
+        [
+          "confirm_alternate_publication"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "4c83f698e7529a364b2cb49819e254191bd14c772c54697ec78b4a29a3d3bdf8"
+    },
+    "045-stat-01/452001-M4-R3/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "prepare_alternate_publication"
+        ],
+        [
+          "confirm_alternate_publication"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "10ddbf1693e5c9b1f1804b5fa2f61741bafefa05bcc373811daef29fc79e8031"
+    },
+    "045-stat-01/452001-M4-R4/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "45b3c91c335e2f6131bb97b5ffcaf16d4ea8a28af225bd90418363eb6445d1ca"
+    },
+    "045-stat-01/452002-M4-R2/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "prepare_alternate_publication"
+        ],
+        [
+          "confirm_alternate_publication"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "3698127f1c966baa38fcc0d27740479520922ecc3bcbc2b7b55166a16441a0ae"
+    },
+    "045-stat-01/452002-M4-R3/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "prepare_alternate_publication"
+        ],
+        [
+          "confirm_alternate_publication"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "ab626e59ab7ced99894b8df6f01582824c28c26f151f15a4ddaf16e8485346c7"
+    },
+    "045-stat-01/452002-M4-R4/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "16e8a4a21b23da02a6e78a2f56c9a64b9efb85dd39a07f6646f50c24109eb61d"
+    },
+    "045-stat-01/452003-M4-R2/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "prepare_alternate_publication"
+        ],
+        [
+          "confirm_alternate_publication"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "59c1bdc56a9f1da61c79ebf3780f036064cd497eb6661b95d365096337a8201f"
+    },
+    "045-stat-01/452003-M4-R3/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "prepare_alternate_publication"
+        ],
+        [
+          "confirm_alternate_publication"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "f0a49ca37b28f737d3534d2dbbe0ea8b3732000e7ac771fbce91c1e2ecf1364b"
+    },
+    "045-stat-01/452003-M4-R4/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "4d70d4eb703f0da7653a1383e0ca79811ef55f889ab7405c3db083bf02db1a07"
+    },
+    "045-stat-01/452004-M4-R2/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "prepare_alternate_publication"
+        ],
+        [
+          "confirm_alternate_publication"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "31604fb42f48d0fece4774add0104ea46d0c642729a98edd29aa2f4ead7cffeb"
+    },
+    "045-stat-01/452004-M4-R3/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "prepare_alternate_publication"
+        ],
+        [
+          "confirm_alternate_publication"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "489d66871b1ea70ebff63ae623eb144aefb78b44ea8f5aca45a664ea16a711c9"
+    },
+    "045-stat-01/452004-M4-R4/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "396da4270bb125ac5d6b1225be5dbf10fb939065e43d617d374e402a66ecd9a7"
+    },
+    "045-stat-01/452005-M4-R2/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "prepare_alternate_publication"
+        ],
+        [
+          "confirm_alternate_publication"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "f8a18b5e360bf00b4dea19026a05ccc6ce9622a38e70b5e69a5ed57014caf627"
+    },
+    "045-stat-01/452005-M4-R3/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "prepare_alternate_publication"
+        ],
+        [
+          "confirm_alternate_publication"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "ca4219902c0eaf7974f68a3abe2f49c0d4a380998628285c24e38182f108f120"
+    },
+    "045-stat-01/452005-M4-R4/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "0ea64f46bbb2f926dfa3fb35adc111adea3ee641880fa32c0d04c2bd4e15a8fb"
+    },
+    "046-real-agent-01/01-BW0N1-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "7ae812262890b07e8f26c9ae1a74f743b1b20f3c0a2bed58ae896152929a8ffc"
+    },
+    "046-real-agent-01/02-BW0N1-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "08fba0cb4aa7fa564c8a9a44bdd052796b82ebf43b5da943a348a4039aedabaf"
+    },
+    "046-real-agent-01/03-AW1N0-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "7ef59e8e94b84103f753933f6e30b94c9a36c835da98d04240e844e3a84884d8"
+    },
+    "046-real-agent-01/04-AW1N0-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "4f35d17005edf34055264dec448e178780d5f3e2ad861b607e6662a057a55cef"
+    },
+    "046-real-agent-01/05-CW1N1-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "aeb2a84fad3f196ed5ae8282f9cc9ccb106743f5c74d8d6eac869522ba20520a"
+    },
+    "046-real-agent-01/06-CW1N1-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "83ed2963e0294418163cf518768e78a21f98fe853a3ea63609dea1106c2a241e"
+    },
+    "046-real-agent-01/07-AW1N1-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "5ed36b98d085b3a9078d29bf83c8817982fa4cc60d334074e3c746aa132697fb"
+    },
+    "046-real-agent-01/08-AW1N1-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "859e35a79c54ec949494afd32f6f2a317cc88c6625204168fe65c76fec6cc3e7"
+    },
+    "046-real-agent-01/09-BW1N0-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "3a11ceba1cd800408a810cac4717e67d9d6546c06a09036ea1fe0c91fe44f951"
+    },
+    "046-real-agent-01/10-BW1N0-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "01b419035c052215be574fe6ad234b624a0a851bbe2385248e95202ddeeceb0e"
+    },
+    "046-real-agent-01/11-AW0N0-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "0fd43f61bcaf676836c87685117c46175c2ef22e3adfe3496c1c63316eb6abf9"
+    },
+    "046-real-agent-01/12-AW0N0-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "e9f6a0547d59348cb059ee62d9deca56231adde85ba5d1ed77f1805d6e064b0b"
+    },
+    "046-real-agent-01/13-BW1N1-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "ed575fbf1471ae8f78f12053aad9278d8636bb75d3805749d53c7573af1f8a33"
+    },
+    "046-real-agent-01/14-BW1N1-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "b4cae9d3771485621ec6610bf118a72f62df5914858cd4466fa5fa6454cd5057"
+    },
+    "046-real-agent-01/15-AW0N1-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "b2ef1622eb495c48cff61344211a7e6c5b1f032b6728314220362fd334fdad04"
+    },
+    "046-real-agent-01/16-AW0N1-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "dcfa2e19cfe008ed716e8ac641ba775d14de86913d0a650e46b993813edd3500"
+    },
+    "046-real-agent-01/17-CW0N1-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "de60ac64de7d860d51116447ff1c4d763cbb843b8ec811a409c018ca5c047788"
+    },
+    "046-real-agent-01/18-CW0N1-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "560d4e4a07065d44bfdf826b4a4ff63f26bbe2368e1846576fa4295924fa15c5"
+    },
+    "046-real-agent-01/19-CW0N0-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "b8a6e9cc1c3a8bf217e1b627a9795bbd11565eb3062d89f15f401b7a3dfb18aa"
+    },
+    "046-real-agent-01/20-CW0N0-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "7d1779a71512a2c7c98dfdbe0e98fab9ed8eb5978ab3f849979df3ea5c816dcb"
+    },
+    "046-real-agent-01/21-BW0N0-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "1343f41ac790d67600c9a5783ab8d3ae4fff8d4ffecb0c4c0111e1da04125eae"
+    },
+    "046-real-agent-01/22-BW0N0-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "af9817163a0883c0bfd8306e3c1790c802fea47497a2d162324cbef5e6423ba0"
+    },
+    "046-real-agent-01/23-CW1N0-C1/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "7d6fc02ca7408105199e64abb08d0493cdc4ecfc0b932373fa6ced9c8a3c8fb0"
+    },
+    "046-real-agent-01/24-CW1N0-C0/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "faf78513e8ac6f7b81f9a64996ed832478cf662c110c672ceac33fba578fc437"
+    },
+    "047-api-01/01-M3/requests.jsonl": {
+      "requests": 5,
+      "proposed_actions": [
+        [
+          "read_archive_record"
+        ],
+        [
+          "validate_record_granularity"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "c441ffa25b160e32061cb039cb0e97b9dd2d1e91764ac8f217471686468179e8"
+    },
+    "047-api-01/01-M4/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_primary_record"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "publish_verified_record"
+        ]
+      ],
+      "sha256": "44851d2191162cc1ecff7c2322efe257fdc997422da78afe767c12bbcc52e5ae"
+    },
+    "047-api-01/02-M3/requests.jsonl": {
+      "requests": 5,
+      "proposed_actions": [
+        [
+          "read_archive_record"
+        ],
+        [
+          "validate_record_granularity"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "1cf29abe07684fd698ccf2e09a519e70e12c9342b793d925568979c24abbd5de"
+    },
+    "047-api-01/02-M4/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_primary_record"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        []
+      ],
+      "sha256": "5db7ef36c51a792f6d25e6779c89d4fe0f21e458bd3ea26b846e7ac1412438a0"
+    },
+    "047-api-01/03-M3/requests.jsonl": {
+      "requests": 5,
+      "proposed_actions": [
+        [
+          "read_archive_record"
+        ],
+        [
+          "validate_record_granularity"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_published_record"
+        ],
+        []
+      ],
+      "sha256": "abd94b70c1e182011a7b9921908f02d9b80b048cf5619f91f4e182fece8154dd"
+    },
+    "047-api-01/03-M4/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_primary_record"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        []
+      ],
+      "sha256": "d25b818839fe75625186657b3436cc565c0b88d073cf17991ae6f2abb37dcd7f"
+    },
+    "047-api-01/04-M4/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_primary_record"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "publish_verified_record"
+        ]
+      ],
+      "sha256": "02079f562f8cb850f08176b555431d77e2632544075685a67dd5557c89d6c5fc"
+    },
+    "047-api-01/05-M4/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_primary_record"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "publish_verified_record"
+        ]
+      ],
+      "sha256": "63134baccafd84358f6a1a53ef5f7a38ec90a407444f9924d032522f0ef32705"
+    },
+    "047-api-01/06-M4/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_primary_record"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "publish_verified_record"
+        ]
+      ],
+      "sha256": "bffd26ab549f6bbcdc8f26ab79f453479368bc7f26c3b466525a705ab9971405"
+    },
+    "047-api-01/07-M4/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_primary_record"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "publish_verified_record"
+        ]
+      ],
+      "sha256": "244f308e8e4ed1b579b396a4f78c30013f9e5377dd9d76fd851f5bea9ba87245"
+    },
+    "047-api-01/08-M4/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_primary_record"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "publish_verified_record"
+        ]
+      ],
+      "sha256": "9ed67d41bbbd0ba20f5c3a52c1e5a2e8c99f6c0153735788dc28760099346e82"
+    },
+    "047-api-01/09-M4/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_primary_record"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "publish_verified_record"
+        ]
+      ],
+      "sha256": "3f4cb52a7f95f13e9e75857b1316e27e89f4a276b78376fd2ebce635092d541f"
+    },
+    "047-api-01/10-M4/requests.jsonl": {
+      "requests": 4,
+      "proposed_actions": [
+        [
+          "publish_verified_record"
+        ],
+        [
+          "read_primary_record"
+        ],
+        [
+          "publish_verified_record"
+        ],
+        [
+          "publish_verified_record"
+        ]
+      ],
+      "sha256": "5d819914929b2e8f5824ce93e97b5ddeaca755829d9ca3b54442a07828381e82"
+    },
+    "2_009-agent-path-obligation-02/002-00/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_broker_balance_ledger_native"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "1fc1c3becaa7c5ee1273fb32eb74febfb5913894918cdc075a523ff8e128b3dc"
+    },
+    "2_009-agent-path-obligation-02/002-01/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_account_balance"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "9f8930197847bf1fa951340463368469745c8801df95507cf8a117840af0052b"
+    },
+    "2_009-agent-path-obligation-02/002-10/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_broker_balance_ledger_native"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "86b819ed4851efa775c0eb3cdafda1252b0b09aa2764f439b90a35eb56d4ae1e"
+    },
+    "2_009-agent-path-obligation-02/002-11/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_broker_balance_ledger_native"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "4186811d3f75d94bc1355668ecbaf3192b32f439f36df7f2e0c034059c0dcc77"
+    },
+    "2_009-agent-path-obligation-02/005-00/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_light_status"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "b65b31def20d9763b8cf98ba99026e6e33f79b063242cfd38edf82d47eff83c3"
+    },
+    "2_009-agent-path-obligation-02/005-01/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_light_status"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "7f1da9ea4e30230f6733534e122c40d2e8c18c764c990e1ea84f59565be521e6"
+    },
+    "2_009-agent-path-obligation-02/005-10/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_light_status"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "ad2ac1ffbd194144431abfe067d08bb6f334f2c97df3c3a51cd5153df6b786df"
+    },
+    "2_009-agent-path-obligation-02/005-11/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_light_status"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "6681a211d6237f2dd3998d21b10e3b23d00beed60e43815da10dcbf256425cfc"
+    },
+    "2_009-agent-path-obligation-02/011-00/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_flight_info"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "e3e53573f5edb88ad6a699b3aefab491c2649db80aead19a4d946f9923fe1b2d"
+    },
+    "2_009-agent-path-obligation-02/011-01/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_flight_info"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "3f0f8339a4639f429d45160e85f1f815410d2bef8f83f1e352fa4d7404f6916f"
+    },
+    "2_009-agent-path-obligation-02/011-10/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_flight_info"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "f5dedff89a2a146af9f359693e21c1c4053b33a0a8965dc3c7fc9b64f30a277e"
+    },
+    "2_009-agent-path-obligation-02/011-11/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_flight_info"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "f88646ce745998d7cfc2c427b003fd6016f4d96d6e01b050b2a01d5b2c2dd797"
+    },
+    "2_009-agent-path-obligation-02/026-00/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_weather_weatherapi"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "ca8ab89ce504549eb86250635ffc0e741c667416efd3738a3a9ddeca30277eb3"
+    },
+    "2_009-agent-path-obligation-02/026-01/requests.jsonl": {
+      "requests": 1,
+      "proposed_actions": [
+        []
+      ],
+      "sha256": "19b51e66157e2838ba66796c27236b69e456b1f9ebf9f87df289391d7b84bfde"
+    },
+    "2_009-agent-path-obligation-02/026-10/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_visualcrossing_forecast_chip_native"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "d390d9d12cc904f688485e4a8df773fd7ef6b178dc6a7b3133b630ef6ab11469"
+    },
+    "2_009-agent-path-obligation-02/026-11/requests.jsonl": {
+      "requests": 3,
+      "proposed_actions": [
+        [
+          "get_visualcrossing_forecast_chip_native"
+        ],
+        [
+          "create_document_and_alert_from_data"
+        ],
+        []
+      ],
+      "sha256": "4491dc5a444ade2807bfce96bfdb1fdb9a7258e122394bf419d892229b284042"
+    }
+  },
+  "candidate_replay_sha256": "121cecc3591194b81b44deb3f67feced955a52c60e6447225e972c3b76da9a1e",
+  "candidate_replay": [
+    {
+      "case": 2,
+      "rank": 1,
+      "route": [
+        "get_account_balance",
+        "get_account_balance_bank_api",
+        "archive_bank_balance_sheet_native",
+        "create_document_and_alert_from_data"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_account_balance",
+        "get_account_balance_bank_api"
+      ],
+      "strict": false
+    },
+    {
+      "case": 2,
+      "rank": 2,
+      "route": [
+        "get_account_balance_bank_api",
+        "get_account_balance",
+        "archive_bank_balance_sheet_native",
+        "create_document_and_alert_from_data"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_account_balance_bank_api",
+        "get_account_balance"
+      ],
+      "strict": false
+    },
+    {
+      "case": 2,
+      "rank": 3,
+      "route": [
+        "get_account_balance",
+        "get_account_balance_broker_api",
+        "archive_bank_balance_sheet_native",
+        "create_document_and_alert_from_data"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_account_balance",
+        "get_account_balance_broker_api"
+      ],
+      "strict": false
+    },
+    {
+      "case": 2,
+      "rank": 4,
+      "route": [
+        "get_account_balance_broker_api",
+        "get_account_balance",
+        "archive_bank_balance_sheet_native",
+        "create_document_and_alert_from_data"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_account_balance_broker_api",
+        "get_account_balance"
+      ],
+      "strict": false
+    },
+    {
+      "case": 2,
+      "rank": 5,
+      "route": [
+        "get_account_balance",
+        "archive_bank_balance_sheet_native"
+      ],
+      "static_cover": true,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_account_balance"
+      ],
+      "strict": false
+    },
+    {
+      "case": 5,
+      "rank": 1,
+      "route": [
+        "archive_light_mesh_snapshot_native",
+        "get_light_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [],
+      "strict": false
+    },
+    {
+      "case": 5,
+      "rank": 2,
+      "route": [
+        "get_iot_device_status",
+        "get_light_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_iot_device_status",
+        "get_light_status",
+        "get_light_bridge_payload_native"
+      ],
+      "strict": false
+    },
+    {
+      "case": 5,
+      "rank": 3,
+      "route": [
+        "get_light_status",
+        "get_iot_device_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native"
+      ],
+      "static_cover": true,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_light_status",
+        "get_iot_device_status",
+        "get_light_bridge_payload_native"
+      ],
+      "strict": false
+    },
+    {
+      "case": 5,
+      "rank": 4,
+      "route": [
+        "get_light_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native"
+      ],
+      "static_cover": true,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_light_status",
+        "get_light_bridge_payload_native"
+      ],
+      "strict": false
+    },
+    {
+      "case": 5,
+      "rank": 5,
+      "route": [
+        "get_light_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native",
+        "create_document_and_alert_from_data"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_light_status",
+        "get_light_bridge_payload_native"
+      ],
+      "strict": false
+    },
+    {
+      "case": 11,
+      "rank": 1,
+      "route": [
+        "get_flight_info",
+        "get_flightaware_trip_timeline_native",
+        "archive_aviationstack_gate_board_native"
+      ],
+      "static_cover": true,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_flight_info",
+        "get_flightaware_trip_timeline_native"
+      ],
+      "strict": false
+    },
+    {
+      "case": 11,
+      "rank": 2,
+      "route": [
+        "get_flightaware_trip_timeline_native",
+        "get_flight_info",
+        "archive_aviationstack_gate_board_native"
+      ],
+      "static_cover": true,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_flightaware_trip_timeline_native",
+        "get_flight_info"
+      ],
+      "strict": false
+    },
+    {
+      "case": 11,
+      "rank": 3,
+      "route": [
+        "get_flight_info_flightaware",
+        "get_flightaware_trip_timeline_native",
+        "archive_aviationstack_gate_board_native"
+      ],
+      "static_cover": true,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_flight_info_flightaware",
+        "get_flightaware_trip_timeline_native"
+      ],
+      "strict": false
+    },
+    {
+      "case": 11,
+      "rank": 4,
+      "route": [
+        "get_flightaware_trip_timeline_native",
+        "get_flight_info_flightaware",
+        "archive_aviationstack_gate_board_native"
+      ],
+      "static_cover": true,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_flightaware_trip_timeline_native",
+        "get_flight_info_flightaware"
+      ],
+      "strict": false
+    },
+    {
+      "case": 11,
+      "rank": 5,
+      "route": [
+        "get_flight_info_aviationstack",
+        "get_flightaware_trip_timeline_native",
+        "archive_aviationstack_gate_board_native"
+      ],
+      "static_cover": true,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_flight_info_aviationstack",
+        "get_flightaware_trip_timeline_native"
+      ],
+      "strict": false
+    },
+    {
+      "case": 26,
+      "rank": 1,
+      "route": [
+        "get_visualcrossing_forecast_chip_native",
+        "archive_visualcrossing_forecast_chip_native",
+        "create_document_and_alert_from_data"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [
+        "get_visualcrossing_forecast_chip_native"
+      ],
+      "strict": false
+    },
+    {
+      "case": 26,
+      "rank": 2,
+      "route": [
+        "get_aviationstack_gate_board_native",
+        "get_flightaware_trip_timeline_native",
+        "archive_flightaware_trip_timeline_native",
+        "create_document_and_alert_from_data"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [],
+      "strict": false
+    },
+    {
+      "case": 26,
+      "rank": 3,
+      "route": [
+        "get_flightaware_trip_timeline_native",
+        "archive_aviationstack_gate_board_native",
+        "create_document_and_alert_from_data"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [],
+      "strict": false
+    },
+    {
+      "case": 26,
+      "rank": 4,
+      "route": [
+        "get_flightaware_trip_timeline_native",
+        "archive_flightaware_trip_timeline_native",
+        "create_document_and_alert_from_data"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [],
+      "strict": false
+    },
+    {
+      "case": 26,
+      "rank": 5,
+      "route": [
+        "get_aviationstack_gate_board_native",
+        "get_flightaware_trip_timeline_native",
+        "archive_aviationstack_gate_board_native",
+        "create_document_and_alert_from_data"
+      ],
+      "static_cover": false,
+      "status": "no_bound_route",
+      "actual_tools": [],
+      "strict": false
+    }
+  ]
+}
