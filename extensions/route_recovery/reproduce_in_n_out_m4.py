@@ -97,9 +97,10 @@ def verify_shadow(view, chain, factory):
     for tool in chain:
         args = {name: values[name] for name in cards[tool]["parameters"]["required"]}
         receipt = session.call(tool, args)
-        if "error" in receipt or session.events[-1]["illegal"]:
+        illegal = session.events[-1]["illegal"]
+        evidence.append(dict(tool=tool, arguments=args, receipt=receipt, illegal=illegal))
+        if "error" in receipt or illegal:
             return evidence, False
-        evidence.append(dict(tool=tool, arguments=args, receipt=receipt))
         values.update(receipt)
     # Verification only. This result supplies no arguments or identifiers to the policy.
     final = evidence[-1]["receipt"] if evidence else {}
