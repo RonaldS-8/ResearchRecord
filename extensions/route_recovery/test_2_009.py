@@ -57,6 +57,24 @@ class LaunchChecks(unittest.TestCase):
             self.assertEqual(fresh.events, [])
             self.assertEqual(len(fresh.engine.context.history), 1)
 
+    def test_tokenization_preserves_nested_sdk_key_order(self):
+        from io import BytesIO
+        from .run_2_009 import count_tokens
+
+        def tokenize(request, timeout):
+            payload = json.loads(request.data)
+            schema = payload["tools"][0]["function"]["parameters"]["properties"]
+            self.assertEqual(list(schema), ["title", "data"])
+            self.assertEqual(list(schema["title"]), ["type", "description"])
+            return BytesIO(b'{"max_model_len": 32768, "count": 2, "tokens": [1, 2]}')
+
+        tools = [{"type": "function", "function": {"name": "archive", "parameters": {
+            "type": "object",
+            "properties": {"title": {"type": "string", "description": "Title"}, "data": {}},
+        }}}]
+        with patch("extensions.route_recovery.run_2_009.urlopen", side_effect=tokenize):
+            self.assertEqual(count_tokens([{"role": "user", "content": "Archive data"}], tools), 2)
+
     def test_synthetic_protocol_and_budget(self):
         from pathlib import Path
         from tempfile import TemporaryDirectory

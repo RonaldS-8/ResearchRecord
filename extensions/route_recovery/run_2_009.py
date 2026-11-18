@@ -126,7 +126,10 @@ def make_agent(prompt, cards):
 
 def count_tokens(messages, tools):
     payload = {"model": protocol.MODEL, "messages": messages, "tools": tools}
-    req = Request(BASE_URL + "/tokenize", data=json_bytes(payload),
+    # Tool schema key order affects the chat template. Match the SDK payload order;
+    # json_bytes sorts keys for stable digests and must not be used here.
+    body = json.dumps(payload, ensure_ascii=False).encode()
+    req = Request(BASE_URL + "/tokenize", data=body,
                   headers={"Content-Type": "application/json"}, method="POST")
     with urlopen(req, timeout=20) as response:
         info = json.load(response)

@@ -3,9 +3,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 root=/home/ubuntu/Song/Agent
 prefix="$root/results/2_009-agent-path-obligation"
-service="${1:-$prefix-service-01}"
-output="$prefix-01"
-audit="$prefix-audit-01"
+run_number="${2:-01}"
+[[ "$run_number" =~ ^[0-9]{2}$ ]]
+service="${1:-$prefix-service-$run_number}"
+output="$prefix-$run_number"
+audit="$prefix-audit-$run_number"
 [[ ! -e "$output" && ! -e "$audit" ]]
 mkdir "$service"
 exec > "$service/supervisor.log" 2>&1
