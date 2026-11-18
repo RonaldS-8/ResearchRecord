@@ -19,3 +19,5 @@ C：在015构建选择数据路线记忆，018复用；有请求中明确商品�
 运行配置/源码提交、轨迹、验收及CPU时间存results/058-execution-memory-01；失败保留，目录禁止覆盖。运行前提交本记录。后续LLM Agent实验须另批准。
 
 运行前补充058A状态探针：get_stock_level按上下文中的顶层hold_inventory/submit_order记录计算库存，但组合插件内部调用不自动记录，需对照直接hold与hold_best复合调用的前后可见stock及新上下文。仅观察，不修改插件。分列状态查询及重置成本。候选判断使用独立投影后的公开context JSON，不加载任务原JSON或替代映射；只读source/processor/action定义并剥离非公开字段。排除ToolLoader自动扫描alternatives.yaml。
+
+运行记录：a96fd9d执行14案例完成。首次Judge测试夹具使用tool_call_id，而原Judge要求call_id，导致1/5失败；只修正夹具字段，不改Judge/判断器或已运行结果。错误及初始日志保留。执行未以该测试失败阻断，故本轮先运行后补齐Judge审计验证的过程偏差如实记录。评测器evaluate.py在结果写入后独立读取valid_paths，仅核对候选是否被列为精确子段，不回传策略。B0实际实现为schema与来源类型检查，不是强语义合同基线；手工999/错邮件等反例可能无需执行即可识别，不能声称执行优于强语义规则。

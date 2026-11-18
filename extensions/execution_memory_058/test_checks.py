@@ -17,6 +17,6 @@ class Checks(unittest.TestCase):
     def test_native_judge_ignores_business_values(self):
         # Isolated evaluator fixture, never exposed to runner or memory.
         task={'complexity':'C3','perturbation_mode':'P0','valid_paths':[{'path_id':'fixture','tools':['confirm_order']}]}
-        trace={'messages':[{'role':'assistant','type':'tool_call','tool_call':{'name':'confirm_order','id':'x','arguments':{'product_id':'WRONG'}}},{'role':'tool','tool_call_id':'x','name':'confirm_order','content':{'product_id':'WRONG','status':'confirmed'}}]}
+        trace={'messages':[{'role':'assistant','type':'tool_call','tool_call':{'name':'confirm_order','id':'x','arguments':{'product_id':'WRONG'}}},{'role':'tool','call_id':'x','name':'confirm_order','content':{'product_id':'WRONG','status':'confirmed'}}]}
         self.assertTrue(JudgeSystem().judge(task,trace)['pass'])
 if __name__=='__main__':unittest.main()
