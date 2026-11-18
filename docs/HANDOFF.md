@@ -1,5 +1,7 @@
 # 研究交接 · 路径恢复
 
+**2_010 续跑已完成。** 公开样例无图 15/20、发布自动图和金图各 19/20。已见 M4 原生停止，强规则、人工路线、自动图及带验证自动图均严格通过。规则与自动图提示相同。详见 2_010 方法复现审查和 resumed.json。以下暂停说明保留为历史。
+
 ## 2_010 · 已暂停，等待接手
 
 2026-11-18，新加坡时间约 22:36。根据用户要求暂停，当前没有本轮 GPU 或模型执行进程。请取得用户恢复指示后再启动实验。工作分支 `codex/2_010-method-reproduction`，基线 `research/route-recovery@c0e582d`。云端工作树 `/home/ubuntu/Song/Agent-worktrees/route-recovery-2_010`。原始数据留在 LabServer。完整证据摘要和实验边界见[审计](reviews/2_010-method-reproduction-audit.md)与[预登记](experiments/2_010.md)。

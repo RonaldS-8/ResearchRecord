@@ -4,6 +4,6 @@
 
 优先推进替代路径发现与执行验证。旧方向已积累故障诊断、成本估计和真实轨迹，但复杂决策相对强规则的独立收益仍不清楚。新方向能分别检验路径发现、参数绑定和业务完成，目前仍缺跨任务的端到端增益证据。
 
-当前以 In-N-Out 的参数依赖方法作为复现入口。公开样本上的复现尚未完成。ToolAtlas 暂作论文参照。
+当前以 In-N-Out 的参数依赖方法作为复现入口。已跑通固定公开样例与一个已见故障检查点。自动图和强规则在该检查点提供相同提示并完成恢复。ToolAtlas 暂作论文参照。
 
 [研究主线](https://github.com/RonaldS-8/ResearchRecord/blob/research/route-recovery/docs/CURRENT.md) · [旧方向归档](https://github.com/RonaldS-8/ResearchRecord/blob/research/route-recovery/docs/archive/README.md) · [复现实验与结果](https://github.com/RonaldS-8/ResearchRecord/blob/codex/2_010-method-reproduction/docs/reviews/2_010-method-reproduction-audit.md)
