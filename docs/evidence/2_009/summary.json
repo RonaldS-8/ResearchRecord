@@ -1,0 +1,1908 @@
+{
+  "audit_seconds": 17.693067220039666,
+  "audit_sha256": "05cf611a9e4429a02351e6266596b57bd40f79493ff687b0d0f46254bc09d49e",
+  "candidate_routes": {
+    "11": [
+      [
+        "get_flight_info",
+        "get_flightaware_trip_timeline_native",
+        "archive_aviationstack_gate_board_native"
+      ],
+      [
+        "get_flightaware_trip_timeline_native",
+        "get_flight_info",
+        "archive_aviationstack_gate_board_native"
+      ],
+      [
+        "get_flight_info_flightaware",
+        "get_flightaware_trip_timeline_native",
+        "archive_aviationstack_gate_board_native"
+      ],
+      [
+        "get_flightaware_trip_timeline_native",
+        "get_flight_info_flightaware",
+        "archive_aviationstack_gate_board_native"
+      ],
+      [
+        "get_flight_info_aviationstack",
+        "get_flightaware_trip_timeline_native",
+        "archive_aviationstack_gate_board_native"
+      ]
+    ],
+    "2": [
+      [
+        "get_account_balance",
+        "get_account_balance_bank_api",
+        "archive_bank_balance_sheet_native",
+        "create_document_and_alert_from_data"
+      ],
+      [
+        "get_account_balance_bank_api",
+        "get_account_balance",
+        "archive_bank_balance_sheet_native",
+        "create_document_and_alert_from_data"
+      ],
+      [
+        "get_account_balance",
+        "get_account_balance_broker_api",
+        "archive_bank_balance_sheet_native",
+        "create_document_and_alert_from_data"
+      ],
+      [
+        "get_account_balance_broker_api",
+        "get_account_balance",
+        "archive_bank_balance_sheet_native",
+        "create_document_and_alert_from_data"
+      ],
+      [
+        "get_account_balance",
+        "archive_bank_balance_sheet_native"
+      ]
+    ],
+    "26": [
+      [
+        "get_visualcrossing_forecast_chip_native",
+        "archive_visualcrossing_forecast_chip_native",
+        "create_document_and_alert_from_data"
+      ],
+      [
+        "get_aviationstack_gate_board_native",
+        "get_flightaware_trip_timeline_native",
+        "archive_flightaware_trip_timeline_native",
+        "create_document_and_alert_from_data"
+      ],
+      [
+        "get_flightaware_trip_timeline_native",
+        "archive_aviationstack_gate_board_native",
+        "create_document_and_alert_from_data"
+      ],
+      [
+        "get_flightaware_trip_timeline_native",
+        "archive_flightaware_trip_timeline_native",
+        "create_document_and_alert_from_data"
+      ],
+      [
+        "get_aviationstack_gate_board_native",
+        "get_flightaware_trip_timeline_native",
+        "archive_aviationstack_gate_board_native",
+        "create_document_and_alert_from_data"
+      ]
+    ],
+    "5": [
+      [
+        "archive_light_mesh_snapshot_native",
+        "get_light_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native"
+      ],
+      [
+        "get_iot_device_status",
+        "get_light_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native"
+      ],
+      [
+        "get_light_status",
+        "get_iot_device_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native"
+      ],
+      [
+        "get_light_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native"
+      ],
+      [
+        "get_light_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native",
+        "create_document_and_alert_from_data"
+      ]
+    ]
+  },
+  "complete": true,
+  "contracts_sha256": "118bdc40335560a2e7416b7f0aef2f4cf0265724e6067beaeffad03beddbffc7",
+  "counts": {
+    "00": {
+      "blockers": {
+        "business": 1,
+        "none": 2,
+        "path_not_observed": 1
+      },
+      "costs": {
+        "episode_seconds": 221.4792054030113,
+        "fault_seconds": 0.00023728376254439354,
+        "input_tokens": 107620,
+        "model_seconds": 217.2753564491868,
+        "nested_plugin_entries": 14,
+        "output_tokens": 17454,
+        "plugin_entries_including_top": 22,
+        "requests": 12,
+        "reset_seconds": 3.876661620102823,
+        "search_seconds_allocated": 0,
+        "thinking_tokens": 15233,
+        "tokenizer_seconds": 0.2789555205963552,
+        "tool_seconds": 0.0023860675282776356,
+        "top_level_calls": 8
+      },
+      "n": 4,
+      "scores": {
+        "archive_returned_success": 4,
+        "business": 2,
+        "path": 3,
+        "payload_bound": 2,
+        "reported": 4,
+        "source_bound": 3,
+        "strict": 2,
+        "visible_check": 4
+      }
+    },
+    "01": {
+      "blockers": {
+        "none": 3,
+        "path_not_observed": 1
+      },
+      "costs": {
+        "episode_seconds": 209.6338767777197,
+        "fault_seconds": 0.00022166036069393158,
+        "input_tokens": 89215,
+        "model_seconds": 205.64502268703654,
+        "nested_plugin_entries": 9,
+        "output_tokens": 16219,
+        "plugin_entries_including_top": 15,
+        "requests": 10,
+        "reset_seconds": 3.708359317854047,
+        "search_seconds_allocated": 0,
+        "thinking_tokens": 14116,
+        "tokenizer_seconds": 0.24619709886610508,
+        "tool_seconds": 0.0019654124043881893,
+        "top_level_calls": 6
+      },
+      "n": 4,
+      "scores": {
+        "archive_returned_success": 3,
+        "business": 3,
+        "path": 3,
+        "payload_bound": 3,
+        "reported": 3,
+        "source_bound": 3,
+        "strict": 3,
+        "visible_check": 3
+      }
+    },
+    "10": {
+      "blockers": {
+        "business": 1,
+        "none": 3
+      },
+      "costs": {
+        "episode_seconds": 182.2974219014868,
+        "fault_seconds": 0.0002538333646953106,
+        "input_tokens": 104413,
+        "model_seconds": 178.31427241070196,
+        "nested_plugin_entries": 15,
+        "output_tokens": 14191,
+        "plugin_entries_including_top": 23,
+        "requests": 12,
+        "reset_seconds": 3.64528334653005,
+        "search_seconds_allocated": 0.3376306355930865,
+        "thinking_tokens": 11074,
+        "tokenizer_seconds": 0.30075827706605196,
+        "tool_seconds": 0.0026556854136288166,
+        "top_level_calls": 8
+      },
+      "n": 4,
+      "scores": {
+        "archive_returned_success": 4,
+        "business": 3,
+        "path": 4,
+        "payload_bound": 3,
+        "reported": 4,
+        "source_bound": 4,
+        "strict": 3,
+        "visible_check": 4
+      }
+    },
+    "11": {
+      "blockers": {
+        "business": 2,
+        "none": 2
+      },
+      "costs": {
+        "episode_seconds": 150.59636082407087,
+        "fault_seconds": 0.00022570230066776276,
+        "input_tokens": 104076,
+        "model_seconds": 146.69356090575457,
+        "nested_plugin_entries": 15,
+        "output_tokens": 11765,
+        "plugin_entries_including_top": 23,
+        "requests": 12,
+        "reset_seconds": 3.594467335846275,
+        "search_seconds_allocated": 0.3376306355930865,
+        "thinking_tokens": 10674,
+        "tokenizer_seconds": 0.27148495288565755,
+        "tool_seconds": 0.0029896036721765995,
+        "top_level_calls": 8
+      },
+      "n": 4,
+      "scores": {
+        "archive_returned_success": 4,
+        "business": 2,
+        "path": 4,
+        "payload_bound": 2,
+        "reported": 4,
+        "source_bound": 4,
+        "strict": 2,
+        "visible_check": 4
+      }
+    },
+    "D": {
+      "blockers": {
+        "none": 4
+      },
+      "costs": {
+        "episode_seconds": 3.740577971562743,
+        "fault_seconds": 0.0002307952381670475,
+        "input_tokens": 0,
+        "model_seconds": 0,
+        "nested_plugin_entries": 29,
+        "output_tokens": 0,
+        "plugin_entries_including_top": 50,
+        "requests": 0,
+        "reset_seconds": 3.731766620185226,
+        "search_seconds_allocated": 0.3376306355930865,
+        "thinking_tokens": 0,
+        "tokenizer_seconds": 0,
+        "tool_seconds": 0.002730471547693014,
+        "top_level_calls": 21
+      },
+      "n": 4,
+      "scores": {
+        "archive_returned_success": 4,
+        "business": 4,
+        "path": 4,
+        "payload_bound": 4,
+        "reported": 4,
+        "source_bound": 4,
+        "strict": 4,
+        "visible_check": 4
+      }
+    }
+  },
+  "effects": {
+    "archive_returned_success": {
+      "by_case": [
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 2,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 5,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 11,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": -1,
+          "P_with_O": 1,
+          "P_without_O": 0,
+          "case": 26,
+          "interaction": 1
+        }
+      ],
+      "summary": {
+        "O_mean": -0.125,
+        "O_with_P": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        },
+        "O_without_P": {
+          "degraded": 1,
+          "improved": 0,
+          "mean": -0.25
+        },
+        "P_mean": 0.125,
+        "P_with_O": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "P_without_O": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        },
+        "interaction": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        }
+      }
+    },
+    "business": {
+      "by_case": [
+        {
+          "O_with_P": 0,
+          "O_without_P": 1,
+          "P_with_O": -1,
+          "P_without_O": 0,
+          "case": 2,
+          "interaction": -1
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 5,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 11,
+          "interaction": 0
+        },
+        {
+          "O_with_P": -1,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 1,
+          "case": 26,
+          "interaction": -1
+        }
+      ],
+      "summary": {
+        "O_mean": 0.0,
+        "O_with_P": {
+          "degraded": 1,
+          "improved": 0,
+          "mean": -0.25
+        },
+        "O_without_P": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "P_mean": 0.0,
+        "P_with_O": {
+          "degraded": 1,
+          "improved": 0,
+          "mean": -0.25
+        },
+        "P_without_O": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "interaction": {
+          "degraded": 2,
+          "improved": 0,
+          "mean": -0.5
+        }
+      }
+    },
+    "path": {
+      "by_case": [
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 2,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 5,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 11,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 1,
+          "P_without_O": 1,
+          "case": 26,
+          "interaction": 0
+        }
+      ],
+      "summary": {
+        "O_mean": 0.0,
+        "O_with_P": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        },
+        "O_without_P": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        },
+        "P_mean": 0.25,
+        "P_with_O": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "P_without_O": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "interaction": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        }
+      }
+    },
+    "payload_bound": {
+      "by_case": [
+        {
+          "O_with_P": 0,
+          "O_without_P": 1,
+          "P_with_O": -1,
+          "P_without_O": 0,
+          "case": 2,
+          "interaction": -1
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 5,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 11,
+          "interaction": 0
+        },
+        {
+          "O_with_P": -1,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 1,
+          "case": 26,
+          "interaction": -1
+        }
+      ],
+      "summary": {
+        "O_mean": 0.0,
+        "O_with_P": {
+          "degraded": 1,
+          "improved": 0,
+          "mean": -0.25
+        },
+        "O_without_P": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "P_mean": 0.0,
+        "P_with_O": {
+          "degraded": 1,
+          "improved": 0,
+          "mean": -0.25
+        },
+        "P_without_O": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "interaction": {
+          "degraded": 2,
+          "improved": 0,
+          "mean": -0.5
+        }
+      }
+    },
+    "reported": {
+      "by_case": [
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 2,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 5,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 11,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": -1,
+          "P_with_O": 1,
+          "P_without_O": 0,
+          "case": 26,
+          "interaction": 1
+        }
+      ],
+      "summary": {
+        "O_mean": -0.125,
+        "O_with_P": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        },
+        "O_without_P": {
+          "degraded": 1,
+          "improved": 0,
+          "mean": -0.25
+        },
+        "P_mean": 0.125,
+        "P_with_O": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "P_without_O": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        },
+        "interaction": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        }
+      }
+    },
+    "source_bound": {
+      "by_case": [
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 2,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 5,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 11,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 1,
+          "P_without_O": 1,
+          "case": 26,
+          "interaction": 0
+        }
+      ],
+      "summary": {
+        "O_mean": 0.0,
+        "O_with_P": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        },
+        "O_without_P": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        },
+        "P_mean": 0.25,
+        "P_with_O": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "P_without_O": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "interaction": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        }
+      }
+    },
+    "strict": {
+      "by_case": [
+        {
+          "O_with_P": 0,
+          "O_without_P": 1,
+          "P_with_O": -1,
+          "P_without_O": 0,
+          "case": 2,
+          "interaction": -1
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 5,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 11,
+          "interaction": 0
+        },
+        {
+          "O_with_P": -1,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 1,
+          "case": 26,
+          "interaction": -1
+        }
+      ],
+      "summary": {
+        "O_mean": 0.0,
+        "O_with_P": {
+          "degraded": 1,
+          "improved": 0,
+          "mean": -0.25
+        },
+        "O_without_P": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "P_mean": 0.0,
+        "P_with_O": {
+          "degraded": 1,
+          "improved": 0,
+          "mean": -0.25
+        },
+        "P_without_O": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "interaction": {
+          "degraded": 2,
+          "improved": 0,
+          "mean": -0.5
+        }
+      }
+    },
+    "visible_check": {
+      "by_case": [
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 2,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 5,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": 0,
+          "P_with_O": 0,
+          "P_without_O": 0,
+          "case": 11,
+          "interaction": 0
+        },
+        {
+          "O_with_P": 0,
+          "O_without_P": -1,
+          "P_with_O": 1,
+          "P_without_O": 0,
+          "case": 26,
+          "interaction": 1
+        }
+      ],
+      "summary": {
+        "O_mean": -0.125,
+        "O_with_P": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        },
+        "O_without_P": {
+          "degraded": 1,
+          "improved": 0,
+          "mean": -0.25
+        },
+        "P_mean": 0.125,
+        "P_with_O": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        },
+        "P_without_O": {
+          "degraded": 0,
+          "improved": 0,
+          "mean": 0.0
+        },
+        "interaction": {
+          "degraded": 0,
+          "improved": 1,
+          "mean": 0.25
+        }
+      }
+    }
+  },
+  "gpu_service_seconds": 799.0,
+  "model": {
+    "revision": "768f209d9ea81521153ed38c47d515654e938aea",
+    "tokenizer": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "tokenizer_config": "60adcfc35f5f251e19a196ec977b4ca0fcfb534852911b3196d68d5e3b146aa0",
+    "weights": {
+      "model-00001-of-00003.safetensors": "98178c1cddbca8ad76102afdbf76e4df79b64b82377ad4dca34c755cac00571a",
+      "model-00002-of-00003.safetensors": "57b5bd1f667d420350f169342a90b50e5ffc2aa202ba1819da1af3367ff2261f",
+      "model-00003-of-00003.safetensors": "e3cccb84e8926f3f18c334465639939a68af310b0729938fccc2de66a9a31953"
+    }
+  },
+  "outcomes": [
+    {
+      "arm": "00",
+      "calls": [
+        "get_broker_balance_ledger_native",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 2,
+      "costs": {
+        "episode_seconds": 48.85513495281339,
+        "fault_seconds": 6.140628829598427e-05,
+        "input_tokens": 27013,
+        "model_seconds": 47.90273997420445,
+        "money": null,
+        "nested_plugin_entries": 5,
+        "output_tokens": 3847,
+        "plugin_entries_including_top": 7,
+        "requests": 3,
+        "reset_seconds": 0.8728861650452018,
+        "search_seconds_allocated": 0,
+        "thinking_tokens": 3710,
+        "tokenizer_seconds": 0.05864698952063918,
+        "tool_seconds": 0.0005712602287530899,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "business",
+        "business": false,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": false,
+        "payload_sources": {
+          "1": null
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": false,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "10",
+      "calls": [
+        "get_broker_balance_ledger_native",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 2,
+      "costs": {
+        "episode_seconds": 69.27608107402921,
+        "fault_seconds": 5.6667719036340714e-05,
+        "input_tokens": 27622,
+        "model_seconds": 68.300184273161,
+        "money": null,
+        "nested_plugin_entries": 5,
+        "output_tokens": 5521,
+        "plugin_entries_including_top": 7,
+        "requests": 3,
+        "reset_seconds": 0.891748265363276,
+        "search_seconds_allocated": 0.07384016271680593,
+        "thinking_tokens": 3505,
+        "tokenizer_seconds": 0.07492542779073119,
+        "tool_seconds": 0.0006856052204966545,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": true,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "business",
+        "business": false,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": false,
+        "payload_sources": {
+          "1": null
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": false,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "01",
+      "calls": [
+        "get_account_balance",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 2,
+      "costs": {
+        "episode_seconds": 62.6915963110514,
+        "fault_seconds": 5.163904279470444e-05,
+        "input_tokens": 29191,
+        "model_seconds": 61.66495287511498,
+        "money": null,
+        "nested_plugin_entries": 3,
+        "output_tokens": 4938,
+        "plugin_entries_including_top": 5,
+        "requests": 3,
+        "reset_seconds": 0.9423455102369189,
+        "search_seconds_allocated": 0,
+        "thinking_tokens": 4706,
+        "tokenizer_seconds": 0.0747883259318769,
+        "tool_seconds": 0.0006806929595768452,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "1": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "11",
+      "calls": [
+        "get_broker_balance_ledger_native",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 2,
+      "costs": {
+        "episode_seconds": 49.830433395691216,
+        "fault_seconds": 5.931686609983444e-05,
+        "input_tokens": 27975,
+        "model_seconds": 48.875941186677665,
+        "money": null,
+        "nested_plugin_entries": 5,
+        "output_tokens": 4001,
+        "plugin_entries_including_top": 7,
+        "requests": 3,
+        "reset_seconds": 0.8825510549359024,
+        "search_seconds_allocated": 0.07384016271680593,
+        "thinking_tokens": 3867,
+        "tokenizer_seconds": 0.06236656755208969,
+        "tool_seconds": 0.0007104091346263885,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": true,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "business",
+        "business": false,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": false,
+        "payload_sources": {
+          "1": null
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": false,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "D",
+      "calls": [
+        "get_account_balance",
+        "get_account_balance_bank_api",
+        "get_account_balance_broker_api",
+        "get_broker_balance_ledger_native",
+        "archive_broker_balance_ledger_native"
+      ],
+      "case": 2,
+      "costs": {
+        "episode_seconds": 0.9231371381320059,
+        "fault_seconds": 5.7965051382780075e-05,
+        "input_tokens": 0,
+        "model_seconds": 0,
+        "money": null,
+        "nested_plugin_entries": 8,
+        "output_tokens": 0,
+        "plugin_entries_including_top": 13,
+        "requests": 0,
+        "reset_seconds": 0.9209182937629521,
+        "search_seconds_allocated": 0.07384016271680593,
+        "thinking_tokens": 0,
+        "tokenizer_seconds": 0,
+        "tool_seconds": 0.0006851069629192352,
+        "top_level_calls": 5
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "4": 3
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "10",
+      "calls": [
+        "get_light_status",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 5,
+      "costs": {
+        "episode_seconds": 37.08672448294237,
+        "fault_seconds": 8.258596062660217e-05,
+        "input_tokens": 25263,
+        "model_seconds": 36.08004794456065,
+        "money": null,
+        "nested_plugin_entries": 3,
+        "output_tokens": 2864,
+        "plugin_entries_including_top": 5,
+        "requests": 3,
+        "reset_seconds": 0.9240883029997349,
+        "search_seconds_allocated": 0.07660135067999363,
+        "thinking_tokens": 2332,
+        "tokenizer_seconds": 0.07285740645602345,
+        "tool_seconds": 0.0006353189237415791,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": true,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "1": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "01",
+      "calls": [
+        "get_light_status",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 5,
+      "costs": {
+        "episode_seconds": 77.38723557675257,
+        "fault_seconds": 5.9697311371564865e-05,
+        "input_tokens": 28896,
+        "model_seconds": 76.36689941771328,
+        "money": null,
+        "nested_plugin_entries": 3,
+        "output_tokens": 5978,
+        "plugin_entries_including_top": 5,
+        "requests": 3,
+        "reset_seconds": 0.9306125221773982,
+        "search_seconds_allocated": 0,
+        "thinking_tokens": 4315,
+        "tokenizer_seconds": 0.0793659477494657,
+        "tool_seconds": 0.0006287572905421257,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "1": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "11",
+      "calls": [
+        "get_light_status",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 5,
+      "costs": {
+        "episode_seconds": 33.542143122293055,
+        "fault_seconds": 5.469098687171936e-05,
+        "input_tokens": 25010,
+        "model_seconds": 32.53767768153921,
+        "money": null,
+        "nested_plugin_entries": 3,
+        "output_tokens": 2634,
+        "plugin_entries_including_top": 5,
+        "requests": 3,
+        "reset_seconds": 0.9274975331500173,
+        "search_seconds_allocated": 0.07660135067999363,
+        "thinking_tokens": 2099,
+        "tokenizer_seconds": 0.06873035291209817,
+        "tool_seconds": 0.0006304117850959301,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": true,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "1": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "00",
+      "calls": [
+        "get_light_status",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 5,
+      "costs": {
+        "episode_seconds": 58.360210568178445,
+        "fault_seconds": 5.377503111958504e-05,
+        "input_tokens": 27212,
+        "model_seconds": 57.35559558076784,
+        "money": null,
+        "nested_plugin_entries": 3,
+        "output_tokens": 4671,
+        "plugin_entries_including_top": 5,
+        "requests": 3,
+        "reset_seconds": 0.9223882970400155,
+        "search_seconds_allocated": 0,
+        "thinking_tokens": 4521,
+        "tokenizer_seconds": 0.07313878508284688,
+        "tool_seconds": 0.0005794218741357327,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "1": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "D",
+      "calls": [
+        "get_iot_device_status",
+        "get_light_status",
+        "get_light_bridge_payload_native",
+        "archive_light_bridge_payload_native"
+      ],
+      "case": 5,
+      "costs": {
+        "episode_seconds": 0.9526907461695373,
+        "fault_seconds": 5.618808791041374e-05,
+        "input_tokens": 0,
+        "model_seconds": 0,
+        "money": null,
+        "nested_plugin_entries": 5,
+        "output_tokens": 0,
+        "plugin_entries_including_top": 9,
+        "requests": 0,
+        "reset_seconds": 0.9508613361977041,
+        "search_seconds_allocated": 0.07660135067999363,
+        "thinking_tokens": 0,
+        "tokenizer_seconds": 0,
+        "tool_seconds": 0.0005050334148108959,
+        "top_level_calls": 4
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "3": 2
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "01",
+      "calls": [
+        "get_flight_info",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 11,
+      "costs": {
+        "episode_seconds": 24.317744737956673,
+        "fault_seconds": 5.6304968893527985e-05,
+        "input_tokens": 24116,
+        "model_seconds": 23.37049328489229,
+        "money": null,
+        "nested_plugin_entries": 3,
+        "output_tokens": 1894,
+        "plugin_entries_including_top": 5,
+        "requests": 3,
+        "reset_seconds": 0.8650561342947185,
+        "search_seconds_allocated": 0,
+        "thinking_tokens": 1714,
+        "tokenizer_seconds": 0.07194857485592365,
+        "tool_seconds": 0.0006559621542692184,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "1": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "11",
+      "calls": [
+        "get_flight_info",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 11,
+      "costs": {
+        "episode_seconds": 23.750240487977862,
+        "fault_seconds": 5.5273063480854034e-05,
+        "input_tokens": 24240,
+        "model_seconds": 22.796988574322313,
+        "money": null,
+        "nested_plugin_entries": 3,
+        "output_tokens": 1821,
+        "plugin_entries_including_top": 5,
+        "requests": 3,
+        "reset_seconds": 0.882341749034822,
+        "search_seconds_allocated": 0.09921707212924957,
+        "thinking_tokens": 1641,
+        "tokenizer_seconds": 0.0613108966499567,
+        "tool_seconds": 0.0009695976041257381,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": true,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "1": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "00",
+      "calls": [
+        "get_flight_info",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 11,
+      "costs": {
+        "episode_seconds": 44.274735901039094,
+        "fault_seconds": 6.136484444141388e-05,
+        "input_tokens": 24892,
+        "model_seconds": 43.275731172412634,
+        "money": null,
+        "nested_plugin_entries": 3,
+        "output_tokens": 3468,
+        "plugin_entries_including_top": 5,
+        "requests": 3,
+        "reset_seconds": 0.9186057769693434,
+        "search_seconds_allocated": 0,
+        "thinking_tokens": 2769,
+        "tokenizer_seconds": 0.07118336297571659,
+        "tool_seconds": 0.0006674225442111492,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "1": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "10",
+      "calls": [
+        "get_flight_info",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 11,
+      "costs": {
+        "episode_seconds": 32.26517567969859,
+        "fault_seconds": 5.579367280006409e-05,
+        "input_tokens": 25309,
+        "model_seconds": 31.250565401278436,
+        "money": null,
+        "nested_plugin_entries": 3,
+        "output_tokens": 2440,
+        "plugin_entries_including_top": 5,
+        "requests": 3,
+        "reset_seconds": 0.9298022389411926,
+        "search_seconds_allocated": 0.09921707212924957,
+        "thinking_tokens": 2260,
+        "tokenizer_seconds": 0.07545003294944763,
+        "tool_seconds": 0.0006633750163018703,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": true,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "1": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "D",
+      "calls": [
+        "get_flight_info",
+        "get_flightaware_trip_timeline_native",
+        "get_flight_info_flightaware",
+        "get_flight_info_aviationstack",
+        "archive_aviationstack_gate_board_native"
+      ],
+      "case": 11,
+      "costs": {
+        "episode_seconds": 0.9347332860343158,
+        "fault_seconds": 5.5938027799129486e-05,
+        "input_tokens": 0,
+        "model_seconds": 0,
+        "money": null,
+        "nested_plugin_entries": 5,
+        "output_tokens": 0,
+        "plugin_entries_including_top": 10,
+        "requests": 0,
+        "reset_seconds": 0.932468896266073,
+        "search_seconds_allocated": 0.09921707212924957,
+        "thinking_tokens": 0,
+        "tokenizer_seconds": 0,
+        "tool_seconds": 0.0006033484824001789,
+        "top_level_calls": 5
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "4": 3
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "11",
+      "calls": [
+        "get_visualcrossing_forecast_chip_native",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 26,
+      "costs": {
+        "episode_seconds": 43.47354381810874,
+        "fault_seconds": 5.642138421535492e-05,
+        "input_tokens": 26851,
+        "model_seconds": 42.48295346321538,
+        "money": null,
+        "nested_plugin_entries": 4,
+        "output_tokens": 3309,
+        "plugin_entries_including_top": 6,
+        "requests": 3,
+        "reset_seconds": 0.9020769987255335,
+        "search_seconds_allocated": 0.08797205006703734,
+        "thinking_tokens": 3067,
+        "tokenizer_seconds": 0.07907713577151299,
+        "tool_seconds": 0.0006791851483285427,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": false,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "business",
+        "business": false,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": false,
+        "payload_sources": {
+          "1": null
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": false,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "00",
+      "calls": [
+        "get_weather_weatherapi",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 26,
+      "costs": {
+        "episode_seconds": 69.98912398098037,
+        "fault_seconds": 6.0737598687410355e-05,
+        "input_tokens": 28503,
+        "model_seconds": 68.74128972180188,
+        "money": null,
+        "nested_plugin_entries": 3,
+        "output_tokens": 5468,
+        "plugin_entries_including_top": 5,
+        "requests": 3,
+        "reset_seconds": 1.1627813810482621,
+        "search_seconds_allocated": 0,
+        "thinking_tokens": 4233,
+        "tokenizer_seconds": 0.07598638301715255,
+        "tool_seconds": 0.0005679628811776638,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "path_not_observed",
+        "business": false,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": false,
+        "payload_bound": false,
+        "payload_sources": {
+          "1": null
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": false,
+        "strict": false,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "10",
+      "calls": [
+        "get_visualcrossing_forecast_chip_native",
+        "create_document_and_alert_from_data"
+      ],
+      "case": 26,
+      "costs": {
+        "episode_seconds": 43.66944066481665,
+        "fault_seconds": 5.878601223230362e-05,
+        "input_tokens": 26219,
+        "model_seconds": 42.68347479170188,
+        "money": null,
+        "nested_plugin_entries": 4,
+        "output_tokens": 3366,
+        "plugin_entries_including_top": 6,
+        "requests": 3,
+        "reset_seconds": 0.8996445392258465,
+        "search_seconds_allocated": 0.08797205006703734,
+        "thinking_tokens": 2977,
+        "tokenizer_seconds": 0.07752540986984968,
+        "tool_seconds": 0.0006713862530887127,
+        "top_level_calls": 2
+      },
+      "proposed_routes_cover": false,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "1": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "01",
+      "calls": [],
+      "case": 26,
+      "costs": {
+        "episode_seconds": 45.23730015195906,
+        "fault_seconds": 5.401903763413429e-05,
+        "input_tokens": 7012,
+        "model_seconds": 44.24267710931599,
+        "money": null,
+        "nested_plugin_entries": 0,
+        "output_tokens": 3409,
+        "plugin_entries_including_top": 0,
+        "requests": 1,
+        "reset_seconds": 0.9703451511450112,
+        "search_seconds_allocated": 0,
+        "thinking_tokens": 3381,
+        "tokenizer_seconds": 0.020094250328838825,
+        "tool_seconds": 0,
+        "top_level_calls": 0
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": false,
+        "blocker": "path_not_observed",
+        "business": false,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": null,
+        "notification_id": null,
+        "notifications": 0,
+        "path": false,
+        "payload_bound": false,
+        "payload_sources": {},
+        "proposed_unexecuted": false,
+        "reported": false,
+        "source_bound": false,
+        "strict": false,
+        "visible_check": null,
+        "writes": 0
+      },
+      "status": "answered"
+    },
+    {
+      "arm": "D",
+      "calls": [
+        "get_visualcrossing_forecast_chip_native",
+        "get_bank_balance_sheet_native",
+        "get_broker_balance_ledger_native",
+        "get_account_balance_broker_api",
+        "get_account_balance_bank_api",
+        "get_account_balance",
+        "archive_visualcrossing_forecast_chip_native"
+      ],
+      "case": 26,
+      "costs": {
+        "episode_seconds": 0.9300168012268841,
+        "fault_seconds": 6.07040710747242e-05,
+        "input_tokens": 0,
+        "model_seconds": 0,
+        "money": null,
+        "nested_plugin_entries": 11,
+        "output_tokens": 0,
+        "plugin_entries_including_top": 18,
+        "requests": 0,
+        "reset_seconds": 0.927518093958497,
+        "search_seconds_allocated": 0.08797205006703734,
+        "thinking_tokens": 0,
+        "tokenizer_seconds": 0,
+        "tool_seconds": 0.0009369826875627041,
+        "top_level_calls": 7
+      },
+      "proposed_routes_cover": null,
+      "scores": {
+        "archive_returned_success": true,
+        "blocker": "none",
+        "business": true,
+        "external_delivery": null,
+        "full_c3": null,
+        "legal": true,
+        "note_id": "NOTE18E3D",
+        "notification_id": "NOTIFEE84C",
+        "notifications": 1,
+        "path": true,
+        "payload_bound": true,
+        "payload_sources": {
+          "6": 0
+        },
+        "proposed_unexecuted": false,
+        "reported": true,
+        "source_bound": true,
+        "strict": true,
+        "visible_check": true,
+        "writes": 1
+      },
+      "status": "answered"
+    }
+  ],
+  "preparation_seconds": 9.827262436039746,
+  "python": "3.10.12",
+  "replay_environment_calls": 71,
+  "rules_blob": "d7c5748feb23da745064efe7ac4b3c25aca104b4",
+  "service_exit": 0,
+  "sha256": {
+    "002-00/episode.json": "58327de3290052a0acb70968d50ae95934da897d6b6556983ac2406135ee7328",
+    "002-00/events.jsonl": "98145e40e3a8dc9b886719ca924cc982cffccaf7ca364684a19c25eccc2d7db4",
+    "002-00/initial.jsonl": "45b10d41b5521947632d196aa8fb59b4b0df65f09c47fe776765cd6052781af4",
+    "002-00/requests.jsonl": "1fc1c3becaa7c5ee1273fb32eb74febfb5913894918cdc075a523ff8e128b3dc",
+    "002-01/episode.json": "ca61ad4ca220ebd7d40aa1537b33a9138e0497ad3275b1dd613dc059bc217966",
+    "002-01/events.jsonl": "e8a6d19ccfcd822629b612b488b2a51ab2f6dc03a68c318dbb387c264d2fb31d",
+    "002-01/initial.jsonl": "088a1b02319669890044d6d9674189071e6ee6544c11f298d822f285899c367a",
+    "002-01/requests.jsonl": "9f8930197847bf1fa951340463368469745c8801df95507cf8a117840af0052b",
+    "002-10/episode.json": "913675dbb3a0c53b418d882f3db8a9cb08affde1ccd2b3f91e6c3881293ba99f",
+    "002-10/events.jsonl": "32542787ea58f3037d7f8f01aa7361e8ca0f07258e364b365195aedecb75001b",
+    "002-10/initial.jsonl": "a63b320f6451e9c8e38ad8e5165107de2832ab2361b7407ab5cf8ade993be2ef",
+    "002-10/requests.jsonl": "86b819ed4851efa775c0eb3cdafda1252b0b09aa2764f439b90a35eb56d4ae1e",
+    "002-11/episode.json": "4b55904c3a2b2164ac98c4e2b33c76c3dc1dc385b330c198cecd98d21cc0554a",
+    "002-11/events.jsonl": "503651676974201bf3ff2afb68a6035319c1dfcffff6d2cc6bfc04a49a66cf4d",
+    "002-11/initial.jsonl": "aa8ba414a55787409d03defc8d7df85ad31ccc46d3b6cde912a2b338b7a85533",
+    "002-11/requests.jsonl": "4186811d3f75d94bc1355668ecbaf3192b32f439f36df7f2e0c034059c0dcc77",
+    "002-D/episode.json": "8c9c7ef21c8f7529c5b8c854523863ff7be18dd73c626c1534a5fcdbfe5b17b7",
+    "002-D/events.jsonl": "11e0f630c24f78422fcc9be7402ea9720643d90e5541e7300888ff5e289f4839",
+    "002-D/initial.jsonl": "b30aa93a2a2744d13e51f38e851a09d21a3b44ecd70a2e6c0be6c397fe0df022",
+    "005-00/episode.json": "7f510f8b8a66e261e8ce0c2812e3383e0e5dd62fa71d192b69166f698c38cd1e",
+    "005-00/events.jsonl": "550601f73766c364da938af6eeb28daff1b48bcb56e4e3241c2d5b762a39a013",
+    "005-00/initial.jsonl": "7026898cd0c773ef53cadeded65e8bd93fd305e86fdb5d7b4ebd2fb99eae82aa",
+    "005-00/requests.jsonl": "b65b31def20d9763b8cf98ba99026e6e33f79b063242cfd38edf82d47eff83c3",
+    "005-01/episode.json": "bf6a13feadc238ad362dba0a59a6fb23603ea043220a1f87cc7504000ec33a02",
+    "005-01/events.jsonl": "e140e894cf9db87270092bc8203b6dfce4d9d5637d0a1c242f2fbf2ce85986b3",
+    "005-01/initial.jsonl": "57373ab7fb7ffc4f0258ba760188bbfc7fcb0506dbce4481cfc708f4a04dd4b5",
+    "005-01/requests.jsonl": "7f1da9ea4e30230f6733534e122c40d2e8c18c764c990e1ea84f59565be521e6",
+    "005-10/episode.json": "9533b861014da08cb20d8e970c863a3bca43fbaf13ead742f6b2bbb905b601f6",
+    "005-10/events.jsonl": "77028ca02a92baf86bbe9339ea2912e55ae76f773ecc4952abb000498a8d13aa",
+    "005-10/initial.jsonl": "3b7499b50d8b0e91c6ed3ea7b7bea6b71a248e28fc83680017997a491e630d01",
+    "005-10/requests.jsonl": "ad2ac1ffbd194144431abfe067d08bb6f334f2c97df3c3a51cd5153df6b786df",
+    "005-11/episode.json": "caec250bac2dbe74b435ac585f0cbc1796694118acb49dce5ab3c35e48f31c14",
+    "005-11/events.jsonl": "e2173764e20f516d9dea8312af6be5ceb14f71cc66c2cc5eff9166df7d137c37",
+    "005-11/initial.jsonl": "9c4442748defb05f2a95b349e9c14c0c87d4a462c3eff8094c3bb2bfab69aef5",
+    "005-11/requests.jsonl": "6681a211d6237f2dd3998d21b10e3b23d00beed60e43815da10dcbf256425cfc",
+    "005-D/episode.json": "24d73f4f46d9786de487f45f0f95083e4d1ef19f9a742fd0fdb61d93bb69804f",
+    "005-D/events.jsonl": "c564a04b913196e00a9691662a0edee0b0a2453e62e01a3d3c4ee433fa05f016",
+    "005-D/initial.jsonl": "5bd6ff5524b598e05d056020045b29ea26777628ae4b0090a4635e15354e770f",
+    "011-00/episode.json": "b4d0cbd5681f92cb7b863ba6d08cab460929f749bfa25bf89c4c9f5890d4d0ce",
+    "011-00/events.jsonl": "718e637a4133f850b2ea18b1a03611306ec9ba44ef358ab84f384026290d5ee7",
+    "011-00/initial.jsonl": "2383cf0cac7928291f94e4efb69119fccfeacc0e8dc67a2684a29e57690b115a",
+    "011-00/requests.jsonl": "e3e53573f5edb88ad6a699b3aefab491c2649db80aead19a4d946f9923fe1b2d",
+    "011-01/episode.json": "26568c7eaeb5487976e00592ddcb5da5b7f4dc9a0cf238a742079620b7db09b9",
+    "011-01/events.jsonl": "8820baf0320145f53a38d790bd0624c7675af18d7fd6c1335d7c5302be2c61e1",
+    "011-01/initial.jsonl": "046ffe1f2c6ede904e2d163fd6d9568ac3b8b6036dc8510b73b284870fe24430",
+    "011-01/requests.jsonl": "3f0f8339a4639f429d45160e85f1f815410d2bef8f83f1e352fa4d7404f6916f",
+    "011-10/episode.json": "94f34ebbda4727f16e8589b9d2b7b773d181dc1c77e1f5c58bbd98bb4dc7e6b0",
+    "011-10/events.jsonl": "1970bcd1da2a7a7e22adec7d28ec60e98b61112b0a8c640e84aa799d2737b898",
+    "011-10/initial.jsonl": "0c6867ee3f7aa058e32d2c7dfb0aca660154f7ad36b3ec574c8648344b53bcd5",
+    "011-10/requests.jsonl": "f5dedff89a2a146af9f359693e21c1c4053b33a0a8965dc3c7fc9b64f30a277e",
+    "011-11/episode.json": "5515eba0bbd6365ebaed64b1cd93f001dfcde7e9a9871eab023cc2507131dbe4",
+    "011-11/events.jsonl": "a50a59a08945a877cbb4f8d19b3ee710cdd0a5abb22f35cb3e4ebc6389a5ffef",
+    "011-11/initial.jsonl": "6ee65576a9e2589ab04273b4c37e64383136968c7652a0c7bf3dc27fb5cba6c0",
+    "011-11/requests.jsonl": "f88646ce745998d7cfc2c427b003fd6016f4d96d6e01b050b2a01d5b2c2dd797",
+    "011-D/episode.json": "67e69a081fa1eb76b0993db8bdb2d1de6e5612e5b95e98627f38667ee62e5925",
+    "011-D/events.jsonl": "4afafc7870ff11f79abe38de207d4c1f1b5dfaa39e6e80cbb489e8a7df304531",
+    "011-D/initial.jsonl": "c567d51843a898e8c4d2bb1dbaede21f0fcbfb96a804a8db8394d997e4bde54d",
+    "026-00/episode.json": "d3cd846df9a15dccb18f69b79a7c2b8a429b16414074b1215f96a499221517f9",
+    "026-00/events.jsonl": "5d295b6e0180a858a18005f9cad25d5f078f53565add4fe23bdb57fb8fe01258",
+    "026-00/initial.jsonl": "b21bae7e7737d5f11935906fa38afb7eedb6b2bbe8a301a95aa4c383dadd48b5",
+    "026-00/requests.jsonl": "ca8ab89ce504549eb86250635ffc0e741c667416efd3738a3a9ddeca30277eb3",
+    "026-01/episode.json": "7e209f277234e08a402d17c2dc9d957d36eb58c5efc2ab05aa98464de40f0d6f",
+    "026-01/initial.jsonl": "37973579e5a4d0e8fa1d027feddc95153fc97fbcb377d8b7dd21d2ba2e6a1295",
+    "026-01/requests.jsonl": "19b51e66157e2838ba66796c27236b69e456b1f9ebf9f87df289391d7b84bfde",
+    "026-10/episode.json": "69d461a97eb801928d69d0f910d1f25f04ea7a08c60ea14f1d0871d8299956bd",
+    "026-10/events.jsonl": "f822441ab1c83020014e12b0c37cb9f01a57a82f1ac47868b7d6581c78b48d3a",
+    "026-10/initial.jsonl": "6ce54cd59a20707d73e848420e59b7fc5759eeb10a62cf31ea12253f136772fd",
+    "026-10/requests.jsonl": "d390d9d12cc904f688485e4a8df773fd7ef6b178dc6a7b3133b630ef6ab11469",
+    "026-11/episode.json": "34bf7db15c5c08a5df852546fd09e86dd5fd1ca702beeb9c943c73809a043739",
+    "026-11/events.jsonl": "8cfc8031f76d447705f57749e5383106a8d817eaea5d6efba4e9a36abc41019b",
+    "026-11/initial.jsonl": "29afc74510c8f0f4fa6b8dede460283e447f140a833dacde6ec66a4bd04754ac",
+    "026-11/requests.jsonl": "4491dc5a444ade2807bfce96bfdb1fdb9a7258e122394bf419d892229b284042",
+    "026-D/episode.json": "488df0871f054f84e2d1a5f9dae5dfde745ae319eacfc83dc60acd9b83a82734",
+    "026-D/events.jsonl": "45d73aefa7236daa59496c53ffde1dc36c16a350e0d17cff7bfb279078f00f83",
+    "026-D/initial.jsonl": "48298f3d8422da6ca7abaa04f07c807677683f9ece23ebb49683a11ee10426a6",
+    "completed.json": "cf3526903dfbd2db5c9bc3c431fd58ccd3c7de53eede08fb17c8ed87c6707249",
+    "freeze.json": "bdadafaaee7af9f5c6bbff90e0060ab51464fd716db6e1432524c849fbff4cbf",
+    "progress.json": "e76eac03bfe6a3d90c731abbcb5d8681830812ff714ed6c96062300bb87c5106"
+  },
+  "shared_search_seconds": 0.3376306355930865,
+  "source_commit": "686ff75e6f9aa86ace1e5f2d063747a29116272c",
+  "versions": {
+    "openai": "3.42.0",
+    "torch": "2.13.0",
+    "transformers": "5.17.0",
+    "vllm": "0.31.0"
+  }
+}
