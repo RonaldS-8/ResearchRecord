@@ -17,3 +17,5 @@ C：在015构建选择数据路线记忆，018复用；有请求中明确商品�
 探索门：Go仅在至少一个执行值错误和一个成功但错义务反例被区分，且选择数据在第二上下文正确、实际验证调用减少时成立；若无可认证局部义务No-Go；仅回执可认证/跨实现独立性不足则完整恢复方向Inconclusive。不据结果调阈值或样本。
 
 运行配置/源码提交、轨迹、验收及CPU时间存results/058-execution-memory-01；失败保留，目录禁止覆盖。运行前提交本记录。后续LLM Agent实验须另批准。
+
+运行前补充058A状态探针：get_stock_level按上下文中的顶层hold_inventory/submit_order记录计算库存，但组合插件内部调用不自动记录，需对照直接hold与hold_best复合调用的前后可见stock及新上下文。仅观察，不修改插件。分列状态查询及重置成本。候选判断使用独立投影后的公开context JSON，不加载任务原JSON或替代映射；只读source/processor/action定义并剥离非公开字段。排除ToolLoader自动扫描alternatives.yaml。
