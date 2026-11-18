@@ -1,3 +1,7 @@
+# Gate059实施前方案已提交（2026-11-18，待批准）
+
+基于d916949，[ADR-0034](adr/0034-observable-reservation-projection.md)拟仅通过独立库存查询历史投影修复顶层hold_best可见效果，保留原生对照及重复调用非幂等语义；不建数据库。[实验059](experiments/059-dynamic-execution-evidence.md)登记两路线动态证据与带同检查缓存对照，[审查/Agent建议](reviews/059-preimplementation-review.md)。遵用户059A第4项先审批后实施；当前无修复代码、无新CPU或模型实验结果，不视为059完成。获批后最后一轮CPU，若可信有动态信息增量优先Agent，不再扩CPU Gate。054–058及AGENTS冻结不改。
+
 # Gate058执行验证与经验复用完成（2026-11-18）
 
 见[058审查](reviews/058-execution-memory-review.md)、[登记与结果](experiments/058-execution-memory.md)。14原生候选：M局部接收2、拒绝8、unknown4；B1仍接收6个错商品/邮件反例。选品数据015→018实际调用8→2，但同接口/商品且对照冗余，非独立泛化。原生组合预留不出现在顶层history，查询stock10→10；直接预留10→9。完整订单/发票缺状态证据。50顶层调用，69插件进入，0模型/GPU；10测试通过，初始Judge夹具失败保留。原生Benchmark/054–057/AGENTS不改。局部Go、完整恢复Inconclusive；暂不进行多组Agent实验，后续修复/新实验须另登记批准。
