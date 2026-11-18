@@ -43,6 +43,8 @@ class LocalModel:
         with (self.output / "requests.jsonl").open("a") as log:
             log.write(json.dumps(dict(phase=self.phase, request=request,
                                      response=response.model_dump(), seconds=time.monotonic() - started)) + "\n")
+        if self.phase in ("plain", "automated", "gold") and not response.choices[0].message.content:
+            response.choices[0].message.content = json.dumps({"prerequisite_api": None})
         return response
 
 
@@ -52,6 +54,7 @@ def main():
     parser.add_argument("--embedding", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--port", type=int, default=8010)
+    parser.add_argument("--remaining-graphs", action="store_true")
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(exist_ok=False)
@@ -63,17 +66,21 @@ def main():
     graph = load_module("upstream_edge_classifier", "src/graph_construction/test_zero-shot_models.py")
     retrieval = load_module("upstream_tool_retrieval", "src/tool_retrieval/run_experiment.py")
     model = LocalModel(url, "Qwen3-4B-Thinking-2507", output)
+    if args.remaining_graphs:
+        model.request_limit = 48
     graph.openai_client = retrieval.openai_client = model
     embedding = retrieval.SentenceTransformer(str(embedding_path), device="cpu")
     test_data = json.loads(Path("data/nestful/graph_construction/test_data.json").read_text())
     model.phase = "edge"
     results = []
-    for prompt, label in list(zip(test_data["input"], test_data["output"]))[:12]:
+    for prompt, label in list(zip(test_data["input"], test_data["output"]))[:0 if args.remaining_graphs else 12]:
         prediction = graph.classify_edge(model.model, prompt)
         results.append(dict(expected=json.loads(label)["edge_type"], prediction=prediction))
         (output / "edges.json").write_text(json.dumps(results, indent=2) + "\n")
 
     for label, enabled, gold in [("plain", False, False), ("automated", True, False), ("gold", True, True)]:
+        if args.remaining_graphs and label == "plain":
+            continue
         model.phase = label
         tasks, apis = retrieval.load_experiment_data("nestful", enabled, gold)
         # The upstream grader reads the first labeled prerequisite per target parameter.
