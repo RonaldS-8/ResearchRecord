@@ -17,12 +17,13 @@ def load_module(name, path):
 
 
 class LocalModel:
-    def __init__(self, url, model, output):
+    def __init__(self, url, model, output, *, request_limit=80):
         self.client = OpenAI(base_url=url, api_key="local", max_retries=0, timeout=120)
         self.model = model
         self.output = output
         self.phase = None
         self.requests = 0
+        self.request_limit = request_limit
 
     @property
     def chat(self):
@@ -33,8 +34,8 @@ class LocalModel:
         return self
 
     def create(self, *, messages, model):
-        if self.requests >= 80:
-            raise RuntimeError("Public sample reached its request budget")
+        if self.requests >= self.request_limit:
+            raise RuntimeError("Reached the local model request budget")
         self.requests += 1
         request = dict(messages=messages, model=self.model, max_tokens=6144, temperature=0)
         started = time.monotonic()

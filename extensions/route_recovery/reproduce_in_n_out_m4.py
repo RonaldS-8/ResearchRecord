@@ -2,6 +2,7 @@
 import argparse
 from collections import defaultdict
 import json
+import os
 from pathlib import Path
 import re
 import time
@@ -132,11 +133,13 @@ def main():
     out = args.output
     out.mkdir(exist_ok=False)
     url = f"http://127.0.0.1:{args.port}/v1"
+    os.environ['OPENAI_API_KEY'] = 'local'
+    os.environ['OPENAI_BASE_URL'] = url
     graph = load_module("upstream_edge_classifier",
                         args.upstream / "src/graph_construction/test_zero-shot_models.py")
     retrieval = load_module("upstream_tool_retrieval",
                             args.upstream / "src/tool_retrieval/run_experiment.py")
-    local = LocalModel(url, MODEL, out)
+    local = LocalModel(url, MODEL, out, request_limit=12)
     local.phase = "M4-graph"
     graph.openai_client = retrieval.openai_client = local
     public_test = json.loads(
@@ -188,6 +191,4 @@ def main():
 
 
 if __name__ == "__main__":
-    import os
-    os.environ["OPENAI_API_KEY"] = "local"
     main()
