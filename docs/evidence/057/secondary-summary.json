@@ -1,0 +1,14 @@
+{
+  "dev": {
+    "valid_covered_n": 57,
+    "valid_covered_hits3": 42,
+    "omitted_with_gold_subsequence": 9,
+    "missing_and_length": 11
+  },
+  "test": {
+    "valid_covered_n": 64,
+    "valid_covered_hits3": 48,
+    "omitted_with_gold_subsequence": 9,
+    "missing_and_length": 9
+  }
+}

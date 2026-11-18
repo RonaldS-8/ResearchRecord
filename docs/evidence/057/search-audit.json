@@ -1,0 +1,638 @@
+{
+  "n": 54,
+  "in_search": 18,
+  "by_group": {
+    "alt_best_recommendation_checkout": {
+      "rank_or_top20_merge": 6
+    },
+    "alt_checkout_coupon_vs_summary_chain": {
+      "search_pruned_or_expansion": 2
+    },
+    "alt_collaborative_invoice_vs_hold_invoice": {
+      "search_pruned_or_expansion": 4
+    },
+    "alt_collaborative_recommendation_purchase": {
+      "rank_or_top20_merge": 1,
+      "search_pruned_or_expansion": 1
+    },
+    "alt_content_checkout_vs_hold_confirm": {
+      "search_pruned_or_expansion": 8
+    },
+    "alt_content_recommendation_purchase": {
+      "rank_or_top20_merge": 3,
+      "search_pruned_or_expansion": 3
+    },
+    "alt_invoice_coupon_vs_summary_chain": {
+      "search_pruned_or_expansion": 10
+    },
+    "alt_popularity_substitute_purchase": {
+      "rank_or_top20_merge": 3,
+      "search_pruned_or_expansion": 3
+    },
+    "alt_recommended_substitute_purchase": {
+      "rank_or_top20_merge": 4,
+      "search_pruned_or_expansion": 4
+    },
+    "alt_trending_substitute_purchase": {
+      "rank_or_top20_merge": 1,
+      "search_pruned_or_expansion": 1
+    }
+  },
+  "seconds": 38.77621785318479,
+  "cases": [
+    {
+      "id": "C3_task_010:hold_best_recommendation-confirm_order",
+      "group": "alt_best_recommendation_checkout",
+      "split": "test",
+      "in_search": true,
+      "rank": {
+        "B1": 200,
+        "D": 236
+      },
+      "chains": 1038
+    },
+    {
+      "id": "C3_task_015:get_recommendations_popularity-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_popularity_substitute_purchase",
+      "split": "dev",
+      "in_search": true,
+      "rank": {
+        "B1": 175,
+        "D": 287
+      },
+      "chains": 1061
+    },
+    {
+      "id": "C3_task_015:add_best_recommendation_to_cart-express_checkout",
+      "group": "alt_popularity_substitute_purchase",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1061
+    },
+    {
+      "id": "C3_task_018:get_recommendations_collaborative-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_collaborative_recommendation_purchase",
+      "split": "dev",
+      "in_search": true,
+      "rank": {
+        "B1": 187,
+        "D": 301
+      },
+      "chains": 1069
+    },
+    {
+      "id": "C3_task_018:add_best_recommendation_to_cart-express_checkout",
+      "group": "alt_collaborative_recommendation_purchase",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1069
+    },
+    {
+      "id": "C3_task_019:get_recommendations_popularity-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_popularity_substitute_purchase",
+      "split": "dev",
+      "in_search": true,
+      "rank": {
+        "B1": 171,
+        "D": 277
+      },
+      "chains": 1038
+    },
+    {
+      "id": "C3_task_019:add_best_recommendation_to_cart-express_checkout",
+      "group": "alt_popularity_substitute_purchase",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1038
+    },
+    {
+      "id": "C3_task_021:get_recommendations_content-select_recommendation-build_cart_items_from_selection-get_cart_summary-build_checkout_from_summary-submit_order_from_summary",
+      "group": "alt_content_checkout_vs_hold_confirm",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1043
+    },
+    {
+      "id": "C3_task_021:hold_best_recommendation-build_checkout_from_hold-confirm_held_recommendation_order",
+      "group": "alt_content_checkout_vs_hold_confirm",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1043
+    },
+    {
+      "id": "C3_task_027:hold_best_recommendation-confirm_order",
+      "group": "alt_best_recommendation_checkout",
+      "split": "test",
+      "in_search": true,
+      "rank": {
+        "B1": 201,
+        "D": 237
+      },
+      "chains": 1069
+    },
+    {
+      "id": "C3_task_028:get_recommendations_content-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_content_recommendation_purchase",
+      "split": "dev",
+      "in_search": true,
+      "rank": {
+        "B1": 182,
+        "D": 164
+      },
+      "chains": 1062
+    },
+    {
+      "id": "C3_task_028:hold_best_recommendation-express_checkout",
+      "group": "alt_content_recommendation_purchase",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1062
+    },
+    {
+      "id": "C3_task_032:get_available_coupons-optimize_discount-submit_order",
+      "group": "alt_checkout_coupon_vs_summary_chain",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1079
+    },
+    {
+      "id": "C3_task_032:get_cart_summary-build_checkout_from_summary-submit_order_from_summary",
+      "group": "alt_checkout_coupon_vs_summary_chain",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1079
+    },
+    {
+      "id": "C3_task_034:get_recommendations_collaborative-select_recommendation-build_cart_items_from_selection-get_cart_summary-build_invoice_from_summary-generate_invoice_from_summary",
+      "group": "alt_collaborative_invoice_vs_hold_invoice",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1037
+    },
+    {
+      "id": "C3_task_034:hold_best_recommendation-build_invoice_from_hold-generate_invoice_from_hold",
+      "group": "alt_collaborative_invoice_vs_hold_invoice",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1037
+    },
+    {
+      "id": "C3_task_048:get_recommendations_trending-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_recommended_substitute_purchase",
+      "split": "test",
+      "in_search": true,
+      "rank": {
+        "B1": 162,
+        "D": 253
+      },
+      "chains": 1039
+    },
+    {
+      "id": "C3_task_048:add_best_recommendation_to_cart-express_checkout",
+      "group": "alt_recommended_substitute_purchase",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1039
+    },
+    {
+      "id": "C3_task_049:get_recommendations_trending-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_trending_substitute_purchase",
+      "split": "dev",
+      "in_search": true,
+      "rank": {
+        "B1": 172,
+        "D": 156
+      },
+      "chains": 1037
+    },
+    {
+      "id": "C3_task_049:hold_best_recommendation-express_checkout",
+      "group": "alt_trending_substitute_purchase",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1037
+    },
+    {
+      "id": "C3_task_053:get_recommendations_content-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_content_recommendation_purchase",
+      "split": "dev",
+      "in_search": true,
+      "rank": {
+        "B1": 175,
+        "D": 153
+      },
+      "chains": 1036
+    },
+    {
+      "id": "C3_task_053:hold_best_recommendation-express_checkout",
+      "group": "alt_content_recommendation_purchase",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1036
+    },
+    {
+      "id": "C3_task_054:hold_best_recommendation-confirm_order",
+      "group": "alt_best_recommendation_checkout",
+      "split": "test",
+      "in_search": true,
+      "rank": {
+        "B1": 199,
+        "D": 236
+      },
+      "chains": 1037
+    },
+    {
+      "id": "C3_task_057:hold_best_recommendation-confirm_order",
+      "group": "alt_best_recommendation_checkout",
+      "split": "test",
+      "in_search": true,
+      "rank": {
+        "B1": 209,
+        "D": 247
+      },
+      "chains": 1044
+    },
+    {
+      "id": "C3_task_061:get_recommendations_content-select_recommendation-build_cart_items_from_selection-get_cart_summary-build_checkout_from_summary-submit_order_from_summary",
+      "group": "alt_content_checkout_vs_hold_confirm",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1046
+    },
+    {
+      "id": "C3_task_061:hold_best_recommendation-build_checkout_from_hold-confirm_held_recommendation_order",
+      "group": "alt_content_checkout_vs_hold_confirm",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1046
+    },
+    {
+      "id": "C3_task_063:get_recommendations_content-select_recommendation-build_cart_items_from_selection-get_cart_summary-build_checkout_from_summary-submit_order_from_summary",
+      "group": "alt_content_checkout_vs_hold_confirm",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1065
+    },
+    {
+      "id": "C3_task_063:hold_best_recommendation-build_checkout_from_hold-confirm_held_recommendation_order",
+      "group": "alt_content_checkout_vs_hold_confirm",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1065
+    },
+    {
+      "id": "C3_task_064:get_recommendations_trending-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_recommended_substitute_purchase",
+      "split": "test",
+      "in_search": true,
+      "rank": {
+        "B1": 164,
+        "D": 254
+      },
+      "chains": 1038
+    },
+    {
+      "id": "C3_task_064:add_best_recommendation_to_cart-express_checkout",
+      "group": "alt_recommended_substitute_purchase",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1038
+    },
+    {
+      "id": "C3_task_065:get_recommendations_content-select_recommendation-build_cart_items_from_selection-get_cart_summary-build_checkout_from_summary-submit_order_from_summary",
+      "group": "alt_content_checkout_vs_hold_confirm",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1038
+    },
+    {
+      "id": "C3_task_065:hold_best_recommendation-build_checkout_from_hold-confirm_held_recommendation_order",
+      "group": "alt_content_checkout_vs_hold_confirm",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1038
+    },
+    {
+      "id": "C3_task_069:get_recommendations_trending-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_recommended_substitute_purchase",
+      "split": "test",
+      "in_search": true,
+      "rank": {
+        "B1": 164,
+        "D": 254
+      },
+      "chains": 1036
+    },
+    {
+      "id": "C3_task_069:add_best_recommendation_to_cart-express_checkout",
+      "group": "alt_recommended_substitute_purchase",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1036
+    },
+    {
+      "id": "C3_task_074:get_available_coupons-optimize_discount-generate_payment_invoice",
+      "group": "alt_invoice_coupon_vs_summary_chain",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1049
+    },
+    {
+      "id": "C3_task_074:get_cart_summary-build_invoice_from_summary-generate_invoice_from_summary",
+      "group": "alt_invoice_coupon_vs_summary_chain",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1049
+    },
+    {
+      "id": "C3_task_075:hold_best_recommendation-confirm_order",
+      "group": "alt_best_recommendation_checkout",
+      "split": "test",
+      "in_search": true,
+      "rank": {
+        "B1": 223,
+        "D": 265
+      },
+      "chains": 1096
+    },
+    {
+      "id": "C3_task_076:get_available_coupons-optimize_discount-generate_payment_invoice",
+      "group": "alt_invoice_coupon_vs_summary_chain",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1078
+    },
+    {
+      "id": "C3_task_076:get_cart_summary-build_invoice_from_summary-generate_invoice_from_summary",
+      "group": "alt_invoice_coupon_vs_summary_chain",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1078
+    },
+    {
+      "id": "C3_task_078:get_available_coupons-optimize_discount-generate_payment_invoice",
+      "group": "alt_invoice_coupon_vs_summary_chain",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1075
+    },
+    {
+      "id": "C3_task_078:get_cart_summary-build_invoice_from_summary-generate_invoice_from_summary",
+      "group": "alt_invoice_coupon_vs_summary_chain",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1075
+    },
+    {
+      "id": "C3_task_081:get_available_coupons-optimize_discount-generate_payment_invoice",
+      "group": "alt_invoice_coupon_vs_summary_chain",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1047
+    },
+    {
+      "id": "C3_task_081:get_cart_summary-build_invoice_from_summary-generate_invoice_from_summary",
+      "group": "alt_invoice_coupon_vs_summary_chain",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1047
+    },
+    {
+      "id": "C3_task_086:get_available_coupons-optimize_discount-generate_payment_invoice",
+      "group": "alt_invoice_coupon_vs_summary_chain",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1047
+    },
+    {
+      "id": "C3_task_086:get_cart_summary-build_invoice_from_summary-generate_invoice_from_summary",
+      "group": "alt_invoice_coupon_vs_summary_chain",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1047
+    },
+    {
+      "id": "C3_task_090:get_recommendations_collaborative-select_recommendation-build_cart_items_from_selection-get_cart_summary-build_invoice_from_summary-generate_invoice_from_summary",
+      "group": "alt_collaborative_invoice_vs_hold_invoice",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1046
+    },
+    {
+      "id": "C3_task_090:hold_best_recommendation-build_invoice_from_hold-generate_invoice_from_hold",
+      "group": "alt_collaborative_invoice_vs_hold_invoice",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1046
+    },
+    {
+      "id": "C3_task_091:get_recommendations_popularity-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_popularity_substitute_purchase",
+      "split": "dev",
+      "in_search": true,
+      "rank": {
+        "B1": 146,
+        "D": 283
+      },
+      "chains": 1065
+    },
+    {
+      "id": "C3_task_091:add_best_recommendation_to_cart-express_checkout",
+      "group": "alt_popularity_substitute_purchase",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1065
+    },
+    {
+      "id": "C3_task_092:hold_best_recommendation-confirm_order",
+      "group": "alt_best_recommendation_checkout",
+      "split": "test",
+      "in_search": true,
+      "rank": {
+        "B1": 224,
+        "D": 262
+      },
+      "chains": 1075
+    },
+    {
+      "id": "C3_task_093:get_recommendations_trending-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_recommended_substitute_purchase",
+      "split": "test",
+      "in_search": true,
+      "rank": {
+        "B1": 161,
+        "D": 256
+      },
+      "chains": 1083
+    },
+    {
+      "id": "C3_task_093:add_best_recommendation_to_cart-express_checkout",
+      "group": "alt_recommended_substitute_purchase",
+      "split": "test",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1083
+    },
+    {
+      "id": "C3_task_097:get_recommendations_content-select_recommendation-hold_inventory-confirm_order",
+      "group": "alt_content_recommendation_purchase",
+      "split": "dev",
+      "in_search": true,
+      "rank": {
+        "B1": 176,
+        "D": 154
+      },
+      "chains": 1037
+    },
+    {
+      "id": "C3_task_097:hold_best_recommendation-express_checkout",
+      "group": "alt_content_recommendation_purchase",
+      "split": "dev",
+      "in_search": false,
+      "rank": {
+        "B1": null,
+        "D": null
+      },
+      "chains": 1037
+    }
+  ]
+}
