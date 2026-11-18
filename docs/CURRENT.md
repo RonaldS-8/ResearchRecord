@@ -20,9 +20,13 @@
 - ToolMaze 已有 [Agent 接口](../benchmarks/ToolMaze/evaluation/agents)、[ToolExecutor](../benchmarks/ToolMaze/toolmaze/core/executor.py)、[InferenceContext](../benchmarks/ToolMaze/evaluation/core/sandbox.py) 和 [JudgeSystem](../benchmarks/ToolMaze/evaluation/core/judge.py)。严格评分适配及隔离测试入口见[资产分类表](archive/README.md#代码资产)。
 - 新模块实际需要时建在 `extensions/route_recovery/`，直接导入或最小复用成熟实现。实验、审查、证据沿用 `docs/experiments/`、`docs/reviews/`、`docs/evidence/`，运行产物写入 Git 忽略的 `results/`。
 
-## Gate 059 待确认目标
+## Gate 059 已完成
 
-先确认相同候选池和预算下，是否有必须借助真实工具返回或可观察状态才能判定剩余义务的案例。拟比较强静态合同规则与动态证据，核对组合调用和展开调用的状态一致性，以及记忆失效时能否拒用。具体方案、判据和执行须另行登记确认。
+- 在限定的预留库存场景，实际工具反馈让两条路线从静态 `unknown` 转为可确认。已有公开历史足以判断库存不足时，静态规则也正确拒绝。8 个候选检查和 8 个复用单元共 106 次顶层工具调用、0 次模型请求。
+- 证据记忆与同样重查库存的普通缓存决策和成本相同；正常复用也未比首次验证成功即采用的重搜省调用。原生宏和展开调用的可观察差异由独立查询适配器处理，证据限于会话内预留。
+- 源码运行提交 `820fd9a`，原结果提交 `bc796e4`。接续时可直接复用 [库存查询适配器](../extensions/execution_memory_059/adapter.py)。[登记与结果](experiments/059-dynamic-execution-evidence.md) · [结果审查](reviews/059-dynamic-evidence-results.md) · [派生摘要](evidence/059/summary.json)
+
+后续 Gate 060 的八回合真实 Agent 自检已在原分支独立归档，提交 `b3a226c`。本次接入范围为 Gate 059。
 
 ## 旧研究
 
