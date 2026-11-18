@@ -1,0 +1,334 @@
+{
+  "cases": [
+    {
+      "context": "C3_task_015",
+      "scope": "selection",
+      "candidate": "select",
+      "B0": true,
+      "B1": true,
+      "M": "accept",
+      "exact_segment_in_valid_paths": false,
+      "reference": "correct_local",
+      "receipt": "accept"
+    },
+    {
+      "context": "C3_task_015",
+      "scope": "selection",
+      "candidate": "wrong_original",
+      "B0": true,
+      "B1": true,
+      "M": "reject",
+      "exact_segment_in_valid_paths": false,
+      "reference": "incorrect",
+      "receipt": "reject"
+    },
+    {
+      "context": "C3_task_015",
+      "scope": "selection",
+      "candidate": "overstock",
+      "B0": true,
+      "B1": false,
+      "M": "reject",
+      "exact_segment_in_valid_paths": false,
+      "reference": "incorrect",
+      "receipt": "reject"
+    },
+    {
+      "context": "C3_task_018",
+      "scope": "selection",
+      "candidate": "select",
+      "B0": true,
+      "B1": true,
+      "M": "accept",
+      "exact_segment_in_valid_paths": false,
+      "reference": "correct_local",
+      "receipt": "accept"
+    },
+    {
+      "context": "C3_task_018",
+      "scope": "selection",
+      "candidate": "wrong_original",
+      "B0": true,
+      "B1": true,
+      "M": "reject",
+      "exact_segment_in_valid_paths": false,
+      "reference": "incorrect",
+      "receipt": "reject"
+    },
+    {
+      "context": "C3_task_018",
+      "scope": "selection",
+      "candidate": "overstock",
+      "B0": true,
+      "B1": false,
+      "M": "reject",
+      "exact_segment_in_valid_paths": false,
+      "reference": "incorrect",
+      "receipt": "reject"
+    },
+    {
+      "context": "C3_task_015",
+      "scope": "order",
+      "candidate": "held",
+      "B0": true,
+      "B1": true,
+      "M": "unknown",
+      "exact_segment_in_valid_paths": false,
+      "reference": "unknown",
+      "receipt": "accept"
+    },
+    {
+      "context": "C3_task_015",
+      "scope": "order",
+      "candidate": "wrong_original",
+      "B0": true,
+      "B1": true,
+      "M": "reject",
+      "exact_segment_in_valid_paths": true,
+      "reference": "incorrect",
+      "receipt": "reject"
+    },
+    {
+      "context": "C3_task_018",
+      "scope": "order",
+      "candidate": "held",
+      "B0": true,
+      "B1": true,
+      "M": "unknown",
+      "exact_segment_in_valid_paths": false,
+      "reference": "unknown",
+      "receipt": "accept"
+    },
+    {
+      "context": "C3_task_018",
+      "scope": "order",
+      "candidate": "wrong_original",
+      "B0": true,
+      "B1": true,
+      "M": "reject",
+      "exact_segment_in_valid_paths": true,
+      "reference": "incorrect",
+      "receipt": "reject"
+    },
+    {
+      "context": "C3_task_034",
+      "scope": "invoice",
+      "candidate": "invoice",
+      "B0": true,
+      "B1": true,
+      "M": "unknown",
+      "exact_segment_in_valid_paths": false,
+      "reference": "unknown",
+      "receipt": "accept"
+    },
+    {
+      "context": "C3_task_034",
+      "scope": "invoice",
+      "candidate": "wrong_email",
+      "B0": true,
+      "B1": true,
+      "M": "reject",
+      "exact_segment_in_valid_paths": false,
+      "reference": "incorrect",
+      "receipt": "reject"
+    },
+    {
+      "context": "C3_task_078",
+      "scope": "invoice",
+      "candidate": "invoice",
+      "B0": true,
+      "B1": true,
+      "M": "unknown",
+      "exact_segment_in_valid_paths": false,
+      "reference": "unknown",
+      "receipt": "accept"
+    },
+    {
+      "context": "C3_task_078",
+      "scope": "invoice",
+      "candidate": "wrong_email",
+      "B0": true,
+      "B1": true,
+      "M": "reject",
+      "exact_segment_in_valid_paths": false,
+      "reference": "incorrect",
+      "receipt": "reject"
+    }
+  ],
+  "counts": {
+    "B0": {
+      "correct_accept": 2,
+      "false_accept": 8,
+      "unverified_accept": 4
+    },
+    "B1": {
+      "correct_accept": 2,
+      "false_accept": 6,
+      "correct_reject": 2,
+      "unverified_accept": 4
+    },
+    "M": {
+      "correct_accept": 2,
+      "correct_reject": 8,
+      "unknown": 4
+    }
+  },
+  "costs": {
+    "B_selection": {
+      "candidate_scans": 6,
+      "context_resets": 6,
+      "plugin_execute_entries": 12,
+      "tool_calls": 12,
+      "execution_seconds": 0.0009323284029960632,
+      "obligation_checks": 6
+    },
+    "memory_build": {
+      "memory_writes": 1
+    },
+    "B_order": {
+      "candidate_scans": 4,
+      "context_resets": 4,
+      "plugin_execute_entries": 18,
+      "tool_calls": 10,
+      "execution_seconds": 0.0005779373459517956,
+      "obligation_checks": 4
+    },
+    "invoice_preconditions": {
+      "context_resets": 4,
+      "plugin_execute_entries": 6,
+      "tool_calls": 6,
+      "execution_seconds": 0.0003859703429043293
+    },
+    "B_invoice": {
+      "candidate_scans": 4,
+      "context_resets": 4,
+      "plugin_execute_entries": 12,
+      "tool_calls": 4,
+      "execution_seconds": 0.00033146701753139496,
+      "obligation_checks": 4
+    },
+    "C_rediscover": {
+      "candidate_scans": 3,
+      "context_resets": 4,
+      "plugin_execute_entries": 8,
+      "tool_calls": 8,
+      "execution_seconds": 0.0005005546845495701,
+      "obligation_checks": 4
+    },
+    "C_reuse": {
+      "memory_reads": 1,
+      "applicability_checks": 1,
+      "context_resets": 1,
+      "plugin_execute_entries": 2,
+      "tool_calls": 2,
+      "execution_seconds": 0.00013289786875247955,
+      "obligation_checks": 1
+    },
+    "A_state": {
+      "context_resets": 4,
+      "plugin_execute_entries": 11,
+      "tool_calls": 8,
+      "execution_seconds": 0.00034022051841020584
+    }
+  },
+  "reuse": {
+    "applicable": true,
+    "source": "C3_task_015",
+    "target": "C3_task_018",
+    "baseline": {
+      "receipt": "accept",
+      "state": "not_applicable",
+      "reason": "recommended_in_stock_and_requested"
+    },
+    "reused": {
+      "receipt": "accept",
+      "state": "not_applicable",
+      "reason": "recommended_in_stock_and_requested"
+    },
+    "independence": "different existing task, same interface/product/backend; not independent generalization"
+  },
+  "native_state": {
+    "direct": {
+      "before": {
+        "product_id": "p_sony_xm5_blk",
+        "name": "Sony WH-1000XM5 Headphones (Black)",
+        "stock": 10,
+        "status": "in_stock",
+        "low_stock_warning": false
+      },
+      "held": {
+        "reservation_id": "RESV-14729548",
+        "expires_in": 300,
+        "product_id": "p_sony_xm5_blk",
+        "quantity": 1,
+        "total_price": 399.0,
+        "expiry_time": 1710000300,
+        "reservation_details": {
+          "product_id": "p_sony_xm5_blk",
+          "quantity": 1,
+          "total_price": 399.0
+        }
+      },
+      "after": {
+        "product_id": "p_sony_xm5_blk",
+        "name": "Sony WH-1000XM5 Headphones (Black)",
+        "stock": 9,
+        "status": "in_stock",
+        "low_stock_warning": false
+      },
+      "fresh": {
+        "product_id": "p_sony_xm5_blk",
+        "name": "Sony WH-1000XM5 Headphones (Black)",
+        "stock": 10,
+        "status": "in_stock",
+        "low_stock_warning": false
+      }
+    },
+    "macro": {
+      "before": {
+        "product_id": "p_sony_xm5_slv",
+        "name": "Sony WH-1000XM5 Headphones (Silver)",
+        "stock": 10,
+        "status": "in_stock",
+        "low_stock_warning": false
+      },
+      "held": {
+        "reservation_id": "RESV-14729548",
+        "expires_in": 300,
+        "product_id": "p_sony_xm5_slv",
+        "quantity": 1,
+        "total_price": 399.0,
+        "expiry_time": 1710000300,
+        "reservation_details": {
+          "product_id": "p_sony_xm5_slv",
+          "quantity": 1,
+          "total_price": 399.0
+        },
+        "original_product_id": "p_sony_xm5_blk",
+        "recommended_product_id": "p_sony_xm5_slv",
+        "recommended_product_name": "Sony WH-1000XM5 Headphones (Silver)",
+        "selection_reason": "Highest relevance recommendation with enough stock for quantity 1",
+        "selected_relevance_score": 4
+      },
+      "after": {
+        "product_id": "p_sony_xm5_slv",
+        "name": "Sony WH-1000XM5 Headphones (Silver)",
+        "stock": 10,
+        "status": "in_stock",
+        "low_stock_warning": false
+      },
+      "fresh": {
+        "product_id": "p_sony_xm5_slv",
+        "name": "Sony WH-1000XM5 Headphones (Silver)",
+        "stock": 10,
+        "status": "in_stock",
+        "low_stock_warning": false
+      }
+    }
+  },
+  "results_sha256": "479ab1e0fcf8f489259a9a3392c3c7cc77ac6402dda46d509dbd0c9ee0e030cf",
+  "notes": [
+    "Manual counterexamples and local obligation labels, not blind independent ground truth.",
+    "Read valid_paths only in this evaluator after execution; exact segment membership is not semantic correctness."
+  ]
+}
