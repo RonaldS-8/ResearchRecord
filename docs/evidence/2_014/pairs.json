@@ -1,0 +1,490 @@
+{
+  "meeting": {
+    "receipt": {
+      "status": "meeting scheduled",
+      "message": "Meeting scheduled successfully and invitations sent",
+      "meeting_id": "MTG-5A3B2C1D",
+      "title": "Review",
+      "participants": [
+        "alice@company.com"
+      ],
+      "participant_count": 1,
+      "start_time": "2026-11-19 10:00",
+      "end_time": "2026-11-19 11:00",
+      "invitation_status": "sent"
+    },
+    "rows": [
+      {
+        "field": "end_time",
+        "rule": "reject",
+        "graph": "weak-edge",
+        "response": {
+          "message": "Reminder created successfully",
+          "reminder_id": "REM7A3B2",
+          "title": "Meeting reminder",
+          "datetime": "2026-11-19 11:00",
+          "description": "",
+          "priority": "medium",
+          "status": "active"
+        },
+        "matched": {
+          "start": false,
+          "end": true
+        }
+      },
+      {
+        "field": "invitation_status",
+        "rule": "reject",
+        "graph": "non-edge",
+        "response": {
+          "message": "Reminder created successfully",
+          "reminder_id": "REM7A3B2",
+          "title": "Meeting reminder",
+          "datetime": "sent",
+          "description": "",
+          "priority": "medium",
+          "status": "active"
+        },
+        "matched": {
+          "start": false,
+          "end": false
+        }
+      },
+      {
+        "field": "meeting_id",
+        "rule": "reject",
+        "graph": "non-edge",
+        "response": {
+          "message": "Reminder created successfully",
+          "reminder_id": "REM7A3B2",
+          "title": "Meeting reminder",
+          "datetime": "MTG-5A3B2C1D",
+          "description": "",
+          "priority": "medium",
+          "status": "active"
+        },
+        "matched": {
+          "start": false,
+          "end": false
+        }
+      },
+      {
+        "field": "message",
+        "rule": "reject",
+        "graph": "non-edge",
+        "response": {
+          "message": "Reminder created successfully",
+          "reminder_id": "REM7A3B2",
+          "title": "Meeting reminder",
+          "datetime": "Meeting scheduled successfully and invitations sent",
+          "description": "",
+          "priority": "medium",
+          "status": "active"
+        },
+        "matched": {
+          "start": false,
+          "end": false
+        }
+      },
+      {
+        "field": "start_time",
+        "rule": "reject",
+        "graph": "weak-edge",
+        "response": {
+          "message": "Reminder created successfully",
+          "reminder_id": "REM7A3B2",
+          "title": "Meeting reminder",
+          "datetime": "2026-11-19 10:00",
+          "description": "",
+          "priority": "medium",
+          "status": "active"
+        },
+        "matched": {
+          "start": true,
+          "end": false
+        }
+      },
+      {
+        "field": "status",
+        "rule": "reject",
+        "graph": "non-edge",
+        "response": {
+          "message": "Reminder created successfully",
+          "reminder_id": "REM7A3B2",
+          "title": "Meeting reminder",
+          "datetime": "meeting scheduled",
+          "description": "",
+          "priority": "medium",
+          "status": "active"
+        },
+        "matched": {
+          "start": false,
+          "end": false
+        }
+      },
+      {
+        "field": "title",
+        "rule": "accept",
+        "graph": "non-edge",
+        "response": {
+          "message": "Reminder created successfully",
+          "reminder_id": "REM7A3B2",
+          "title": "Meeting reminder",
+          "datetime": "Review",
+          "description": "",
+          "priority": "medium",
+          "status": "active"
+        },
+        "matched": {
+          "start": false,
+          "end": false
+        }
+      }
+    ],
+    "durable_state": "unknown"
+  },
+  "shopping": {
+    "receipt": {
+      "reservation_id": "RESV-14729548",
+      "expires_in": 300,
+      "product_id": "p_sony_xm5_slv",
+      "quantity": 1,
+      "total_price": 399.0,
+      "expiry_time": 1710000300,
+      "reservation_details": {
+        "product_id": "p_sony_xm5_slv",
+        "quantity": 1,
+        "total_price": 399.0
+      },
+      "original_product_id": "p_sony_xm5_blk",
+      "recommended_product_id": "p_sony_xm5_slv",
+      "recommended_product_name": "Sony WH-1000XM5 Headphones (Silver)",
+      "selection_reason": "Highest relevance recommendation with enough stock for quantity 1",
+      "selected_relevance_score": 3
+    },
+    "rows": [
+      {
+        "field": "original_product_id",
+        "rule": "reject",
+        "graph": "weak-edge",
+        "response": {
+          "type": "quick_buy_order",
+          "order_id": "QB-7E3A1B2C",
+          "product_id": "p_sony_xm5_blk",
+          "item": "Sony WH-1000XM5 Headphones (Black)",
+          "quantity": 1,
+          "total_paid": 399.0,
+          "status": "completed"
+        },
+        "matched": {
+          "original": true,
+          "recommended": false
+        }
+      },
+      {
+        "field": "product_id",
+        "rule": "accept",
+        "graph": "weak-edge",
+        "response": {
+          "type": "quick_buy_order",
+          "order_id": "QB-7E3A1B2C",
+          "product_id": "p_sony_xm5_slv",
+          "item": "Sony WH-1000XM5 Headphones (Silver)",
+          "quantity": 1,
+          "total_paid": 399.0,
+          "status": "completed"
+        },
+        "matched": {
+          "original": false,
+          "recommended": true
+        }
+      },
+      {
+        "field": "recommended_product_id",
+        "rule": "reject",
+        "graph": "weak-edge",
+        "response": {
+          "type": "quick_buy_order",
+          "order_id": "QB-7E3A1B2C",
+          "product_id": "p_sony_xm5_slv",
+          "item": "Sony WH-1000XM5 Headphones (Silver)",
+          "quantity": 1,
+          "total_paid": 399.0,
+          "status": "completed"
+        },
+        "matched": {
+          "original": false,
+          "recommended": true
+        }
+      },
+      {
+        "field": "recommended_product_name",
+        "rule": "reject",
+        "graph": "non-edge",
+        "response": {
+          "error": "Product with id 'Sony WH-1000XM5 Headphones (Silver)' does not exist."
+        },
+        "matched": {
+          "original": false,
+          "recommended": false
+        }
+      },
+      {
+        "field": "reservation_id",
+        "rule": "reject",
+        "graph": "non-edge",
+        "response": {
+          "error": "Product with id 'RESV-14729548' does not exist."
+        },
+        "matched": {
+          "original": false,
+          "recommended": false
+        }
+      },
+      {
+        "field": "selection_reason",
+        "rule": "reject",
+        "graph": "non-edge",
+        "response": {
+          "error": "Product with id 'Highest relevance recommendation with enough stock for quantity 1' does not exist."
+        },
+        "matched": {
+          "original": false,
+          "recommended": false
+        }
+      }
+    ],
+    "durable_state": "unknown"
+  },
+  "publication": {
+    "C": {
+      "retry_then_switch": {
+        "strict_success": false,
+        "obligations_complete": false,
+        "valid_answer": true,
+        "issues": [
+          "Expected exactly one committed publication."
+        ],
+        "illegal_calls": 0,
+        "publications": 2,
+        "rewrites": 1,
+        "lookups": 0,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "2",
+        "suffix_diagnostic_fee": "0",
+        "suffix": [
+          "publish_verified_record",
+          "read_published_record"
+        ]
+      },
+      "switch_first": {
+        "strict_success": false,
+        "obligations_complete": false,
+        "valid_answer": true,
+        "issues": [
+          "Expected exactly one committed publication."
+        ],
+        "illegal_calls": 0,
+        "publications": 2,
+        "rewrites": 1,
+        "lookups": 0,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "3",
+        "suffix_diagnostic_fee": "0",
+        "suffix": [
+          "prepare_alternate_publication",
+          "confirm_alternate_publication",
+          "read_published_record"
+        ]
+      },
+      "lookup_then_retry": {
+        "strict_success": true,
+        "obligations_complete": true,
+        "valid_answer": true,
+        "issues": [],
+        "illegal_calls": 0,
+        "publications": 1,
+        "rewrites": 0,
+        "lookups": 1,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "1",
+        "suffix_diagnostic_fee": "1",
+        "suffix": [
+          "list_record_publications",
+          "read_published_record"
+        ]
+      },
+      "lookup_then_switch": {
+        "strict_success": true,
+        "obligations_complete": true,
+        "valid_answer": true,
+        "issues": [],
+        "illegal_calls": 0,
+        "publications": 1,
+        "rewrites": 0,
+        "lookups": 1,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "1",
+        "suffix_diagnostic_fee": "1",
+        "suffix": [
+          "list_record_publications",
+          "read_published_record"
+        ]
+      }
+    },
+    "T": {
+      "retry_then_switch": {
+        "strict_success": true,
+        "obligations_complete": true,
+        "valid_answer": true,
+        "issues": [],
+        "illegal_calls": 0,
+        "publications": 1,
+        "rewrites": 1,
+        "lookups": 0,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "2",
+        "suffix_diagnostic_fee": "0",
+        "suffix": [
+          "publish_verified_record",
+          "read_published_record"
+        ]
+      },
+      "switch_first": {
+        "strict_success": true,
+        "obligations_complete": true,
+        "valid_answer": true,
+        "issues": [],
+        "illegal_calls": 0,
+        "publications": 1,
+        "rewrites": 1,
+        "lookups": 0,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "3",
+        "suffix_diagnostic_fee": "0",
+        "suffix": [
+          "prepare_alternate_publication",
+          "confirm_alternate_publication",
+          "read_published_record"
+        ]
+      },
+      "lookup_then_retry": {
+        "strict_success": true,
+        "obligations_complete": true,
+        "valid_answer": true,
+        "issues": [],
+        "illegal_calls": 0,
+        "publications": 1,
+        "rewrites": 1,
+        "lookups": 1,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "2",
+        "suffix_diagnostic_fee": "1",
+        "suffix": [
+          "list_record_publications",
+          "publish_verified_record",
+          "read_published_record"
+        ]
+      },
+      "lookup_then_switch": {
+        "strict_success": true,
+        "obligations_complete": true,
+        "valid_answer": true,
+        "issues": [],
+        "illegal_calls": 0,
+        "publications": 1,
+        "rewrites": 1,
+        "lookups": 1,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "3",
+        "suffix_diagnostic_fee": "1",
+        "suffix": [
+          "list_record_publications",
+          "prepare_alternate_publication",
+          "confirm_alternate_publication",
+          "read_published_record"
+        ]
+      }
+    },
+    "P": {
+      "retry_then_switch": {
+        "strict_success": true,
+        "obligations_complete": true,
+        "valid_answer": true,
+        "issues": [],
+        "illegal_calls": 0,
+        "publications": 1,
+        "rewrites": 2,
+        "lookups": 0,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "4",
+        "suffix_diagnostic_fee": "0",
+        "suffix": [
+          "publish_verified_record",
+          "prepare_alternate_publication",
+          "confirm_alternate_publication",
+          "read_published_record"
+        ]
+      },
+      "switch_first": {
+        "strict_success": true,
+        "obligations_complete": true,
+        "valid_answer": true,
+        "issues": [],
+        "illegal_calls": 0,
+        "publications": 1,
+        "rewrites": 1,
+        "lookups": 0,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "3",
+        "suffix_diagnostic_fee": "0",
+        "suffix": [
+          "prepare_alternate_publication",
+          "confirm_alternate_publication",
+          "read_published_record"
+        ]
+      },
+      "lookup_then_retry": {
+        "strict_success": false,
+        "obligations_complete": false,
+        "valid_answer": true,
+        "issues": [
+          "Missing actual post-commit readback."
+        ],
+        "illegal_calls": 0,
+        "publications": 1,
+        "rewrites": 2,
+        "lookups": 2,
+        "budget_exhausted": true,
+        "suffix_execution_fee": "3",
+        "suffix_diagnostic_fee": "2",
+        "suffix": [
+          "list_record_publications",
+          "publish_verified_record",
+          "list_record_publications",
+          "prepare_alternate_publication",
+          "confirm_alternate_publication"
+        ]
+      },
+      "lookup_then_switch": {
+        "strict_success": true,
+        "obligations_complete": true,
+        "valid_answer": true,
+        "issues": [],
+        "illegal_calls": 0,
+        "publications": 1,
+        "rewrites": 1,
+        "lookups": 1,
+        "budget_exhausted": false,
+        "suffix_execution_fee": "3",
+        "suffix_diagnostic_fee": "1",
+        "suffix": [
+          "list_record_publications",
+          "prepare_alternate_publication",
+          "confirm_alternate_publication",
+          "read_published_record"
+        ]
+      }
+    }
+  }
+}
