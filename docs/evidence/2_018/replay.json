@@ -1,0 +1,135 @@
+{
+  "M4-ordered": {
+    "hint": {
+      "role": "user",
+      "content": "Candidate continuation in order: prepare_alternate_publication, confirm_alternate_publication, read_published_record."
+    },
+    "actions": [
+      {
+        "call": 5,
+        "tool": "prepare_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "evidence_ref": "2143291bb5381346922b77a3"
+        },
+        "result": {
+          "pending_publication_ref": "48cdd09dd1e61a5fa283bad2"
+        },
+        "fee": "1",
+        "illegal": false,
+        "kind": "execution"
+      },
+      {
+        "call": 6,
+        "tool": "confirm_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "pending_publication_ref": "48cdd09dd1e61a5fa283bad2"
+        },
+        "result": {
+          "publication_id": "4b007e0e2122c5b85b70ba0c"
+        },
+        "fee": "1",
+        "illegal": false,
+        "kind": "execution"
+      },
+      {
+        "call": 7,
+        "tool": "read_published_record",
+        "arguments": {
+          "publication_id": "4b007e0e2122c5b85b70ba0c"
+        },
+        "result": {
+          "publication_id": "4b007e0e2122c5b85b70ba0c",
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "status": "active"
+        },
+        "fee": "1",
+        "illegal": false,
+        "kind": "execution"
+      }
+    ],
+    "strict": true,
+    "issues": [],
+    "sha256": "c792f335745953b9d7ae5de160ac1e64644d7c08698af4f4f87694f9cd6e0936",
+    "input": 11946,
+    "output": 2026,
+    "seconds": 27.13
+  },
+  "M4-sources": {
+    "hint": {
+      "role": "user",
+      "content": "Candidate continuation in order: prepare_alternate_publication, confirm_alternate_publication, read_published_record. For preparation take record_id and content from the backup read and evidence_ref from validation. For confirmation use the same record_id and the preparation receipt\u2019s pending_publication_ref. For readback use the confirmation receipt\u2019s publication_id."
+    },
+    "actions": [
+      {
+        "call": 5,
+        "tool": "prepare_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "evidence_ref": "2143291bb5381346922b77a3"
+        },
+        "result": {
+          "pending_publication_ref": "48cdd09dd1e61a5fa283bad2"
+        },
+        "fee": "1",
+        "illegal": false,
+        "kind": "execution"
+      },
+      {
+        "call": 6,
+        "tool": "confirm_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "pending_publication_ref": "48cdd09dd1e61a5fa283bad2"
+        },
+        "result": {
+          "publication_id": "4b007e0e2122c5b85b70ba0c"
+        },
+        "fee": "1",
+        "illegal": false,
+        "kind": "execution"
+      },
+      {
+        "call": 7,
+        "tool": "read_published_record",
+        "arguments": {
+          "publication_id": "4b007e0e2122c5b85b70ba0c"
+        },
+        "result": {
+          "publication_id": "4b007e0e2122c5b85b70ba0c",
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "status": "active"
+        },
+        "fee": "1",
+        "illegal": false,
+        "kind": "execution"
+      }
+    ],
+    "strict": true,
+    "issues": [],
+    "sha256": "a85fc5ee6ef07a9ab0e1ab167beeb6cb4cede02fd551f2ab59d0b71986e6b69b",
+    "input": 11662,
+    "output": 2385,
+    "seconds": 30.78
+  },
+  "M4-unordered": {
+    "hint": {
+      "role": "user",
+      "content": "Candidate tools: confirm_alternate_publication, prepare_alternate_publication, read_published_record."
+    },
+    "actions": [],
+    "strict": false,
+    "issues": [
+      "Expected exactly one committed publication."
+    ],
+    "sha256": "5c979c685d3445721fa9fdf3f3a77a1e3dd8023c7faf51404f1d94aed96fb778",
+    "input": 1922,
+    "output": 1081,
+    "seconds": 14.37
+  }
+}
