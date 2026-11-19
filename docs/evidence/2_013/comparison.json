@@ -1,0 +1,450 @@
+{
+  "queries": [
+    [
+      "add_best_recommendation_to_cart",
+      "express_checkout",
+      "product_id"
+    ],
+    [
+      "create_document",
+      "push_alert",
+      "message"
+    ],
+    [
+      "get_account_balance_bank_api",
+      "get_exchange_rate_fixer",
+      "from_currency"
+    ],
+    [
+      "get_available_coupons",
+      "optimize_discount",
+      "coupons_list"
+    ],
+    [
+      "get_cart_summary",
+      "generate_payment_invoice",
+      "payment_amount"
+    ],
+    [
+      "get_contact_info",
+      "send_email",
+      "recipients"
+    ],
+    [
+      "get_weather_openweather",
+      "temperature_converter",
+      "value"
+    ],
+    [
+      "hold_best_recommendation",
+      "confirm_order",
+      "product_id"
+    ],
+    [
+      "hold_best_recommendation",
+      "express_checkout",
+      "product_id"
+    ],
+    [
+      "optimize_discount",
+      "generate_payment_invoice",
+      "payment_amount"
+    ],
+    [
+      "optimize_discount",
+      "submit_order",
+      "payment_amount"
+    ],
+    [
+      "schedule_meeting",
+      "create_reminder",
+      "datetime"
+    ],
+    [
+      "snapshot_workspace",
+      "push_alert",
+      "message"
+    ]
+  ],
+  "cpu_seconds": 0.5989773240871727,
+  "request_seconds": 1218.3643499850295,
+  "input_tokens": 21809,
+  "output_tokens": 88253,
+  "thinking_tokens": 86135,
+  "hashes": {
+    "requests.jsonl": "36731404f14cdfbf7a182e01aee1e7b7423f05a577b0d10198dcb8f131abfa41",
+    "candidates.json": "7eb10506c19a7c0d8b677618500a58d0e1f5596cc40e8a05f6bb0be0302290d1",
+    "predictions.jsonl": "374fab6e13b4a59eca3aa511290d9c2e0fc47df1621289ba2fd09eb0a1410a22"
+  },
+  "rows": [
+    {
+      "source": "add_best_recommendation_to_cart",
+      "field": "message",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.1921595335006714,
+      "author": "non-edge"
+    },
+    {
+      "source": "add_best_recommendation_to_cart",
+      "field": "original_product_id",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.491694430510203,
+      "author": "weak-edge"
+    },
+    {
+      "source": "add_best_recommendation_to_cart",
+      "field": "recommended_product_id",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.48645567397276557,
+      "author": "weak-edge"
+    },
+    {
+      "source": "add_best_recommendation_to_cart",
+      "field": "recommended_product_name",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.3108986293276151,
+      "author": "non-edge"
+    },
+    {
+      "source": "add_best_recommendation_to_cart",
+      "field": "selection_reason",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.20764097571372986,
+      "author": "non-edge"
+    },
+    {
+      "source": "create_document",
+      "field": "message",
+      "target": "push_alert",
+      "parameter": "message",
+      "rule": "accept",
+      "rule_score": 0.45737217366695404,
+      "author": "strong-edge"
+    },
+    {
+      "source": "create_document",
+      "field": "note_id",
+      "target": "push_alert",
+      "parameter": "message",
+      "rule": "reject",
+      "rule_score": 0.08821943029761314,
+      "author": "non-edge"
+    },
+    {
+      "source": "create_document",
+      "field": "timestamp",
+      "target": "push_alert",
+      "parameter": "message",
+      "rule": "reject",
+      "rule_score": 0.0553915835916996,
+      "author": "non-edge"
+    },
+    {
+      "source": "create_document",
+      "field": "title",
+      "target": "push_alert",
+      "parameter": "message",
+      "rule": "reject",
+      "rule_score": 0.05782047472894192,
+      "author": "strong-edge"
+    },
+    {
+      "source": "get_account_balance_bank_api",
+      "field": "account_type",
+      "target": "get_exchange_rate_fixer",
+      "parameter": "from_currency",
+      "rule": "reject",
+      "rule_score": 0.3242613449692726,
+      "author": "non-edge"
+    },
+    {
+      "source": "get_account_balance_bank_api",
+      "field": "currency",
+      "target": "get_exchange_rate_fixer",
+      "parameter": "from_currency",
+      "rule": "accept",
+      "rule_score": 0.6791800409555435,
+      "author": "weak-edge"
+    },
+    {
+      "source": "get_account_balance_bank_api",
+      "field": "status",
+      "target": "get_exchange_rate_fixer",
+      "parameter": "from_currency",
+      "rule": "reject",
+      "rule_score": 0.31539657711982727,
+      "author": "non-edge"
+    },
+    {
+      "source": "get_account_balance_bank_api",
+      "field": "user_id",
+      "target": "get_exchange_rate_fixer",
+      "parameter": "from_currency",
+      "rule": "reject",
+      "rule_score": 0.284965842962265,
+      "author": "non-edge"
+    },
+    {
+      "source": "get_available_coupons",
+      "field": "coupons",
+      "target": "optimize_discount",
+      "parameter": "coupons_list",
+      "rule": "accept",
+      "rule_score": 0.7065158188343048,
+      "author": "strong-edge"
+    },
+    {
+      "source": "get_cart_summary",
+      "field": "total",
+      "target": "generate_payment_invoice",
+      "parameter": "payment_amount",
+      "rule": "accept",
+      "rule_score": 0.5476850345730782,
+      "author": "strong-edge"
+    },
+    {
+      "source": "get_weather_openweather",
+      "field": "temperature_celsius",
+      "target": "temperature_converter",
+      "parameter": "value",
+      "rule": "accept",
+      "rule_score": 0.5921372845768929,
+      "author": "strong-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "original_product_id",
+      "target": "confirm_order",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.5262441212932268,
+      "author": "strong-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "product_id",
+      "target": "confirm_order",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.5962307378649712,
+      "author": "strong-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "recommended_product_id",
+      "target": "confirm_order",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.5001736531654993,
+      "author": "strong-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "recommended_product_name",
+      "target": "confirm_order",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.341992383201917,
+      "author": "non-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "reservation_id",
+      "target": "confirm_order",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.6057332456111908,
+      "author": "non-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "selection_reason",
+      "target": "confirm_order",
+      "parameter": "product_id",
+      "rule": "unknown",
+      "rule_score": 0.2109767496585846,
+      "author": "non-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "original_product_id",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "reject",
+      "rule_score": 0.47975028554598487,
+      "author": "weak-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "product_id",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "accept",
+      "rule_score": 0.5583970844745636,
+      "author": "weak-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "recommended_product_id",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "reject",
+      "rule_score": 0.4701820413271586,
+      "author": "weak-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "recommended_product_name",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "reject",
+      "rule_score": 0.2935185407598813,
+      "author": "non-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "reservation_id",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "reject",
+      "rule_score": 0.37860536575317383,
+      "author": "non-edge"
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "selection_reason",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "rule": "reject",
+      "rule_score": 0.19057021290063858,
+      "author": "non-edge"
+    },
+    {
+      "source": "schedule_meeting",
+      "field": "end_time",
+      "target": "create_reminder",
+      "parameter": "datetime",
+      "rule": "reject",
+      "rule_score": 0.18013621866703033,
+      "author": "weak-edge"
+    },
+    {
+      "source": "schedule_meeting",
+      "field": "invitation_status",
+      "target": "create_reminder",
+      "parameter": "datetime",
+      "rule": "reject",
+      "rule_score": 0.15660377964377403,
+      "author": "non-edge"
+    },
+    {
+      "source": "schedule_meeting",
+      "field": "meeting_id",
+      "target": "create_reminder",
+      "parameter": "datetime",
+      "rule": "reject",
+      "rule_score": 0.16329384595155716,
+      "author": "non-edge"
+    },
+    {
+      "source": "schedule_meeting",
+      "field": "message",
+      "target": "create_reminder",
+      "parameter": "datetime",
+      "rule": "reject",
+      "rule_score": 0.19604424387216568,
+      "author": "non-edge"
+    },
+    {
+      "source": "schedule_meeting",
+      "field": "start_time",
+      "target": "create_reminder",
+      "parameter": "datetime",
+      "rule": "reject",
+      "rule_score": 0.22244281321763992,
+      "author": "weak-edge"
+    },
+    {
+      "source": "schedule_meeting",
+      "field": "status",
+      "target": "create_reminder",
+      "parameter": "datetime",
+      "rule": "reject",
+      "rule_score": 0.15510587766766548,
+      "author": "non-edge"
+    },
+    {
+      "source": "schedule_meeting",
+      "field": "title",
+      "target": "create_reminder",
+      "parameter": "datetime",
+      "rule": "accept",
+      "rule_score": 0.4946179538965225,
+      "author": "non-edge"
+    },
+    {
+      "source": "snapshot_workspace",
+      "field": "backup_id",
+      "target": "push_alert",
+      "parameter": "message",
+      "rule": "unknown",
+      "rule_score": -0.017038151621818542,
+      "author": "non-edge"
+    },
+    {
+      "source": "snapshot_workspace",
+      "field": "backup_name",
+      "target": "push_alert",
+      "parameter": "message",
+      "rule": "unknown",
+      "rule_score": -0.030888034030795097,
+      "author": "strong-edge"
+    },
+    {
+      "source": "snapshot_workspace",
+      "field": "message",
+      "target": "push_alert",
+      "parameter": "message",
+      "rule": "unknown",
+      "rule_score": 0.36522651463747025,
+      "author": "strong-edge"
+    },
+    {
+      "source": "snapshot_workspace",
+      "field": "status",
+      "target": "push_alert",
+      "parameter": "message",
+      "rule": "unknown",
+      "rule_score": -0.012501074932515621,
+      "author": "non-edge"
+    },
+    {
+      "source": "snapshot_workspace",
+      "field": "timestamp",
+      "target": "push_alert",
+      "parameter": "message",
+      "rule": "unknown",
+      "rule_score": -0.02395249530673027,
+      "author": "non-edge"
+    },
+    {
+      "source": "snapshot_workspace",
+      "field": "workspace_path",
+      "target": "push_alert",
+      "parameter": "message",
+      "rule": "unknown",
+      "rule_score": -0.026760508306324482,
+      "author": "non-edge"
+    }
+  ]
+}
