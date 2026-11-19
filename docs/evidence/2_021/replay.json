@@ -1,0 +1,129 @@
+{
+  "M3-direct": {
+    "actions": [],
+    "fee": 0,
+    "strict": false,
+    "issues": [
+      "Expected exactly one committed publication."
+    ],
+    "status": "answered",
+    "requests": 1,
+    "input": 1536,
+    "output": 671,
+    "seconds": 12.94,
+    "sha256": "45744d88d0c1d37e8a83f10859055efbb9a2ed0ab4831e844a9c8cc0892cc7cd"
+  },
+  "M3-first": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12003,
+    "output": 1554,
+    "seconds": 30.25,
+    "sha256": "f706f8cf770432115f82f029ca829c3c1ce93b545c0ad86cbb4fc7416f163c49"
+  },
+  "M3-pair": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13485,
+    "output": 2174,
+    "seconds": 41.59,
+    "sha256": "d31fffedbe2827c49ddb18f36427409df40d95d04f98a57b6c797f40296ab767"
+  },
+  "M3-full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 11098,
+    "output": 1032,
+    "seconds": 19.83,
+    "sha256": "3b714f84839b5badc2131cef1c3bf8a3a25665ef714c01c0317edd6082f83fa8"
+  },
+  "M4-direct": {
+    "actions": [],
+    "fee": 0,
+    "strict": false,
+    "issues": [
+      "Expected exactly one committed publication."
+    ],
+    "status": "answered",
+    "requests": 1,
+    "input": 1896,
+    "output": 424,
+    "seconds": 8.01,
+    "sha256": "0d92c55ccd96b375fce7a18238ae5b2bb8d65ef1220c021a78e35e9b34bb3b83"
+  },
+  "M4-first": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 10376,
+    "output": 1419,
+    "seconds": 26.49,
+    "sha256": "00ff90bdeb766498ed7ffec9384c9d80f9c628469cbf19f5a092d7dbc2347c34"
+  },
+  "M4-pair": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 10221,
+    "output": 1136,
+    "seconds": 21.66,
+    "sha256": "f72c7d8d21ff9a09588213057c32e1a415f05a41ee30e36acdb29f2b68b12b19"
+  },
+  "M4-full": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 9775,
+    "output": 876,
+    "seconds": 17.01,
+    "sha256": "70aae88829941239e87f6bcb33833c13a30751e958e8fa63031cc2bf0b988d26"
+  }
+}
