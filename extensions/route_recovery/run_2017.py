@@ -16,8 +16,8 @@ EXIT = "If unable to complete the task, start your final reply with 'Blocked:' a
 ROOT = Path('/home/ubuntu/Song/Agent')
 
 
-def run(case, arm, out, post_prefix=None, model=MODEL):
-    agent = VLLMAgent(model,'http://127.0.0.1:8010/v1',temperature=0,max_tokens=8192,request_timeout=300)
+def run(case, arm, out, post_prefix=None, model=MODEL, temperature=0, seed=201701):
+    agent = VLLMAgent(model,'http://127.0.0.1:8010/v1',temperature=temperature,max_tokens=8192,request_timeout=300)
     if case in ('M3','M4'):
         session=restored(case)
         initialize(agent,session)
@@ -43,7 +43,7 @@ def run(case, arm, out, post_prefix=None, model=MODEL):
     backend=agent.client.with_options(max_retries=0).chat.completions.create
     log=[]
     def create(**payload):
-        payload['seed']=201701
+        payload['seed']=seed
         start=time.monotonic()
         reply=backend(**payload)
         log.append(dict(request=json.loads(json.dumps(payload)),response=reply.model_dump(),seconds=time.monotonic()-start))
