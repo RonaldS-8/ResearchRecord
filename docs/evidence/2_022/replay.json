@@ -1,0 +1,36 @@
+{
+  "M3-reminder": {
+    "actions": [
+      "read_primary_record",
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 7,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 6,
+    "input": 17290,
+    "output": 2312,
+    "seconds": 42.59,
+    "sha256": "b53569f0b59a6b0616b6f661ab621d06332ddd50b2fafc3290b43f5db9ba835e"
+  },
+  "M4-reminder": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 14736,
+    "output": 2997,
+    "seconds": 54.11,
+    "sha256": "2462860b450b70493390b851e91dd06ba6ac67e4e4ada3beb475ab90ede019e7"
+  }
+}
