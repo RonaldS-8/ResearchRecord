@@ -1,0 +1,2728 @@
+{
+  "tasks": {
+    "c1": {
+      "tasks": 100,
+      "groups": 0,
+      "outside_catalog": [],
+      "path_counts": {
+        "0": 100
+      }
+    },
+    "c2": {
+      "tasks": 100,
+      "groups": 42,
+      "outside_catalog": [],
+      "path_counts": {
+        "2": 100
+      }
+    },
+    "c3": {
+      "tasks": 100,
+      "groups": 30,
+      "outside_catalog": [],
+      "path_counts": {
+        "2": 100
+      }
+    },
+    "c4": {
+      "tasks": 100,
+      "groups": 88,
+      "outside_catalog": [],
+      "path_counts": {
+        "8": 50,
+        "4": 50
+      }
+    }
+  },
+  "task_sha256": "ee28d7000b1e47631dc9a45df2e4328b33fd6f5b3ab8434182208eb95579f297",
+  "groups": 125,
+  "edges": [
+    {
+      "source": "add_best_recommendation_to_cart",
+      "field": "recommended_product_id",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "groups": [
+        "alt_best_recommendation_checkout",
+        "alt_collaborative_recommendation_purchase",
+        "alt_popularity_substitute_purchase",
+        "alt_recommended_substitute_purchase"
+      ],
+      "matching_trace_values": 49
+    },
+    {
+      "source": "assess_trade_risk",
+      "field": "risk_token",
+      "target": "place_buy_order",
+      "parameter": "risk_token",
+      "groups": [
+        "alt_safe_buy_order"
+      ],
+      "matching_trace_values": 18
+    },
+    {
+      "source": "browse_storage",
+      "field": "",
+      "target": "build_storage_archive_payload",
+      "parameter": "storage_data",
+      "groups": [
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_data_payload",
+      "field": "channel",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "channel",
+      "groups": [
+        "alt_balance_structured_notification",
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 18
+    },
+    {
+      "source": "build_balance_data_payload",
+      "field": "data",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "data",
+      "groups": [
+        "alt_balance_structured_notification",
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 6
+    },
+    {
+      "source": "build_balance_data_payload",
+      "field": "priority",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "priority",
+      "groups": [
+        "alt_balance_structured_notification",
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 18
+    },
+    {
+      "source": "build_balance_data_payload",
+      "field": "tags",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "tags",
+      "groups": [
+        "alt_balance_structured_notification",
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 6
+    },
+    {
+      "source": "build_balance_data_payload",
+      "field": "title",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "title",
+      "groups": [
+        "alt_balance_structured_notification",
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 6
+    },
+    {
+      "source": "build_balance_data_payload",
+      "field": "user_id",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "user_id",
+      "groups": [
+        "alt_balance_structured_notification",
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 14
+    },
+    {
+      "source": "build_balance_report_payload",
+      "field": "channel",
+      "target": "create_document_and_alert",
+      "parameter": "channel",
+      "groups": [
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_report_payload",
+      "field": "content",
+      "target": "create_document_and_alert",
+      "parameter": "content",
+      "groups": [
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_report_payload",
+      "field": "priority",
+      "target": "create_document_and_alert",
+      "parameter": "priority",
+      "groups": [
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_report_payload",
+      "field": "tags",
+      "target": "create_document_and_alert",
+      "parameter": "tags",
+      "groups": [
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_report_payload",
+      "field": "title",
+      "target": "create_document_and_alert",
+      "parameter": "title",
+      "groups": [
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_report_payload",
+      "field": "user_id",
+      "target": "create_document_and_alert",
+      "parameter": "user_id",
+      "groups": [
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_structured_payload",
+      "field": "channel",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "channel",
+      "groups": [
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_structured_payload",
+      "field": "data",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "data",
+      "groups": [
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_structured_payload",
+      "field": "priority",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "priority",
+      "groups": [
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_structured_payload",
+      "field": "tags",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "tags",
+      "groups": [
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_structured_payload",
+      "field": "title",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "title",
+      "groups": [
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_structured_payload",
+      "field": "user_id",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "user_id",
+      "groups": [
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_balance_text_report",
+      "field": "channel",
+      "target": "create_document_and_alert",
+      "parameter": "channel",
+      "groups": [
+        "alt_balance_report_notification",
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "build_balance_text_report",
+      "field": "content",
+      "target": "create_document_and_alert",
+      "parameter": "content",
+      "groups": [
+        "alt_balance_report_notification",
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "build_balance_text_report",
+      "field": "priority",
+      "target": "create_document_and_alert",
+      "parameter": "priority",
+      "groups": [
+        "alt_balance_report_notification",
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "build_balance_text_report",
+      "field": "tags",
+      "target": "create_document_and_alert",
+      "parameter": "tags",
+      "groups": [
+        "alt_balance_report_notification",
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "build_balance_text_report",
+      "field": "title",
+      "target": "create_document_and_alert",
+      "parameter": "title",
+      "groups": [
+        "alt_balance_report_notification",
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "build_balance_text_report",
+      "field": "user_id",
+      "target": "create_document_and_alert",
+      "parameter": "user_id",
+      "groups": [
+        "alt_balance_report_notification",
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "build_cart_items_from_selection",
+      "field": "items",
+      "target": "build_checkout_from_summary",
+      "parameter": "items",
+      "groups": [
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 12
+    },
+    {
+      "source": "build_cart_items_from_selection",
+      "field": "items",
+      "target": "build_invoice_from_summary",
+      "parameter": "items",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice"
+      ],
+      "matching_trace_values": 15
+    },
+    {
+      "source": "build_cart_items_from_selection",
+      "field": "items",
+      "target": "get_cart_summary",
+      "parameter": "items",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 33
+    },
+    {
+      "source": "build_checkout_from_hold",
+      "field": "product_id",
+      "target": "confirm_held_recommendation_order",
+      "parameter": "product_id",
+      "groups": [
+        "alt_best_recommendation_checkout",
+        "alt_best_recommendation_checkout_prepared",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 27
+    },
+    {
+      "source": "build_checkout_from_hold",
+      "field": "quantity",
+      "target": "confirm_held_recommendation_order",
+      "parameter": "quantity",
+      "groups": [
+        "alt_best_recommendation_checkout",
+        "alt_best_recommendation_checkout_prepared",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 27
+    },
+    {
+      "source": "build_checkout_from_hold",
+      "field": "reservation_id",
+      "target": "confirm_held_recommendation_order",
+      "parameter": "reservation_id",
+      "groups": [
+        "alt_best_recommendation_checkout",
+        "alt_best_recommendation_checkout_prepared",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 27
+    },
+    {
+      "source": "build_checkout_from_summary",
+      "field": "coupon_status",
+      "target": "submit_order_from_summary",
+      "parameter": "coupon_status",
+      "groups": [
+        "alt_checkout_coupon_vs_summary_chain",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_checkout_from_summary",
+      "field": "discount",
+      "target": "submit_order_from_summary",
+      "parameter": "discount",
+      "groups": [
+        "alt_checkout_coupon_vs_summary_chain",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_checkout_from_summary",
+      "field": "items",
+      "target": "submit_order_from_summary",
+      "parameter": "items",
+      "groups": [
+        "alt_checkout_coupon_vs_summary_chain",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_checkout_from_summary",
+      "field": "payment_amount",
+      "target": "submit_order_from_summary",
+      "parameter": "payment_amount",
+      "groups": [
+        "alt_checkout_coupon_vs_summary_chain",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_checkout_from_summary",
+      "field": "payment_method",
+      "target": "submit_order_from_summary",
+      "parameter": "payment_method",
+      "groups": [
+        "alt_checkout_coupon_vs_summary_chain",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_checkout_from_summary",
+      "field": "subtotal",
+      "target": "submit_order_from_summary",
+      "parameter": "subtotal",
+      "groups": [
+        "alt_checkout_coupon_vs_summary_chain",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_checkout_from_summary",
+      "field": "user_id",
+      "target": "submit_order_from_summary",
+      "parameter": "user_id",
+      "groups": [
+        "alt_checkout_coupon_vs_summary_chain",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_contact_alert_payload",
+      "field": "channel",
+      "target": "push_alert_to_contact",
+      "parameter": "channel",
+      "groups": [
+        "alt_contact_alert_routed"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_contact_alert_payload",
+      "field": "message",
+      "target": "push_alert_to_contact",
+      "parameter": "message",
+      "groups": [
+        "alt_contact_alert_routed"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_contact_alert_payload",
+      "field": "priority",
+      "target": "push_alert_to_contact",
+      "parameter": "priority",
+      "groups": [
+        "alt_contact_alert_routed"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_contact_alert_payload",
+      "field": "recipient_name",
+      "target": "push_alert_to_contact",
+      "parameter": "recipient_name",
+      "groups": [
+        "alt_contact_alert_routed"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_contact_alert_payload",
+      "field": "user_id",
+      "target": "push_alert_to_contact",
+      "parameter": "user_id",
+      "groups": [
+        "alt_contact_alert_routed"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_contact_email_payload",
+      "field": "body",
+      "target": "send_email",
+      "parameter": "body",
+      "groups": [
+        "alt_contact_email_vs_im_notification"
+      ],
+      "matching_trace_values": 10
+    },
+    {
+      "source": "build_contact_email_payload",
+      "field": "recipients",
+      "target": "send_email",
+      "parameter": "recipients",
+      "groups": [
+        "alt_contact_email_vs_im_notification"
+      ],
+      "matching_trace_values": 10
+    },
+    {
+      "source": "build_contact_email_payload",
+      "field": "subject",
+      "target": "send_email",
+      "parameter": "subject",
+      "groups": [
+        "alt_contact_email_vs_im_notification"
+      ],
+      "matching_trace_values": 10
+    },
+    {
+      "source": "build_converted_sell_request",
+      "field": "converted_price",
+      "target": "place_sell_order_from_converted_quote",
+      "parameter": "converted_price",
+      "groups": [
+        "alt_quote_sell_vs_converted_sell"
+      ],
+      "matching_trace_values": 5
+    },
+    {
+      "source": "build_converted_sell_request",
+      "field": "price_usd",
+      "target": "place_sell_order_from_converted_quote",
+      "parameter": "price_usd",
+      "groups": [
+        "alt_quote_sell_vs_converted_sell"
+      ],
+      "matching_trace_values": 5
+    },
+    {
+      "source": "build_converted_sell_request",
+      "field": "quantity",
+      "target": "place_sell_order_from_converted_quote",
+      "parameter": "quantity",
+      "groups": [
+        "alt_quote_sell_vs_converted_sell"
+      ],
+      "matching_trace_values": 5
+    },
+    {
+      "source": "build_converted_sell_request",
+      "field": "target_currency",
+      "target": "place_sell_order_from_converted_quote",
+      "parameter": "target_currency",
+      "groups": [
+        "alt_quote_sell_vs_converted_sell"
+      ],
+      "matching_trace_values": 5
+    },
+    {
+      "source": "build_converted_sell_request",
+      "field": "ticker",
+      "target": "place_sell_order_from_converted_quote",
+      "parameter": "ticker",
+      "groups": [
+        "alt_quote_sell_vs_converted_sell"
+      ],
+      "matching_trace_values": 5
+    },
+    {
+      "source": "build_employee_im_payload",
+      "field": "message",
+      "target": "send_instant_message",
+      "parameter": "message",
+      "groups": [
+        "alt_contact_email_vs_im_notification"
+      ],
+      "matching_trace_values": 6
+    },
+    {
+      "source": "build_employee_im_payload",
+      "field": "user_id",
+      "target": "send_instant_message",
+      "parameter": "user_id",
+      "groups": [
+        "alt_contact_email_vs_im_notification"
+      ],
+      "matching_trace_values": 6
+    },
+    {
+      "source": "build_equity_sell_request",
+      "field": "price",
+      "target": "place_sell_order_from_quote",
+      "parameter": "price",
+      "groups": [
+        "alt_quote_sell_vs_converted_sell"
+      ],
+      "matching_trace_values": 25
+    },
+    {
+      "source": "build_equity_sell_request",
+      "field": "quantity",
+      "target": "place_sell_order_from_quote",
+      "parameter": "quantity",
+      "groups": [
+        "alt_quote_sell_vs_converted_sell"
+      ],
+      "matching_trace_values": 25
+    },
+    {
+      "source": "build_equity_sell_request",
+      "field": "ticker",
+      "target": "place_sell_order_from_quote",
+      "parameter": "ticker",
+      "groups": [
+        "alt_quote_sell_vs_converted_sell"
+      ],
+      "matching_trace_values": 25
+    },
+    {
+      "source": "build_gnews_digest_report_payload",
+      "field": "channel",
+      "target": "create_document_and_alert",
+      "parameter": "channel",
+      "groups": [
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_gnews_digest_report_payload",
+      "field": "content",
+      "target": "create_document_and_alert",
+      "parameter": "content",
+      "groups": [
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_gnews_digest_report_payload",
+      "field": "priority",
+      "target": "create_document_and_alert",
+      "parameter": "priority",
+      "groups": [
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_gnews_digest_report_payload",
+      "field": "tags",
+      "target": "create_document_and_alert",
+      "parameter": "tags",
+      "groups": [
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_gnews_digest_report_payload",
+      "field": "title",
+      "target": "create_document_and_alert",
+      "parameter": "title",
+      "groups": [
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_gnews_digest_report_payload",
+      "field": "user_id",
+      "target": "create_document_and_alert",
+      "parameter": "user_id",
+      "groups": [
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_invoice_from_hold",
+      "field": "email",
+      "target": "generate_invoice_from_hold",
+      "parameter": "email",
+      "groups": [
+        "alt_best_recommendation_invoice",
+        "alt_best_recommendation_invoice_prepared",
+        "alt_collaborative_invoice_vs_hold_invoice"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_invoice_from_hold",
+      "field": "items",
+      "target": "generate_invoice_from_hold",
+      "parameter": "items",
+      "groups": [
+        "alt_best_recommendation_invoice",
+        "alt_best_recommendation_invoice_prepared",
+        "alt_collaborative_invoice_vs_hold_invoice"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_invoice_from_hold",
+      "field": "payment_amount",
+      "target": "generate_invoice_from_hold",
+      "parameter": "payment_amount",
+      "groups": [
+        "alt_best_recommendation_invoice",
+        "alt_best_recommendation_invoice_prepared",
+        "alt_collaborative_invoice_vs_hold_invoice"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_invoice_from_hold",
+      "field": "payment_gateway",
+      "target": "generate_invoice_from_hold",
+      "parameter": "payment_gateway",
+      "groups": [
+        "alt_best_recommendation_invoice",
+        "alt_best_recommendation_invoice_prepared",
+        "alt_collaborative_invoice_vs_hold_invoice"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_invoice_from_hold",
+      "field": "reservation_id",
+      "target": "generate_invoice_from_hold",
+      "parameter": "reservation_id",
+      "groups": [
+        "alt_best_recommendation_invoice",
+        "alt_best_recommendation_invoice_prepared",
+        "alt_collaborative_invoice_vs_hold_invoice"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_invoice_from_hold",
+      "field": "user_id",
+      "target": "generate_invoice_from_hold",
+      "parameter": "user_id",
+      "groups": [
+        "alt_best_recommendation_invoice",
+        "alt_best_recommendation_invoice_prepared",
+        "alt_collaborative_invoice_vs_hold_invoice"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_invoice_from_summary",
+      "field": "coupon_status",
+      "target": "generate_invoice_from_summary",
+      "parameter": "coupon_status",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_invoice_from_summary",
+      "field": "discount",
+      "target": "generate_invoice_from_summary",
+      "parameter": "discount",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_invoice_from_summary",
+      "field": "email",
+      "target": "generate_invoice_from_summary",
+      "parameter": "email",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_invoice_from_summary",
+      "field": "items",
+      "target": "generate_invoice_from_summary",
+      "parameter": "items",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_invoice_from_summary",
+      "field": "payment_amount",
+      "target": "generate_invoice_from_summary",
+      "parameter": "payment_amount",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_invoice_from_summary",
+      "field": "payment_gateway",
+      "target": "generate_invoice_from_summary",
+      "parameter": "payment_gateway",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_invoice_from_summary",
+      "field": "subtotal",
+      "target": "generate_invoice_from_summary",
+      "parameter": "subtotal",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_invoice_from_summary",
+      "field": "user_id",
+      "target": "generate_invoice_from_summary",
+      "parameter": "user_id",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "build_news_text_report",
+      "field": "channel",
+      "target": "create_document_and_alert",
+      "parameter": "channel",
+      "groups": [
+        "alt_gnews_digest_notification",
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 16
+    },
+    {
+      "source": "build_news_text_report",
+      "field": "content",
+      "target": "create_document_and_alert",
+      "parameter": "content",
+      "groups": [
+        "alt_gnews_digest_notification",
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 16
+    },
+    {
+      "source": "build_news_text_report",
+      "field": "priority",
+      "target": "create_document_and_alert",
+      "parameter": "priority",
+      "groups": [
+        "alt_gnews_digest_notification",
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 16
+    },
+    {
+      "source": "build_news_text_report",
+      "field": "tags",
+      "target": "create_document_and_alert",
+      "parameter": "tags",
+      "groups": [
+        "alt_gnews_digest_notification",
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 16
+    },
+    {
+      "source": "build_news_text_report",
+      "field": "title",
+      "target": "create_document_and_alert",
+      "parameter": "title",
+      "groups": [
+        "alt_gnews_digest_notification",
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 16
+    },
+    {
+      "source": "build_news_text_report",
+      "field": "user_id",
+      "target": "create_document_and_alert",
+      "parameter": "user_id",
+      "groups": [
+        "alt_gnews_digest_notification",
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 16
+    },
+    {
+      "source": "build_recommended_checkout_request",
+      "field": "product_id",
+      "target": "confirm_held_recommendation_order",
+      "parameter": "product_id",
+      "groups": [
+        "alt_best_recommendation_checkout_prepared"
+      ],
+      "matching_trace_values": 2
+    },
+    {
+      "source": "build_recommended_checkout_request",
+      "field": "quantity",
+      "target": "confirm_held_recommendation_order",
+      "parameter": "quantity",
+      "groups": [
+        "alt_best_recommendation_checkout_prepared"
+      ],
+      "matching_trace_values": 2
+    },
+    {
+      "source": "build_recommended_checkout_request",
+      "field": "reservation_id",
+      "target": "confirm_held_recommendation_order",
+      "parameter": "reservation_id",
+      "groups": [
+        "alt_best_recommendation_checkout_prepared"
+      ],
+      "matching_trace_values": 2
+    },
+    {
+      "source": "build_recommended_invoice_request",
+      "field": "email",
+      "target": "generate_invoice_from_hold",
+      "parameter": "email",
+      "groups": [
+        "alt_best_recommendation_invoice_prepared"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "build_recommended_invoice_request",
+      "field": "items",
+      "target": "generate_invoice_from_hold",
+      "parameter": "items",
+      "groups": [
+        "alt_best_recommendation_invoice_prepared"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "build_recommended_invoice_request",
+      "field": "payment_amount",
+      "target": "generate_invoice_from_hold",
+      "parameter": "payment_amount",
+      "groups": [
+        "alt_best_recommendation_invoice_prepared"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "build_recommended_invoice_request",
+      "field": "payment_gateway",
+      "target": "generate_invoice_from_hold",
+      "parameter": "payment_gateway",
+      "groups": [
+        "alt_best_recommendation_invoice_prepared"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "build_recommended_invoice_request",
+      "field": "reservation_id",
+      "target": "generate_invoice_from_hold",
+      "parameter": "reservation_id",
+      "groups": [
+        "alt_best_recommendation_invoice_prepared"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "build_recommended_invoice_request",
+      "field": "user_id",
+      "target": "generate_invoice_from_hold",
+      "parameter": "user_id",
+      "groups": [
+        "alt_best_recommendation_invoice_prepared"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "build_shortlist_reservation_request",
+      "field": "attendees",
+      "target": "reserve_shortlisted_room",
+      "parameter": "attendees",
+      "groups": [
+        "alt_shortlisted_room_booking",
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_shortlist_reservation_request",
+      "field": "date",
+      "target": "reserve_shortlisted_room",
+      "parameter": "date",
+      "groups": [
+        "alt_shortlisted_room_booking",
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_shortlist_reservation_request",
+      "field": "end_time",
+      "target": "reserve_shortlisted_room",
+      "parameter": "end_time",
+      "groups": [
+        "alt_shortlisted_room_booking",
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_shortlist_reservation_request",
+      "field": "room_name",
+      "target": "reserve_shortlisted_room",
+      "parameter": "room_name",
+      "groups": [
+        "alt_shortlisted_room_booking",
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_shortlist_reservation_request",
+      "field": "selection_reason",
+      "target": "reserve_shortlisted_room",
+      "parameter": "selection_reason",
+      "groups": [
+        "alt_shortlisted_room_booking",
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_shortlist_reservation_request",
+      "field": "start_time",
+      "target": "reserve_shortlisted_room",
+      "parameter": "start_time",
+      "groups": [
+        "alt_shortlisted_room_booking",
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_shortlisted_room_reservation_request",
+      "field": "attendees",
+      "target": "reserve_shortlisted_room",
+      "parameter": "attendees",
+      "groups": [
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_shortlisted_room_reservation_request",
+      "field": "date",
+      "target": "reserve_shortlisted_room",
+      "parameter": "date",
+      "groups": [
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_shortlisted_room_reservation_request",
+      "field": "end_time",
+      "target": "reserve_shortlisted_room",
+      "parameter": "end_time",
+      "groups": [
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_shortlisted_room_reservation_request",
+      "field": "room_name",
+      "target": "reserve_shortlisted_room",
+      "parameter": "room_name",
+      "groups": [
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_shortlisted_room_reservation_request",
+      "field": "selection_reason",
+      "target": "reserve_shortlisted_room",
+      "parameter": "selection_reason",
+      "groups": [
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_shortlisted_room_reservation_request",
+      "field": "start_time",
+      "target": "reserve_shortlisted_room",
+      "parameter": "start_time",
+      "groups": [
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_snapshot_text_report",
+      "field": "channel",
+      "target": "create_document_and_alert",
+      "parameter": "channel",
+      "groups": [
+        "alt_snapshot_report_notification",
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_snapshot_text_report",
+      "field": "content",
+      "target": "create_document_and_alert",
+      "parameter": "content",
+      "groups": [
+        "alt_snapshot_report_notification",
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_snapshot_text_report",
+      "field": "priority",
+      "target": "create_document_and_alert",
+      "parameter": "priority",
+      "groups": [
+        "alt_snapshot_report_notification",
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_snapshot_text_report",
+      "field": "tags",
+      "target": "create_document_and_alert",
+      "parameter": "tags",
+      "groups": [
+        "alt_snapshot_report_notification",
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_snapshot_text_report",
+      "field": "title",
+      "target": "create_document_and_alert",
+      "parameter": "title",
+      "groups": [
+        "alt_snapshot_report_notification",
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_snapshot_text_report",
+      "field": "user_id",
+      "target": "create_document_and_alert",
+      "parameter": "user_id",
+      "groups": [
+        "alt_snapshot_report_notification",
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_storage_archive_payload",
+      "field": "channel",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "channel",
+      "groups": [
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_storage_archive_payload",
+      "field": "data",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "data",
+      "groups": [
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_storage_archive_payload",
+      "field": "priority",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "priority",
+      "groups": [
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_storage_archive_payload",
+      "field": "tags",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "tags",
+      "groups": [
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_storage_archive_payload",
+      "field": "title",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "title",
+      "groups": [
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_storage_archive_payload",
+      "field": "user_id",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "user_id",
+      "groups": [
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_brief_payload",
+      "field": "channel",
+      "target": "create_document_and_alert",
+      "parameter": "channel",
+      "groups": [
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_brief_payload",
+      "field": "content",
+      "target": "create_document_and_alert",
+      "parameter": "content",
+      "groups": [
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_brief_payload",
+      "field": "priority",
+      "target": "create_document_and_alert",
+      "parameter": "priority",
+      "groups": [
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_brief_payload",
+      "field": "tags",
+      "target": "create_document_and_alert",
+      "parameter": "tags",
+      "groups": [
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_brief_payload",
+      "field": "title",
+      "target": "create_document_and_alert",
+      "parameter": "title",
+      "groups": [
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_brief_payload",
+      "field": "user_id",
+      "target": "create_document_and_alert",
+      "parameter": "user_id",
+      "groups": [
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_data_payload",
+      "field": "channel",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "channel",
+      "groups": [
+        "alt_weather_structured_notification",
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_weather_data_payload",
+      "field": "data",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "data",
+      "groups": [
+        "alt_weather_structured_notification",
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_weather_data_payload",
+      "field": "priority",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "priority",
+      "groups": [
+        "alt_weather_structured_notification",
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_weather_data_payload",
+      "field": "tags",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "tags",
+      "groups": [
+        "alt_weather_structured_notification",
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_weather_data_payload",
+      "field": "title",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "title",
+      "groups": [
+        "alt_weather_structured_notification",
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_weather_data_payload",
+      "field": "user_id",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "user_id",
+      "groups": [
+        "alt_weather_structured_notification",
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "build_weather_structured_payload",
+      "field": "channel",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "channel",
+      "groups": [
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_structured_payload",
+      "field": "data",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "data",
+      "groups": [
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_structured_payload",
+      "field": "priority",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "priority",
+      "groups": [
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_structured_payload",
+      "field": "tags",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "tags",
+      "groups": [
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_structured_payload",
+      "field": "title",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "title",
+      "groups": [
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_structured_payload",
+      "field": "user_id",
+      "target": "create_document_and_alert_from_data",
+      "parameter": "user_id",
+      "groups": [
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_text_report",
+      "field": "channel",
+      "target": "create_document_and_alert",
+      "parameter": "channel",
+      "groups": [
+        "alt_weather_brief_notification",
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_text_report",
+      "field": "content",
+      "target": "create_document_and_alert",
+      "parameter": "content",
+      "groups": [
+        "alt_weather_brief_notification",
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_text_report",
+      "field": "priority",
+      "target": "create_document_and_alert",
+      "parameter": "priority",
+      "groups": [
+        "alt_weather_brief_notification",
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_text_report",
+      "field": "tags",
+      "target": "create_document_and_alert",
+      "parameter": "tags",
+      "groups": [
+        "alt_weather_brief_notification",
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_text_report",
+      "field": "title",
+      "target": "create_document_and_alert",
+      "parameter": "title",
+      "groups": [
+        "alt_weather_brief_notification",
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "build_weather_text_report",
+      "field": "user_id",
+      "target": "create_document_and_alert",
+      "parameter": "user_id",
+      "groups": [
+        "alt_weather_brief_notification",
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "create_document",
+      "field": "title",
+      "target": "push_alert",
+      "parameter": "message",
+      "groups": [
+        "alt_document_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "discover_smart_devices",
+      "field": "",
+      "target": "select_discovered_device_by_type",
+      "parameter": "discovery_data",
+      "groups": [
+        "alt_iot_device_resolution_2to2",
+        "alt_lock_reference_resolution_2to2"
+      ],
+      "matching_trace_values": 51
+    },
+    {
+      "source": "get_account_balance_bank_api",
+      "field": "",
+      "target": "build_balance_data_payload",
+      "parameter": "balance_data",
+      "groups": [
+        "alt_balance_structured_notification",
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 18
+    },
+    {
+      "source": "get_account_balance_bank_api",
+      "field": "",
+      "target": "build_balance_text_report",
+      "parameter": "balance_data",
+      "groups": [
+        "alt_balance_report_notification",
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "get_account_balance_bank_api",
+      "field": "currency",
+      "target": "get_exchange_rate_fixer",
+      "parameter": "from_currency",
+      "groups": [
+        "alt_balance_report_notification",
+        "alt_balance_report_payload_notification",
+        "alt_balance_structured_notification",
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 23
+    },
+    {
+      "source": "get_alpha_market_window_native",
+      "field": "",
+      "target": "archive_alpha_market_window_native",
+      "parameter": "market_window",
+      "groups": [
+        "alt_market_archive_native_2to2"
+      ],
+      "matching_trace_values": 16
+    },
+    {
+      "source": "get_alpha_market_window_native",
+      "field": "",
+      "target": "publish_alpha_market_window_native",
+      "parameter": "market_window",
+      "groups": [
+        "alt_market_notice_native_2to2"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "get_available_coupons",
+      "field": "coupons",
+      "target": "optimize_discount",
+      "parameter": "coupons_list",
+      "groups": [
+        "alt_checkout_coupon_vs_summary_chain",
+        "alt_discounted_checkout",
+        "alt_discounted_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 47
+    },
+    {
+      "source": "get_aviationstack_gate_board_native",
+      "field": "",
+      "target": "archive_aviationstack_gate_board_native",
+      "parameter": "gate_board",
+      "groups": [
+        "alt_flight_archive_native_2to2"
+      ],
+      "matching_trace_values": 12
+    },
+    {
+      "source": "get_aviationstack_gate_board_native",
+      "field": "",
+      "target": "publish_gate_board_notice_native",
+      "parameter": "gate_board",
+      "groups": [
+        "alt_flight_notice_native_2to2"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "get_bank_balance_sheet_native",
+      "field": "",
+      "target": "archive_bank_balance_sheet_native",
+      "parameter": "balance_sheet",
+      "groups": [
+        "alt_balance_archive_native_2to2"
+      ],
+      "matching_trace_values": 13
+    },
+    {
+      "source": "get_bank_balance_sheet_native",
+      "field": "",
+      "target": "publish_bank_balance_sheet_native",
+      "parameter": "balance_sheet",
+      "groups": [
+        "alt_balance_notice_native_2to2"
+      ],
+      "matching_trace_values": 21
+    },
+    {
+      "source": "get_booking_stay_sheet_native",
+      "field": "",
+      "target": "archive_booking_stay_sheet_native",
+      "parameter": "stay_sheet",
+      "groups": [
+        "alt_hotel_archive_native_2to2"
+      ],
+      "matching_trace_values": 25
+    },
+    {
+      "source": "get_booking_stay_sheet_native",
+      "field": "",
+      "target": "publish_booking_stay_sheet_native",
+      "parameter": "stay_sheet",
+      "groups": [
+        "alt_hotel_notice_native_2to2"
+      ],
+      "matching_trace_values": 15
+    },
+    {
+      "source": "get_broker_balance_ledger_native",
+      "field": "",
+      "target": "archive_broker_balance_ledger_native",
+      "parameter": "balance_ledger",
+      "groups": [
+        "alt_balance_archive_native_2to2"
+      ],
+      "matching_trace_values": 13
+    },
+    {
+      "source": "get_broker_balance_ledger_native",
+      "field": "",
+      "target": "publish_broker_balance_ledger_native",
+      "parameter": "balance_ledger",
+      "groups": [
+        "alt_balance_notice_native_2to2"
+      ],
+      "matching_trace_values": 21
+    },
+    {
+      "source": "get_cart_summary",
+      "field": "",
+      "target": "build_checkout_from_summary",
+      "parameter": "cart_summary",
+      "groups": [
+        "alt_checkout_coupon_vs_summary_chain",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "get_cart_summary",
+      "field": "",
+      "target": "build_invoice_from_summary",
+      "parameter": "cart_summary",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "get_cart_summary",
+      "field": "final_total",
+      "target": "generate_payment_invoice",
+      "parameter": "payment_amount",
+      "groups": [
+        "alt_invoice_generation"
+      ],
+      "matching_trace_values": 22
+    },
+    {
+      "source": "get_connected_lock_pass_native",
+      "field": "",
+      "target": "apply_connected_lock_pass_native",
+      "parameter": "lock_pass",
+      "groups": [
+        "alt_lock_control_native_2to2"
+      ],
+      "matching_trace_values": 20
+    },
+    {
+      "source": "get_connected_lock_pass_native",
+      "field": "",
+      "target": "archive_connected_lock_pass_native",
+      "parameter": "lock_pass",
+      "groups": [
+        "alt_lock_archive_native_2to2"
+      ],
+      "matching_trace_values": 23
+    },
+    {
+      "source": "get_contact_info",
+      "field": "",
+      "target": "build_contact_alert_payload",
+      "parameter": "contact_data",
+      "groups": [
+        "alt_contact_alert_routed"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "get_contact_info",
+      "field": "email",
+      "target": "send_email",
+      "parameter": "recipients",
+      "groups": [
+        "alt_email_contact_lookup"
+      ],
+      "matching_trace_values": 12
+    },
+    {
+      "source": "get_contact_info",
+      "field": "user_id",
+      "target": "push_alert",
+      "parameter": "user_id",
+      "groups": [
+        "alt_contact_alert_lookup"
+      ],
+      "matching_trace_values": 20
+    },
+    {
+      "source": "get_contact_info_crm",
+      "field": "",
+      "target": "build_contact_email_payload",
+      "parameter": "contact_data",
+      "groups": [
+        "alt_contact_email_vs_im_notification"
+      ],
+      "matching_trace_values": 2
+    },
+    {
+      "source": "get_contact_info_directory",
+      "field": "",
+      "target": "resolve_directory_contact_identity",
+      "parameter": "contact_data",
+      "groups": [
+        "alt_contact_identity_resolution_2to2"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "get_currents_bulletin_pack_native",
+      "field": "",
+      "target": "archive_currents_bulletin_pack_native",
+      "parameter": "bulletin_pack",
+      "groups": [
+        "alt_news_archive_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_currents_bulletin_pack_native",
+      "field": "",
+      "target": "publish_currents_bulletin_pack_native",
+      "parameter": "bulletin_pack",
+      "groups": [
+        "alt_news_notice_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_directory_contact_card_native",
+      "field": "",
+      "target": "archive_directory_contact_card_native",
+      "parameter": "contact_card",
+      "groups": [
+        "alt_contact_archive_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_directory_contact_card_native",
+      "field": "",
+      "target": "publish_directory_contact_card_native",
+      "parameter": "contact_card",
+      "groups": [
+        "alt_contact_notice_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_directory_contact_card_native",
+      "field": "",
+      "target": "send_directory_card_email_native",
+      "parameter": "contact_card",
+      "groups": [
+        "alt_contact_dispatch_native_2to2"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "get_discovered_lock_ticket_native",
+      "field": "",
+      "target": "apply_discovered_lock_ticket_native",
+      "parameter": "lock_ticket",
+      "groups": [
+        "alt_lock_control_native_2to2"
+      ],
+      "matching_trace_values": 20
+    },
+    {
+      "source": "get_discovered_lock_ticket_native",
+      "field": "",
+      "target": "archive_discovered_lock_ticket_native",
+      "parameter": "lock_ticket",
+      "groups": [
+        "alt_lock_archive_native_2to2"
+      ],
+      "matching_trace_values": 23
+    },
+    {
+      "source": "get_employee_chat_handle_native",
+      "field": "",
+      "target": "archive_employee_chat_handle_native",
+      "parameter": "chat_handle",
+      "groups": [
+        "alt_contact_archive_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_employee_chat_handle_native",
+      "field": "",
+      "target": "publish_employee_chat_handle_native",
+      "parameter": "chat_handle",
+      "groups": [
+        "alt_contact_notice_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_employee_chat_handle_native",
+      "field": "",
+      "target": "send_employee_chat_message_native",
+      "parameter": "employee_handle",
+      "groups": [
+        "alt_contact_dispatch_native_2to2"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "get_employee_id",
+      "field": "",
+      "target": "build_employee_im_payload",
+      "parameter": "employee_data",
+      "groups": [
+        "alt_contact_email_vs_im_notification"
+      ],
+      "matching_trace_values": 2
+    },
+    {
+      "source": "get_employee_id",
+      "field": "",
+      "target": "resolve_employee_record_identity",
+      "parameter": "employee_data",
+      "groups": [
+        "alt_contact_identity_resolution_2to2"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "get_exchange_rate_fixer",
+      "field": "",
+      "target": "build_balance_data_payload",
+      "parameter": "rate_data",
+      "groups": [
+        "alt_balance_structured_notification",
+        "alt_balance_structured_payload_notification"
+      ],
+      "matching_trace_values": 14
+    },
+    {
+      "source": "get_exchange_rate_fixer",
+      "field": "",
+      "target": "build_balance_text_report",
+      "parameter": "rate_data",
+      "groups": [
+        "alt_balance_report_notification",
+        "alt_balance_report_payload_notification"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "get_expedia_lodging_packet_native",
+      "field": "",
+      "target": "archive_expedia_lodging_packet_native",
+      "parameter": "lodging_packet",
+      "groups": [
+        "alt_hotel_archive_native_2to2"
+      ],
+      "matching_trace_values": 25
+    },
+    {
+      "source": "get_expedia_lodging_packet_native",
+      "field": "",
+      "target": "publish_expedia_lodging_packet_native",
+      "parameter": "lodging_packet",
+      "groups": [
+        "alt_hotel_notice_native_2to2"
+      ],
+      "matching_trace_values": 15
+    },
+    {
+      "source": "get_flightaware_trip_timeline_native",
+      "field": "",
+      "target": "archive_flightaware_trip_timeline_native",
+      "parameter": "trip_timeline",
+      "groups": [
+        "alt_flight_archive_native_2to2"
+      ],
+      "matching_trace_values": 12
+    },
+    {
+      "source": "get_flightaware_trip_timeline_native",
+      "field": "",
+      "target": "publish_trip_timeline_notice_native",
+      "parameter": "trip_timeline",
+      "groups": [
+        "alt_flight_notice_native_2to2"
+      ],
+      "matching_trace_values": 19
+    },
+    {
+      "source": "get_fx_quote_ticket_native",
+      "field": "",
+      "target": "archive_fx_quote_ticket_native",
+      "parameter": "quote_ticket",
+      "groups": [
+        "alt_quote_archive_native_2to2"
+      ],
+      "matching_trace_values": 13
+    },
+    {
+      "source": "get_fx_quote_ticket_native",
+      "field": "",
+      "target": "execute_fx_quote_ticket_sell_native",
+      "parameter": "fx_quote_ticket",
+      "groups": [
+        "alt_quote_sell_native_2to2"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "get_fx_quote_ticket_native",
+      "field": "",
+      "target": "publish_fx_quote_ticket_native",
+      "parameter": "fx_quote_ticket",
+      "groups": [
+        "alt_quote_notice_native_2to2"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "get_gnews_digest_cards_native",
+      "field": "",
+      "target": "archive_gnews_digest_cards_native",
+      "parameter": "digest_cards",
+      "groups": [
+        "alt_news_archive_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_gnews_digest_cards_native",
+      "field": "",
+      "target": "publish_gnews_digest_cards_native",
+      "parameter": "digest_cards",
+      "groups": [
+        "alt_news_notice_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_google_slot_ticket_native",
+      "field": "",
+      "target": "archive_google_slot_ticket_native",
+      "parameter": "slot_ticket",
+      "groups": [
+        "alt_availability_archive_native_2to2"
+      ],
+      "matching_trace_values": 6
+    },
+    {
+      "source": "get_google_slot_ticket_native",
+      "field": "",
+      "target": "publish_google_slot_ticket_native",
+      "parameter": "slot_ticket",
+      "groups": [
+        "alt_availability_notice_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_light_bridge_payload_native",
+      "field": "",
+      "target": "apply_light_bridge_scene_native",
+      "parameter": "bridge_payload",
+      "groups": [
+        "alt_light_control_native_2to2"
+      ],
+      "matching_trace_values": 15
+    },
+    {
+      "source": "get_light_bridge_payload_native",
+      "field": "",
+      "target": "archive_light_bridge_payload_native",
+      "parameter": "bridge_payload",
+      "groups": [
+        "alt_light_archive_native_2to2"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "get_light_bridge_payload_native",
+      "field": "",
+      "target": "publish_light_bridge_payload_native",
+      "parameter": "bridge_payload",
+      "groups": [
+        "alt_light_notice_native_2to2"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "get_light_mesh_snapshot_native",
+      "field": "",
+      "target": "apply_light_mesh_scene_native",
+      "parameter": "mesh_snapshot",
+      "groups": [
+        "alt_light_control_native_2to2"
+      ],
+      "matching_trace_values": 15
+    },
+    {
+      "source": "get_light_mesh_snapshot_native",
+      "field": "",
+      "target": "archive_light_mesh_snapshot_native",
+      "parameter": "mesh_snapshot",
+      "groups": [
+        "alt_light_archive_native_2to2"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "get_light_mesh_snapshot_native",
+      "field": "",
+      "target": "publish_light_mesh_snapshot_native",
+      "parameter": "mesh_snapshot",
+      "groups": [
+        "alt_light_notice_native_2to2"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "get_local_time_capsule_native",
+      "field": "",
+      "target": "archive_local_time_capsule_native",
+      "parameter": "time_capsule",
+      "groups": [
+        "alt_time_archive_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_local_time_capsule_native",
+      "field": "",
+      "target": "publish_local_time_capsule_native",
+      "parameter": "time_capsule",
+      "groups": [
+        "alt_time_notice_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_meeting_rooms",
+      "field": "rooms",
+      "target": "select_meeting_room",
+      "parameter": "rooms",
+      "groups": [
+        "alt_meeting_room_booking"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "get_meeting_rooms",
+      "field": "rooms",
+      "target": "shortlist_meeting_rooms",
+      "parameter": "rooms",
+      "groups": [
+        "alt_shortlisted_room_booking",
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_news_gnews",
+      "field": "",
+      "target": "build_news_text_report",
+      "parameter": "news_data",
+      "groups": [
+        "alt_gnews_digest_notification",
+        "alt_gnews_digest_payload_notification"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "get_office365_room_ticket_native",
+      "field": "",
+      "target": "archive_office365_room_ticket_native",
+      "parameter": "room_ticket",
+      "groups": [
+        "alt_room_archive_native_2to2"
+      ],
+      "matching_trace_values": 2
+    },
+    {
+      "source": "get_office365_room_ticket_native",
+      "field": "",
+      "target": "publish_office365_room_ticket_native",
+      "parameter": "room_ticket",
+      "groups": [
+        "alt_room_notice_native_2to2"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "get_office365_room_ticket_native",
+      "field": "",
+      "target": "reserve_office365_room_ticket_native",
+      "parameter": "room_ticket",
+      "groups": [
+        "alt_room_booking_native_2to2"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "get_outlook_slot_pass_native",
+      "field": "",
+      "target": "archive_outlook_slot_pass_native",
+      "parameter": "slot_pass",
+      "groups": [
+        "alt_availability_archive_native_2to2"
+      ],
+      "matching_trace_values": 6
+    },
+    {
+      "source": "get_outlook_slot_pass_native",
+      "field": "",
+      "target": "publish_outlook_slot_pass_native",
+      "parameter": "slot_pass",
+      "groups": [
+        "alt_availability_notice_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_polygon_market_board_native",
+      "field": "",
+      "target": "archive_polygon_market_board_native",
+      "parameter": "market_board",
+      "groups": [
+        "alt_market_archive_native_2to2"
+      ],
+      "matching_trace_values": 16
+    },
+    {
+      "source": "get_polygon_market_board_native",
+      "field": "",
+      "target": "publish_polygon_market_board_native",
+      "parameter": "market_board",
+      "groups": [
+        "alt_market_notice_native_2to2"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "get_quote_snapshot_native",
+      "field": "",
+      "target": "archive_quote_snapshot_native",
+      "parameter": "quote_snapshot",
+      "groups": [
+        "alt_quote_archive_native_2to2"
+      ],
+      "matching_trace_values": 13
+    },
+    {
+      "source": "get_quote_snapshot_native",
+      "field": "",
+      "target": "execute_quote_snapshot_sell_native",
+      "parameter": "quote_snapshot",
+      "groups": [
+        "alt_quote_sell_native_2to2"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "get_quote_snapshot_native",
+      "field": "",
+      "target": "publish_quote_snapshot_native",
+      "parameter": "quote_snapshot",
+      "groups": [
+        "alt_quote_notice_native_2to2"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "get_recommendations",
+      "field": "similar_products",
+      "target": "select_recommendation",
+      "parameter": "similar_products",
+      "groups": [
+        "alt_recommended_add_to_cart",
+        "alt_recommended_hold"
+      ],
+      "matching_trace_values": 12
+    },
+    {
+      "source": "get_recommendations_collaborative",
+      "field": "similar_products",
+      "target": "select_recommendation",
+      "parameter": "similar_products",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_collaborative_recommendation_purchase"
+      ],
+      "matching_trace_values": 27
+    },
+    {
+      "source": "get_recommendations_content",
+      "field": "similar_products",
+      "target": "select_recommendation",
+      "parameter": "similar_products",
+      "groups": [
+        "alt_content_checkout_vs_hold_confirm",
+        "alt_content_recommendation_purchase"
+      ],
+      "matching_trace_values": 25
+    },
+    {
+      "source": "get_recommendations_popularity",
+      "field": "similar_products",
+      "target": "select_recommendation",
+      "parameter": "similar_products",
+      "groups": [
+        "alt_popularity_substitute_purchase"
+      ],
+      "matching_trace_values": 22
+    },
+    {
+      "source": "get_recommendations_trending",
+      "field": "similar_products",
+      "target": "select_recommendation",
+      "parameter": "similar_products",
+      "groups": [
+        "alt_recommended_substitute_purchase",
+        "alt_trending_substitute_purchase"
+      ],
+      "matching_trace_values": 27
+    },
+    {
+      "source": "get_stock_price_and_convert",
+      "field": "",
+      "target": "build_converted_sell_request",
+      "parameter": "converted_quote",
+      "groups": [
+        "alt_quote_sell_vs_converted_sell"
+      ],
+      "matching_trace_values": 5
+    },
+    {
+      "source": "get_stock_price_and_convert",
+      "field": "",
+      "target": "resolve_converted_quote_profile",
+      "parameter": "converted_quote",
+      "groups": [
+        "alt_quote_profile_resolution_2to2"
+      ],
+      "matching_trace_values": 17
+    },
+    {
+      "source": "get_stock_yahoo_finance",
+      "field": "",
+      "target": "build_equity_sell_request",
+      "parameter": "quote_data",
+      "groups": [
+        "alt_quote_sell_vs_converted_sell"
+      ],
+      "matching_trace_values": 13
+    },
+    {
+      "source": "get_stock_yahoo_finance",
+      "field": "",
+      "target": "resolve_direct_quote_profile",
+      "parameter": "quote_data",
+      "groups": [
+        "alt_quote_profile_resolution_2to2"
+      ],
+      "matching_trace_values": 23
+    },
+    {
+      "source": "get_utc_moment_card_native",
+      "field": "",
+      "target": "archive_utc_moment_card_native",
+      "parameter": "moment_card",
+      "groups": [
+        "alt_time_archive_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_utc_moment_card_native",
+      "field": "",
+      "target": "publish_utc_moment_card_native",
+      "parameter": "moment_card",
+      "groups": [
+        "alt_time_notice_native_2to2"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_visualcrossing_forecast_chip_native",
+      "field": "",
+      "target": "archive_visualcrossing_forecast_chip_native",
+      "parameter": "forecast_chip",
+      "groups": [
+        "alt_weather_archive_native_2to2"
+      ],
+      "matching_trace_values": 25
+    },
+    {
+      "source": "get_visualcrossing_forecast_chip_native",
+      "field": "",
+      "target": "publish_visualcrossing_forecast_chip_native",
+      "parameter": "forecast_chip",
+      "groups": [
+        "alt_weather_notice_native_2to2"
+      ],
+      "matching_trace_values": 31
+    },
+    {
+      "source": "get_visualcrossing_forecast_chip_native",
+      "field": "",
+      "target": "publish_visualcrossing_travel_advisory_native",
+      "parameter": "forecast_chip",
+      "groups": [
+        "alt_weather_advisory_native_2to2"
+      ],
+      "matching_trace_values": 12
+    },
+    {
+      "source": "get_weather_openweather",
+      "field": "",
+      "target": "build_weather_data_payload",
+      "parameter": "weather_data",
+      "groups": [
+        "alt_weather_structured_notification",
+        "alt_weather_structured_payload_notification"
+      ],
+      "matching_trace_values": 16
+    },
+    {
+      "source": "get_weather_openweather",
+      "field": "",
+      "target": "build_weather_text_report",
+      "parameter": "weather_data",
+      "groups": [
+        "alt_weather_brief_notification",
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "get_weather_openweather",
+      "field": "temperature_celsius",
+      "target": "temperature_converter",
+      "parameter": "value",
+      "groups": [
+        "alt_weather_brief_notification",
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 10
+    },
+    {
+      "source": "get_weatherapi_alert_card_native",
+      "field": "",
+      "target": "archive_weatherapi_alert_card_native",
+      "parameter": "alert_card",
+      "groups": [
+        "alt_weather_archive_native_2to2"
+      ],
+      "matching_trace_values": 25
+    },
+    {
+      "source": "get_weatherapi_alert_card_native",
+      "field": "",
+      "target": "publish_weatherapi_alert_card_native",
+      "parameter": "alert_card",
+      "groups": [
+        "alt_weather_notice_native_2to2"
+      ],
+      "matching_trace_values": 31
+    },
+    {
+      "source": "get_weatherapi_alert_card_native",
+      "field": "",
+      "target": "publish_weatherapi_travel_advisory_native",
+      "parameter": "alert_card",
+      "groups": [
+        "alt_weather_advisory_native_2to2"
+      ],
+      "matching_trace_values": 12
+    },
+    {
+      "source": "get_workplace_room_pass_native",
+      "field": "",
+      "target": "archive_workplace_room_pass_native",
+      "parameter": "room_pass",
+      "groups": [
+        "alt_room_archive_native_2to2"
+      ],
+      "matching_trace_values": 2
+    },
+    {
+      "source": "get_workplace_room_pass_native",
+      "field": "",
+      "target": "publish_workplace_room_pass_native",
+      "parameter": "room_pass",
+      "groups": [
+        "alt_room_notice_native_2to2"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "get_workplace_room_pass_native",
+      "field": "",
+      "target": "reserve_workplace_room_pass_native",
+      "parameter": "room_pass",
+      "groups": [
+        "alt_room_booking_native_2to2"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "",
+      "target": "build_checkout_from_hold",
+      "parameter": "hold_data",
+      "groups": [
+        "alt_best_recommendation_checkout",
+        "alt_best_recommendation_checkout_prepared",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 27
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "",
+      "target": "build_invoice_from_hold",
+      "parameter": "hold_data",
+      "groups": [
+        "alt_best_recommendation_invoice",
+        "alt_best_recommendation_invoice_prepared",
+        "alt_collaborative_invoice_vs_hold_invoice"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "recommended_product_id",
+      "target": "confirm_order",
+      "parameter": "product_id",
+      "groups": [
+        "alt_best_recommendation_checkout"
+      ],
+      "matching_trace_values": 26
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "recommended_product_id",
+      "target": "express_checkout",
+      "parameter": "product_id",
+      "groups": [
+        "alt_content_recommendation_purchase",
+        "alt_trending_substitute_purchase"
+      ],
+      "matching_trace_values": 32
+    },
+    {
+      "source": "hold_best_recommendation",
+      "field": "reservation_id",
+      "target": "confirm_order",
+      "parameter": "reservation_id",
+      "groups": [
+        "alt_best_recommendation_checkout"
+      ],
+      "matching_trace_values": 31
+    },
+    {
+      "source": "hold_inventory",
+      "field": "reservation_id",
+      "target": "confirm_order",
+      "parameter": "reservation_id",
+      "groups": [
+        "alt_collaborative_recommendation_purchase",
+        "alt_content_recommendation_purchase",
+        "alt_popularity_substitute_purchase",
+        "alt_quick_buy",
+        "alt_recommended_substitute_purchase",
+        "alt_trending_substitute_purchase"
+      ],
+      "matching_trace_values": 77
+    },
+    {
+      "source": "optimize_discount",
+      "field": "final_total",
+      "target": "generate_payment_invoice",
+      "parameter": "payment_amount",
+      "groups": [
+        "alt_discounted_invoice",
+        "alt_invoice_coupon_vs_summary_chain"
+      ],
+      "matching_trace_values": 31
+    },
+    {
+      "source": "optimize_discount",
+      "field": "final_total",
+      "target": "submit_order",
+      "parameter": "payment_amount",
+      "groups": [
+        "alt_checkout_coupon_vs_summary_chain",
+        "alt_discounted_checkout"
+      ],
+      "matching_trace_values": 16
+    },
+    {
+      "source": "query_connected_devices",
+      "field": "",
+      "target": "resolve_connected_device_by_type",
+      "parameter": "connected_data",
+      "groups": [
+        "alt_iot_device_resolution_2to2",
+        "alt_lock_reference_resolution_2to2"
+      ],
+      "matching_trace_values": 55
+    },
+    {
+      "source": "schedule_meeting",
+      "field": "start_time",
+      "target": "create_reminder",
+      "parameter": "datetime",
+      "groups": [
+        "alt_meeting_with_reminder"
+      ],
+      "matching_trace_values": 6
+    },
+    {
+      "source": "schedule_meeting",
+      "field": "title",
+      "target": "create_reminder",
+      "parameter": "title",
+      "groups": [
+        "alt_meeting_with_reminder"
+      ],
+      "matching_trace_values": 6
+    },
+    {
+      "source": "select_meeting_room",
+      "field": "room_name",
+      "target": "book_meeting_room",
+      "parameter": "room_name",
+      "groups": [
+        "alt_meeting_room_booking"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "select_recommendation",
+      "field": "",
+      "target": "build_cart_items_from_selection",
+      "parameter": "selected_product",
+      "groups": [
+        "alt_collaborative_invoice_vs_hold_invoice",
+        "alt_content_checkout_vs_hold_confirm"
+      ],
+      "matching_trace_values": 8
+    },
+    {
+      "source": "select_recommendation",
+      "field": "product_id",
+      "target": "add_to_cart",
+      "parameter": "product_id",
+      "groups": [
+        "alt_recommended_add_to_cart"
+      ],
+      "matching_trace_values": 3
+    },
+    {
+      "source": "select_recommendation",
+      "field": "product_id",
+      "target": "confirm_order",
+      "parameter": "product_id",
+      "groups": [
+        "alt_collaborative_recommendation_purchase",
+        "alt_content_recommendation_purchase",
+        "alt_popularity_substitute_purchase",
+        "alt_recommended_substitute_purchase",
+        "alt_trending_substitute_purchase"
+      ],
+      "matching_trace_values": 70
+    },
+    {
+      "source": "select_recommendation",
+      "field": "product_id",
+      "target": "hold_inventory",
+      "parameter": "product_id",
+      "groups": [
+        "alt_collaborative_recommendation_purchase",
+        "alt_content_recommendation_purchase",
+        "alt_popularity_substitute_purchase",
+        "alt_recommended_hold",
+        "alt_recommended_substitute_purchase",
+        "alt_trending_substitute_purchase"
+      ],
+      "matching_trace_values": 74
+    },
+    {
+      "source": "shortlist_meeting_rooms",
+      "field": "",
+      "target": "build_shortlist_reservation_request",
+      "parameter": "shortlist_data",
+      "groups": [
+        "alt_shortlisted_room_booking",
+        "alt_shortlisted_room_request_booking"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "snapshot_workspace",
+      "field": "",
+      "target": "build_snapshot_text_report",
+      "parameter": "snapshot_data",
+      "groups": [
+        "alt_snapshot_report_notification",
+        "alt_storage_inventory_vs_snapshot_report"
+      ],
+      "matching_trace_values": 4
+    },
+    {
+      "source": "snapshot_workspace",
+      "field": "backup_id",
+      "target": "push_alert",
+      "parameter": "message",
+      "groups": [
+        "alt_backup_notification"
+      ],
+      "matching_trace_values": 0
+    },
+    {
+      "source": "temperature_converter",
+      "field": "",
+      "target": "build_weather_text_report",
+      "parameter": "converted_data",
+      "groups": [
+        "alt_weather_brief_notification",
+        "alt_weather_brief_payload_notification"
+      ],
+      "matching_trace_values": 0
+    }
+  ]
+}
