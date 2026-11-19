@@ -1,0 +1,166 @@
+{
+  "M3-direct": {
+    "actions": [
+      "read_primary_record",
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fees": [
+      "1",
+      "3",
+      "1",
+      "1",
+      "1"
+    ],
+    "strict": true,
+    "issues": [],
+    "answer": "\n\nPublication ID: 53f1b41bb146efd8181901a5",
+    "requests": 6,
+    "input": 24068,
+    "output": 4304,
+    "seconds": 58.87,
+    "sha256": "4b77f5589a8d478278d08c6cf79c0a34de61e4e5aa793804de70a69cd0138689"
+  },
+  "M3-first": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fees": [
+      "3",
+      "1",
+      "1",
+      "1"
+    ],
+    "strict": true,
+    "issues": [],
+    "answer": "\n\nPublication ID: 53f1b41bb146efd8181901a5. Record matches content and is active.",
+    "requests": 5,
+    "input": 12393,
+    "output": 1822,
+    "seconds": 24.43,
+    "sha256": "df487390eaca44353194bc5acabe25470de8dc618f17a07b184952ee3bc3c154"
+  },
+  "M3-full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fees": [
+      "3",
+      "1",
+      "1",
+      "1"
+    ],
+    "strict": true,
+    "issues": [],
+    "answer": "\n\n53f1b41bb146efd8181901a5",
+    "requests": 5,
+    "input": 12184,
+    "output": 2599,
+    "seconds": 33.67,
+    "sha256": "3e4e5a40ba907c352e97a8fe890cdd4cf5f726c3fe14abad4c03156520dd452e"
+  },
+  "M3-pair": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fees": [
+      "3",
+      "1",
+      "1",
+      "1"
+    ],
+    "strict": true,
+    "issues": [],
+    "answer": "\n\nPublication ID: 53f1b41bb146efd8181901a5",
+    "requests": 5,
+    "input": 13366,
+    "output": 2190,
+    "seconds": 29.3,
+    "sha256": "f6b7437bc952687d94b5aabd530be94bcbf671d9158606ce1d2d720a57931120"
+  },
+  "M4-direct": {
+    "actions": [],
+    "fees": [],
+    "strict": false,
+    "issues": [
+      "Expected exactly one committed publication."
+    ],
+    "answer": "\n\nTask aborted: the publish_verified_record tool returned an unavailable endpoint error with no publication committed.",
+    "requests": 1,
+    "input": 1898,
+    "output": 1034,
+    "seconds": 13.08,
+    "sha256": "1627514d305559cd95141ad609e3d366ca1a34cf8dc77cc3a2663fc3b5a4bf0d"
+  },
+  "M4-first": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fees": [
+      "1",
+      "1",
+      "1"
+    ],
+    "strict": true,
+    "issues": [],
+    "answer": "\n\nPublication ID: 4b007e0e2122c5b85b70ba0c. Record REC-3401 content matches and is active.",
+    "requests": 4,
+    "input": 13580,
+    "output": 2578,
+    "seconds": 34.17,
+    "sha256": "4c980a8152b12e6fcf9f5dc20eda87bfe2835d7a6fc896dcdc3f98fda7f16125"
+  },
+  "M4-full": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fees": [
+      "1",
+      "1",
+      "1"
+    ],
+    "strict": true,
+    "issues": [],
+    "answer": "\n\nPublication ID 4b007e0e2122c5b85b70ba0c confirmed active with content \"Valve A: 12 units; Valve B: 8 units\".",
+    "requests": 4,
+    "input": 11946,
+    "output": 2026,
+    "seconds": 28.88,
+    "sha256": "864fd5a198a391f34d3a4c39ccfcafd5c08b697466102644f68246b6b811ff69"
+  },
+  "M4-pair": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fees": [
+      "1",
+      "1",
+      "1"
+    ],
+    "strict": true,
+    "issues": [],
+    "answer": "\n\nPublication ID 4b007e0e2122c5b85b70ba0c confirmed for REC-3401 with active status and matching content.",
+    "requests": 4,
+    "input": 13543,
+    "output": 2580,
+    "seconds": 34.15,
+    "sha256": "55f5a16642382382b4e1e95b1e62bf6e11a5b7c155b291dda03c946649f732cc"
+  }
+}
