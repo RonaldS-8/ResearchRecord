@@ -18,8 +18,8 @@ ROOT = Path('/home/ubuntu/Song/Agent')
 
 def run(case, arm, out, post_prefix=None):
     agent = VLLMAgent(MODEL,'http://127.0.0.1:8010/v1',temperature=0,max_tokens=8192,request_timeout=300)
-    if case=='M4':
-        session=restored('M4')
+    if case in ('M3','M4'):
+        session=restored(case)
         initialize(agent,session)
         msg=next(m for m in agent.messages if m['role']=='user')
         assert EXIT in msg['content']
@@ -61,7 +61,7 @@ def run(case, arm, out, post_prefix=None):
             status='tool_budget'; break
         reply=session.call(action.tool_name,action.arguments)
         agent.receive_tool_result(action.tool_name,reply)
-    scores=evaluate(session,answer) if case=='M4' else grade(task,cards,dict(events=session.events,answer=answer,status=status))
+    scores=evaluate(session,answer) if case in ('M3','M4') else grade(task,cards,dict(events=session.events,answer=answer,status=status))
     result=dict(case=case,arm=arm,events=session.events,answer=answer,status=status,scores=scores,requests=log)
     (out/f'{case}-{arm}.json').write_text(json.dumps(result,indent=2))
     print(case,arm,status,scores.get('strict',scores.get('strict_success')),flush=True)
