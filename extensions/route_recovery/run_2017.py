@@ -16,7 +16,7 @@ EXIT = "If unable to complete the task, start your final reply with 'Blocked:' a
 ROOT = Path('/home/ubuntu/Song/Agent')
 
 
-def run(case, arm, out):
+def run(case, arm, out, post_prefix=None):
     agent = VLLMAgent(MODEL,'http://127.0.0.1:8010/v1',temperature=0,max_tokens=8192,request_timeout=300)
     if case=='M4':
         session=restored('M4')
@@ -38,6 +38,8 @@ def run(case, arm, out):
         names=['get_broker_balance_ledger_native','create_document_and_alert_from_data']
     msg['content']+=' '+(EXIT if arm=='old' else 'Finish with a final answer.')
     if arm=='names': msg['content']+=' Candidate tools: '+', '.join(sorted(names))+'.'
+    if post_prefix is not None:
+        agent.messages.append(dict(role="user",content=post_prefix))
     backend=agent.client.with_options(max_retries=0).chat.completions.create
     log=[]
     def create(**payload):
