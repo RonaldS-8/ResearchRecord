@@ -91,27 +91,48 @@ def business_rule(view):
         if ranked[0][0]==0 or len(ranked)>1 and ranked[0][0]==ranked[1][0]:
             return 'finish',{},'Blocked: ambiguous binding.'
         _,field,r=ranked[0]
-        # Task fixture supplies the common scalar defaults; the object/time comes from the selected receipt.
-        args={'title':'Meeting reminder'} if r['target']==create_reminder.TOOL_NAME else {'user_id':h[0]['arguments']['user_id'],'quantity':h[0]['arguments']['quantity']}
+        args=dict(h[0]['arguments'])
+        fields=view['contracts'][0]['parameters']['properties']
+        args={k:v for k,v in args.items() if k in fields}
+        title=re.search(r'\btitled (.+?) at the\b',view['task'],re.I)
+        if title:
+            args['title']=title.group(1)
         args[r['parameter']]=h[0]['result'][field]
         return r['target'],args,''
+    # Match operation roles in public contracts. Resolve required arguments
+    # from the actual record, lookup, preparation or commit receipt.
     first=h[0]['result']
-    write={k:first[k] for k in ('record_id','content','evidence_ref')}
     last=h[-1]['result']
+    available=dict(first)
+    available.update(last)
     if 'error' in last:
-        return pub.LOOKUP,{'record_id':first['record_id']},''
-    if h[-1]['tool']==pub.LOOKUP:
+        role='list'
+    elif 'publications' in last:
         items=[p for p in last['publications'] if p['content']==first['content'] and p['status']=='active']
-        if not items and not last['publications']:
-            return pub.ALTWRITE,write,''
-        if len(items)!=1:
+        if len(items)==1 and len(last['publications'])==1:
+            available.update(items[0])
+            role='read'
+        elif not last['publications']:
+            role='prepare'
+        else:
             return 'finish',{},'Blocked: conflicting published state.'
-        return pub.VERIFY,{'publication_id':items[0]['publication_id']},''
-    if h[-1]['tool']==pub.VERIFY:
+    elif all(last.get(k)==first[k] for k in ('record_id','content')) and last.get('status')=='active':
         return 'finish',{},'Published and verified.'
-    if 'pending_publication_ref' in last:
-        return pub.CONFIRM,{'record_id':first['record_id'],'pending_publication_ref':last['pending_publication_ref']},''
-    return pub.VERIFY,{'publication_id':last['publication_id']},''
+    elif 'pending_publication_ref' in last:
+        role='confirm'
+    elif 'publication_id' in last:
+        role='read'
+    else:
+        return 'finish',{},'Blocked: no supported transition.'
+    options=[]
+    for spec in view['contracts']:
+        required=spec['parameters']['required']
+        if spec['description'].lower().startswith(role+' ') and set(required)<=available.keys():
+            if role=='read' and 'publication_id' not in required:
+                continue
+            options.append((spec['name'],{k:available[k] for k in required},''))
+    return options[0] if len(options)==1 else ('finish',{},'Blocked: ambiguous public contract.')
+
 
 
 def decide(client,arm,view,log):
