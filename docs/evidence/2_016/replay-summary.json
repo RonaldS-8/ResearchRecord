@@ -1,0 +1,528 @@
+{
+  "C-direct": {
+    "sha256": "a5de5bc40fcfa00c4f70c7f0a2f2c9857054b5bc873d6915954824e34fd999df",
+    "requests": 4,
+    "input_tokens": 8501,
+    "output_tokens": 3018,
+    "reasoning_tokens": 2705,
+    "seconds": 38.985,
+    "stops": [
+      "tool_calls",
+      "tool_calls",
+      "tool_calls",
+      "stop"
+    ],
+    "grade": {
+      "strict_success": false,
+      "obligations_complete": false,
+      "valid_answer": true,
+      "issues": [
+        "Expected exactly one committed publication."
+      ],
+      "illegal_calls": 0,
+      "publications": 2,
+      "rewrites": 1,
+      "lookups": 0,
+      "budget_exhausted": false,
+      "suffix_execution_fee": "3",
+      "suffix_diagnostic_fee": "0"
+    },
+    "actions": [
+      {
+        "tool": "prepare_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "evidence_ref": "0641d000c1d549ece2299488"
+        },
+        "result": {
+          "pending_publication_ref": "0c4b237dcdc4f1310c68ead3"
+        }
+      },
+      {
+        "tool": "confirm_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "pending_publication_ref": "0c4b237dcdc4f1310c68ead3"
+        },
+        "result": {
+          "publication_id": "80fdc8b2b2060030f5efbd45"
+        }
+      },
+      {
+        "tool": "read_published_record",
+        "arguments": {
+          "publication_id": "80fdc8b2b2060030f5efbd45"
+        },
+        "result": {
+          "publication_id": "80fdc8b2b2060030f5efbd45",
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "status": "active"
+        }
+      }
+    ],
+    "answer": "\n\nThe publication for record REC-3401 has been successfully confirmed and verified. The publication ID is `80fdc8b2b2060030f5efbd45`, the record ID matches `REC-3401`, the content is `Valve A: 12 units; Valve B: 8 units.`, and the status is `active`. All requirements are satisfied.\n\nFinal answer: The publication was confirmed with ID `80fdc8b2b2060030f5efbd45` and matches the expected record content and status.",
+    "errors": [],
+    "persisted": [
+      {
+        "publication_id": "1a581f9f944c75cff1ef8f84",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active",
+        "evidence_ref": "0641d000c1d549ece2299488"
+      },
+      {
+        "publication_id": "80fdc8b2b2060030f5efbd45",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active",
+        "evidence_ref": "0641d000c1d549ece2299488"
+      }
+    ],
+    "readbacks": [
+      {
+        "call": 5,
+        "publication_id": "80fdc8b2b2060030f5efbd45",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active"
+      }
+    ]
+  },
+  "C-evidence": {
+    "sha256": "a7b6ebbda0a8eae07dffc9f3691a509d04887e7ea0942a27a6e0f7c7996f8605",
+    "requests": 3,
+    "input_tokens": 6775,
+    "output_tokens": 3265,
+    "reasoning_tokens": 3014,
+    "seconds": 41.933,
+    "stops": [
+      "tool_calls",
+      "tool_calls",
+      "stop"
+    ],
+    "grade": {
+      "strict_success": false,
+      "obligations_complete": false,
+      "valid_answer": true,
+      "issues": [
+        "Expected exactly one committed publication."
+      ],
+      "illegal_calls": 0,
+      "publications": 2,
+      "rewrites": 1,
+      "lookups": 0,
+      "budget_exhausted": false,
+      "suffix_execution_fee": "2",
+      "suffix_diagnostic_fee": "0"
+    },
+    "actions": [
+      {
+        "tool": "publish_verified_record",
+        "arguments": {
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "evidence_ref": "0641d000c1d549ece2299488"
+        },
+        "result": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3"
+        }
+      },
+      {
+        "tool": "read_published_record",
+        "arguments": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3"
+        },
+        "result": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3",
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "status": "active"
+        }
+      }
+    ],
+    "answer": "\n\nThe publication for record REC-3401 has been successfully created with the following details:  \n**Publication ID**: `0c4b237dcdc4f1310c68ead3`  \n**Record ID**: `REC-3401`  \n**Content**: `Valve A: 12 units; Valve B: 8 units.`  \n**Status**: `active`  \n\nAll fields match the request. The publication is confirmed and active.  \n\nFinal answer: `0c4b237dcdc4f1310c68ead3`",
+    "errors": [],
+    "persisted": [
+      {
+        "publication_id": "1a581f9f944c75cff1ef8f84",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active",
+        "evidence_ref": "0641d000c1d549ece2299488"
+      },
+      {
+        "publication_id": "0c4b237dcdc4f1310c68ead3",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active",
+        "evidence_ref": "0641d000c1d549ece2299488"
+      }
+    ],
+    "readbacks": [
+      {
+        "call": 4,
+        "publication_id": "0c4b237dcdc4f1310c68ead3",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active"
+      }
+    ]
+  },
+  "P-direct": {
+    "sha256": "af156e0af9e82d88477075c9c5f3a61df71d6454d127bf5716d0af4d345a3906",
+    "requests": 4,
+    "input_tokens": 8506,
+    "output_tokens": 2921,
+    "reasoning_tokens": 2606,
+    "seconds": 37.737,
+    "stops": [
+      "tool_calls",
+      "tool_calls",
+      "tool_calls",
+      "stop"
+    ],
+    "grade": {
+      "strict_success": true,
+      "obligations_complete": true,
+      "valid_answer": true,
+      "issues": [],
+      "illegal_calls": 0,
+      "publications": 1,
+      "rewrites": 1,
+      "lookups": 0,
+      "budget_exhausted": false,
+      "suffix_execution_fee": "3",
+      "suffix_diagnostic_fee": "0"
+    },
+    "actions": [
+      {
+        "tool": "prepare_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "evidence_ref": "0641d000c1d549ece2299488"
+        },
+        "result": {
+          "pending_publication_ref": "1a581f9f944c75cff1ef8f84"
+        }
+      },
+      {
+        "tool": "confirm_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "pending_publication_ref": "1a581f9f944c75cff1ef8f84"
+        },
+        "result": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3"
+        }
+      },
+      {
+        "tool": "read_published_record",
+        "arguments": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3"
+        },
+        "result": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3",
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "status": "active"
+        }
+      }
+    ],
+    "answer": "\n\nThe publication for record REC-3401 has been successfully confirmed with the following details:  \n**Publication ID**: `0c4b237dcdc4f1310c68ead3`  \n**Record ID**: `REC-3401`  \n**Content**: `Valve A: 12 units; Valve B: 8 units.`  \n**Status**: `active`  \n\nAll checks confirm the publication matches the expected record content and is active.  \n\nFinal answer:  \n`0c4b237dcdc4f1310c68ead3`",
+    "errors": [],
+    "persisted": [
+      {
+        "publication_id": "0c4b237dcdc4f1310c68ead3",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active",
+        "evidence_ref": "0641d000c1d549ece2299488"
+      }
+    ],
+    "readbacks": [
+      {
+        "call": 5,
+        "publication_id": "0c4b237dcdc4f1310c68ead3",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active"
+      }
+    ]
+  },
+  "P-evidence": {
+    "sha256": "bb95338766838cf653f7b0efc07dcfd99c0ef546ea348b85a88596bd6084f459",
+    "requests": 5,
+    "input_tokens": 11702,
+    "output_tokens": 5644,
+    "reasoning_tokens": 5262,
+    "seconds": 74.178,
+    "stops": [
+      "tool_calls",
+      "tool_calls",
+      "tool_calls",
+      "tool_calls",
+      "stop"
+    ],
+    "grade": {
+      "strict_success": true,
+      "obligations_complete": true,
+      "valid_answer": true,
+      "issues": [],
+      "illegal_calls": 0,
+      "publications": 1,
+      "rewrites": 2,
+      "lookups": 0,
+      "budget_exhausted": false,
+      "suffix_execution_fee": "4",
+      "suffix_diagnostic_fee": "0"
+    },
+    "actions": [
+      {
+        "tool": "publish_verified_record",
+        "arguments": {
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "evidence_ref": "0641d000c1d549ece2299488"
+        },
+        "result": {
+          "error": "Upstream request timed out."
+        }
+      },
+      {
+        "tool": "prepare_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "evidence_ref": "0641d000c1d549ece2299488"
+        },
+        "result": {
+          "pending_publication_ref": "1a581f9f944c75cff1ef8f84"
+        }
+      },
+      {
+        "tool": "confirm_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "pending_publication_ref": "1a581f9f944c75cff1ef8f84"
+        },
+        "result": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3"
+        }
+      },
+      {
+        "tool": "read_published_record",
+        "arguments": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3"
+        },
+        "result": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3",
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "status": "active"
+        }
+      }
+    ],
+    "answer": "\n\nThe publication for record REC-3401 has been successfully confirmed and verified. The publication ID `0c4b237dcdc4f1310c68ead3` corresponds to the record with content \"Valve A: 12 units; Valve B: 8 units\" and is active. All requirements are met.\n\n**Final Answer**: The publication `0c4b237dcdc4f1310c68ead3` for record REC-3401 is active and matches the requested content.",
+    "errors": [],
+    "persisted": [
+      {
+        "publication_id": "0c4b237dcdc4f1310c68ead3",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active",
+        "evidence_ref": "0641d000c1d549ece2299488"
+      }
+    ],
+    "readbacks": [
+      {
+        "call": 6,
+        "publication_id": "0c4b237dcdc4f1310c68ead3",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active"
+      }
+    ]
+  },
+  "T-direct": {
+    "sha256": "9d69a833f34ce3c18c4f45022a5a798dad38e5fc2474f827472c46b65ace0e15",
+    "requests": 4,
+    "input_tokens": 8506,
+    "output_tokens": 2921,
+    "reasoning_tokens": 2606,
+    "seconds": 37.457,
+    "stops": [
+      "tool_calls",
+      "tool_calls",
+      "tool_calls",
+      "stop"
+    ],
+    "grade": {
+      "strict_success": true,
+      "obligations_complete": true,
+      "valid_answer": true,
+      "issues": [],
+      "illegal_calls": 0,
+      "publications": 1,
+      "rewrites": 1,
+      "lookups": 0,
+      "budget_exhausted": false,
+      "suffix_execution_fee": "3",
+      "suffix_diagnostic_fee": "0"
+    },
+    "actions": [
+      {
+        "tool": "prepare_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "evidence_ref": "0641d000c1d549ece2299488"
+        },
+        "result": {
+          "pending_publication_ref": "1a581f9f944c75cff1ef8f84"
+        }
+      },
+      {
+        "tool": "confirm_alternate_publication",
+        "arguments": {
+          "record_id": "REC-3401",
+          "pending_publication_ref": "1a581f9f944c75cff1ef8f84"
+        },
+        "result": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3"
+        }
+      },
+      {
+        "tool": "read_published_record",
+        "arguments": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3"
+        },
+        "result": {
+          "publication_id": "0c4b237dcdc4f1310c68ead3",
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "status": "active"
+        }
+      }
+    ],
+    "answer": "\n\nThe publication for record REC-3401 has been successfully confirmed with the following details:  \n**Publication ID**: `0c4b237dcdc4f1310c68ead3`  \n**Record ID**: `REC-3401`  \n**Content**: `Valve A: 12 units; Valve B: 8 units.`  \n**Status**: `active`  \n\nAll checks confirm the publication matches the expected record content and is active.  \n\nFinal answer:  \n`0c4b237dcdc4f1310c68ead3`",
+    "errors": [],
+    "persisted": [
+      {
+        "publication_id": "0c4b237dcdc4f1310c68ead3",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active",
+        "evidence_ref": "0641d000c1d549ece2299488"
+      }
+    ],
+    "readbacks": [
+      {
+        "call": 5,
+        "publication_id": "0c4b237dcdc4f1310c68ead3",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active"
+      }
+    ]
+  },
+  "T-evidence": {
+    "sha256": "ef896b6c89a0ce5596a139b69aa1e472bf668da634b6fb44a29d0bf1a1975f30",
+    "requests": 3,
+    "input_tokens": 6784,
+    "output_tokens": 3350,
+    "reasoning_tokens": 3091,
+    "seconds": 43.119,
+    "stops": [
+      "tool_calls",
+      "tool_calls",
+      "stop"
+    ],
+    "grade": {
+      "strict_success": true,
+      "obligations_complete": true,
+      "valid_answer": true,
+      "issues": [],
+      "illegal_calls": 0,
+      "publications": 1,
+      "rewrites": 1,
+      "lookups": 0,
+      "budget_exhausted": false,
+      "suffix_execution_fee": "2",
+      "suffix_diagnostic_fee": "0"
+    },
+    "actions": [
+      {
+        "tool": "publish_verified_record",
+        "arguments": {
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "evidence_ref": "0641d000c1d549ece2299488"
+        },
+        "result": {
+          "publication_id": "1a581f9f944c75cff1ef8f84"
+        }
+      },
+      {
+        "tool": "read_published_record",
+        "arguments": {
+          "publication_id": "1a581f9f944c75cff1ef8f84"
+        },
+        "result": {
+          "publication_id": "1a581f9f944c75cff1ef8f84",
+          "record_id": "REC-3401",
+          "content": "Valve A: 12 units; Valve B: 8 units.",
+          "status": "active"
+        }
+      }
+    ],
+    "answer": "\n\nThe publication for record REC-3401 has been successfully created and verified. The publication ID is `1a581f9f944c75cff1ef8f84`, with the following details:\n- **Record ID**: REC-3401\n- **Content**: \"Valve A: 12 units; Valve B: 8 units.\"\n- **Status**: active\n\nAll requirements are met, and the publication matches the expected content and status.\n\n**Final Answer**: The publication ID is `1a581f9f944c75cff1ef8f84`.",
+    "errors": [],
+    "persisted": [
+      {
+        "publication_id": "1a581f9f944c75cff1ef8f84",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active",
+        "evidence_ref": "0641d000c1d549ece2299488"
+      }
+    ],
+    "readbacks": [
+      {
+        "call": 4,
+        "publication_id": "1a581f9f944c75cff1ef8f84",
+        "record_id": "REC-3401",
+        "content": "Valve A: 12 units; Valve B: 8 units.",
+        "status": "active"
+      }
+    ]
+  },
+  "diagnostic-4096": {
+    "sha256": "203f0aef067b8de5f7c2719d5533a7f22ab2b230f87507a12b94496ba61ef3a1",
+    "requests": 1,
+    "input_tokens": 1190,
+    "output_tokens": 4096,
+    "reasoning_tokens": 4096,
+    "seconds": 53.182,
+    "stops": [
+      "length"
+    ],
+    "final_content": null,
+    "legal_schema_and_binding": false
+  },
+  "diagnostic-8192": {
+    "sha256": "bb875619a73d63a955ad01b2c460abb725f5545d8f46060163110f7caac0ab56",
+    "requests": 1,
+    "input_tokens": 1190,
+    "output_tokens": 5677,
+    "reasoning_tokens": 5592,
+    "seconds": 73.755,
+    "stops": [
+      "stop"
+    ],
+    "final_content": "\n\n{\"remaining\":\"publish REC-3401\",\"commit_state\":\"unknown\",\"tool\":\"publish_verified_record\",\"arguments\":{\"record_id\":\"REC-3401\",\"content\":\"Valve A: 12 units; Valve B: 8 units.\",\"evidence_ref\":\"0641d000c1d549ece2299488\"},\"answer\":\"\"}",
+    "legal_schema_and_binding": true
+  }
+}

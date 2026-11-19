@@ -1,0 +1,611 @@
+{
+  "upstream": "a72e266af2d4f196d341b82607bbb6016f77f6fb",
+  "edges": [
+    "confirm_alternate_publication read_published_record 0",
+    "list_record_publications read_published_record 0",
+    "prepare_alternate_publication confirm_alternate_publication 1",
+    "publish_verified_record read_published_record 0",
+    "read_primary_record prepare_alternate_publication 1",
+    "read_primary_record publish_verified_record 1"
+  ],
+  "rows": [
+    {
+      "world": "C",
+      "sequence": [
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "prepare_alternate_publication",
+        "confirm_alternate_publication"
+      ],
+      "executed": true,
+      "strict": false,
+      "effects": 2
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "prepare_alternate_publication",
+        "confirm_alternate_publication"
+      ],
+      "executed": true,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "prepare_alternate_publication",
+        "confirm_alternate_publication"
+      ],
+      "executed": true,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "list_record_publications",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "list_record_publications",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "list_record_publications",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "executed": true,
+      "strict": false,
+      "effects": 2
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "executed": true,
+      "strict": true,
+      "effects": 1
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": true,
+      "strict": false,
+      "effects": 2
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": true,
+      "strict": true,
+      "effects": 1
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": true,
+      "strict": true,
+      "effects": 1
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "publish_verified_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "publish_verified_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "publish_verified_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "prepare_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "prepare_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "prepare_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "publish_verified_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "publish_verified_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "publish_verified_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "publish_verified_record",
+        "confirm_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "publish_verified_record",
+        "confirm_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "publish_verified_record",
+        "confirm_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "prepare_alternate_publication",
+        "confirm_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "prepare_alternate_publication",
+        "publish_verified_record",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "prepare_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "prepare_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "prepare_alternate_publication",
+        "read_published_record"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "C",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "read_published_record",
+        "prepare_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 1
+    },
+    {
+      "world": "T",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "read_published_record",
+        "prepare_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    },
+    {
+      "world": "P",
+      "sequence": [
+        "read_primary_record",
+        "publish_verified_record",
+        "read_published_record",
+        "prepare_alternate_publication"
+      ],
+      "executed": false,
+      "strict": false,
+      "effects": 0
+    }
+  ],
+  "raw_sha256": "437180e04c754354ff74780a3507dfc4ae4481efae2cb01d58b82fa499c9d1cc"
+}
