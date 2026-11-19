@@ -1,0 +1,66 @@
+{
+  "shared_seconds": 0.0003845379687845707,
+  "edges": [
+    "confirm_alternate_publication read_published_record 0",
+    "prepare_alternate_publication confirm_alternate_publication 1",
+    "publish_verified_record read_published_record 0",
+    "read_backup_record prepare_alternate_publication 1",
+    "read_backup_record publish_verified_record 1",
+    "read_backup_record validate_record_granularity 1",
+    "read_primary_record prepare_alternate_publication 1",
+    "read_primary_record prepare_alternate_publication 2",
+    "read_primary_record publish_verified_record 1",
+    "read_primary_record publish_verified_record 2",
+    "read_published_record confirm_alternate_publication 0",
+    "read_published_record prepare_alternate_publication 0",
+    "read_published_record prepare_alternate_publication 1",
+    "read_published_record publish_verified_record 0",
+    "read_published_record publish_verified_record 1",
+    "read_published_record read_backup_record 0",
+    "read_published_record read_primary_record 0",
+    "read_published_record validate_record_granularity 0",
+    "validate_record_granularity prepare_alternate_publication 2",
+    "validate_record_granularity publish_verified_record 2"
+  ],
+  "arms": {
+    "rule": {
+      "generated": 259,
+      "distinct": 259,
+      "route": [
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "seconds": 0.0006491676904261112,
+      "actions": [
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "strict": true,
+      "output": 2026,
+      "input": 11946,
+      "seconds_online": 25.362960504367948,
+      "sha256": "48e0101ac2086f2ae8acd247c8c93ea33dd4e9b08b061ea0244ff9f0172e387c"
+    },
+    "goat": {
+      "generated": 48,
+      "distinct": 48,
+      "route": [
+        "prepare_alternate_publication",
+        "confirm_alternate_publication"
+      ],
+      "seconds": 0.19398969132453203,
+      "actions": [
+        "prepare_alternate_publication",
+        "confirm_alternate_publication",
+        "read_published_record"
+      ],
+      "strict": true,
+      "output": 2580,
+      "input": 13543,
+      "seconds_online": 33.36485565174371,
+      "sha256": "c7d988b51fec7a814adedb33605adeeec9f42c5bee01c61dfb53632c7a3b9f97"
+    }
+  }
+}
