@@ -16,8 +16,8 @@ EXIT = "If unable to complete the task, start your final reply with 'Blocked:' a
 ROOT = Path('/home/ubuntu/Song/Agent')
 
 
-def run(case, arm, out, post_prefix=None):
-    agent = VLLMAgent(MODEL,'http://127.0.0.1:8010/v1',temperature=0,max_tokens=8192,request_timeout=300)
+def run(case, arm, out, post_prefix=None, model=MODEL):
+    agent = VLLMAgent(model,'http://127.0.0.1:8010/v1',temperature=0,max_tokens=8192,request_timeout=300)
     if case in ('M3','M4'):
         session=restored(case)
         initialize(agent,session)
