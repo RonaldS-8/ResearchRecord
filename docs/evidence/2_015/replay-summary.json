@@ -1,0 +1,578 @@
+{
+  "start-direct": {
+    "passed": false,
+    "value": [
+      "2026-11-19 10:00",
+      "2026-11-19 10:00",
+      "2026-11-19 10:00",
+      "2026-11-19 10:00",
+      "2026-11-19 10:00"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "create_reminder",
+      "create_reminder",
+      "create_reminder",
+      "create_reminder",
+      "create_reminder"
+    ],
+    "requests": 7,
+    "errors": [
+      "Budget exhausted or unadvertised tool"
+    ],
+    "answer_present": true,
+    "input": 8503,
+    "output": 8342,
+    "thinking": 8002,
+    "seconds": 110.2349833403714,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "a0983027bfbc4de0bcaba0b2fe5b578324107b06ad163ece583c3c521f5e2e52"
+  },
+  "start-rule": {
+    "passed": true,
+    "value": [
+      "2026-11-19 10:00"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "create_reminder"
+    ],
+    "requests": 0,
+    "errors": [],
+    "answer_present": true,
+    "input": 0,
+    "output": 0,
+    "thinking": 0,
+    "seconds": 0.0016895118169486523,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "fb6605b5e46f322666cd4d548687414932c54003d1a165db46311a8f1bd0a072"
+  },
+  "start-method": {
+    "passed": false,
+    "value": [
+      "2026-11-19 10:00",
+      "2026-11-19 10:00",
+      "2026-11-19 10:00"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "create_reminder",
+      "create_reminder",
+      "create_reminder"
+    ],
+    "requests": 7,
+    "errors": [
+      "'arguments'",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision"
+    ],
+    "answer_present": true,
+    "input": 6815,
+    "output": 21799,
+    "thinking": 21576,
+    "seconds": 292.88333359500393,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "8a9fb38e0cc388887f867c0b7ae2ffed466c862e5f8d410455da6a61c973bb31"
+  },
+  "end-direct": {
+    "passed": false,
+    "value": [
+      "2026-11-19 11:00",
+      "2026-11-19 11:00",
+      "2026-11-19 11:00",
+      "2026-11-19 11:00",
+      "2026-11-19 11:00"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "create_reminder",
+      "create_reminder",
+      "create_reminder",
+      "create_reminder",
+      "create_reminder"
+    ],
+    "requests": 7,
+    "errors": [
+      "Budget exhausted or unadvertised tool",
+      "Budget exhausted or unadvertised tool"
+    ],
+    "answer_present": false,
+    "input": 8503,
+    "output": 6439,
+    "thinking": 6124,
+    "seconds": 88.6944856820628,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "c0d9d3539bdfd735009d0e65b2f956db6486868f15cf1f5634f85c595ec50709"
+  },
+  "end-rule": {
+    "passed": true,
+    "value": [
+      "2026-11-19 11:00"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "create_reminder"
+    ],
+    "requests": 0,
+    "errors": [],
+    "answer_present": true,
+    "input": 0,
+    "output": 0,
+    "thinking": 0,
+    "seconds": 0.0023905890993773937,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "af0529a4db96154bd473d5ec1dfbf85acf0a5124511fc42f4de61e39373d9005"
+  },
+  "end-method": {
+    "passed": true,
+    "value": [
+      "2026-11-19 11:00"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "create_reminder"
+    ],
+    "requests": 5,
+    "errors": [
+      "'result'",
+      "Truncated decision",
+      "'datetime' is a required property\n\nFailed validating 'required' in schema:\n    {'type': 'object',\n     'properties': {'datetime': {'type': 'string',\n                                 'description': 'Reminder datetime '\n                      "
+    ],
+    "answer_present": true,
+    "input": 4216,
+    "output": 14887,
+    "thinking": 14705,
+    "seconds": 204.90765366517007,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "2c6d73f4d1c024cf0810cfe5f141df3b3805ff8fb84bcb5d3ad6f2310a14e194"
+  },
+  "original-direct": {
+    "passed": false,
+    "value": [
+      "p_sony_xm5_blk",
+      "p_sony_xm5_blk",
+      "p_sony_xm5_blk",
+      "p_sony_xm5_blk",
+      "p_sony_xm5_blk"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "express_checkout",
+      "express_checkout",
+      "express_checkout",
+      "express_checkout",
+      "express_checkout"
+    ],
+    "requests": 7,
+    "errors": [
+      "Budget exhausted or unadvertised tool",
+      "Budget exhausted or unadvertised tool"
+    ],
+    "answer_present": false,
+    "input": 9987,
+    "output": 5451,
+    "thinking": 5029,
+    "seconds": 74.48978871200234,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "4b357cfcd843ce4c0015645aa706a1403d3e861f908a26c943cd18a7e1ba8401"
+  },
+  "original-rule": {
+    "passed": true,
+    "value": [
+      "p_sony_xm5_blk"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "express_checkout"
+    ],
+    "requests": 0,
+    "errors": [],
+    "answer_present": true,
+    "input": 0,
+    "output": 0,
+    "thinking": 0,
+    "seconds": 0.0023686070926487446,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "cb3cb31550146fe500c478dc33574048e8382cc786b19842af68b560544ce9e2"
+  },
+  "original-method": {
+    "passed": false,
+    "value": [
+      "p_sony_xm5_blk",
+      "p_sony_xm5_blk"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "express_checkout",
+      "express_checkout"
+    ],
+    "requests": 7,
+    "errors": [
+      "Invalid receipt reference",
+      "Invalid receipt reference",
+      "'product_id' is a required property\n\nFailed validating 'required' in schema:\n    {'type': 'object',\n     'properties': {'product_id': {'type': 'string',\n                                   'description': 'Product ID to buy',\n                ",
+      "Truncated decision",
+      "'product_id' is a required property\n\nFailed validating 'required' in schema:\n    {'type': 'object',\n     'properties': {'product_id': {'type': 'string',\n                                   'description': 'Product ID to buy',\n                "
+    ],
+    "answer_present": true,
+    "input": 7296,
+    "output": 20768,
+    "thinking": 20390,
+    "seconds": 284.2775399698876,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "91ed6978e71dc9c14ec78548db26b51cd7f3bc6b0089238b2da0283e69691fb1"
+  },
+  "recommended-direct": {
+    "passed": false,
+    "value": [
+      "p_sony_xm5_slv",
+      "p_sony_xm5_slv",
+      "p_sony_xm5_slv",
+      "p_sony_xm5_slv",
+      "p_sony_xm5_slv"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "express_checkout",
+      "express_checkout",
+      "express_checkout",
+      "express_checkout",
+      "express_checkout"
+    ],
+    "requests": 7,
+    "errors": [
+      "Budget exhausted or unadvertised tool",
+      "Budget exhausted or unadvertised tool"
+    ],
+    "answer_present": false,
+    "input": 10027,
+    "output": 5734,
+    "thinking": 5356,
+    "seconds": 78.45044059120119,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "3df3f843f83d81f59df17b2eff1c5390d24cb4fb2f9a9e964d62c388ba5f6e29"
+  },
+  "recommended-rule": {
+    "passed": true,
+    "value": [
+      "p_sony_xm5_slv"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "express_checkout"
+    ],
+    "requests": 0,
+    "errors": [],
+    "answer_present": true,
+    "input": 0,
+    "output": 0,
+    "thinking": 0,
+    "seconds": 0.002388075925409794,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "da83e05a88745be65906e8dd6a5292b26b876d8bb85a45f1ac2e243c54743ce5"
+  },
+  "recommended-method": {
+    "passed": true,
+    "value": [
+      "p_sony_xm5_slv"
+    ],
+    "durable_writes": null,
+    "readbacks": 0,
+    "calls": [
+      "express_checkout"
+    ],
+    "requests": 3,
+    "errors": [
+      "'product_id' is a required property\n\nFailed validating 'required' in schema:\n    {'type': 'object',\n     'properties': {'product_id': {'type': 'string',\n                                   'description': 'Product ID to buy',\n                "
+    ],
+    "answer_present": true,
+    "input": 3060,
+    "output": 7378,
+    "thinking": 7182,
+    "seconds": 101.82906699320301,
+    "fee": [
+      null,
+      null
+    ],
+    "sha256": "3c5ba8f23aca8bbee70ca78f41cca40228d7cc2bcacbbd9173134ece5d9f54ac"
+  },
+  "C-direct": {
+    "passed": false,
+    "value": [
+      "Valve A: 12 units; Valve B: 8 units.",
+      "Valve A: 12 units; Valve B: 8 units."
+    ],
+    "durable_writes": 2,
+    "readbacks": 1,
+    "calls": [
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "requests": 3,
+    "errors": [],
+    "answer_present": true,
+    "input": 6097,
+    "output": 4355,
+    "thinking": 3918,
+    "seconds": 58.86765451496467,
+    "fee": [
+      "2",
+      "0"
+    ],
+    "sha256": "cefdf2281e9b18384b7d2442960d201f0b10c34f8c401478ce30c6b82eefeaec"
+  },
+  "C-rule": {
+    "passed": true,
+    "value": [
+      "Valve A: 12 units; Valve B: 8 units."
+    ],
+    "durable_writes": 1,
+    "readbacks": 1,
+    "calls": [
+      "list_record_publications",
+      "read_published_record"
+    ],
+    "requests": 0,
+    "errors": [],
+    "answer_present": true,
+    "input": 0,
+    "output": 0,
+    "thinking": 0,
+    "seconds": 0.0019395858980715275,
+    "fee": [
+      "1",
+      "1"
+    ],
+    "sha256": "c7578a5605bc6244093dde5d17d37f05490c13a27e358327bd272a073f9b299f"
+  },
+  "C-method": {
+    "passed": false,
+    "value": [
+      "Valve A: 12 units; Valve B: 8 units."
+    ],
+    "durable_writes": 1,
+    "readbacks": 0,
+    "calls": [],
+    "requests": 7,
+    "errors": [
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision"
+    ],
+    "answer_present": false,
+    "input": 8348,
+    "output": 28672,
+    "thinking": 28599,
+    "seconds": 390.4814632209018,
+    "fee": [
+      "0",
+      "0"
+    ],
+    "sha256": "d524be082e60e4e341d67f6d109db78aa7b5000295279f5babec9914652d8709"
+  },
+  "T-direct": {
+    "passed": true,
+    "value": [
+      "Valve A: 12 units; Valve B: 8 units."
+    ],
+    "durable_writes": 1,
+    "readbacks": 1,
+    "calls": [
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "requests": 3,
+    "errors": [],
+    "answer_present": true,
+    "input": 6101,
+    "output": 3962,
+    "thinking": 3716,
+    "seconds": 52.64752665394917,
+    "fee": [
+      "2",
+      "0"
+    ],
+    "sha256": "eeb1f5e51b559b4e301bc0e7dbadf424ed6006792c4f7ce60cde92a1e13b1c50"
+  },
+  "T-rule": {
+    "passed": true,
+    "value": [
+      "Valve A: 12 units; Valve B: 8 units."
+    ],
+    "durable_writes": 1,
+    "readbacks": 1,
+    "calls": [
+      "list_record_publications",
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "requests": 0,
+    "errors": [],
+    "answer_present": true,
+    "input": 0,
+    "output": 0,
+    "thinking": 0,
+    "seconds": 0.007303596939891577,
+    "fee": [
+      "3",
+      "1"
+    ],
+    "sha256": "1038db2f2400d3688b873ba6ee11320bd879fb99fc346305a2f5307835611192"
+  },
+  "T-method": {
+    "passed": false,
+    "value": [],
+    "durable_writes": 0,
+    "readbacks": 0,
+    "calls": [],
+    "requests": 7,
+    "errors": [
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision"
+    ],
+    "answer_present": false,
+    "input": 8348,
+    "output": 28672,
+    "thinking": 28599,
+    "seconds": 386.4038688419387,
+    "fee": [
+      "0",
+      "0"
+    ],
+    "sha256": "55a6102285fe7ee198e5072d8102baf8c92835d55472cb4403c9741dec601be4"
+  },
+  "P-direct": {
+    "passed": true,
+    "value": [
+      "Valve A: 12 units; Valve B: 8 units."
+    ],
+    "durable_writes": 1,
+    "readbacks": 1,
+    "calls": [
+      "publish_verified_record",
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "requests": 5,
+    "errors": [],
+    "answer_present": true,
+    "input": 10585,
+    "output": 6289,
+    "thinking": 5962,
+    "seconds": 87.86389709590003,
+    "fee": [
+      "4",
+      "0"
+    ],
+    "sha256": "49db22bfb47adced70a5167cd716c01f775529e3891b0276a4639e17ca60c89d"
+  },
+  "P-rule": {
+    "passed": true,
+    "value": [
+      "Valve A: 12 units; Valve B: 8 units."
+    ],
+    "durable_writes": 1,
+    "readbacks": 1,
+    "calls": [
+      "list_record_publications",
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "requests": 0,
+    "errors": [],
+    "answer_present": true,
+    "input": 0,
+    "output": 0,
+    "thinking": 0,
+    "seconds": 0.00682840496301651,
+    "fee": [
+      "3",
+      "1"
+    ],
+    "sha256": "fe632d2c4f894cfd313b5ea8ae62fdcd4c2f5c70a94ac33e8322565f66a663c8"
+  },
+  "P-method": {
+    "passed": false,
+    "value": [],
+    "durable_writes": 0,
+    "readbacks": 0,
+    "calls": [],
+    "requests": 7,
+    "errors": [
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision",
+      "Truncated decision"
+    ],
+    "answer_present": false,
+    "input": 8348,
+    "output": 28672,
+    "thinking": 28599,
+    "seconds": 398.77476583002135,
+    "fee": [
+      "0",
+      "0"
+    ],
+    "sha256": "5e3bffb990d2a1d106505e01d34f0135540fae5644d8a5031c1e8faa164a26dd"
+  }
+}

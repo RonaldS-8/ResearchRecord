@@ -48,7 +48,7 @@ def main(folder):
             usages=[r['response']['usage'] for r in requests]
             summary[f.stem]=dict(passed=passed,value=value,durable_writes=cnt,readbacks=verified,
                 calls=[e['tool'] for e in actions],requests=len(requests),errors=data['errors'],
-                finished=bool(data['answer']),input=sum(u['prompt_tokens'] for u in usages),
+                answer_present=bool(data['answer']),input=sum(u['prompt_tokens'] for u in usages),
                 output=sum(u['completion_tokens'] for u in usages),
                 thinking=sum((u.get('completion_tokens_details') or {}).get('reasoning_tokens') or 0 for u in usages),
                 seconds=data['wall_seconds'],fee=[g.get('suffix_execution_fee'),g.get('suffix_diagnostic_fee')],
