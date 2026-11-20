@@ -65,3 +65,5 @@
 - 正式模型推理、GPU 实验及原始轨迹验收在 `ssh LabServer`；云端根目录 `/home/ubuntu/Song/Agent`，虚拟环境 `.venv`，GPU RTX 4090 24GB。优先使用独立 Git worktree，勿覆盖其他工作区或擅自占用现有服务，运行前做好端云同步。
 - 单一 Git 仓库；权重、原始数据、虚拟环境、密钥、缓存和大体积运行日志不入 Git。必要时在 Git 中保留派生统计与 SHA-256 索引。
 - 在许可分支提交、推送并说明分支名、提交 SHA、运行路径及验收结论；未经批准不直接更新 main 或清理旧资产。
+
+本项目已授权的 GitHub 同步目标为 `https://github.com/RonaldS-8/ResearchRecord`（SSH 等价地址 `git@github.com:RonaldS-8/ResearchRecord.git`）。推送前用 `git remote -v` 核对；原始轨迹、模型权重和密钥沿用既有归档边界。
