@@ -8,10 +8,19 @@ from extensions.toolmaze_recovery.gate42a import ARCHIVE, VALIDATE, WRITE, VERIF
 from extensions.toolmaze_recovery.gate44a import restored
 
 if __name__ == '__main__':
-    root, upstream, model = map(Path, sys.argv[1:])
+    root, upstream, model = map(Path, sys.argv[1:4])
+    prior = Path(sys.argv[4]) if len(sys.argv) == 5 else None
     plans = {}
     for case in ('M3', 'M4'):
         directory = root / case
+        if prior is not None and case == 'M3':
+            if (prior/'source-commit.txt').read_text().strip() != '6158268257d7d5c746a173cd9eebcf7c7498924a':
+                raise ValueError('Unexpected M3 build source')
+            saved = json.loads((prior/case/'build.json').read_text())
+            assert saved['history'] == restored(case).view()['history']
+            directory.symlink_to(prior/case, target_is_directory=True)
+            plans[case] = {arm:saved[arm][:1] for arm in ('rule','goat')}
+            continue
         directory.mkdir()
         view = restored(case).view()
         plans[case] = build({key:view[key] for key in ('tools','history','remaining_calls')}, lambda: sample(case, 25000), directory, upstream, model)

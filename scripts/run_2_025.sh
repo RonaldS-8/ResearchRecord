@@ -2,6 +2,11 @@
 set -eu
 root=/home/ubuntu/Song/Agent
 out=$root/results/2_025-gpu-01
+resume_args=()
+if [[ "${1:-}" == "--resume" ]]; then
+    resume_args=("$out")
+    out="$root/results/2_025-gpu-02"
+fi
 mkdir "$out"
 exec >"$out/supervisor.log" 2>&1
 git rev-parse HEAD >"$out/source-commit.txt"
@@ -11,5 +16,5 @@ vllm serve "$root/models/Qwen3-4B-Thinking-2507" --host 127.0.0.1 --port 8010 --
 server=$!
 trap 'kill "$server" 2>/dev/null || true' EXIT
 for i in {1..90}; do curl -sf http://127.0.0.1:8010/v1/models >"$out/models.json" && break; kill -0 "$server"; sleep 2; done
-python -m extensions.route_recovery.run_2025 "$out" /home/ubuntu/Song/Agent-worktrees/2_010-upstream/GOAT "$root/models/paraphrase-MiniLM-L6-v2"
+python -m extensions.route_recovery.run_2025 "$out" /home/ubuntu/Song/Agent-worktrees/2_010-upstream/GOAT "$root/models/paraphrase-MiniLM-L6-v2" "${resume_args[@]}"
 echo completed >"$out/status"
