@@ -1,0 +1,1335 @@
+{
+  "24000/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13052,
+    "output": 2839,
+    "seconds": 38.33,
+    "sha256": "3b401bf3153f6b3d47a2a4df3d94a65e60d201e9f43c1739a861fff092880551"
+  },
+  "24000/M3-goat": {
+    "actions": [
+      "read_primary_record",
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 7,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 6,
+    "input": 22520,
+    "output": 3513,
+    "seconds": 47.6,
+    "sha256": "a02beec331ca893f0379b6d156865983fce16e79763cca2acb8263f6e30eb0fb"
+  },
+  "24000/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12459,
+    "output": 2066,
+    "seconds": 29.69,
+    "sha256": "f19f5c4afe6c665f7e8e5ce0939ebdd461d4bcb3474d0630838ef759bc103617"
+  },
+  "24000/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13225,
+    "output": 2600,
+    "seconds": 36.71,
+    "sha256": "53d31e3d8d3240ceb9a2c9b498a6e2ab44607ebab3124db93f686aeee8987260"
+  },
+  "24000/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13225,
+    "output": 2600,
+    "seconds": 35.59,
+    "sha256": "b756c5cfe585c7d86efcd02c62a7db5973906b4c7b47f342a72c922fb6b32d8d"
+  },
+  "24001/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record"
+    ],
+    "fee": 5,
+    "strict": false,
+    "issues": [
+      "Expected exactly one committed publication."
+    ],
+    "status": "answered",
+    "requests": 4,
+    "input": 10176,
+    "output": 4549,
+    "seconds": 66.01,
+    "sha256": "540a29915c269a11911b317ed511f40f3f3da06931a555b2a0f1316dbfebf77d"
+  },
+  "24001/M3-goat": {
+    "actions": [
+      "read_primary_record",
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 7,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 6,
+    "input": 19453,
+    "output": 3187,
+    "seconds": 46.23,
+    "sha256": "cbb3a2d6e982fd6d32e533e3b9bb64b775fbb83fcb313ebd20d18982579eee50"
+  },
+  "24001/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13056,
+    "output": 2268,
+    "seconds": 33.25,
+    "sha256": "c513076a117ef8805acd389ab3a72a5237688397dcb299e71ef952eac02de854"
+  },
+  "24001/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12775,
+    "output": 2441,
+    "seconds": 34.71,
+    "sha256": "063ad7a376910d4f2ab1bb6008f5b6d4d58b7188b2cb6b8d515bafc37b4aa00e"
+  },
+  "24001/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12775,
+    "output": 2441,
+    "seconds": 35.77,
+    "sha256": "8d94305532f79a4f6e9901dde8d0391c6c588896395cc27672f1df5cf1fb3e54"
+  },
+  "24002/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 14436,
+    "output": 2856,
+    "seconds": 41.62,
+    "sha256": "fb847e9f542dd2a0f5bb363165e0465afa38901558266de247d3fb24bf363ef1"
+  },
+  "24002/M3-goat": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 17154,
+    "output": 3000,
+    "seconds": 43.6,
+    "sha256": "8aae491c0f4cf8b3ec6603b5ae4c326d1e66dde91e8f4b8b692729038b7d779c"
+  },
+  "24002/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12289,
+    "output": 1721,
+    "seconds": 24.95,
+    "sha256": "03799bdac423789b98c12237867507f9e470b436ad5b919ebc6e2cdd2b4fb1b6"
+  },
+  "24002/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 15046,
+    "output": 3151,
+    "seconds": 43.76,
+    "sha256": "8dc63cbffa59516a34f236e5b7a413e2b59519b8265dfb74f6bcd0d5c354a95e"
+  },
+  "24002/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 15046,
+    "output": 3151,
+    "seconds": 44.74,
+    "sha256": "1495b335e9a1c862b5fcbe48fb1dc517a3b26895680a5949b97457ceb75b0791"
+  },
+  "24003/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13239,
+    "output": 2422,
+    "seconds": 33.54,
+    "sha256": "f7799a66ac536827355e9df7cdb9aa1abe0da7149692389454f052b8aa284654"
+  },
+  "24003/M3-goat": {
+    "actions": [
+      "read_primary_record"
+    ],
+    "fee": 1,
+    "strict": false,
+    "issues": [
+      "Expected exactly one committed publication."
+    ],
+    "status": "answered",
+    "requests": 2,
+    "input": 4248,
+    "output": 1864,
+    "seconds": 25.68,
+    "sha256": "0cdea15eae9d366dd473200c0734026a583084191b639a8a1fad355083f5a69d"
+  },
+  "24003/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13055,
+    "output": 1944,
+    "seconds": 27.18,
+    "sha256": "65dc3ab19217c7eee1bf834023011f4c8dbc1605efc4b946cc86a7cc0a09442d"
+  },
+  "24003/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 11929,
+    "output": 1979,
+    "seconds": 27.62,
+    "sha256": "ec4059c80b70946c5a84eee120844dc96be29b3bc22cf8cd5191500a0272069a"
+  },
+  "24003/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 11929,
+    "output": 1979,
+    "seconds": 29.46,
+    "sha256": "9230487675bd5d039a7504df7d4dca0b285bf1743fed10b31ffc14b23acf5529"
+  },
+  "24004/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13778,
+    "output": 2563,
+    "seconds": 36.65,
+    "sha256": "2afe35d9314e855ba31b50370d9b803ad9fab43c3115f6dfad878089cd642317"
+  },
+  "24004/M3-goat": {
+    "actions": [
+      "read_primary_record",
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 7,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 6,
+    "input": 19271,
+    "output": 3138,
+    "seconds": 44.38,
+    "sha256": "eb5a6b676c9932aa5627d66ec715c7e73be2dcc235628e4edb381cc11de1b638"
+  },
+  "24004/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 14376,
+    "output": 2631,
+    "seconds": 39.0,
+    "sha256": "9c281460fb8458eac4f3937bf1cd909ce5563fbc83d3a635081b32b4cc2a72a0"
+  },
+  "24004/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13850,
+    "output": 2677,
+    "seconds": 37.79,
+    "sha256": "fb79d36889e13b42c3964bcaa0b09e60b4ef337014be6156e96b237b0389afa3"
+  },
+  "24004/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13850,
+    "output": 2677,
+    "seconds": 37.58,
+    "sha256": "69f7dc202a4a454e6d808ce0a5489ea68f30752db39844bbad943e9aa81de772"
+  },
+  "24005/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12223,
+    "output": 2149,
+    "seconds": 30.06,
+    "sha256": "64b9ff783536959f92e4b0f8721b64cfa37619341531caf5cfc51f8533fc80f2"
+  },
+  "24005/M3-goat": {
+    "actions": [
+      "read_primary_record"
+    ],
+    "fee": 1,
+    "strict": false,
+    "issues": [
+      "Expected exactly one committed publication."
+    ],
+    "status": "answered",
+    "requests": 2,
+    "input": 4153,
+    "output": 1517,
+    "seconds": 21.51,
+    "sha256": "a47c4b9c72a8ad5af8b31b102962e27b19131725ada2cd8f5c600db0234adab9"
+  },
+  "24005/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13350,
+    "output": 2055,
+    "seconds": 28.84,
+    "sha256": "2c652fa5c1ebdd2606ea803fd43995ee29078ddfaef237ad87337085373af2ea"
+  },
+  "24005/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13859,
+    "output": 3324,
+    "seconds": 46.76,
+    "sha256": "75520712fa9281139447af2e22afe6d45f4d882d77311f1931e4f345f651b621"
+  },
+  "24005/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13859,
+    "output": 3324,
+    "seconds": 47.69,
+    "sha256": "f84559cd463958d1fe3b7436649206a0b1ab626cfaceeb3d1370e1331624e558"
+  },
+  "24006/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 14837,
+    "output": 3053,
+    "seconds": 43.81,
+    "sha256": "39066513545fa73eee271b65d98853a0aab85720288f47370085ac62fc3347a2"
+  },
+  "24006/M3-goat": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12998,
+    "output": 2030,
+    "seconds": 29.25,
+    "sha256": "f8e240664012d42f51b06a5134a1b75dd0e151564be80341276191477df3e882"
+  },
+  "24006/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13558,
+    "output": 2431,
+    "seconds": 34.83,
+    "sha256": "445e146026531cc04b4eb89a7ddc08f797ef66f8960b99ed9fba49d5755b58e1"
+  },
+  "24006/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13069,
+    "output": 2781,
+    "seconds": 38.39,
+    "sha256": "15afe8021a8351464a5ab58486e9fb70b67ec2d6e554aa7b40a8f9de0a35e16c"
+  },
+  "24006/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13069,
+    "output": 2781,
+    "seconds": 38.67,
+    "sha256": "65ecf8a7a4250043d06e5dd98332fe9249a619b65afe553ea33ffca75d6ef52b"
+  },
+  "24007/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13683,
+    "output": 2372,
+    "seconds": 33.04,
+    "sha256": "d3e2f854a08c4be6e3f674e9f6c7dd7c3c1a5187a0440d7ac9aa93cfab929fa1"
+  },
+  "24007/M3-goat": {
+    "actions": [
+      "read_primary_record"
+    ],
+    "fee": 1,
+    "strict": false,
+    "issues": [
+      "Expected exactly one committed publication."
+    ],
+    "status": "answered",
+    "requests": 2,
+    "input": 4151,
+    "output": 1403,
+    "seconds": 20.03,
+    "sha256": "c7b8c8e75a8637b34df444be5d16bc3e56426c8ed586d457fd6cba1210b1f56c"
+  },
+  "24007/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 14143,
+    "output": 2707,
+    "seconds": 39.55,
+    "sha256": "89328c75c4305510207ed4510e0899b6e858df926b9c76e0de3683b0afc1d0bb"
+  },
+  "24007/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 11620,
+    "output": 1899,
+    "seconds": 27.16,
+    "sha256": "4546673a18ce95e56bcec75279721d38161d4ec43041e323060e733508f96ce1"
+  },
+  "24007/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 11620,
+    "output": 1899,
+    "seconds": 27.16,
+    "sha256": "35856fc09911fdb5c96d5989aae4dbaf0cb6fca1d6d854169304c843d415306b"
+  },
+  "24008/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12584,
+    "output": 1874,
+    "seconds": 26.81,
+    "sha256": "d08662733b1c41a23a0c04fd3a34e72e309cf9eb19e6d9be47fcd2d62bb89db5"
+  },
+  "24008/M3-goat": {
+    "actions": [
+      "read_primary_record",
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 7,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 6,
+    "input": 18601,
+    "output": 3759,
+    "seconds": 52.79,
+    "sha256": "f291cc785bb4e056c651cb645038a6c80dfda485156184491b6ca50ee2f6543e"
+  },
+  "24008/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12269,
+    "output": 2021,
+    "seconds": 30.06,
+    "sha256": "cd3bc414b6003b60218054cf69c6bc5bab4c2adfcad53c9d9e1a35fdc34e2e81"
+  },
+  "24008/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13816,
+    "output": 2684,
+    "seconds": 37.09,
+    "sha256": "45e4071c23d0cfb550e87b00711fb840abb66841f86420b6a5e215deadeda6b8"
+  },
+  "24008/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13816,
+    "output": 2684,
+    "seconds": 38.43,
+    "sha256": "98b6c7ff75023d24c40d3c6a14a74ea16903e369fd6a60f5d1a6376eea533321"
+  },
+  "24009/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12980,
+    "output": 1975,
+    "seconds": 27.69,
+    "sha256": "d38b3293ce85ddf476fafd2807d319fde8d6653d61e06fa67ba7e968ad7bef4d"
+  },
+  "24009/M3-goat": {
+    "actions": [
+      "read_primary_record",
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 7,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 6,
+    "input": 21862,
+    "output": 3291,
+    "seconds": 46.76,
+    "sha256": "684bd9af5b34418f8535bac9694e04b8125ae06647436e1e74079c3d4ed623f8"
+  },
+  "24009/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13994,
+    "output": 2452,
+    "seconds": 35.13,
+    "sha256": "7fb0760a64161344164fd9b6c5a6dc585e56becdecd5505ec9d74e8f8e4999d0"
+  },
+  "24009/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12363,
+    "output": 3376,
+    "seconds": 47.41,
+    "sha256": "87c41608f8bc74a7d575f8c3dba06fbfb534d12569879ea3c3e7dcfeb2c4f4f3"
+  },
+  "24009/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12363,
+    "output": 3376,
+    "seconds": 47.42,
+    "sha256": "389c6fb4540dd6104e862023eeff13fccaf2e94d07d55dfed3077a30e9f1c83f"
+  },
+  "24010/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12819,
+    "output": 1959,
+    "seconds": 29.76,
+    "sha256": "7ea941da7aa079bc3a45afa1aa61a7140bc450343266804999d29017941658cf"
+  },
+  "24010/M3-goat": {
+    "actions": [
+      "read_primary_record"
+    ],
+    "fee": 1,
+    "strict": false,
+    "issues": [
+      "Expected exactly one committed publication."
+    ],
+    "status": "answered",
+    "requests": 2,
+    "input": 3931,
+    "output": 2091,
+    "seconds": 29.1,
+    "sha256": "703adb63bd3621c335d2a3fac7a6c39f68b8d0d7bb101915a77950e6a3bc1013"
+  },
+  "24010/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12790,
+    "output": 2017,
+    "seconds": 28.47,
+    "sha256": "2f8a579bc7bb03493ff74530a15765cb7dd9dc7144940c29c8c4f4f48e7fa40b"
+  },
+  "24010/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12954,
+    "output": 2509,
+    "seconds": 35.82,
+    "sha256": "800df459f5a4a56983c0dec9434da7997b8a26bcff7ede1ec342f519c5ec052c"
+  },
+  "24010/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12954,
+    "output": 2509,
+    "seconds": 35.7,
+    "sha256": "960a42c8724e154fc5849fe63892f1264fbfd7be34ab67d640421fbeb7d5e04c"
+  },
+  "24011/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12590,
+    "output": 2586,
+    "seconds": 36.8,
+    "sha256": "28db2621e37a8b240bc21278cea24ee81315411a692fb2c318febcae2a69d9a5"
+  },
+  "24011/M3-goat": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 19030,
+    "output": 3760,
+    "seconds": 53.19,
+    "sha256": "ae3b73f69e278cde19c1087a8f89a9d3cac6aa4f36c0a97131c777030bfb6704"
+  },
+  "24011/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 14486,
+    "output": 2986,
+    "seconds": 44.11,
+    "sha256": "5f2775dbb95bd2ab00fe750b83eb81569cf0222a78e0cd57205634f56350a702"
+  },
+  "24011/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12632,
+    "output": 2205,
+    "seconds": 30.87,
+    "sha256": "85b06fdd9aa3d82f10565cb8113e1e99028dd0d45ec874c1b0c3a469d8df48d2"
+  },
+  "24011/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12632,
+    "output": 2205,
+    "seconds": 30.79,
+    "sha256": "c81485cf8a5072fdefc28e8266948295930f3280c16c6d7d1e6ce109e8f80710"
+  },
+  "24012/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12047,
+    "output": 1609,
+    "seconds": 23.42,
+    "sha256": "2a9a4929dcaa52b1658e9ae974c5d27b46765fadb4ae4ce0467bf728de5763ab"
+  },
+  "24012/M3-goat": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 14314,
+    "output": 2628,
+    "seconds": 37.27,
+    "sha256": "41a2bdcf86d093bfc3e3a9b3afe61ff4bc3b57a3f619057fe7fe131b2b4c449c"
+  },
+  "24012/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 14232,
+    "output": 2436,
+    "seconds": 34.08,
+    "sha256": "6cccf146708f9d40f41ac00d71ced9ecb54a80b34d75f3d42a56823151f98ec0"
+  },
+  "24012/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12134,
+    "output": 1972,
+    "seconds": 28.02,
+    "sha256": "b29f68dcccb0fb6bdc09fd19d23b84bca063ede63488e7b08e4174fa6757f9c3"
+  },
+  "24012/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12134,
+    "output": 1972,
+    "seconds": 28.62,
+    "sha256": "fc0cb141f1cbb49e10e9c7b53d0cb01a5312ce160eea29ab9226a82da677ad96"
+  },
+  "24013/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12606,
+    "output": 1865,
+    "seconds": 26.23,
+    "sha256": "0a255437c05ce355841ce6aedeae7ef48a211e7adedfde8002701394e52ba28d"
+  },
+  "24013/M3-goat": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13955,
+    "output": 2174,
+    "seconds": 31.82,
+    "sha256": "0e53c2739458742a2fb3de07a2eb47d448790f533f8374f3fc0f204e3abf629e"
+  },
+  "24013/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 12426,
+    "output": 1857,
+    "seconds": 26.34,
+    "sha256": "50258765344dc96b7bf8c75b4eb6b9cfbf01ea70e85abd19a68a4803d03e2e8e"
+  },
+  "24013/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12267,
+    "output": 2182,
+    "seconds": 30.74,
+    "sha256": "20ff0322f09822de4a97acf66749d1e980416f7ae660fbab3cc16d4ccd501e46"
+  },
+  "24013/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12267,
+    "output": 2182,
+    "seconds": 31.73,
+    "sha256": "0c4e9fffed6b45ab3631171fe975db7d2f64a0c37a57041b82a108e5185f42e5"
+  },
+  "24014/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_primary_record"
+    ],
+    "fee": 6,
+    "strict": false,
+    "issues": [
+      "Expected exactly one committed publication."
+    ],
+    "status": "answered",
+    "requests": 5,
+    "input": 15365,
+    "output": 4916,
+    "seconds": 70.04,
+    "sha256": "abbc486f18167b570216c3a39130ec73859d30577dda28a9724dac45b549f7a2"
+  },
+  "24014/M3-goat": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record"
+    ],
+    "fee": 5,
+    "strict": false,
+    "issues": [
+      "Missing actual post-commit readback."
+    ],
+    "status": "answered",
+    "requests": 4,
+    "input": 10585,
+    "output": 3311,
+    "seconds": 46.84,
+    "sha256": "8df4cce01bea83293ec20d10fbefd27ea07c25057901240cb8cfc947e4880669"
+  },
+  "24014/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 14123,
+    "output": 2299,
+    "seconds": 32.71,
+    "sha256": "f88aa6d750b9e858deeb0760e30e346737d76b27eae428c316a2e8bda1074882"
+  },
+  "24014/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13997,
+    "output": 2730,
+    "seconds": 39.87,
+    "sha256": "f9589f937c30e4f014ad1714f179c40ad792cf1ca1cdee230966f0f11e5bf24a"
+  },
+  "24014/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 13997,
+    "output": 2730,
+    "seconds": 38.31,
+    "sha256": "32513f369d58cacd9ad898d71173c609fd2ec29416a687293003db4e436d83d9"
+  },
+  "24015/M3-rule": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13207,
+    "output": 2217,
+    "seconds": 31.56,
+    "sha256": "89c6a4402ee19d19b1d45b8fe37700a7b0d3f8477990d0392dedecaa62e836f7"
+  },
+  "24015/M3-goat": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13635,
+    "output": 2239,
+    "seconds": 33.06,
+    "sha256": "2332e2aaf34e036555fb5a711aa574ed3ff9da2248a2f96c9d877f207d90041d"
+  },
+  "24015/M3-oracle_full": {
+    "actions": [
+      "read_archive_record",
+      "validate_record_granularity",
+      "publish_verified_record",
+      "read_published_record"
+    ],
+    "fee": 6,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 5,
+    "input": 13669,
+    "output": 2290,
+    "seconds": 32.87,
+    "sha256": "c15c29efa8ad84fc3654b28325834edb2d7fee0214ba663de6dcbe4f62043572"
+  },
+  "24015/M4-rule": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12876,
+    "output": 2295,
+    "seconds": 34.09,
+    "sha256": "0b9583851d4011a322126293be1defcb7daf19910ef8e20ef95e27901ce5f5d8"
+  },
+  "24015/M4-goat": {
+    "actions": [
+      "prepare_alternate_publication",
+      "confirm_alternate_publication",
+      "read_published_record"
+    ],
+    "fee": 3,
+    "strict": true,
+    "issues": [],
+    "status": "answered",
+    "requests": 4,
+    "input": 12876,
+    "output": 2295,
+    "seconds": 33.77,
+    "sha256": "8894a0884dd7ac64d8f91db89fcec5734cac34d6cd5a90e8083dce87c7629979"
+  }
+}
